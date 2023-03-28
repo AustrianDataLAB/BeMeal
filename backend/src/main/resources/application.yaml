@@ -1,0 +1,25 @@
+logging:
+  file.name: ./log/backend.log
+  level:
+    root: INFO
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+
+spring:
+  datasource:
+    url: jdbc:h2:file:./database/db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: admin
+    password: password
+  jpa:
+    # Set this property to true if you want to see the executed queries
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    # Allows to fetch lazy properties outside the original transaction. Although this sounds helpful, the property
+    # is disabled since it breaks the principle of the least astonishment and leads to bad performance. To learn more,
+    # follow this link: https://bit.ly/2LaX9ku
+    open-in-view: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
