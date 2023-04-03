@@ -76,9 +76,6 @@ verify-backend:
   script:
     - cd backend/
     - 'mvn $MAVEN_CLI_OPTS verify'
-  except:
-    variables:
-      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 build-frontend:
   stage: test
