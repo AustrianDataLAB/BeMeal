@@ -53,12 +53,21 @@ image: maven:3-eclipse-temurin-17
 cache:
   paths:
     - .m2/repository
+    - frontend/node_modules/
 
 format-backend:
   stage: format
   script:
     - cd backend/
     - 'mvn $MAVEN_CLI_OPTS formatter:validate'
+
+format-frontend:
+  stage: format
+  image: node:latest
+  script:
+    - cd frontend/
+    - npm install
+    - npm run lint
 
 # For merge requests do not `deploy` but only run `verify`.
 # See https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
@@ -70,4 +79,12 @@ verify-backend:
   except:
     variables:
       - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+verify-frontend:
+  stage: test
+  image: node:latest
+  script:
+    - cd frontend/
+    - npm install
+    - npm run test
 
