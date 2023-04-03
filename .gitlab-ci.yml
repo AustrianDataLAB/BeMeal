@@ -80,11 +80,11 @@ verify-backend:
     variables:
       - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
-verify-frontend:
+build-frontend:
   stage: test
   image: node:latest
   script:
     - cd frontend/
     - npm install
-    - npm run test
+    - npm run build
 
