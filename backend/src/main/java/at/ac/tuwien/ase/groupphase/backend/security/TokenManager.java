@@ -19,7 +19,7 @@ public class TokenManager {
     private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     @Autowired
-    public TokenManager(final BeMealUserDetailsService userDetailsService) {
+    public TokenManager(final UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
