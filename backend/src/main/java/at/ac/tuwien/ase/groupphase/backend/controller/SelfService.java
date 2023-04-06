@@ -9,10 +9,8 @@ import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/self-service")
@@ -49,8 +47,8 @@ public class SelfService {
      *             when a user with the email/username already exists
      */
     @PostMapping("/registration/participant")
-    public void registerParticipant(@NotNull @RequestBody final Registration registration)
-            throws UserAlreadyExistsException {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerParticipant(@NotNull @RequestBody final Registration registration) {
         logger.trace("registerParticipant(...)");
         if (this.userRepository.exists(registration.email(), registration.password())) {
             throw new UserAlreadyExistsException(registration.email(), registration.username());
