@@ -10,8 +10,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfiguration {
 
-    private static final String[] AUTH_WHITELIST = { "/api/v1/registration/participant/**", "/v3/api-docs/**",
-            "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html" };
+    private static final String[] AUTH_WHITELIST = {"/api/v1/self-service/registration/participant", "/v3/api-docs/**",
+            "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -20,7 +20,8 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests().requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated()
+        return http.csrf().disable().authorizeHttpRequests().
+                requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated()
                 .and().build();
     }
 }
