@@ -20,7 +20,7 @@ public class Recipe {
     private final String name;
     private final UUID picture;
 
-    //TODO: how to solve the amount of ingredients issue?
+    // TODO: how to solve the amount of ingredients issue?
     @Relationship(type = "CONTAINS", direction = Relationship.Direction.OUTGOING)
     private List<Ingredient> ingredients;
 }
