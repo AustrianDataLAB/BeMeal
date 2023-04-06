@@ -5,6 +5,7 @@ import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,5 +58,16 @@ public class SelfService {
         this.participantRepository.save(participant);
         logger.info("Registered participant with id: '{}' email: '{}' username: '{}'", participant.getId(),
                 participant.getEmail(), participant.getUsername());
+    }
+
+    /**
+     * Authenticate the user against the backend. Just use Basic Auth here to authenticate. The backend will then return
+     * the auth token in the HTTP authorization header.
+     */
+    @GetMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "credentials")
+    public void login() {
+        // This is only a placeholder for openApi
     }
 }
