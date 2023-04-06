@@ -10,4 +10,6 @@ public interface UserRepository extends CrudRepository<PlatformUser, Long> {
 
     @Query("select count(*) > 0 from PlatformUser p where p.email = :email or p.username = :username")
     boolean exists(String email, String username);
+
+    PlatformUser findByUsername(String username);
 }
