@@ -38,26 +38,22 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http,
-            final JwtAuthenticationFilter authenticationFilter, final JwtAuthorizationFilter authorizationFilter)
-            throws Exception {
+            final AuthenticationConfiguration authenticationConfiguration) throws Exception {
+
+        final var authenticationManager = authenticationConfiguration.getAuthenticationManager();
+        final var authorizationFilter = authorizationFilter(authenticationManager);
+        final var authenticationFilter = authenticationFilter(authenticationManager);
+
         return http.csrf().disable().headers().frameOptions().disable().and().addFilter(authenticationFilter)
                 .addFilter(authorizationFilter).sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated().and().build();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public JwtAuthorizationFilter authorizationFilter(final AuthenticationManager authenticationManager) {
+    private JwtAuthorizationFilter authorizationFilter(final AuthenticationManager authenticationManager) {
         return new JwtAuthorizationFilter(authenticationManager, tokenManager());
     }
 
-    @Bean
     public JwtAuthenticationFilter authenticationFilter(final AuthenticationManager authenticationManager) {
         return new JwtAuthenticationFilter(authenticationManager, tokenManager());
     }
