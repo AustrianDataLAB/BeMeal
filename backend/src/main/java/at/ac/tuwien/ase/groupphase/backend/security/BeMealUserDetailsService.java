@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-class BeMealUserDetailsService implements UserDetailsService {
+public class BeMealUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
