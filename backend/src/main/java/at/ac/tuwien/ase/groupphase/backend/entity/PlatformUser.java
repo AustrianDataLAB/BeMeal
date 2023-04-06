@@ -17,7 +17,7 @@ public class PlatformUser {
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
-    private Byte[] password;
+    private byte[] password;
     @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false)
