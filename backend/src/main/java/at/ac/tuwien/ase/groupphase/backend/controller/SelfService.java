@@ -68,6 +68,13 @@ public class SelfService {
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirement(name = "credentials")
     public void login() {
-        // This is only a placeholder for openApi
+        throw new RuntimeException();
+    }
+
+    @GetMapping("/test")
+    @SecurityRequirement(name = "bearerToken")
+    @ResponseStatus(HttpStatus.OK)
+    public String test() {
+        return "junge";
     }
 }
