@@ -1,5 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.controller;
 
+import at.ac.tuwien.ase.groupphase.backend.dto.PasswordReset;
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
 import at.ac.tuwien.ase.groupphase.backend.event.RequestPasswordResetEvent;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -32,15 +34,18 @@ public class SelfService {
     private final ParticipantRepository participantRepository;
     private final RegistrationMapper registrationMapper;
     private final ApplicationEventPublisher eventPublisher;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     @NotNull
     public SelfService(final UserRepository userRepository, final ParticipantRepository participantRepository,
-            final RegistrationMapper registrationMapper, final ApplicationEventPublisher eventPublisher) {
+            final RegistrationMapper registrationMapper, final ApplicationEventPublisher eventPublisher,
+            final PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.participantRepository = participantRepository;
         this.registrationMapper = registrationMapper;
         this.eventPublisher = eventPublisher;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -101,5 +106,31 @@ public class SelfService {
         this.userRepository.save(user);
         this.eventPublisher.publishEvent(new RequestPasswordResetEvent(email, passwordResetToken));
         logger.info("Generated password reset token for user '{}'", user.getUsername());
+    }
+
+    /**
+     * Reset the password of a user. For the rest process, a valid password reset token must be generated first. This
+     * can be done by using {@link SelfService#requestPasswordReset(String)}. On success, the password reset token will
+     * be invalidated.
+     *
+     * @param passwordResetToken
+     *            the token to identify the underlying user
+     * @param passwordReset
+     *            the container for the new user password in clear-text
+     */
+    @PutMapping("/password/{passwordResetToken}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void resetPassword(@NotNull @PathVariable final UUID passwordResetToken,
+            @NotNull @RequestBody final PasswordReset passwordReset) {
+        logger.trace("resetPassword({})", passwordReset);
+        final var user = this.userRepository.findByPasswordResetToken(passwordResetToken);
+        if (user == null) {
+            logger.warn("No user which currently is registered to the reset token '{}'", passwordResetToken);
+            return;
+        }
+        user.setPasswordResetToken(null);
+        user.setPassword(this.passwordEncoder.encode(passwordReset.password()).getBytes());
+        this.userRepository.save(user);
+        logger.info("Updated password for user '{}'", user.getUsername());
     }
 }
