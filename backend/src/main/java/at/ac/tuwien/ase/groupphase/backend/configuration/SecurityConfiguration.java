@@ -29,7 +29,8 @@ public class SecurityConfiguration {
     }
 
     private static final String[] AUTH_WHITELIST = { "/error", "/api/v1/self-service/registration/participant",
-            "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html" };
+            "/api/v1/self-service/password-token/**", "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**",
+            "/swagger-ui.html" };
 
     @Bean
     public PasswordEncoder passwordEncoder() {

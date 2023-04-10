@@ -21,8 +21,11 @@ public class AccountEventListener {
     private final MessageSource messageSource;
     private final JavaMailSender mailSender;
 
-    @Value("bemeal.frontend.passwordResetConfirmUrl")
-    private final String passwordResetConfirmUrl;
+    @Value("${bemeal.frontend.passwordResetConfirmUrl}")
+    private final String passwordResetConfirmUrl = null;
+
+    @Value("${spring.mail.username}")
+    private final String emailUserName = null;
 
     /**
      * Handle the password reset request. This just sends the confirmation message to the specified email.
@@ -38,6 +41,7 @@ public class AccountEventListener {
                 event.passwordResetToken().toString());
 
         final var email = new SimpleMailMessage();
+        email.setFrom(this.emailUserName);
         email.setTo(event.email());
         email.setSubject(messageSource.getMessage("requestPasswordResetSubject", null, Locale.getDefault()));
         email.setText(messageSource.getMessage("requestPasswordResetText", new Object[] { confirmationUrl },
