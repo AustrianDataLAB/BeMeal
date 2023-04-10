@@ -64,6 +64,8 @@ public class SecurityConfiguration {
         return new TokenManager(this.userDetailsService);
     }
 
+    // fix cors issues and allow "Authorization" header to be exposed.
+    // Tells browsers the header is safe and to process it
     @Configuration
     public class CorsConfig {
 
@@ -75,7 +77,9 @@ public class SecurityConfiguration {
                     registry.addMapping("/**")
                             .allowedOrigins("*")
                             .allowedMethods("GET", "POST", "PUT", "DELETE")
-                            .allowedHeaders("*");
+                            .allowedHeaders("*")
+                            .exposedHeaders("Authorization");
+                    ;
                 }
             };
         }

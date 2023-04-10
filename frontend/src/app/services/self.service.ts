@@ -45,7 +45,7 @@ export class SelfService {
     loginUser(obj: Login): Observable<HttpResponse<any>> {
         const httpOptions = {
             headers: new HttpHeaders({
-                'Content-Type': 'text/plain',
+                'Content-Type': 'application/json',
                 'Authorization': 'Basic ' + btoa(`${obj.username}:${obj.password}`)
             })
         };
@@ -54,6 +54,7 @@ export class SelfService {
                 if (response.ok) {
                     //TODO find out why Authorization header is not there
                     const authHeader = response.headers.get('Authorization');
+                    console.log(response.headers);
                     if (authHeader) {
                         this.setToken(authHeader);
                     }
@@ -62,9 +63,6 @@ export class SelfService {
                 return response;
             }));
     }
-
-
-
 
     /**
      * Check if a valid JWT token is saved in the localStorage
@@ -85,9 +83,10 @@ export class SelfService {
     }
 
 
-    private setToken(authResponse: string) {
-        console.log(authResponse);
-        localStorage.setItem('authToken', authResponse);
+    private setToken(tokenHeader: string) {
+        console.log(tokenHeader);
+        const tokenWithoutBearer = tokenHeader.substring(7);
+        localStorage.setItem('authToken', tokenWithoutBearer);
     }
 
     private getTokenExpirationDate(token: string): Date | null {
