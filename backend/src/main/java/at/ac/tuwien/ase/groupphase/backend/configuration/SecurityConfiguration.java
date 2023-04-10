@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableMethodSecurity
@@ -45,7 +47,7 @@ public class SecurityConfiguration {
         final var authorizationFilter = authorizationFilter(authenticationManager);
         final var authenticationFilter = authenticationFilter(authenticationManager);
 
-        return http.csrf().disable().headers().frameOptions().disable().and().addFilter(authenticationFilter)
+        return http.cors().and().csrf().disable().headers().frameOptions().disable().and().addFilter(authenticationFilter)
                 .addFilter(authorizationFilter).sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll().requestMatchers(toH2Console()).permitAll().anyRequest().authenticated().and().build();
@@ -62,4 +64,26 @@ public class SecurityConfiguration {
     private TokenManager tokenManager() {
         return new TokenManager(this.userDetailsService);
     }
+
+    // fix cors issues and allow "Authorization" header to be exposed.
+    // Tells browsers the header is safe and to process it
+    @Configuration
+    public class CorsConfig {
+
+        @Bean
+        public WebMvcConfigurer corsConfigurer() {
+            return new WebMvcConfigurer() {
+                @Override
+                public void addCorsMappings(CorsRegistry registry) {
+                    registry.addMapping("/**")
+                            .allowedOrigins("*")
+                            .allowedMethods("GET", "POST", "PUT", "DELETE")
+                            .allowedHeaders("*")
+                            .exposedHeaders("Authorization");
+                    ;
+                }
+            };
+        }
+    }
+
 }
