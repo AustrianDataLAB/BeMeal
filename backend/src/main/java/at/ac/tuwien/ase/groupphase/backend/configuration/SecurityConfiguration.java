@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @Configuration
 @EnableMethodSecurity
@@ -29,7 +30,7 @@ public class SecurityConfiguration {
     }
 
     private static final String[] AUTH_WHITELIST = { "/error", "/api/v1/self-service/registration/participant",
-            "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html" };
+            "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -47,7 +48,7 @@ public class SecurityConfiguration {
         return http.csrf().disable().headers().frameOptions().disable().and().addFilter(authenticationFilter)
                 .addFilter(authorizationFilter).sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
-                .requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated().and().build();
+                .requestMatchers(AUTH_WHITELIST).permitAll().requestMatchers(toH2Console()).permitAll().anyRequest().authenticated().and().build();
     }
 
     private JwtAuthorizationFilter authorizationFilter(final AuthenticationManager authenticationManager) {
