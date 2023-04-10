@@ -3,6 +3,7 @@ logging:
   level:
     root: INFO
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+    org.springframework.security: TRACE
 
 spring:
   datasource:
@@ -23,3 +24,6 @@ spring:
     console:
       enabled: true
       path: /h2-console
+bemeal:
+  frontend:
+    passwordResetConfirmUrl: http://localhost:4200/password-reset/{resetToken}

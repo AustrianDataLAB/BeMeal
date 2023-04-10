@@ -2,6 +2,7 @@ package at.ac.tuwien.ase.groupphase.backend.controller;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
+import at.ac.tuwien.ase.groupphase.backend.event.RequestPasswordResetEvent;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
@@ -11,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,14 +31,16 @@ public class SelfService {
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
     private final RegistrationMapper registrationMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
     @NotNull
     public SelfService(final UserRepository userRepository, final ParticipantRepository participantRepository,
-            final RegistrationMapper registrationMapper) {
+            final RegistrationMapper registrationMapper, final ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.participantRepository = participantRepository;
         this.registrationMapper = registrationMapper;
+        this.eventPublisher = eventPublisher;
     }
 
     /**
@@ -77,8 +81,8 @@ public class SelfService {
     /**
      * Generate a password reset token for a {@link PlatformUser} with the provided email. In case, a user with such id
      * exists, this method will persist a random generated {@link UUID} and an email with a reset link will be sent to
-     * the user. After this procedure, it is still possible to login. Only the latest password reset token remains
-     * valid, on multiple invocations, any old tokens will be replaced and therefore invalidated.
+     * the user. After this procedure, it is still possible to login. Only the latest password reset token per user
+     * remains valid, on multiple invocations, any old tokens will be replaced and therefore invalidated.
      *
      * @param email
      *            the email address of the user to reset the password for - may be null
@@ -92,8 +96,10 @@ public class SelfService {
             logger.warn("No user with email '{}' exists, do not send an email", email);
             return;
         }
-        user.setPasswordResetToken(UUID.randomUUID());
+        final var passwordResetToken = UUID.randomUUID();
+        user.setPasswordResetToken(passwordResetToken);
         this.userRepository.save(user);
+        this.eventPublisher.publishEvent(new RequestPasswordResetEvent(email, passwordResetToken));
         logger.info("Generated password reset token for user '{}'", user.getUsername());
     }
 }
