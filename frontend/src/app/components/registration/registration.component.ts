@@ -34,6 +34,9 @@ export class RegistrationComponent {
 
     }
 
+    toLogin() {
+        this.router.navigate(['/login']);
+    }
     registerParticipant() {
         this.submitted = true;
         if (this.registerForm.valid) {

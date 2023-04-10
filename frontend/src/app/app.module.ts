@@ -11,6 +11,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { LoginComponent } from './components/login/login.component';
 import {MatCardModule} from "@angular/material/card";
 import { LeaguesComponent } from './components/leagues/leagues.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { LeaguesComponent } from './components/leagues/leagues.component';
     AppComponent,
     RegistrationComponent,
       LoginComponent,
-      LeaguesComponent
+      LeaguesComponent,
+      HomeComponent
   ],
     imports: [
         BrowserModule,
