@@ -1,1 +1,38 @@
-<p>registration works!</p>
+<div *ngIf="error" class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Authentication problems!</strong> {{ errorMessage }}
+    <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title>Register</mat-card-title>
+        </mat-card-header>
+        <form class="example-form" [formGroup]="registerForm">
+            <mat-card-content>
+                <mat-form-field class="example-full-width">
+                    <input formControlName="username" name="username" matInput placeholder="Username">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <input formControlName="email" name="email" matInput placeholder="Email">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <input type="password" name="password" formControlName="password" matInput placeholder="Password">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <input maxlength="4" minlength="4" name="postalCode" formControlName="postalCode" matInput placeholder="Postal Code">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Select your region</mat-label>
+                    <mat-select name="region" formControlName="region">
+                        <mat-option [value]="region" *ngFor="let region of regionKeys(regions)">{{region}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-content>
+            <button mat-stroked-button color="accent" (click)="registerParticipant()" class="btn-block">Register</button>
+        </form>
+    </mat-card>
+</div>
