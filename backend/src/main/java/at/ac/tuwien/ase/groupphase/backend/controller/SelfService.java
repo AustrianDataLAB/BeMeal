@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.controller;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
+import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
@@ -13,12 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api/v1/self-service")
+import java.util.UUID;
+
 /**
  * Responsible for all request a user might want to perform on its own profile. Examples for that are, registration,
  * login,....
  */
+@RestController
+@RequestMapping("/api/v1/self-service")
 public class SelfService {
 
     private final Logger logger = LoggerFactory.getLogger(SelfService.class);
@@ -69,5 +72,28 @@ public class SelfService {
     @SecurityRequirement(name = "credentials")
     public void login() {
         // This is only a placeholder for openApi
+    }
+
+    /**
+     * Generate a password reset token for a {@link PlatformUser} with the provided email. In case, a user with such id
+     * exists, this method will persist a random generated {@link UUID} and an email with a reset link will be sent to
+     * the user. After this procedure, it is still possible to login. Only the latest password reset token remains
+     * valid, on multiple invocations, any old tokens will be replaced and therefore invalidated.
+     *
+     * @param email
+     *            the email address of the user to reset the password for - may be null
+     */
+    @PutMapping("/password-token/{email}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void requestPasswordReset(@NotNull @PathVariable final String email) {
+        logger.trace("requestPasswordReset({})", email);
+        final var user = this.userRepository.findByEmail(email);
+        if (user == null) {
+            logger.warn("No user with email '{}' exists, do not send an email", email);
+            return;
+        }
+        user.setPasswordResetToken(UUID.randomUUID());
+        this.userRepository.save(user);
+        logger.info("Generated password reset token for user '{}'", user.getUsername());
     }
 }

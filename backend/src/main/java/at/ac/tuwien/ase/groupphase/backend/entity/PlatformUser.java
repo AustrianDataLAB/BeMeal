@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -22,6 +23,9 @@ public class PlatformUser {
     private String username;
     @Column(nullable = false)
     private Boolean isAdmin;
+
+    @Column(unique = true)
+    private UUID passwordResetToken;
 
     @OneToMany
     private List<League> leagues;
