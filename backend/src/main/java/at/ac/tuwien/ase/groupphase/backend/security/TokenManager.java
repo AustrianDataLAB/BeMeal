@@ -16,7 +16,7 @@ import java.util.Date;
 public class TokenManager {
 
     private final UserDetailsService userDetailsService;
-    private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    private static final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     @Autowired
     public TokenManager(final UserDetailsService userDetailsService) {

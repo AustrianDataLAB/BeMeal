@@ -1,0 +1,129 @@
+/* https://coolors.co/5d5956-f0b928-cb700d-b5b2ae-f1ebe4*/
+
+/* CSS HEX */
+/*--davys-gray: #5D5956ff;
+--xanthous: #F0B928ff;
+--ochre: #CB700Dff;
+--silver: #B5B2AEff;
+--isabelline: #F1EBE4ff;
+*/
+
+/* SCSS HEX */
+$davys-gray: #5D5956ff;
+$xanthous: #F0B928ff;
+$ochre: #CB700Dff;
+$silver: #B5B2AEff;
+$isabelline: #F1EBE4ff;
+
+
+/* SCSS Gradient */
+$gradient-top: linear-gradient(0deg, #5D5956ff, #F0B928ff, #CB700Dff, #B5B2AEff, #F1EBE4ff);
+$gradient-right: linear-gradient(90deg, #5D5956ff, #F0B928ff, #CB700Dff, #B5B2AEff, #F1EBE4ff);
+$gradient-bottom: linear-gradient(180deg, #5D5956ff, #F0B928ff, #CB700Dff, #B5B2AEff, #F1EBE4ff);
+$gradient-left: linear-gradient(270deg, #5D5956ff, #F0B928ff, #CB700Dff, #B5B2AEff, #F1EBE4ff);
+$gradient-top-right: linear-gradient(45deg, #5D5956ff, #F0B928ff, #CB700Dff, #B5B2AEff, #F1EBE4ff);
+$gradient-bottom-right: linear-gradient(135deg, #5D5956ff, #F0B928ff, #CB700Dff, #B5B2AEff, #F1EBE4ff);
+$gradient-top-left: linear-gradient(225deg, #5D5956ff, #F0B928ff, #CB700Dff, #B5B2AEff, #F1EBE4ff);
+$gradient-bottom-left: linear-gradient(315deg, #5D5956ff, #F0B928ff, #CB700Dff, #B5B2AEff, #F1EBE4ff);
+$gradient-radial: radial-gradient(#5D5956ff, #F0B928ff, #CB700Dff, #B5B2AEff, #F1EBE4ff);
+
+
+/* theme */
+
+@use '@angular/material' as mat;
+@include mat.core();
+$bright-navy-blue-palette: (
+    50: #fdfce6,
+    100: #fbf7c3,
+    200: #f9f29b,
+    300: #f6ec73,
+    400: #f4e754,
+    500: #f1e235,
+    600: #f2d231,
+    700: #f0bb28,
+    800: #eea31f,
+    900: #ea7b0d,
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+        A100: rgba(black, 0.87),
+        A200: rgba(black, 0.87),
+        A400: white,
+        A700: white,
+    )
+);
+$gainsboro-palette: (
+    50: #f9f9fa,
+    100: #f3f3f4,
+    200: #ebebec,
+    300: #dcdcdd,
+    400: #b9b9ba,
+    500: #99999a,
+    600: #707071,
+    700: #5d5d5e,
+    800: #3e3e3f,
+    900: #1d1d1e,
+    A100: #f5f5f5,
+    A200: #eaeaeb,
+    A400: #d6d6d7,
+    A700: #838386,
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+        A100: rgba(black, 0.87),
+        A200: rgba(black, 0.87),
+        A400: rgba(black, 0.87),
+        A700: white,
+    )
+);
+$crimson-palette: (
+    50: #ffebef,
+    100: #ffcdc5,
+    200: #f0999f,
+    300: #e77179,
+    400: #f24e58,
+    500: #f83a40,
+    600: #e9313e,
+    700: #d72638,
+    800: #ca1e30,
+    900: #bb0d24,
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: white,
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+    )
+);
+$bluesky-primary: mat.define-palette($bright-navy-blue-palette, 700, 300, 900);
+$bluesky-accent: mat.define-palette($gainsboro-palette, 300, 100, 500);
+$bluesky-warn: mat.define-palette($crimson-palette, 700);
+$bluesky-theme: mat.define-light-theme((
+    color: (
+        primary: $bluesky-primary,
+        accent: $bluesky-accent,
+        warn: $bluesky-warn,
+    )
+));
+@include mat.all-component-themes($bluesky-theme);
