@@ -32,4 +32,11 @@ public class LeagueService {
         league.setParticipants(participantList);
         this.leagueRepository.save(league);
     }
+
+    public List<League> getLeagues(String username) {
+        Participant user = (Participant) this.userRepository.findByUsername(username);
+        List<Participant> participantList = new ArrayList<>();
+        participantList.add(user);
+        return this.leagueRepository.findByParticipants(participantList);
+    }
 }

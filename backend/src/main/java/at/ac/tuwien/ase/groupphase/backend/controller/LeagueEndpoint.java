@@ -19,6 +19,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/league")
 public class LeagueEndpoint {
@@ -41,5 +43,14 @@ public class LeagueEndpoint {
         String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         League league = this.leagueMapper.leagueDtoToLeague(leagueDto);
         this.leagueService.createLeague(user, league);
+    }
+
+    @GetMapping("/leagues")
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "bearerToken")
+    public List<LeagueDto> getLeagues() {
+        String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<League> leagues = this.leagueService.getLeagues(user);
+        return this.leagueMapper.leagueListToLeagueDtoList(leagues);
     }
 }

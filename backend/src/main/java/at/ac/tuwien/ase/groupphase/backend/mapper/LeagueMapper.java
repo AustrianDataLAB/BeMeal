@@ -5,6 +5,9 @@ import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class LeagueMapper {
 
@@ -15,5 +18,17 @@ public class LeagueMapper {
         league.setGameMode(dto.gameMode());
         return league;
 
+    }
+
+    public LeagueDto leagueToLeagueDto(@NotNull final League league) {
+        return new LeagueDto(league.getGameMode(), league.getChallengeDuration(), league.getRegion());
+    }
+
+    public List<LeagueDto> leagueListToLeagueDtoList(@NotNull final List<League> leagueList) {
+        List<LeagueDto> ret = new ArrayList<>();
+        for (League league : leagueList) {
+            ret.add(leagueToLeagueDto(league));
+        }
+        return ret;
     }
 }
