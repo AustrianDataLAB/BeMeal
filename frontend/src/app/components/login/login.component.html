@@ -21,7 +21,7 @@
                     <input type="password" name="password" formControlName="password" matInput placeholder="Password">
                 </mat-form-field>
             <button (click)="loginUser()" mat-raised-button color="primary" class="btn-block">Log in</button>
-            <button (click)="resetPassword()" mat-button color="primary">Forgot password?</button>
+            <button routerLink="/password-reset" mat-button color="primary">Forgot password?</button>
             </mat-card-content>
 
         </form>

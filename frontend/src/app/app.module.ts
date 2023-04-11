@@ -12,6 +12,7 @@ import { LoginComponent } from './components/login/login.component';
 import {MatCardModule} from "@angular/material/card";
 import { LeaguesComponent } from './components/leagues/leagues.component';
 import { HomeComponent } from './components/home/home.component';
+import {PasswordResetComponent} from './components/login/password-reset/password-reset.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { HomeComponent } from './components/home/home.component';
     RegistrationComponent,
       LoginComponent,
       LeaguesComponent,
-      HomeComponent
+      HomeComponent,
+      PasswordResetComponent
   ],
     imports: [
         BrowserModule,
