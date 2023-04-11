@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -37,6 +38,6 @@ public class LeagueService {
         Participant user = (Participant) this.userRepository.findByUsername(username);
         List<Participant> participantList = new ArrayList<>();
         participantList.add(user);
-        return this.leagueRepository.findByParticipants(participantList);
+        return this.leagueRepository.findLeaguesByParticipantsIn(new HashSet<>(participantList));
     }
 }
