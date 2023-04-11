@@ -17,6 +17,10 @@ export class AuthInterceptor implements HttpInterceptor {
         if (req.url === authUri) {
             return next.handle(req);
         }
+        if (req.url.includes('login')) {
+            return next.handle(req);
+        }
+
         let authReq;
         if (req.url.includes('registration')) {
             authReq = req.clone({

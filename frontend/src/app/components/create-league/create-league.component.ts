@@ -1,4 +1,13 @@
 import { Component } from '@angular/core';
+import {Router} from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {SelfService} from "../../services/self.service";
+import {Region} from "../../shared/region";
+import {Registration} from "../../dtos/registration";
+import {catchError, tap} from "rxjs/operators";
+import {of} from "rxjs";
+import {League} from "../../dtos/league";
+import {LeagueService} from "../../services/league.service";
 
 @Component({
   selector: 'app-create-league',
@@ -6,5 +15,55 @@ import { Component } from '@angular/core';
   styleUrls: ['./create-league.component.scss']
 })
 export class CreateLeagueComponent {
+
+    registerForm: FormGroup;
+    regions = Region;
+    regionKeys = Object.keys;
+    submitted = true;
+    error = false;
+    errorMessage = '';
+
+    constructor(private router: Router, private formBuilder: FormBuilder, private leagueService: LeagueService, public fb: FormBuilder) {
+        this.registerForm = this.formBuilder.group({
+            gamemode: ['', [Validators.required]],
+            challengeDuration: ['', [Validators.required]],
+            region: ['', [Validators.required]]
+        });
+    }
+
+    createLeague() {
+        this.submitted = true;
+        if (this.registerForm.valid) {
+            const regionEnumIndex = Object.keys(Region).indexOf(this.registerForm.controls['region'].value);
+            const regionValue = Object.values(Region)[regionEnumIndex];
+            const leagueObj: League = new League(
+                this.registerForm.controls['gamemode'].value,
+                this.registerForm.controls['challengeDuration'].value,
+                regionValue,
+
+            );
+            this.leagueService.createLeague(leagueObj).pipe(
+                tap(response => {
+                    console.log(response);
+                    console.log('Successfully create league');
+                    this.router.navigate(['/login']);
+                }),
+                catchError(error => {
+                    console.error('Error while creating a leauge:', error);
+                    this.errorMessage = "Could not create the league";
+                    this.error = true;
+                    // Handle the error here
+                    return of(null);
+                })
+            ).subscribe();
+        } else {
+            this.error = true;
+            this.errorMessage = 'Invalid input';
+            console.log('Invalid input');
+        }
+    }
+    vanishError() {
+        this.error = false;
+    }
 
 }
