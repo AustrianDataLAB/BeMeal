@@ -47,7 +47,7 @@ export class LoginComponent {
                     this.router.navigate(['/leagues']);
                 }),
                 catchError(error => {
-                    console.error('Error logging in:', error);
+                    console.error(error);
                     this.errorMessage = "Wrong credentials";
                     this.error = true;
                     // Handle the error here

@@ -56,7 +56,7 @@ export class RegistrationComponent {
                     this.router.navigate(['/login']);
                 }),
                 catchError(error => {
-                    console.error('Error while registration:', error);
+                    console.error(error);
                     this.errorMessage = "Could not register user";
                     this.error = true;
                     // Handle the error here
