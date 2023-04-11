@@ -26,4 +26,8 @@ export class LeagueService {
                 return response;
             }));
     }
+
+    fetchLeagues(): Observable<League[]> {
+        return this.httpClient.get<League[]>(this.baseUri + '/leagues');
+    }
 }
