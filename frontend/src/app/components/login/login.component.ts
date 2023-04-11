@@ -63,6 +63,9 @@ export class LoginComponent {
 
     }
 
+    resetPassword() {
+        // todo
+    }
 
     vanishError() {
         this.error = false;

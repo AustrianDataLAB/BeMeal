@@ -1,10 +1,11 @@
 import {Region} from "../shared/region";
+import {GameMode} from "../shared/game-mode";
 
 export class League {
 
     constructor(
-        public gamemode: string,
-        public challengeDuration: string,
+        public gameMode: GameMode,
+        public challengeDuration: number,
         public region: Region
     ) {
 

@@ -9,7 +9,7 @@ import {map, Observable} from "rxjs";
 })
 export class LeagueService {
 
-    private authBaseUri: string = this.globals.backendUri + '/league';
+    private baseUri: string = this.globals.backendUri + '/league';
 
     constructor(private httpClient: HttpClient, private globals: Globals) {}
 
@@ -20,13 +20,10 @@ export class LeagueService {
                 'Access-Control-Allow-Origin': '*'
             })
         };
-        return this.httpClient.post<any>(this.authBaseUri + '/registration/participant', obj, httpOptions)
+        console.log(obj);
+        return this.httpClient.post<any>(this.baseUri + '/create-league', obj, httpOptions)
             .pipe(map(response => {
-                // todo: remove pipe if unnecessary
-                //console.log(response);
                 return response;
             }));
-
-        return this.httpClient.get<any>(this.authBaseUri + '/test');
     }
 }

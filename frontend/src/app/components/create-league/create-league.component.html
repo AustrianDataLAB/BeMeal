@@ -1,5 +1,5 @@
 <div *ngIf="error" class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Authentication problems!</strong> {{ errorMessage }}
+    <strong>Error</strong> {{ errorMessage }}
     <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -13,10 +13,14 @@
         <form class="example-form" [formGroup]="registerForm">
             <mat-card-content>
                 <mat-form-field class="example-full-width">
-                    <input formControlName="gamemode" name="gamemode" matInput placeholder="Gamemode">
+                    <mat-label>Select your Gamemode</mat-label>
+                    <mat-select name="gamemode" formControlName="gamemode">
+                        <mat-option [value]="mode" *ngFor="let mode of gameModeKeys(gamemodes)">{{mode}}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
                 <mat-form-field class="example-full-width">
-                    <input formControlName="challengeDuration" name="challengeDuration" matInput placeholder="Duration of challenge">
+                    <input formControlName="challengeDuration" name="challengeDuration" matInput placeholder=0>
                 </mat-form-field>
                 <mat-form-field class="example-full-width">
                     <mat-label>Select your region</mat-label>

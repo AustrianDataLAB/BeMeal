@@ -14,6 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 import {MatCardModule} from "@angular/material/card";
 import { LeaguesComponent } from './components/leagues/leagues.component';
 import { CreateLeagueComponent } from './components/create-league/create-league.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 @NgModule({
@@ -22,7 +23,9 @@ import { CreateLeagueComponent } from './components/create-league/create-league.
     RegistrationComponent,
       LoginComponent,
       LeaguesComponent,
-      CreateLeagueComponent
+      CreateLeagueComponent,
+      LeaguesComponent,
+      HomeComponent
   ],
     imports: [
         BrowserModule,

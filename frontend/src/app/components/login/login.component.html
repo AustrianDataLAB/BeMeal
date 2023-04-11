@@ -1,25 +1,30 @@
-<div *ngIf="error" class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Authentication problems!</strong> {{ errorMessage }}
-    <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
 
-<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
-    <mat-card class="box">
+<div class="container mx-auto" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap>
+
+    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start"  >
+        <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-05.svg" alt="A person enjoying cooking" fxFlexFill/>
+    </div>
+
+    <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+    <mat-card >
         <mat-card-header>
-            <mat-card-title>Log in</mat-card-title>
+            <mat-card-title class="mat-h1">Welcome back!</mat-card-title>
+            <mat-card-subtitle>Login back to your Account</mat-card-subtitle>
+
         </mat-card-header>
-        <form class="example-form" [formGroup]="loginForm">
+        <form [formGroup]="loginForm">
             <mat-card-content>
-                <mat-form-field class="example-full-width">
+                <mat-form-field>
                     <input name="username" formControlName="username" matInput placeholder="Username">
                 </mat-form-field>
-                <mat-form-field class="example-full-width">
+                <mat-form-field >
                     <input type="password" name="password" formControlName="password" matInput placeholder="Password">
                 </mat-form-field>
+            <button (click)="loginUser()" mat-raised-button color="primary" class="btn-block">Log in</button>
+            <button (click)="resetPassword()" mat-button color="primary">Forgot password?</button>
             </mat-card-content>
-            <button (click)="loginUser()" mat-stroked-button color="accent" class="btn-block">Log in</button>
+
         </form>
     </mat-card>
+    </div>
 </div>
