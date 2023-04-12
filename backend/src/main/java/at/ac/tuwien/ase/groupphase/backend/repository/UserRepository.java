@@ -13,5 +13,6 @@ public interface UserRepository extends CrudRepository<PlatformUser, Long> {
 
     PlatformUser findByUsername(String username);
 
+    @Query("select count(*) > 0 from PlatformUser p inner join p.ownerOf l where p.username = :username and l.id = :leagueId")
     boolean isCreatorOfLeague(String username, Long leagueId);
 }
