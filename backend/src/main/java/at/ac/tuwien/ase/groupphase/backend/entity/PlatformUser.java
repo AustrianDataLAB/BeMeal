@@ -24,5 +24,5 @@ public class PlatformUser {
     private Boolean isAdmin;
 
     @OneToMany
-    private List<League> leagues;
+    private List<League> ownerOf;
 }
