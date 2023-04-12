@@ -1,9 +1,19 @@
 package at.ac.tuwien.ase.groupphase.backend.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+
 import java.util.UUID;
 
-// TODO: map this with the graph database
+@Node("Ingredient")
+@Data
+@EqualsAndHashCode
 public class Ingredient {
-    private UUID id;
-    private String name;
+    @Id
+    @GeneratedValue
+    private final UUID id;
+    private final String name;
 }

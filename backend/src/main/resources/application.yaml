@@ -24,6 +24,12 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: password
 bemeal:
   frontend:
     passwordResetConfirmUrl: http://localhost:4200/password-reset/{resetToken}
+
