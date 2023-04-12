@@ -15,7 +15,7 @@ public class Participant extends PlatformUser {
     @Column(nullable = false)
     private String postalCode;
     @Column(nullable = false)
-    private Integer wins;
+    private Integer wins = 0;
     @Column(nullable = false)
     private Region region;
     @Column(nullable = false)

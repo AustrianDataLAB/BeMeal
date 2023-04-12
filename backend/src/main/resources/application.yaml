@@ -3,6 +3,7 @@ logging:
   level:
     root: INFO
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+    org.springframework.security: TRACE
 
 spring:
   datasource:
@@ -28,3 +29,4 @@ spring:
     authentication:
       username: neo4j
       password: password
+

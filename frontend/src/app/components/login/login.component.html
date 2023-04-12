@@ -1,0 +1,30 @@
+
+<div class="container mx-auto" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap>
+
+    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start"  >
+        <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-05.svg" alt="A person enjoying cooking" fxFlexFill/>
+    </div>
+
+    <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+    <mat-card >
+        <mat-card-header>
+            <mat-card-title class="mat-h1">Welcome back!</mat-card-title>
+            <mat-card-subtitle>Login back to your Account</mat-card-subtitle>
+
+        </mat-card-header>
+        <form [formGroup]="loginForm">
+            <mat-card-content>
+                <mat-form-field>
+                    <input name="username" formControlName="username" matInput placeholder="Username">
+                </mat-form-field>
+                <mat-form-field >
+                    <input type="password" name="password" formControlName="password" matInput placeholder="Password">
+                </mat-form-field>
+            <button (click)="loginUser()" mat-raised-button color="primary" class="btn-block">Log in</button>
+            <button (click)="resetPassword()" mat-button color="primary">Forgot password?</button>
+            </mat-card-content>
+
+        </form>
+    </mat-card>
+    </div>
+</div>

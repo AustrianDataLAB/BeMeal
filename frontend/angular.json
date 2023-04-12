@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "bereal": {
+    "bemeal": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/bereal",
+            "outputPath": "dist/bemeal",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -31,7 +31,9 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/assets/styles/_colors.scss",
+              "src/assets/styles/_typography.scss"
             ],
             "scripts": []
           },
@@ -66,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "bereal:build:production"
+              "browserTarget": "bemeal:build:production"
             },
             "development": {
-              "browserTarget": "bereal:build:development"
+              "browserTarget": "bemeal:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "bereal:build"
+            "browserTarget": "bemeal:build"
           }
         },
         "test": {

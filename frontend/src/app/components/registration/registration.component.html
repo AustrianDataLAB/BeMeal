@@ -1,1 +1,46 @@
-<p>registration works!</p>
+
+<div class="container mx-auto" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap>
+
+    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start"  >
+        <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-05.svg" alt="A person enjoying cooking" fxFlexFill/>
+    </div>
+   <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+        <mat-card >
+            <mat-card-header>
+                <mat-card-title class="mat-h1">Create Account</mat-card-title>
+                <mat-card-subtitle>Enter your details below.
+                </mat-card-subtitle>
+
+            </mat-card-header>
+            <form [formGroup]="registerForm" >
+                <mat-card-content>
+                    <mat-form-field>
+                        <input formControlName="username" name="username" matInput placeholder="Username">
+                    </mat-form-field>
+                    <mat-form-field >
+                        <input formControlName="email" name="email" matInput placeholder="Email">
+                    </mat-form-field>
+                    <mat-form-field >
+                        <input type="password" name="password" formControlName="password" matInput placeholder="Password">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input maxlength="4" minlength="4" name="postalCode" formControlName="postalCode" matInput placeholder="Postal Code">
+                    </mat-form-field>
+                    <mat-form-field >
+                        <mat-label>Select your region</mat-label>
+                        <mat-select name="region" formControlName="region">
+                            <mat-option [value]="region" *ngFor="let region of regionKeys(regions)">{{region}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <button mat-raised-button color="primary" (click)="registerParticipant()" class="btn-block">Register</button>
+                    <button (click)="toLogin()" mat-button color="primary">Already registered?</button>
+
+                </mat-card-content>
+
+            </form>
+        </mat-card>
+    </div>
+</div>
+

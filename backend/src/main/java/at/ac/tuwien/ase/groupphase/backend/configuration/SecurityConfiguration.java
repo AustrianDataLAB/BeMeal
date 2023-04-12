@@ -1,0 +1,87 @@
+package at.ac.tuwien.ase.groupphase.backend.configuration;
+
+import at.ac.tuwien.ase.groupphase.backend.security.BeMealUserDetailsService;
+import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthenticationFilter;
+import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthorizationFilter;
+import at.ac.tuwien.ase.groupphase.backend.security.TokenManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+@EnableMethodSecurity
+public class SecurityConfiguration {
+
+    private final UserDetailsService userDetailsService;
+
+    @Autowired
+    public SecurityConfiguration(final BeMealUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    private static final String[] AUTH_WHITELIST = { "/error", "/api/v1/self-service/registration/participant",
+            "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html" };
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(final HttpSecurity http,
+            final AuthenticationConfiguration authenticationConfiguration) throws Exception {
+
+        final var authenticationManager = authenticationConfiguration.getAuthenticationManager();
+        final var authorizationFilter = authorizationFilter(authenticationManager);
+        final var authenticationFilter = authenticationFilter(authenticationManager);
+
+        return http.cors().and().csrf().disable().headers().frameOptions().disable().and()
+                .addFilter(authenticationFilter).addFilter(authorizationFilter).sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
+                .requestMatchers(AUTH_WHITELIST).permitAll().requestMatchers(toH2Console()).permitAll().anyRequest()
+                .authenticated().and().build();
+    }
+
+    private JwtAuthorizationFilter authorizationFilter(final AuthenticationManager authenticationManager) {
+        return new JwtAuthorizationFilter(authenticationManager, tokenManager());
+    }
+
+    public JwtAuthenticationFilter authenticationFilter(final AuthenticationManager authenticationManager) {
+        return new JwtAuthenticationFilter(authenticationManager, tokenManager());
+    }
+
+    private TokenManager tokenManager() {
+        return new TokenManager(this.userDetailsService);
+    }
+
+    // fix cors issues and allow "Authorization" header to be exposed.
+    // Tells browsers the header is safe and to process it
+    @Configuration
+    public class CorsConfig {
+
+        @Bean
+        public WebMvcConfigurer corsConfigurer() {
+            return new WebMvcConfigurer() {
+                @Override
+                public void addCorsMappings(CorsRegistry registry) {
+                    registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "PUT", "DELETE")
+                            .allowedHeaders("*").exposedHeaders("Authorization");
+                    ;
+                }
+            };
+        }
+    }
+
+}
