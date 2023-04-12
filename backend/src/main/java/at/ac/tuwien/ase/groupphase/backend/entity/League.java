@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -13,6 +14,15 @@ public class League {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * Used for identifying the league with an id which cannot be guessed by iterating through numbers. Useful for
+     * things such as invitation links.
+     */
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false)
+    private UUID hiddenIdentifier;
+
     @Column(nullable = false)
     private GameMode gameMode;
     @Column

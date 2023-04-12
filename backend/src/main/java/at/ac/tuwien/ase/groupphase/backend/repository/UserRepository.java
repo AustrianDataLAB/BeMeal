@@ -12,4 +12,6 @@ public interface UserRepository extends CrudRepository<PlatformUser, Long> {
     boolean exists(String email, String username);
 
     PlatformUser findByUsername(String username);
+
+    boolean isCreatorOfLeague(String username, Long leagueId);
 }
