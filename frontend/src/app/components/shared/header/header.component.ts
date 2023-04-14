@@ -16,4 +16,8 @@ export class HeaderComponent {
         this.selfService.logoutUser();
         this.router.navigate(['/']);
     }
+
+    loggedin(): boolean{
+        return this.selfService.isLoggedIn();
+    }
 }
