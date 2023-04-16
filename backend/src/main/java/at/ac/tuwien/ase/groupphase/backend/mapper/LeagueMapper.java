@@ -16,12 +16,13 @@ public class LeagueMapper {
         league.setChallengeDuration(dto.challengeDuration());
         league.setRegion(dto.region());
         league.setGameMode(dto.gameMode());
+        league.setName(dto.name());
         return league;
 
     }
 
     public LeagueDto leagueToLeagueDto(@NotNull final League league) {
-        return new LeagueDto(league.getGameMode(), league.getChallengeDuration(), league.getRegion());
+        return new LeagueDto(league.getName(), league.getGameMode(), league.getChallengeDuration(), league.getRegion());
     }
 
     public List<LeagueDto> leagueListToLeagueDtoList(@NotNull final List<League> leagueList) {
