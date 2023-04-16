@@ -9,9 +9,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-
 @Repository
 public interface LeagueRepository extends CrudRepository<League, Long> {
-//    List<League> findByParticipants(List<Participant> participants);
+    // List<League> findByParticipants(List<Participant> participants);
     List<League> findLeaguesByParticipantsIn(Set<Participant> participants);
 }
