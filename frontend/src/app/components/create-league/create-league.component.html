@@ -12,6 +12,9 @@
         </mat-card-header>
         <form class="example-form" [formGroup]="registerForm">
             <mat-card-content>
+                <mat-form-field>
+                    <input formControlName="name" name="name" matInput placeholder="name">
+                </mat-form-field>
                 <mat-form-field class="example-full-width">
                     <mat-label>Select your Gamemode</mat-label>
                     <mat-select name="gamemode" formControlName="gamemode">

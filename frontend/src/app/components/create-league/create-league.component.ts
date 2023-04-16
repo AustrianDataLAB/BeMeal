@@ -29,6 +29,7 @@ export class CreateLeagueComponent {
 
     constructor(private router: Router, private formBuilder: FormBuilder, private leagueService: LeagueService, public fb: FormBuilder) {
         this.registerForm = this.formBuilder.group({
+            name: ['', [Validators.required]],
             gamemode: ['', [Validators.required]],
             challengeDuration: [0, [Validators.required]],
             region: ['', [Validators.required]]
@@ -43,6 +44,7 @@ export class CreateLeagueComponent {
             const gameModeEnumIndex = Object.keys(GameMode).indexOf(this.registerForm.controls['gamemode'].value);
             const gameModeValue = Object.values(GameMode)[gameModeEnumIndex];
             const leagueObj: League = new League(
+                this.registerForm.controls['name'].value,
                 gameModeValue,
                 parseInt(this.registerForm.controls['challengeDuration'].value), // TODO hier checken auch ob es wirklich eine zahl ist
                 regionValue,
