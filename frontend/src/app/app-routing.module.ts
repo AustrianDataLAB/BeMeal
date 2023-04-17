@@ -6,6 +6,7 @@ import {HomeComponent} from './components/home/home.component'
 import {LeaguesComponent} from "./components/leagues/leagues.component";
 import {AuthGuard} from "./guards/auth.guard";
 import {LeagueInvitationComponent} from "./components/league-invitation/league-invitation.component";
+import {CreateLeagueComponent} from "./components/create-league/create-league.component";
 
 
 const routes: Routes = [
@@ -13,7 +14,8 @@ const routes: Routes = [
     {path: 'register', component: RegistrationComponent},
     {path: 'login', component: LoginComponent},
     {path: 'leagues',  canActivate: [AuthGuard], component: LeaguesComponent},
-    {path: 'league/join/:secret',  canActivate: [AuthGuard], component: LeagueInvitationComponent}
+    {path: 'league/join/:secret',  canActivate: [AuthGuard], component: LeagueInvitationComponent},
+    {path: 'create-league',  canActivate: [AuthGuard], component: CreateLeagueComponent}
 ];
 
 
