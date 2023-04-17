@@ -4,6 +4,7 @@ import {GameMode} from "../shared/game-mode";
 export class League {
 
     constructor(
+        public id: number | null,
         public name: string,
         public gameMode: GameMode,
         public challengeDuration: number,

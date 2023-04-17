@@ -22,7 +22,8 @@ public class LeagueMapper {
     }
 
     public LeagueDto leagueToLeagueDto(@NotNull final League league) {
-        return new LeagueDto(league.getName(), league.getGameMode(), league.getChallengeDuration(), league.getRegion());
+        return new LeagueDto(league.getId(), league.getName(), league.getGameMode(), league.getChallengeDuration(),
+                league.getRegion());
     }
 
     public List<LeagueDto> leagueListToLeagueDtoList(@NotNull final List<League> leagueList) {
