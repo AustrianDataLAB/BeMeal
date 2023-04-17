@@ -1,10 +1,12 @@
 package at.ac.tuwien.ase.groupphase.backend.controller;
 
+import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
+import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -27,13 +29,16 @@ public class SelfService {
     private final ParticipantRepository participantRepository;
     private final RegistrationMapper registrationMapper;
 
+    private final ParticipantService participantService;
+
     @Autowired
     @NotNull
     public SelfService(final UserRepository userRepository, final ParticipantRepository participantRepository,
-            final RegistrationMapper registrationMapper) {
+            ParticipantService participantService, final RegistrationMapper registrationMapper) {
         this.userRepository = userRepository;
         this.participantRepository = participantRepository;
         this.registrationMapper = registrationMapper;
+        this.participantService = participantService;
     }
 
     /**
@@ -76,5 +81,17 @@ public class SelfService {
     @ResponseStatus(HttpStatus.OK)
     public String test() {
         return "junge";
+    } // TODO remove ?
+
+    /**
+     * Retrieves the profile of the authenticated participant.
+     *
+     * @return the ParticipantDto of the authenticated participant.
+     */
+    @GetMapping("/profile")
+    @SecurityRequirement(name = "bearerToken")
+    @ResponseStatus(HttpStatus.OK)
+    public ParticipantDto viewProfile() {
+        return this.participantService.getParticipantDto();
     }
 }
