@@ -25,6 +25,6 @@ public class Participant extends PlatformUser {
     private List<Submission> submissions;
     @ManyToMany(mappedBy = "upVotes")
     private List<Submission> votes;
-    @ManyToMany(mappedBy = "participants")
+    @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
     private List<League> leagues;
 }

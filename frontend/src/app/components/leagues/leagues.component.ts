@@ -23,6 +23,9 @@ export class LeaguesComponent {
         this.fetchLeagues();
     }
 
+    createLeague() {
+        this.router.navigate(['/create-league']);
+    }
     fetchLeagues() {
         this.leagueService.fetchLeagues().pipe(
             tap(response => {

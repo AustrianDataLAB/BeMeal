@@ -35,6 +35,6 @@ public class League {
 
     @OneToMany
     private List<Challenge> challenges;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Participant> participants;
 }

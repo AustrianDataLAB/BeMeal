@@ -14,7 +14,7 @@ const routes: Routes = [
     {path: 'register', component: RegistrationComponent},
     {path: 'login', component: LoginComponent},
     {path: 'leagues',  canActivate: [AuthGuard], component: LeaguesComponent},
-    {path: 'league/join/:secret',  canActivate: [AuthGuard], component: LeagueInvitationComponent},
+    {path: 'league/join/:hiddenIdentifier',  canActivate: [AuthGuard], component: LeagueInvitationComponent},
     {path: 'create-league',  canActivate: [AuthGuard], component: CreateLeagueComponent}
 ];
 

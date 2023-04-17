@@ -7,8 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Repository
 public interface LeagueRepository extends CrudRepository<League, Long> {
     List<League> findLeaguesByParticipantsIn(Set<Participant> participants);
+
+    League findLeagueByHiddenIdentifier(UUID hiddenIdentifier);
 }
