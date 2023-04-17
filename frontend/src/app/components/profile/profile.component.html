@@ -1,0 +1,21 @@
+<div class="container mx-auto" fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap>
+    <div fxFlexFill fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+        <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-04.svg"
+             alt="A person decorating a cake" fxFlexFill/>
+    </div>
+
+    <div fxFlexFill fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+        <mat-card>
+            <mat-card-title>{{profile.username}}</mat-card-title>
+            <mat-card-subtitle>{{profile.email}}</mat-card-subtitle>
+            <mat-card-content>
+                <p>{{profile.postalCode}} {{profile.region}}</p>
+                <p>
+                    <a><mat-icon>emoji_events</mat-icon></a>
+                    {{profile.wins}} wins
+                </p>
+            </mat-card-content>
+            <mat-card-footer>Registered {{profile.registered}}</mat-card-footer>
+        </mat-card>
+    </div>
+</div>

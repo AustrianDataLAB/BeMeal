@@ -12,6 +12,8 @@ import { LoginComponent } from './components/login/login.component';
 import {MatCardModule} from "@angular/material/card";
 import { LeaguesComponent } from './components/leagues/leagues.component';
 import { HomeComponent } from './components/home/home.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import {httpInterceptorProviders} from './interceptors';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { HomeComponent } from './components/home/home.component';
     RegistrationComponent,
       LoginComponent,
       LeaguesComponent,
-      HomeComponent
+      HomeComponent,
+      ProfileComponent
   ],
     imports: [
         BrowserModule,
@@ -32,7 +35,7 @@ import { HomeComponent } from './components/home/home.component';
         FlexLayoutModule,
         MatCardModule
     ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
