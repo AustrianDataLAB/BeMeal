@@ -13,3 +13,7 @@ export class League {
 
     }
 }
+
+export interface LeagueSecrets {
+    hiddenIdentifier: string
+}
