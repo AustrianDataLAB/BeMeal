@@ -25,10 +25,21 @@ export class LeagueInvitationComponent implements OnInit{
     }
 
     ngOnInit() {
-        this.username = "user123_todo";//todo use profile service when finished
+        this.getUsername();
         this.getLeagueName();
     }
 
+    /**
+     * Displays the username in the headline
+     */
+    getUsername() {
+        this.username = "";
+        this.selfService.getProfile().pipe(
+            tap(response => {
+                this.username = response.username;
+            })).subscribe();
+
+    }
     joinLeague() {
         const obj: JoinLeague = new JoinLeague(
             this.league.id,
@@ -65,6 +76,7 @@ export class LeagueInvitationComponent implements OnInit{
                 }
                 this.league = response;
                 this.leagueValid = true;
+                // todo check if user is already part of league
                 console.log(this.league);
                 console.log('Successfully fetched league');
             }),
