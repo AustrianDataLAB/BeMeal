@@ -63,10 +63,3 @@ INSERT INTO League_Challenges (league_id, challenges_id) VALUES (1, 1);
 /*      Create Submission      */
 -- ToDo: Beware of placeholder UUID
 INSERT INTO Submission (id, date, picture, challenge_id, participant_participant_id) VALUES (1, DATEADD(day, 2, CURRENT_TIMESTAMP), '9908fe2f-3b78-4c0c-a8e0-34abff36e95a', 1, 7);
-
-/*      Create Upvotes      */
-INSERT INTO Submission_up_votes (votes_id, up_votes_participant_id) VALUES (1, 8);
---INSERT INTO Submission_up_votes (votes_id, up_votes_participant_id) VALUES (1, 25);
---INSERT INTO Submission_up_votes (votes_id, up_votes_participant_id) VALUES (1, 34);
-
--- ToDo: PlatformUser-Leagues vs. League-Participants
