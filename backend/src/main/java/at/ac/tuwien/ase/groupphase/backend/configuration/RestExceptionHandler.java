@@ -1,15 +1,14 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ErrorData;
+import at.ac.tuwien.ase.groupphase.backend.exception.NotCreatorOfException;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -28,6 +27,13 @@ public class RestExceptionHandler {
             final UserAlreadyExistsException userAlreadyExistsException) {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(userAlreadyExistsException.getMessage()));
+    }
+
+    @ExceptionHandler(NotCreatorOfException.class)
+    @ApiResponse(responseCode = "403", description = "When a user wants to operate on a league which requires ownership which they are not")
+    public ResponseEntity<ErrorData> handleNotCreatorOfException(final NotCreatorOfException notCreatorOfException) {
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(notCreatorOfException.getMessage()));
     }
 
 }

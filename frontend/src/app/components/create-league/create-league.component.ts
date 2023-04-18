@@ -43,7 +43,7 @@ export class CreateLeagueComponent {
             const regionValue = Object.values(Region)[regionEnumIndex];
             const gameModeEnumIndex = Object.keys(GameMode).indexOf(this.registerForm.controls['gamemode'].value);
             const gameModeValue = Object.values(GameMode)[gameModeEnumIndex];
-            const leagueObj: League = new League(
+            const leagueObj: League = new League(null,
                 this.registerForm.controls['name'].value,
                 gameModeValue,
                 parseInt(this.registerForm.controls['challengeDuration'].value), // TODO hier checken auch ob es wirklich eine zahl ist

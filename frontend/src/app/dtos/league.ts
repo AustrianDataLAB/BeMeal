@@ -4,6 +4,7 @@ import {GameMode} from "../shared/game-mode";
 export class League {
 
     constructor(
+        public id: number | null,
         public name: string,
         public gameMode: GameMode,
         public challengeDuration: number,
@@ -11,4 +12,8 @@ export class League {
     ) {
 
     }
+}
+
+export interface LeagueSecrets {
+    hiddenIdentifier: string
 }

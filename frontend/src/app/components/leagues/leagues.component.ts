@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
-import {FormBuilder, Validators} from "@angular/forms";
 import {LeagueService} from "../../services/league.service";
 import {catchError, tap} from "rxjs/operators";
-import {of} from "rxjs";
+import {map, Observable, of} from 'rxjs';
 import {League} from "../../dtos/league";
+import {InvitationService} from '../../services/invitation.service';
 
 @Component({
   selector: 'app-leagues',
@@ -17,12 +17,15 @@ export class LeaguesComponent {
     errorMessage = '';
 
     leagues: League[];
-    displayedColumns: string[] = ['Name', 'gameMode', 'challengeDuration', 'region', 'action']
+    displayedColumns: string[] = ['Name', 'gameMode', 'challengeDuration', 'region', 'action', 'invitationLink']
 
-    constructor(private router: Router, private leagueService: LeagueService) {
+    constructor(private router: Router, private leagueService: LeagueService, private invitationService: InvitationService) {
         this.fetchLeagues();
     }
 
+    createLeague() {
+        this.router.navigate(['/create-league']);
+    }
     fetchLeagues() {
         this.leagueService.fetchLeagues().pipe(
             tap(response => {
@@ -43,5 +46,9 @@ export class LeaguesComponent {
 
     vanishError() {
         this.error = false;
+    }
+
+    getInvitationLink(id: number): Observable<string> {
+        return this.invitationService.getHiddenIdentifier(id).pipe(map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`));
     }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SelfService} from "../../services/self.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
@@ -13,7 +13,7 @@ import {of} from "rxjs";
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
     submitted = true;
     error = false;
@@ -29,6 +29,7 @@ export class LoginComponent {
         });
 
     }
+
 
 
     loginUser() {
@@ -65,6 +66,12 @@ export class LoginComponent {
 
     resetPassword() {
         // todo
+    }
+
+    ngOnInit() {
+        if(this.selfService.isLoggedIn()) {
+            this.router.navigate(['/leagues'])
+        }
     }
 
     vanishError() {

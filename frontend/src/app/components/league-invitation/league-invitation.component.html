@@ -1,0 +1,22 @@
+
+<div class="container page-container mx-auto" style="max-width: 1400px" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap>
+    <div *ngIf="leagueValid" fxFlex="75" fxLayout="column" fxLayoutAlign="center start"   >
+        <h1 class="mat-headline-2">Hey @{{username}}, you got invited! </h1>
+        <h2 class="mat-display-1">
+            Are you ready to take on the challenge? You've been invited to join League "{{league?.name}}". Join and take on challenges, improve your skills, and make new friends along the way. Don't miss out on the fun, accept the invitation and let's get started!
+        </h2>
+        <div fxLayout="row">
+        <button *ngIf="!leagueJoinSuccess" mat-raised-button style="margin-right: 16px;" color="primary" (click)="joinLeague()">Join League</button>
+        <button *ngIf="!leagueJoinSuccess" mat-button color="primary" (click)="doNotJoin()">Decline</button>
+        <span *ngIf="leagueJoinSuccess">Success! You joined the league.</span>
+        </div>
+    </div>
+    <div *ngIf="!leagueValid" fxFlex="75" fxLayout="column" fxLayoutAlign="center start"   >
+        <h1 class="mat-headline-2">Oops, something went wrong! </h1>
+        <h2 class="mat-display-1">
+            Oops, it looks like this link is as broken as a video game on launch day. Sorry about that! Maybe it's time to put on your detective hat and investigate if you have the right invitation link.</h2>
+    </div>
+    <div fxFlex="25" fxLayout="column" fxLayoutAlign="center center"  >
+        <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-08.svg" alt="A person enjoying cooking" fxFlexFill/>
+    </div>
+</div>
