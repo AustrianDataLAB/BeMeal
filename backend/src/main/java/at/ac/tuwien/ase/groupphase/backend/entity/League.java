@@ -24,8 +24,11 @@ public class League {
     private UUID hiddenIdentifier;
 
     @Column(nullable = false)
+    // ToDo: @Enumerated(EnumType.STRING) is ignored?? See: https://www.baeldung.com/jpa-persisting-enums-in-jpa
+    @Enumerated(EnumType.ORDINAL)
     private GameMode gameMode;
     @Column
+    @Enumerated(EnumType.ORDINAL)
     private Region region;
     @Column(nullable = false)
     private Integer challengeDuration;

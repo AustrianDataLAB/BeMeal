@@ -17,6 +17,8 @@ import { CreateLeagueComponent } from './components/create-league/create-league.
 import { HomeComponent } from './components/home/home.component';
 import { LeagueInvitationComponent } from './components/league-invitation/league-invitation.component';
 import { HeaderComponent } from './components/shared/header/header.component';
+import { ProfileComponent } from './components/profile/profile.component';
+
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import { HeaderComponent } from './components/shared/header/header.component';
     RegistrationComponent,
       LoginComponent,
       LeaguesComponent,
+      ProfileComponent,
       CreateLeagueComponent,
       LeaguesComponent,
       HomeComponent,
