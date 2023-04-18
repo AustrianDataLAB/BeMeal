@@ -32,6 +32,7 @@ public class LeagueService {
         participantList.add(user);
         league.setParticipants(participantList);
         this.leagueRepository.save(league);
+        // TODO add owner relation
     }
 
     public List<League> getLeagues(String username) {
