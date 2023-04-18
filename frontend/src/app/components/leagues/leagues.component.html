@@ -1,7 +1,31 @@
-<button mat-button color="primary" (click)="createLeague()">Create League</button>
 
-<div class="container mx-auto" fxLayout="row" fxLayoutAlign="center center">
-    <div fxFlexFill fxFlex="50" fxLayout="column" fxLayoutAlign="center center"  >
+<div class="container page-container mx-auto" fxLayout="row"  fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+        <h1 fxLayout="row" class="mat-headline-2">My Leagues</h1>
+        <button fxLayout="row"  mat-raised-button  color="primary" (click)="createLeague()">Create League</button>
+        <div fxLayout="row" fxLayoutGap="16px" class="card-container">
+            <ng-container *ngFor="let element of leagues">
+                <mat-card class="card-item">
+                    <mat-card-header>
+                        <mat-card-title>{{ element['name'] }}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="card-content-league">
+                        <span class="span-content-league">Gamemode: {{ prettyString(element['gameMode']) }}</span>
+                        <span class="span-content-league">Challenge duration: {{ element['challengeDuration'] }} days</span>
+                        <span class="span-content-league">Region: {{ prettyString(element['region']) }}</span>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-raised-button color="primary" class="btn-block">View</button>
+                    </mat-card-actions>
+                    <mat-card-footer>
+                        <!-- <pre>{{ getInvitationLink(element.id) | async }}</pre> -->
+                    </mat-card-footer>
+                </mat-card>
+            </ng-container>
+        </div>
+
+
+        <!--
         <mat-card>
             <table mat-table [dataSource]="leagues">
                 <ng-container matColumnDef="Name">
@@ -29,15 +53,15 @@
                 <ng-container matColumnDef="invitationLink">
                     <th mat-header-cell *matHeaderCellDef>Invitation Link</th>
                     <td mat-cell *matCellDef="let element">
-                        <pre>{{ getInvitationLink(element.id) | async }}</pre>
+                      <pre>{{ getInvitationLink(element.id) | async }}</pre>
                     </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let emprow; columns: displayedColumns;"></tr>
             </table>
-        </mat-card>
+        </mat-card> -->
     </div>
-    <div fxFlexFill fxFlex="50" fxLayout="column" fxLayoutAlign="start center">
+    <div fxFlexFill fxFlex="0" fxLayout="column" fxLayoutAlign="start center">
         <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-01.svg" alt="A person enjoying cooking" />
     </div>
 </div>
