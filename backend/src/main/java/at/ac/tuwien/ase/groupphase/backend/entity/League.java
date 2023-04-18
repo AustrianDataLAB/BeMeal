@@ -20,6 +20,9 @@ public class League {
     @Column(nullable = false)
     private Integer challengeDuration;
 
+    @Column(nullable = false)
+    private String name;
+
     @OneToMany
     private List<Challenge> challenges;
     @ManyToMany
