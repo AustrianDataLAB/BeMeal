@@ -19,9 +19,8 @@ public class League {
      * Used for identifying the league with an id which cannot be guessed by iterating through numbers. Useful for
      * things such as invitation links.
      */
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column // TODO nullable false noch hin, fixen
-    private UUID hiddenIdentifier;
+    @Column(nullable = false)
+    private UUID hiddenIdentifier = UUID.randomUUID();
 
     @Column(nullable = false)
     // ToDo: @Enumerated(EnumType.STRING) is ignored?? See: https://www.baeldung.com/jpa-persisting-enums-in-jpa
