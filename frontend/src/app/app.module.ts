@@ -15,6 +15,7 @@ import {MatCardModule} from "@angular/material/card";
 import { LeaguesComponent } from './components/leagues/leagues.component';
 import { CreateLeagueComponent } from './components/create-league/create-league.component';
 import { HomeComponent } from './components/home/home.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { HomeComponent } from './components/home/home.component';
     RegistrationComponent,
       LoginComponent,
       LeaguesComponent,
+      ProfileComponent,
       CreateLeagueComponent,
       LeaguesComponent,
       HomeComponent
