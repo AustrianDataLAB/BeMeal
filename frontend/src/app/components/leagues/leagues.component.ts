@@ -60,6 +60,5 @@ export class LeaguesComponent {
     prettyString(str: string): string {
         str = str.replace(/_/g, ' ').toLowerCase();
         return str.replace(/(^|\s)\S/g, (match) => match.toUpperCase());
-
     }
 }
