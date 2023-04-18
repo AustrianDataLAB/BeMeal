@@ -20,7 +20,7 @@ public class League {
      * things such as invitation links.
      */
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(nullable = false)
+    @Column // TODO nullable false noch hin, fixen
     private UUID hiddenIdentifier;
 
     @Column(nullable = false)
