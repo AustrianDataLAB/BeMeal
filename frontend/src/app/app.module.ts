@@ -13,6 +13,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { LoginComponent } from './components/login/login.component';
 import {MatCardModule} from "@angular/material/card";
 import { LeaguesComponent } from './components/leagues/leagues.component';
+import { CreateLeagueComponent } from './components/create-league/create-league.component';
 import { HomeComponent } from './components/home/home.component';
 import { LeagueInvitationComponent } from './components/league-invitation/league-invitation.component';
 import { HeaderComponent } from './components/shared/header/header.component';
