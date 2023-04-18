@@ -25,10 +25,10 @@ import java.security.Principal;
 @RequestMapping("/api/v1/invitation")
 public class InvitationService {
 
-    /* todo delete comment
-    INSERT INTO LEAGUE (id, challenge_duration, game_mode, region, hidden_identifier)
-VALUES (1, 30, 1, 2, 'd5c30be9-c2a8-4038-9ff9-c807e40cf258');
-
+    /*
+     * todo delete comment INSERT INTO LEAGUE (id, challenge_duration, game_mode, region, hidden_identifier) VALUES (1,
+     * 30, 1, 2, 'd5c30be9-c2a8-4038-9ff9-c807e40cf258');
+     *
      */
     private final Logger logger = LoggerFactory.getLogger(InvitationService.class);
 

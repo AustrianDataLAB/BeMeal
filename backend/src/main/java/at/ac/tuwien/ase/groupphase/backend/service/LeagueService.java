@@ -40,18 +40,21 @@ public class LeagueService {
 
     /**
      * Adds a participant to a league
-     * @param username username of the participant to be added to the league
-     * @param leagueId id of the league
+     *
+     * @param username
+     *            username of the participant to be added to the league
+     * @param leagueId
+     *            id of the league
      */
     public void joinLeague(String username, Long leagueId) {
-        League league = this.leagueRepository.findById(leagueId).orElseThrow(() -> new IllegalArgumentException("Invalid league ID"));
+        League league = this.leagueRepository.findById(leagueId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid league ID"));
         List<Participant> participantList = league.getParticipants();
         Participant user = (Participant) this.userRepository.findByUsername(username);
         participantList.add(user);
         league.setParticipants(participantList);
         this.leagueRepository.save(league);
     }
-
 
     public List<League> getLeagues(String username) {
         Participant user = (Participant) this.userRepository.findByUsername(username);

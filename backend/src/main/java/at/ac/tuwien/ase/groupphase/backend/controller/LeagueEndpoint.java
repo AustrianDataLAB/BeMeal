@@ -29,10 +29,10 @@ public class LeagueEndpoint {
 
     private final LeagueRepository leagueRepository;
 
-
     @Autowired
     @NotNull
-    public LeagueEndpoint(LeagueMapper leagueMapper, final LeagueService leagueService, LeagueRepository leagueRepository) {
+    public LeagueEndpoint(LeagueMapper leagueMapper, final LeagueService leagueService,
+            LeagueRepository leagueRepository) {
         this.leagueMapper = leagueMapper;
         this.leagueService = leagueService;
         this.leagueRepository = leagueRepository;
@@ -51,7 +51,8 @@ public class LeagueEndpoint {
     @SecurityRequirement(name = "bearerToken")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> joinLeague(@NotNull @RequestBody final JoinLeagueDto joinLeagueDto) {
-        League league = this.leagueRepository.findLeagueByHiddenIdentifier(UUID.fromString(joinLeagueDto.hiddenIdentifier()));
+        League league = this.leagueRepository
+                .findLeagueByHiddenIdentifier(UUID.fromString(joinLeagueDto.hiddenIdentifier()));
         // league does not exist
         if (league == null) {
             return ResponseEntity.unprocessableEntity().build();
