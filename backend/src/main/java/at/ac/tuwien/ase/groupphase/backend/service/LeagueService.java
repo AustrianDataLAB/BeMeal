@@ -35,8 +35,12 @@ public class LeagueService {
         List<Participant> participantList = new ArrayList<>();
         participantList.add(user);
         league.setParticipants(participantList);
-        this.leagueRepository.save(league);
-        // TODO add owner relation
+        League l = this.leagueRepository.save(league);
+        List<League> owned = user.getOwnerOf();
+        owned.add(l);
+        user.setOwnerOf(owned);
+        this.userRepository.save(user);
+        // TODO do this in a transaction
     }
 
     /**
