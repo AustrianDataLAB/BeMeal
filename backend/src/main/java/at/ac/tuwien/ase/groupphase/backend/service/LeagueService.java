@@ -21,7 +21,7 @@ public class LeagueService {
 
     private final UserRepository userRepository;
     private final LeagueRepository leagueRepository;
-    private final Logger logger = LoggerFactory.getLogger(InvitationService.class);
+    private final Logger logger = LoggerFactory.getLogger(LeagueService.class);
 
     @Autowired
     @NotNull
