@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {LeagueService} from "../../services/league.service";
 import {catchError, tap} from "rxjs/operators";
-import {map, Observable, of} from 'rxjs';
+import {firstValueFrom, map, of} from 'rxjs';
 import {League} from "../../dtos/league";
 import {InvitationService} from '../../services/invitation.service';
 
@@ -18,6 +18,7 @@ export class LeaguesComponent {
 
     leagues: League[];
     displayedColumns: string[] = ['Name', 'gameMode', 'challengeDuration', 'region', 'action', 'invitationLink']
+    invitationLinks = new Map<number,Promise<string>>;
 
     constructor(private router: Router, private leagueService: LeagueService, private invitationService: InvitationService) {
         this.fetchLeagues();
@@ -32,7 +33,10 @@ export class LeaguesComponent {
                 this.leagues = response;
                 console.log(this.leagues);
                 console.log('Successfully fetched leagues');
-                this.router.navigate(['/leagues']);
+                for (const l of this.leagues) {
+                    const link = firstValueFrom(this.invitationService.getHiddenIdentifier(l.id!).pipe(map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`)));
+                    this.invitationLinks.set(l.id!, link);
+                }
             }),
             catchError(error => {
                 console.error('Error while creating a leauge:', error);
@@ -48,7 +52,4 @@ export class LeaguesComponent {
         this.error = false;
     }
 
-    getInvitationLink(id: number): Observable<string> {
-        return this.invitationService.getHiddenIdentifier(id).pipe(map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`));
-    }
 }
