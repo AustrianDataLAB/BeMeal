@@ -29,7 +29,7 @@
                 <ng-container matColumnDef="invitationLink">
                     <th mat-header-cell *matHeaderCellDef>Invitation Link</th>
                     <td mat-cell *matCellDef="let element">
-                        <pre>{{ getInvitationLink(element.id) | async }}</pre>
+                        <pre>{{ invitationLinks.get(element.id) | async }}</pre>
                     </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
