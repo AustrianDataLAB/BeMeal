@@ -8,6 +8,7 @@ import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,6 +25,13 @@ public class ChallengeGenerationService {
     private final LeagueRepository leagueRepository;
 
     private final Random random = new Random();
+
+    @Scheduled(cron = "0 3 * * ?")
+    public void generateChallenges() {
+        log.info("Schedule generating new challenges when expired...");
+        this.generateForExpiredChallenges();
+        log.info("Done generating the new challenges by scheduler");
+    }
 
     /**
      * Generate a new challenge for a given {@link League}. This does not take into consideration whether a challenge is
