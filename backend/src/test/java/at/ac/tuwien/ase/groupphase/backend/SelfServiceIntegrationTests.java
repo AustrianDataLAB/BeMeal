@@ -28,14 +28,14 @@ public class SelfServiceIntegrationTests {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-
     @Test
     void registerPlatformUserShouldReturn201() throws Exception {
         Registration reg = new Registration("test1@gmail.com", "fran1z", "12345678", Region.STYRIA, "2340");
 
         String json = this.objectMapper.writeValueAsString(reg);
-        this.webTestClient.post().uri("/api/v1/self-service/registration/participant").contentType(MediaType.APPLICATION_JSON).bodyValue(json).exchange().expectStatus().isCreated();
-//        mockMvc.perform(post("/api/v1/self-service/registration/participant").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isCreated());
+        this.webTestClient.post().uri("/api/v1/self-service/registration/participant")
+                .contentType(MediaType.APPLICATION_JSON).bodyValue(json).exchange().expectStatus().isCreated();
+        // mockMvc.perform(post("/api/v1/self-service/registration/participant").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isCreated());
     }
 
     @Test
@@ -43,8 +43,9 @@ public class SelfServiceIntegrationTests {
         Registration reg = new Registration("test1@gmail.com", "fran1z", "12345678", Region.STYRIA, "2340");
 
         String json = this.objectMapper.writeValueAsString(reg);
-        this.webTestClient.post().uri("/api/v1/self-service/registration/participant").contentType(MediaType.APPLICATION_JSON).bodyValue(json).exchange().expectStatus().isCreated();
-//        mockMvc.perform(post("/api/v1/self-service/registration/participant").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isCreated());
+        this.webTestClient.post().uri("/api/v1/self-service/registration/participant")
+                .contentType(MediaType.APPLICATION_JSON).bodyValue(json).exchange().expectStatus().isCreated();
+        // mockMvc.perform(post("/api/v1/self-service/registration/participant").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isCreated());
     }
 
 }

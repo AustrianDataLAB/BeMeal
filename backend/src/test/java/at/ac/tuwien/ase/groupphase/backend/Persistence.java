@@ -21,20 +21,22 @@ public class Persistence {
     DataSource dataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
-//        dataSource.setUrl(env.getProperty("datasource.url"));
-        dataSource.setUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"); //TODO den path zum file ändren, schaut so aus als würde er das falsche yml verwenden und dann passt die url ned
+        // dataSource.setUrl(env.getProperty("datasource.url"));
+        dataSource.setUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"); // TODO den path zum file ändren, schaut so aus als
+                                                                 // würde er das falsche yml verwenden und dann passt
+                                                                 // die url ned
         dataSource.setUsername(env.getProperty("datasource.user"));
         dataSource.setPassword(env.getProperty("datasource.password"));
 
         return dataSource;
 
-//        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName("org.h2.Driver");
-//        dataSource.setUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
-//        dataSource.setUsername("admin");
-//        dataSource.setPassword("password");
-//
-//        return dataSource;
+        // final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        // dataSource.setDriverClassName("org.h2.Driver");
+        // dataSource.setUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+        // dataSource.setUsername("admin");
+        // dataSource.setPassword("password");
+        //
+        // return dataSource;
     }
 
     @Bean
