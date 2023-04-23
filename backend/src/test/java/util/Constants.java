@@ -1,5 +1,6 @@
 package util;
 
+import at.ac.tuwien.ase.groupphase.backend.entity.GameMode;
 import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.entity.Region;
@@ -35,5 +36,9 @@ public final class Constants {
     public static final String EXISTING_USER_POSTAL_CODE = "1010";
 
     public static final String INVALID_EMAIL = "peterHuber.com";
+    public static final String VALID_LEAGUE_NAME = "Drei Kuchen hoch";
+    public static final GameMode VALID_LEAGUE_GAMEMODE = GameMode.PICTURE;
+    public static final Integer VALID_LEAGUE_CHALLENGE_DURATION = 55;
+    public static final Region VALID_LEAGUE_REGION = Region.BURGENLAND;
 
 }
