@@ -1,4 +1,4 @@
-package at.ac.tuwien.ase.groupphase.backend;
+package at.ac.tuwien.ase.groupphase.backend.integrationtests;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
@@ -61,5 +61,9 @@ public class SelfServiceIntegrationTests {
     // this.webTestClient.post().uri("/api/v1/self-service/registration/participant")
     // .contentType(MediaType.APPLICATION_JSON).bodyValue(json).exchange().expectStatus().is4xxClientError();
     // }
+
+
+
+    //TODO view profile test
 
 }
