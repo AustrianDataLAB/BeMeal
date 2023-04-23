@@ -62,8 +62,6 @@ public class SelfServiceIntegrationTests {
     // .contentType(MediaType.APPLICATION_JSON).bodyValue(json).exchange().expectStatus().is4xxClientError();
     // }
 
-
-
-    //TODO view profile test
+    // TODO view profile test
 
 }
