@@ -6,20 +6,25 @@ import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import util.Constants;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class SelfServiceIntegrationTests {
 
     @Autowired
-    private WebTestClient webTestClient;
+    private MockMvc mockMvc;
 
     @Autowired
     private ParticipantRepository participantRepository;
@@ -32,8 +37,8 @@ public class SelfServiceIntegrationTests {
                 Constants.VALID_USER_PASSWORD, Constants.VALID_USER_REGION, Constants.VALID_USER_POSTAL_CODE);
 
         String json = this.objectMapper.writeValueAsString(reg);
-        this.webTestClient.post().uri("/api/v1/self-service/registration/participant")
-                .contentType(MediaType.APPLICATION_JSON).bodyValue(json).exchange().expectStatus().isCreated();
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/self-service/registration/participant").content(json)
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
 
         List<Participant> list1 = new ArrayList<>();
         this.participantRepository.findAll().forEach(list1::add);
@@ -47,8 +52,9 @@ public class SelfServiceIntegrationTests {
                 Constants.EXISTING_USER_PASSWORD, Constants.EXISTING_USER_REGION, Constants.EXISTING_USER_POSTAL_CODE);
 
         String json = this.objectMapper.writeValueAsString(reg);
-        this.webTestClient.post().uri("/api/v1/self-service/registration/participant")
-                .contentType(MediaType.APPLICATION_JSON).bodyValue(json).exchange().expectStatus().is4xxClientError();
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/self-service/registration/participant").content(json)
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isConflict());
+
     }
 
     // email valideren noch im backend?
