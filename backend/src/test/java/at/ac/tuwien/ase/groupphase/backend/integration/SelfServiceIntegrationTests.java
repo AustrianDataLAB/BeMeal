@@ -1,8 +1,10 @@
 package at.ac.tuwien.ase.groupphase.backend.integration;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
+import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,10 +14,16 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import util.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class SelfServiceIntegrationTests {
 
     @Autowired
@@ -34,6 +42,10 @@ public class SelfServiceIntegrationTests {
         String json = this.objectMapper.writeValueAsString(reg);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/self-service/registration/participant").content(json)
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+
+        List<Participant> list1 = new ArrayList<>();
+        this.participantRepository.findAll().forEach(list1::add);
+        assertEquals(1, list1.size());
     }
 
     @Test

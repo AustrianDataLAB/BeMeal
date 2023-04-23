@@ -3,6 +3,7 @@ package at.ac.tuwien.ase.groupphase.backend.integration;
 import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import static util.Constants.*;
 
 @SpringBootTest
+@Transactional
 public class ParticipantServiceTest {
 
     private final ParticipantService participantService;

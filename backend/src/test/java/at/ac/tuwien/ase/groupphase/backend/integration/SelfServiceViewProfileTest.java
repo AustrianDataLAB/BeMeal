@@ -2,6 +2,7 @@ package at.ac.tuwien.ase.groupphase.backend.integration;
 
 import at.ac.tuwien.ase.groupphase.backend.controller.SelfService;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static util.Constants.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class SelfServiceViewProfileTest {
 
     // @Autowired
