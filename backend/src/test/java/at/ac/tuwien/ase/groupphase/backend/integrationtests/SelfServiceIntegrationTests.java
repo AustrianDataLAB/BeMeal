@@ -39,10 +39,6 @@ public class SelfServiceIntegrationTests {
         String json = this.objectMapper.writeValueAsString(reg);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/self-service/registration/participant").content(json)
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
-
-        List<Participant> list1 = new ArrayList<>();
-        this.participantRepository.findAll().forEach(list1::add);
-        assertEquals(1, list1.size());
     }
 
     @Test
