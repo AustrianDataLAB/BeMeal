@@ -1,8 +1,10 @@
 package at.ac.tuwien.ase.groupphase.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -10,6 +12,8 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlatformUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
