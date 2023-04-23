@@ -17,39 +17,15 @@ public final class Constants {
     public static final Region VALID_USER_REGION = Region.LOWER_AUSTRIA;
     public static final String VALID_USER_POSTAL_CODE = "1040";
     public static final Integer VALID_WINS = 420;
-    public static final LocalDateTime VALID_LOCALDATETIME = LocalDateTime.of(
-            1990,
-            1,
-            1,
-            1,
-            1
-    );
+    public static final LocalDateTime VALID_LOCALDATETIME = LocalDateTime.of(1990, 1, 1, 1, 1);
 
-    public static final Participant VALID_PARTICIPANT_1 = new Participant(
-            VALID_USER_ID,
-            VALID_USER_EMAIL,
-            VALID_USER_PASSWORD_BYTES,
-            VALID_USER_USERNAME,
-            Boolean.FALSE,
-            new ArrayList<>(),
-            VALID_USER_POSTAL_CODE,
-            VALID_WINS,
-            VALID_USER_REGION,
-            VALID_LOCALDATETIME,
-            new ArrayList<>(),
-            new ArrayList<>(),
-            new ArrayList<>()
-    );
+    public static final Participant VALID_PARTICIPANT_1 = new Participant(VALID_USER_ID, VALID_USER_EMAIL,
+            VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
+            VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
+            new ArrayList<>());
 
-    public static final ParticipantDto VALID_PARTICIPANT_DTO_1 = new ParticipantDto(
-            VALID_USER_USERNAME,
-            VALID_USER_EMAIL,
-            VALID_USER_POSTAL_CODE,
-            VALID_WINS,
-            VALID_USER_REGION,
-            VALID_LOCALDATETIME
-    );
-
+    public static final ParticipantDto VALID_PARTICIPANT_DTO_1 = new ParticipantDto(VALID_USER_USERNAME,
+            VALID_USER_EMAIL, VALID_USER_POSTAL_CODE, VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME);
 
     // IF changes are doen for the existing user, SelfServiceData.sql needs to be adjusted accordingly
     public static final String EXISTING_USER_USERNAME = "John";

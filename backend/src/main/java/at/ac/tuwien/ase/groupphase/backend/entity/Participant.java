@@ -17,7 +17,9 @@ import java.util.List;
 @NoArgsConstructor
 public class Participant extends PlatformUser {
 
-    public Participant(Long id, String email, byte[] password, String username, Boolean isAdmin, List<League> ownerOf, String postalCode, Integer wins, Region region, LocalDateTime registered, List<Submission> submissions, List<Submission> votes, List<League> leagues) {
+    public Participant(Long id, String email, byte[] password, String username, Boolean isAdmin, List<League> ownerOf,
+            String postalCode, Integer wins, Region region, LocalDateTime registered, List<Submission> submissions,
+            List<Submission> votes, List<League> leagues) {
         super(id, email, password, username, isAdmin, ownerOf);
         this.postalCode = postalCode;
         this.wins = wins;

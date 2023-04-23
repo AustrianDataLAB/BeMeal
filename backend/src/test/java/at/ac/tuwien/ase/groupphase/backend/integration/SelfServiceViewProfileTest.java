@@ -19,8 +19,8 @@ import static util.Constants.*;
 @AutoConfigureMockMvc
 public class SelfServiceViewProfileTest {
 
-//    @Autowired
-//    private MockMvc mockMvc;
+    // @Autowired
+    // private MockMvc mockMvc;
 
     private final ParticipantRepository participantRepository;
     private final SelfService selfService;
@@ -48,18 +48,18 @@ public class SelfServiceViewProfileTest {
         Assertions.assertEquals(VALID_PARTICIPANT_DTO_1, this.selfService.viewProfile());
     }
 
-//    @Test
-//    @WithUserDetails(VALID_USER_USERNAME)
-//    void test_viewProfile_request() throws Exception {
-//        this.participantRepository.save(VALID_PARTICIPANT_1);
-////        Assertions.assertEquals(VALID_PARTICIPANT_DTO_1, this.selfService.viewProfile());
-//        MvcResult mvcResult = mockMvc.perform(
-//                MockMvcRequestBuilders.get("/api/v1/self-service/profile")
-//        ).andReturn();
-//        MockHttpServletResponse response = mvcResult.getResponse();
-//
-//        System.out.println(response);
-//        System.out.println(response.getContentAsString());
-//    }
+    // @Test
+    // @WithUserDetails(VALID_USER_USERNAME)
+    // void test_viewProfile_request() throws Exception {
+    // this.participantRepository.save(VALID_PARTICIPANT_1);
+    //// Assertions.assertEquals(VALID_PARTICIPANT_DTO_1, this.selfService.viewProfile());
+    // MvcResult mvcResult = mockMvc.perform(
+    // MockMvcRequestBuilders.get("/api/v1/self-service/profile")
+    // ).andReturn();
+    // MockHttpServletResponse response = mvcResult.getResponse();
+    //
+    // System.out.println(response);
+    // System.out.println(response.getContentAsString());
+    // }
 
 }
