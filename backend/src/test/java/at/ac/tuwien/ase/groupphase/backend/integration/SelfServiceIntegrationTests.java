@@ -1,4 +1,4 @@
-package at.ac.tuwien.ase.groupphase.backend.integrationtests;
+package at.ac.tuwien.ase.groupphase.backend.integration;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
