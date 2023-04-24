@@ -1,0 +1,53 @@
+package at.ac.tuwien.ase.groupphase.backend.controller;
+
+import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
+import at.ac.tuwien.ase.groupphase.backend.service.RecipeService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/v1/recipe")
+public class RecipeEndpoint {
+
+    private final Logger logger = LoggerFactory.getLogger(RecipeEndpoint.class);
+    private final RecipeService recipeService;
+
+    @GetMapping("/{recipeId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<RecipeDto> getRecipeById(@NotNull @PathVariable final Long recipeId) {
+        logger.trace("GET /api/v1/recipe/{}", recipeId);
+
+        RecipeDto dto = recipeService.getRecipeById(recipeId);
+
+        if (dto == null) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/search")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<RecipeDto>> searchRecipeByName(
+            @RequestParam(required = true, value = "name") final String name) {
+        logger.trace("GET /api/v1/recipe/search?name={}", name);
+
+        List<RecipeDto> dto = recipeService.searchRecipeByName(name);
+
+        if (dto == null) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
+        return ResponseEntity.ok(dto);
+    }
+
+}
