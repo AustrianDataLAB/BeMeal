@@ -1,0 +1,49 @@
+<div *ngIf="error" class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Error</strong> {{ errorMessage }}
+    <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="container mx-auto" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap>
+    <div fxFlexFill fxFlex="33" fxLayout="column" fxLayoutAlign="start center">
+        <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-07.svg" alt="A person enjoying cooking" />
+    </div>
+    <div fxFlexFill fxFlex="33" fxLayout="column" fxLayoutAlign="center center"  >
+        <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+            <mat-card class="box">
+                <mat-card-header fxLayout="column" fxLayoutAlign="center center">
+                    <mat-card-title>Create league</mat-card-title>
+                </mat-card-header>
+                <form class="example-form" [formGroup]="registerForm" fxLayout="column" fxLayoutAlign="center center">
+                    <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+                        <mat-form-field>
+                            <input formControlName="name" name="name" matInput placeholder="name">
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Select your Gamemode</mat-label>
+                            <mat-select name="gamemode" formControlName="gamemode">
+                                <mat-option [value]="mode" *ngFor="let mode of gameModeKeys(gamemodes)">{{mode}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input formControlName="challengeDuration" name="challengeDuration" matInput placeholder=0>
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Select your region</mat-label>
+                            <mat-select name="region" formControlName="region">
+                                <mat-option [value]="region" *ngFor="let region of regionKeys(regions)">{{region}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-card-content>
+                    <button mat-raised-button color="primary" class="btn-block" (click)="createLeague()">Create</button>
+                </form>
+            </mat-card>
+        </div>
+    </div>
+    <div fxFlexFill fxFlex="33" fxLayout="column" fxLayoutAlign="start center">
+        <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-04.svg" alt="A person enjoying cooking" />
+    </div>
+</div>

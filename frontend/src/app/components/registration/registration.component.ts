@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {SelfService} from "../../services/self.service";
 import {Registration} from "../../dtos/registration";
 import {Region} from "../../shared/region";
@@ -13,7 +13,7 @@ import {of} from "rxjs";
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss']
 })
-export class RegistrationComponent {
+export class RegistrationComponent implements OnInit{
 
     submitted = true;
     error = false;
@@ -32,6 +32,12 @@ export class RegistrationComponent {
             password: ['', [Validators.required, Validators.minLength(8)]]
         });
 
+    }
+
+    ngOnInit() {
+        if(this.selfService.isLoggedIn()) {
+            this.router.navigate(['/leagues'])
+        }
     }
 
     toLogin() {

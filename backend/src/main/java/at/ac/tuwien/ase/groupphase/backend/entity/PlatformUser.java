@@ -23,6 +23,6 @@ public class PlatformUser {
     @Column(nullable = false)
     private Boolean isAdmin;
 
-    @OneToMany
-    private List<League> leagues;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<League> ownerOf;
 }

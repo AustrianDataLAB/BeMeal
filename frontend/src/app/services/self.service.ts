@@ -7,6 +7,7 @@ import {tap} from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
 import {Globals} from '../shared/globals';
 import {Login} from "../dtos/login";
+import {Profile} from "../dtos/profile";
 
 @Injectable({
     providedIn: 'root'
@@ -62,6 +63,11 @@ export class SelfService {
                 }
                 return response;
             }));
+    }
+
+
+    getProfile(): Observable<Profile> {
+        return this.httpClient.get<Profile>(this.authBaseUri + '/profile');
     }
 
     /**
