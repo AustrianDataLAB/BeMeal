@@ -2,7 +2,6 @@ package at.ac.tuwien.ase.groupphase.backend.controller;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import at.ac.tuwien.ase.groupphase.backend.service.RecipeService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,7 +22,7 @@ public class RecipeEndpoint {
 
     @GetMapping("/{recipeId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<RecipeDto> getRecipeById(@NotNull @PathVariable final Long recipeId) {
+    public ResponseEntity<RecipeDto> getRecipeById(@NotNull @PathVariable final String recipeId) {
         logger.trace("GET /api/v1/recipe/{}", recipeId);
 
         RecipeDto dto = recipeService.getRecipeById(recipeId);
@@ -38,7 +37,7 @@ public class RecipeEndpoint {
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<RecipeDto>> searchRecipeByName(
-            @RequestParam(required = true, value = "name") final String name) {
+            @RequestParam(value = "name") final String name) {
         logger.trace("GET /api/v1/recipe/search?name={}", name);
 
         List<RecipeDto> dto = recipeService.searchRecipeByName(name);
