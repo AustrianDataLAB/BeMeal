@@ -26,7 +26,7 @@ public class ChallengeGenerationService {
 
     private final Random random = new Random();
 
-    @Scheduled(cron = "0 3 * * ?")
+    @Scheduled(cron = "0 0 3 * * ?")
     public void generateChallenges() {
         log.info("Schedule generating new challenges when expired...");
         this.generateForExpiredChallenges();
