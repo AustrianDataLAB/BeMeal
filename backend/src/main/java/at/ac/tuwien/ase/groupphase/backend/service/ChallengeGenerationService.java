@@ -7,6 +7,7 @@ import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -25,6 +27,9 @@ public class ChallengeGenerationService {
     private final LeagueRepository leagueRepository;
 
     private final Random random = new Random();
+
+    @Setter
+    private boolean failMode = true;
 
     @Scheduled(cron = "0 0 3 * * ?")
     public void generateChallenges() {
@@ -67,7 +72,8 @@ public class ChallengeGenerationService {
      */
     public void generateForExpiredChallenges() {
         log.info("Generate new challenges for leagues with no valid challenge");
-        this.leagueRepository.findLeaguesWithNoValidChallengeAt(LocalDate.now()).forEach(this::generateNewChallenge);
+        Stream.concat(this.leagueRepository.findLeaguesWithNoValidChallengeAt(LocalDate.now()),
+                this.leagueRepository.findLeaguesWithNoChallenges()).forEach(this::generateNewChallenge);
         log.info("Done generating new challenges");
     }
 
@@ -92,6 +98,9 @@ public class ChallengeGenerationService {
     public Optional<Recipe> randomRecipe(final GameMode gameMode) {
         // todo: this is only a dummy, a connection to the graph database is required
         final var recipe = new Recipe(UUID.randomUUID(), "Variation No. " + random.nextInt(73), UUID.randomUUID());
+        if (!this.failMode) {
+            return Optional.of(recipe);
+        }
         if (GameMode.PICTURE.equals(gameMode) || GameMode.PICTURE_INGREDIENTS.equals(gameMode)) {
             return random.nextDouble() < 0.3 ? Optional.of(recipe) : Optional.empty();
         }
