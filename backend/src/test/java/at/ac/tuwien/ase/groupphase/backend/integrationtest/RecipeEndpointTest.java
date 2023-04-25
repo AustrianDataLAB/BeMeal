@@ -39,7 +39,7 @@ public class RecipeEndpointTest {
     @Test
     public void givenData_getRecipeById() throws Exception {
         MvcResult mvcResult = this.mockMvc.perform(get(RECIPE_BASE_URI + "/" + RECIPE_ID))
-                //.header(securityProperties.getAuthHeader(), jwtTokenizer.getAuthToken())
+                // .header(securityProperties.getAuthHeader(), jwtTokenizer.getAuthToken())
                 .andDo(print()).andReturn();
 
         MockHttpServletResponse response = mvcResult.getResponse();

@@ -36,8 +36,7 @@ public class RecipeEndpoint {
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<RecipeDto>> searchRecipeByName(
-            @RequestParam(value = "name") final String name) {
+    public ResponseEntity<List<RecipeDto>> searchRecipeByName(@RequestParam(value = "name") final String name) {
         logger.trace("GET /api/v1/recipe/search?name={}", name);
 
         List<RecipeDto> dto = recipeService.searchRecipeByName(name);

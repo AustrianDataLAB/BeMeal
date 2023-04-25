@@ -15,8 +15,11 @@ public class RecipeMapper {
     }
 
     public RecipeDto recipeToRecipeDto(Recipe recipe) {
-        List<IngredientDto> ingredients = recipe.getIngredients().stream().map(ingredientMapper::ingredientToIngredientDto).toList();
-        return new RecipeDto(recipe.getRecipeId(), recipe.getName(), recipe.getDescription(), recipe.getPreparationTime(), recipe.getCookingTime(), stringToRecipeSkillLevel(recipe.getSkillLevel()), ingredients);
+        List<IngredientDto> ingredients = recipe.getIngredients().stream()
+                .map(ingredientMapper::ingredientToIngredientDto).toList();
+        return new RecipeDto(recipe.getRecipeId(), recipe.getName(), recipe.getDescription(),
+                recipe.getPreparationTime(), recipe.getCookingTime(), stringToRecipeSkillLevel(recipe.getSkillLevel()),
+                ingredients);
     }
 
     private RecipeSkillLevel stringToRecipeSkillLevel(String s) {
