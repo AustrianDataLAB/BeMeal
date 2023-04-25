@@ -6,6 +6,7 @@ import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
+import at.ac.tuwien.ase.groupphase.backend.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class ChallengeGenerationService {
 
     private final ChallengeRepository challengeRepository;
     private final LeagueRepository leagueRepository;
+    private final RecipeRepository recipeRepository;
 
     private final Random random = new Random();
 
@@ -55,7 +57,7 @@ public class ChallengeGenerationService {
         }
         final var recipe = newRecipe.get();
         final var challenge = new Challenge();
-        challenge.setRecipe(recipe.getId());
+        challenge.setRecipe(recipe.getRecipeId());
         challenge.setDescription(recipe.getName() + " with " + (GameMode.PICTURE.equals(gameMode) ? "Picture only"
                 : (GameMode.INGREDIENTS.equals(gameMode) ? "Ingredients only" : " full Recipe")));
         challenge.setStartDate(LocalDate.now());
@@ -96,14 +98,14 @@ public class ChallengeGenerationService {
      * @return the fetched recipe or empty if none can be found
      */
     public Optional<Recipe> randomRecipe(final GameMode gameMode) {
-        // todo: this is only a dummy, a connection to the graph database is required
-        final var recipe = new Recipe(UUID.randomUUID(), "Variation No. " + random.nextInt(73), UUID.randomUUID());
         if (!this.failMode) {
+            final var recipe = new Recipe(UUID.randomUUID().toString(), "Variation No. " + random.nextInt(73),
+                    random.nextInt(30), random.nextInt(30), "This is some description", "baum");
             return Optional.of(recipe);
         }
-        if (GameMode.PICTURE.equals(gameMode) || GameMode.PICTURE_INGREDIENTS.equals(gameMode)) {
-            return random.nextDouble() < 0.3 ? Optional.of(recipe) : Optional.empty();
+        if (GameMode.INGREDIENTS.equals(gameMode)) {
+            return this.recipeRepository.findAnyRecipe();
         }
-        return random.nextDouble() < 0.8 ? Optional.of(recipe) : Optional.empty();
+        return this.recipeRepository.findAnyRecipeWithPicture();
     }
 }
