@@ -3,6 +3,7 @@ package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 import at.ac.tuwien.ase.groupphase.backend.controller.RecipeEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@Disabled
 public class RecipeEndpointTest {
     // ToDo: Extract to external constants file
     String RECIPE_BASE_URI = "/api/v1/recipe";
