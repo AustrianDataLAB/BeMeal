@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
     List<Recipe> findByNameIsLike(@Param("name") String name);
 
-    @Query("MATCH (r:Recipe) RETURN r SKIP rand() * CALL {RETURN count(*)}")
+    @Query("MATCH (r:Recipe) RETURN r ORDER BY rand() LIMIT 1")
     Optional<Recipe> findAnyRecipe();
 
-    @Query("MATCH (r:Recipe) RETURN r SKIP rand() * CALL {RETURN count(*)}") // todo: handle picture uuid attribute
+    @Query("MATCH (r:Recipe) RETURN r ORDER BY rand() LIMIT 1") // todo: handle picture uuid attribute
     Optional<Recipe> findAnyRecipeWithPicture();
 }
