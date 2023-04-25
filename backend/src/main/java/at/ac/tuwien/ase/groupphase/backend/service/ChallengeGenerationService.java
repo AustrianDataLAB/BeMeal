@@ -58,8 +58,7 @@ public class ChallengeGenerationService {
         final var recipe = newRecipe.get();
         final var challenge = new Challenge();
         challenge.setRecipe(recipe.getRecipeId());
-        challenge.setDescription(recipe.getName() + " with " + (GameMode.PICTURE.equals(gameMode) ? "Picture only"
-                : (GameMode.INGREDIENTS.equals(gameMode) ? "Ingredients only" : " full Recipe")));
+        challenge.setDescription(recipe.getDescription());
         challenge.setStartDate(LocalDate.now());
         challenge.setEndDate(LocalDate.now().plusDays(league.getChallengeDuration() - 1L));
         challenge.setLeague(league);
