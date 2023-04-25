@@ -35,7 +35,7 @@ public class League {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "league")
     private List<Challenge> challenges;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Participant> participants;
