@@ -22,7 +22,7 @@ public class Challenge {
     @Column(nullable = false)
     private LocalDate endDate;
     @Column(nullable = false)
-    private UUID recipe;
+    private String recipe;
 
     @OneToMany
     private List<Submission> submissions;

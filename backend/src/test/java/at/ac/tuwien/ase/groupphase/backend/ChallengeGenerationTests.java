@@ -78,7 +78,7 @@ class ChallengeGenerationTests {
         final var now = LocalDate.now();
         challenge.setStartDate(now.minusDays(3));
         challenge.setEndDate(now.minusDays(1));
-        challenge.setRecipe(UUID.randomUUID());
+        challenge.setRecipe(UUID.randomUUID().toString());
 
         final var persistedChallenge = this.challengeRepository.save(challenge);
         this.challengeGenerationService.generateForExpiredChallenges();
@@ -111,7 +111,7 @@ class ChallengeGenerationTests {
         final var now = LocalDate.now();
         challenge.setStartDate(now.minusDays(3));
         challenge.setEndDate(now);
-        challenge.setRecipe(UUID.randomUUID());
+        challenge.setRecipe(UUID.randomUUID().toString());
 
         this.challengeRepository.save(challenge);
         this.challengeGenerationService.generateForExpiredChallenges();
@@ -140,7 +140,7 @@ class ChallengeGenerationTests {
         final var now = LocalDate.now();
         challenge.setStartDate(now.minusDays(3));
         challenge.setEndDate(now);
-        challenge.setRecipe(UUID.randomUUID());
+        challenge.setRecipe(UUID.randomUUID().toString());
 
         final var persistedChallenge = this.challengeRepository.save(challenge);
         this.challengeGenerationService.generateAllNewChallenges();
