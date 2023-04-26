@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {LeagueService} from "../../services/league.service";
 import {catchError, tap} from "rxjs/operators";
-import {firstValueFrom, map, of} from 'rxjs';
+import {firstValueFrom, map, Observable, of} from 'rxjs';
 import {League} from "../../dtos/league";
 import {InvitationService} from '../../services/invitation.service';
 
@@ -15,10 +15,11 @@ export class LeaguesComponent {
 
     error = false;
     errorMessage = '';
+    showLink = false;
 
     leagues: League[];
     displayedColumns: string[] = ['Name', 'gameMode', 'challengeDuration', 'region', 'action', 'invitationLink']
-    invitationLinks = new Map<number,Promise<string>>;
+    invitationLinks = new Map<number|null,Promise<string>>;
 
     constructor(private router: Router, private leagueService: LeagueService, private invitationService: InvitationService) {
         this.fetchLeagues();
