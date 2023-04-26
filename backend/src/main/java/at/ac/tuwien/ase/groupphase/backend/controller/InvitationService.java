@@ -40,7 +40,7 @@ public class InvitationService {
     public LeagueSecrets getHiddenIdentifier(@NotNull @PathVariable final long leagueId,
             @NotNull @Autowired final Principal principal) {
         logger.trace("getHiddenIdentifier({},{})", leagueId, principal.getName());
-        if (this.userRepository.isCreatorOfLeague(principal.getName(), leagueId)) {
+        if (!this.userRepository.isCreatorOfLeague(principal.getName(), leagueId)) {
             logger.info(
                     "Unauthorized access to the hidden identifier of the league with the id '{}' from the user '{}', rejecting",
                     leagueId, principal.getName());

@@ -5,14 +5,15 @@ import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
+import at.ac.tuwien.ase.groupphase.backend.service.ChallengeGenerationService;
 import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,22 +22,15 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/league")
+@RequiredArgsConstructor
+@Slf4j
 public class LeagueEndpoint {
 
-    private final Logger logger = LoggerFactory.getLogger(LeagueEndpoint.class);
     private final LeagueMapper leagueMapper;
     private final LeagueService leagueService;
 
     private final LeagueRepository leagueRepository;
-
-    @Autowired
-    @NotNull
-    public LeagueEndpoint(LeagueMapper leagueMapper, final LeagueService leagueService,
-            LeagueRepository leagueRepository) {
-        this.leagueMapper = leagueMapper;
-        this.leagueService = leagueService;
-        this.leagueRepository = leagueRepository;
-    }
+    private final ChallengeGenerationService challengeGenerationService;
 
     @PostMapping("/create-league")
     @SecurityRequirement(name = "bearerToken")
@@ -86,5 +80,26 @@ public class LeagueEndpoint {
         String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<League> leagues = this.leagueService.getLeagues(user);
         return this.leagueMapper.leagueListToLeagueDtoList(leagues);
+    }
+
+    /**
+     * Generate new challenges for leagues. This endpoint is for debugging purposes only. Only gamemasters may call this
+     * endpoint.
+     *
+     * @param force
+     *            if 'true' all challenges will be newly generated, if 'false' only for leagues with expired or no
+     *            challenges a new challenge will be generated
+     */
+    @PutMapping("/challenges/{force}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @SecurityRequirement(name = "bearerToken")
+    @PreAuthorize("hasRole('GAMEMASTER')")
+    public void generateChallenges(@PathVariable final boolean force) {
+        log.info("Generate new challenges manually");
+        if (force) {
+            this.challengeGenerationService.generateAllNewChallenges();
+        } else {
+            this.challengeGenerationService.generateForExpiredChallenges();
+        }
     }
 }
