@@ -4,7 +4,26 @@ img {
     display: flex ;
 }
 
-mat-card{
-    width:100%;
-    padding: 4px;
+
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 32px;
+}
+
+.card-item {
+    flex-basis: 48%;
+    margin-bottom: 20px;
+    padding: 16px;
+}
+
+.span-content-league{
+    display: block;
+}
+
+.card-content-league {
+    margin-bottom: 8px;
+    margin-top: 8px;
 }

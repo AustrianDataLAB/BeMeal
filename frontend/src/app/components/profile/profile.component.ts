@@ -22,6 +22,10 @@ export class ProfileComponent {
         this.getProfile();
     }
 
+    resetPassword() {
+        alert("todo");
+        // todo
+    }
     public getProfile() {
         this.selfService.getProfile()
             .pipe(tap(response => {
@@ -36,5 +40,15 @@ export class ProfileComponent {
                     return of(null);
                 })
             ).subscribe();
+    }
+
+
+    /**
+     * Takes in a string and makes it presentable to the frontend. Removes camelcase and uppercases
+     * @param str
+     */
+    prettyString(str: string): string {
+        str = str.replace(/_/g, ' ').toLowerCase();
+        return str.replace(/(^|\s)\S/g, (match) => match.toUpperCase());
     }
 }
