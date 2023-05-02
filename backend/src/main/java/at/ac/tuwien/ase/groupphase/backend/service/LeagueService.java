@@ -40,7 +40,6 @@ public class LeagueService {
         owned.add(l);
         user.setOwnerOf(owned);
         this.userRepository.save(user);
-        // TODO do this in a transaction
     }
 
     /**
