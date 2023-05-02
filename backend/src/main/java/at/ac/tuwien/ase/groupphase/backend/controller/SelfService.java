@@ -76,13 +76,6 @@ public class SelfService {
         throw new RuntimeException();
     }
 
-    @GetMapping("/test")
-    @SecurityRequirement(name = "bearerToken")
-    @ResponseStatus(HttpStatus.OK)
-    public String test() {
-        return "junge";
-    } // TODO remove ?
-
     /**
      * Retrieves the profile of the authenticated participant.
      *
