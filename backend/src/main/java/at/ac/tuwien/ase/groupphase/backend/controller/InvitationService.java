@@ -25,9 +25,7 @@ import java.security.Principal;
 @RequestMapping("/api/v1/invitation")
 public class InvitationService {
 
-
     private final Logger logger = LoggerFactory.getLogger(InvitationService.class);
-
     private final UserRepository userRepository;
     private final LeagueRepository leagueRepository;
 
