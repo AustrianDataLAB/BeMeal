@@ -18,6 +18,8 @@ import { HomeComponent } from './components/home/home.component';
 import { LeagueInvitationComponent } from './components/league-invitation/league-invitation.component';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ChallengeComponent } from './components/challenge/challenge.component';
+import { ShowLeagueComponent } from './components/show-league/show-league.component';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import { ProfileComponent } from './components/profile/profile.component';
       LeaguesComponent,
       HomeComponent,
       LeagueInvitationComponent,
-      HeaderComponent
+      HeaderComponent,
+      ChallengeComponent,
+      ShowLeagueComponent
   ],
     imports: [
         BrowserModule,

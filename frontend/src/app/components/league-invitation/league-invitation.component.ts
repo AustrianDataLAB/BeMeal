@@ -76,7 +76,6 @@ export class LeagueInvitationComponent implements OnInit{
                 }
                 this.league = response;
                 this.leagueValid = true;
-                // todo check if user is already part of league
                 console.log(this.league);
                 console.log('Successfully fetched league');
             }),

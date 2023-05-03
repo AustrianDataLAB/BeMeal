@@ -29,6 +29,10 @@ export class LeaguesComponent {
         this.router.navigate(['/create-league']);
     }
 
+    viewLeague(id: number | null) {
+        if (id !== null) this.router.navigate([`/league/${id}`]);
+    }
+
     fetchLeagues() {
         this.leagueService.fetchLeagues().pipe(
             tap(response => {

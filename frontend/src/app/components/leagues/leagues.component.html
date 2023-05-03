@@ -15,10 +15,11 @@
                         <span class="span-content-league">Region: {{ prettyString(element['region']) }}</span>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-raised-button color="primary" class="btn-block">View</button>
+                        <button (click)="viewLeague(element['id'])" mat-raised-button color="primary" class="btn-block">View</button>
                         <button (click)="showLink = true" style="margin-left: 12px;" mat-button color="primary" class="btn-block">Invite Friends</button>
                     </mat-card-actions>
                     <mat-card-footer>
+                        <!-- todo only show if the user is creator of league -->
                         <pre *ngIf="showLink">{{ invitationLinks.get(element.id) | async }}</pre>
                     </mat-card-footer>
                 </mat-card>
