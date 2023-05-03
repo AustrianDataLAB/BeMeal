@@ -9,6 +9,7 @@ import {AuthGuard} from "./guards/auth.guard";
 import {LeagueInvitationComponent} from "./components/league-invitation/league-invitation.component";
 import {CreateLeagueComponent} from "./components/create-league/create-league.component";
 import {ShowLeagueComponent} from "./components/show-league/show-league.component";
+import {ChallengeComponent} from "./components/challenge/challenge.component";
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
     {path: 'profile',  canActivate: [AuthGuard], component: ProfileComponent},
     {path: 'leagues',  canActivate: [AuthGuard], component: LeaguesComponent},
     {path: 'league/:id',  canActivate: [AuthGuard], component: ShowLeagueComponent},
+    {path: 'league/:id/challenge',  canActivate: [AuthGuard], component: ChallengeComponent},
     {path: 'league/join/:hiddenIdentifier',  canActivate: [AuthGuard], component: LeagueInvitationComponent},
     {path: 'create-league',  canActivate: [AuthGuard], component: CreateLeagueComponent}
 ];

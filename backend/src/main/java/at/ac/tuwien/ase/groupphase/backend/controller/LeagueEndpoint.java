@@ -111,7 +111,7 @@ public class LeagueEndpoint {
     @PutMapping("/challenges/{force}")
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "bearerToken")
-    // todo uncomment @PreAuthorize("hasRole('GAMEMASTER')")
+    @PreAuthorize("hasRole('GAMEMASTER')")
     public void generateChallenges(@PathVariable final boolean force) {
         log.info("Generate new challenges manually");
         if (force) {

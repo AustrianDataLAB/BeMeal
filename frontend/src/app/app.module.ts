@@ -20,6 +20,7 @@ import { HeaderComponent } from './components/shared/header/header.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ChallengeComponent } from './components/challenge/challenge.component';
 import { ShowLeagueComponent } from './components/show-league/show-league.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { ShowLeagueComponent } from './components/show-league/show-league.compon
         HttpClientModule,
         AngularMaterialModule,
         FlexLayoutModule,
-        MatCardModule
+        MatCardModule,
+        DragDropModule
     ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
