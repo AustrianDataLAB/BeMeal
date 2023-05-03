@@ -15,6 +15,8 @@ import {JoinLeague} from "../../dtos/join-league";
 })
 export class LeagueInvitationComponent implements OnInit{
 
+    error = false;
+    errorMessage: string;
     username: string;
     hiddenIdentifier: string | null;
     league: League;
@@ -53,7 +55,8 @@ export class LeagueInvitationComponent implements OnInit{
             }),
             catchError(error => {
                 console.error('Error while joining league:', error);
-                // todo error handling
+                this.error = true;
+                this.errorMessage = "Error: " + error.error.message;
                 // Handle the    error here
                 return of(null);
             })
@@ -80,8 +83,9 @@ export class LeagueInvitationComponent implements OnInit{
                 console.log('Successfully fetched league');
             }),
             catchError(error => {
-                console.error('Error while creating a league:', error);
-                // todo display and Handle the error here
+                console.error('Error ', error);
+                this.error = true;
+                this.errorMessage = "Error: could not fetch league";
                 return of(null);
             })
         ).subscribe();

@@ -9,6 +9,8 @@
         <button *ngIf="!leagueJoinSuccess" mat-raised-button style="margin-right: 16px;" color="primary" (click)="joinLeague()">Join League</button>
         <button *ngIf="!leagueJoinSuccess" mat-button color="primary" (click)="doNotJoin()">Decline</button>
         <span *ngIf="leagueJoinSuccess">Success! You joined the league.</span>
+        <br>
+        <span *ngIf="error">{{errorMessage}}</span>
         </div>
     </div>
     <div *ngIf="!leagueValid" fxFlex="75" fxLayout="column" fxLayoutAlign="center start"   >

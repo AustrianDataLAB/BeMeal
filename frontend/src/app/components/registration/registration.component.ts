@@ -45,6 +45,7 @@ export class RegistrationComponent implements OnInit{
     }
     registerParticipant() {
         this.submitted = true;
+        this.error = false;
         if (this.registerForm.valid) {
             const regionEnumIndex = Object.keys(Region).indexOf(this.registerForm.controls['region'].value);
             const regionValue = Object.values(Region)[regionEnumIndex];
@@ -63,7 +64,7 @@ export class RegistrationComponent implements OnInit{
                 }),
                 catchError(error => {
                     console.error('Error while registration:', error);
-                    this.errorMessage = "Could not register user";
+                    this.errorMessage = "Error: " + error.error.message;
                     this.error = true;
                     // Handle the error here
                     return of(null);

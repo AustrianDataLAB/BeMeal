@@ -3,7 +3,7 @@
     <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
         <h1 fxLayout="row" class="mat-headline-2">My Leagues</h1>
         <button fxLayout="row"  mat-raised-button  color="primary" (click)="createLeague()">Create League</button>
-        <div fxLayout="row" fxLayoutGap="16px" class="card-container">
+        <div *ngIf="leagues.length > 0" fxLayout="row" fxLayoutGap="16px" class="card-container">
             <ng-container *ngFor="let element of leagues">
                 <mat-card class="card-item">
                     <mat-card-header>
@@ -24,6 +24,9 @@
                     </mat-card-footer>
                 </mat-card>
             </ng-container>
+        </div>
+        <div *ngIf="leagues.length < 1" style="margin-top: 32px">
+            Looks like you haven't created or joined any leagues yet :(
         </div>
     </div>
 </div>

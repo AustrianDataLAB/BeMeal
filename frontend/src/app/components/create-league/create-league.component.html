@@ -1,10 +1,3 @@
-<div *ngIf="error" class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Error</strong> {{ errorMessage }}
-    <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
 <div class="container mx-auto" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap>
     <div  fxFlex="33" fxLayout="column" fxLayoutAlign="start start">
         <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-07.svg" alt="A person enjoying cooking" />
@@ -39,6 +32,8 @@
                             </mat-select>
                         </mat-form-field>
                         <button mat-raised-button color="primary" class="btn-block" (click)="createLeague()">Create</button>
+                        <br>
+                        <span *ngIf="error">{{errorMessage}}</span>
                     </mat-card-content>
                 </form>
                 <div style="min-width: 300px"></div>

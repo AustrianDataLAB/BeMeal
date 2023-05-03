@@ -57,8 +57,8 @@ export class CreateLeagueComponent {
                 }),
                 catchError(error => {
                     console.error('Error while creating a leauge:', error);
-                    this.errorMessage = "Could not create the league";
                     this.error = true;
+                    this.errorMessage = "Error: " + error.error.message;
                     // Handle the error here
                     return of(null);
                 })
