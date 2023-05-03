@@ -36,6 +36,8 @@
 
                     <button mat-raised-button color="primary" (click)="registerParticipant()" class="btn-block">Register</button>
                     <button (click)="toLogin()" mat-button color="primary">Already registered?</button>
+                    <br>
+                    <span *ngIf="error">{{errorMessage}}</span>
 
                 </mat-card-content>
 

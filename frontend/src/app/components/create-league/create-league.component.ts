@@ -31,7 +31,7 @@ export class CreateLeagueComponent {
         this.registerForm = this.formBuilder.group({
             name: ['', [Validators.required]],
             gamemode: ['', [Validators.required]],
-            challengeDuration: [0, [Validators.required]],
+            challengeDuration: ['', [Validators.required]],
             region: ['', [Validators.required]]
         });
     }
@@ -53,12 +53,12 @@ export class CreateLeagueComponent {
                 tap(response => {
                     console.log(response);
                     console.log('Successfully create league');
-                    this.router.navigate(['/create-league']);
+                    this.router.navigate(['/leagues']);
                 }),
                 catchError(error => {
                     console.error('Error while creating a leauge:', error);
-                    this.errorMessage = "Could not create the league";
                     this.error = true;
+                    this.errorMessage = "Error: " + error.error.message;
                     // Handle the error here
                     return of(null);
                 })

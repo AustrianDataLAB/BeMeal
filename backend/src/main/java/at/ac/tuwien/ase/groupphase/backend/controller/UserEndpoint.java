@@ -7,38 +7,47 @@ import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
+import at.ac.tuwien.ase.groupphase.backend.service.SelfService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
+import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/self-service")
 /**
  * Responsible for all request a user might want to perform on its own profile. Examples for that are, registration,
  * login,....
  */
-public class SelfService {
+public class UserEndpoint {
 
-    private final Logger logger = LoggerFactory.getLogger(SelfService.class);
+    private final Logger logger = LoggerFactory.getLogger(UserEndpoint.class);
 
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
     private final RegistrationMapper registrationMapper;
-
+    private final SelfService selfService;
     private final ParticipantService participantService;
 
     @Autowired
     @NotNull
-    public SelfService(final UserRepository userRepository, final ParticipantRepository participantRepository,
-            ParticipantService participantService, final RegistrationMapper registrationMapper) {
+    public UserEndpoint(final UserRepository userRepository, final ParticipantRepository participantRepository,
+            ParticipantService participantService, final RegistrationMapper registrationMapper,
+            SelfService selfService) {
         this.userRepository = userRepository;
         this.participantRepository = participantRepository;
         this.registrationMapper = registrationMapper;
         this.participantService = participantService;
+        this.selfService = selfService;
     }
 
     /**
@@ -56,13 +65,7 @@ public class SelfService {
     @ResponseStatus(HttpStatus.CREATED)
     public void registerParticipant(@NotNull @RequestBody final Registration registration) {
         logger.trace("registerParticipant(...)");
-        if (this.userRepository.exists(registration.email(), registration.password())) {
-            throw new UserAlreadyExistsException(registration.email(), registration.username());
-        }
-        final var participant = this.registrationMapper.registrationToParticipant(registration);
-        this.participantRepository.save(participant);
-        logger.info("Registered participant with id: '{}' email: '{}' username: '{}'", participant.getId(),
-                participant.getEmail(), participant.getUsername());
+        this.selfService.register(registration);
     }
 
     /**

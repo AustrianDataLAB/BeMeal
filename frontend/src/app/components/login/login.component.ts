@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit{
                 this.loginForm.controls['password'].value
             );
             console.log('Try to authenticate user: ' + loginObj.toString());
-            // todo: error handling
             this.selfService.loginUser(loginObj).pipe(
                 tap(response => {
                     console.log(response);
@@ -49,8 +48,8 @@ export class LoginComponent implements OnInit{
                 }),
                 catchError(error => {
                     console.error('Error logging in:', error);
-                    this.errorMessage = "Wrong credentials";
                     this.error = true;
+                    this.errorMessage = "Error: " + error.error.message;
                     // Handle the error here
                     return of(null);
                 })

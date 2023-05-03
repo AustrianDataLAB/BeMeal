@@ -1,0 +1,66 @@
+
+
+
+<div class="container page-container mx-auto"
+     fxLayout="column"  fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+
+    <h1 class="mat-headline-2">Challenge</h1>
+
+    <!-- challenge details todo -->
+
+    <!-- upload submission todo -->
+
+
+    <!-- vote submissions -->
+    <ng-container>
+        <mat-card class="card-item">
+            <mat-card-header>
+                <mat-card-title>Rate Your Friends</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="card-content-league">
+                <div class="span-content-league">Guess what? The submissions from the challenge are in and you can now judge and upvote your friends' submission.
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button (click)="switchUpvotingContainer()" mat-raised-button color="primary" class="btn-block">Rate Submissions</button>
+            </mat-card-actions>
+        </mat-card>
+    </ng-container>
+
+</div>
+</div>
+
+
+<!-- swipe card for upvoting -->
+<div id="upvoting-container" *ngIf="upvotingEnabled" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+    <div style="position:absolute" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
+        <div fxLayout="row" fxLayoutGap="16px" class="card-container"
+             [@cardAnimator]="cardState"
+             (@cardAnimator.done)="resetAnimationState($event)"
+             (swipeleft)='onSwipeLeft()'
+             (swiperight)='onSwipeRight()'>
+            <mat-card class="card-item">
+                <mat-card-header>
+                    <!--<mat-card-title></mat-card-title>-->
+                </mat-card-header>
+                <mat-card-content class="card-content-league">
+                    <img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg">
+                </mat-card-content>
+                <mat-card-actions>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+    <div fxFlexFill fxFlex="100"  fxLayoutGap="16px" fxLayout="row" fxLayoutAlign="center center" >
+        <button (click)="onSwipeLeft()" color="primary" mat-fab  aria-label="like">
+            <mat-icon>close</mat-icon>
+        </button>
+        <button (click)="onSwipeRight()" color="primary" mat-fab  aria-label="like">
+            <mat-icon>favorite</mat-icon>
+        </button>
+    </div>
+    <button (click)="switchUpvotingContainer()" style="margin-left: 12px;" mat-button  color="secondary" class="btn-block">Cancel</button>
+</div>
+</div>

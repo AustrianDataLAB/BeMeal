@@ -1,0 +1,43 @@
+<div class="container page-container mx-auto" fxLayout="row"  fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+        <h1 fxLayout="row" class="mat-headline-2">{{ league['name'] }}</h1>
+        <div fxLayout="row" fxLayoutGap="16px" class="card-container">
+            <ng-container>
+                <mat-card class="card-item">
+                    <mat-card-header>
+                        <mat-card-title>League details</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="card-content-league">
+                        <div class="span-content-league">Gamemode: {{ prettyString(league['gameMode']) }}</div>
+                        <div class="span-content-league">Challenge duration: {{ league['challengeDuration'] }} days</div>
+                        <div class="span-content-league">Region: {{ prettyString(league['region']) }}</div>
+                    </mat-card-content>
+                </mat-card>
+            </ng-container>
+            <div>
+                <ng-container>
+                    <mat-card  class="card-item">
+
+                    <mat-card-header >
+                        <mat-card-title><mat-icon style="transform: scale(1.2); margin-right: 16px;">warning</mat-icon>Challenge</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="card-content-league">
+                            <span>
+                                A new challenge awaits you! Don't miss out on the opportunity to challenge yourself and showcase your skills.
+                            </span>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button fxLayout="row"  mat-raised-button  color="primary" (click)="showChallenge()">View Challenge</button>
+
+                        </mat-card-actions>
+                    </mat-card>
+                </ng-container>
+         </div>
+
+        </div>
+
+    </div>
+
+    <!-- todo show winner of latest challenge -->
+    <!-- todo leaderboard -->
+</div>

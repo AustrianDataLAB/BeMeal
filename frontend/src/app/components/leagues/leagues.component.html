@@ -3,7 +3,7 @@
     <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
         <h1 fxLayout="row" class="mat-headline-2">My Leagues</h1>
         <button fxLayout="row"  mat-raised-button  color="primary" (click)="createLeague()">Create League</button>
-        <div fxLayout="row" fxLayoutGap="16px" class="card-container">
+        <div *ngIf="leagues.length > 0" fxLayout="row" fxLayoutGap="16px" class="card-container">
             <ng-container *ngFor="let element of leagues">
                 <mat-card class="card-item">
                     <mat-card-header>
@@ -15,54 +15,18 @@
                         <span class="span-content-league">Region: {{ prettyString(element['region']) }}</span>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-raised-button color="primary" class="btn-block">View</button>
+                        <button (click)="viewLeague(element['id'])" mat-raised-button color="primary" class="btn-block">View</button>
                         <button (click)="showLink = true" style="margin-left: 12px;" mat-button color="primary" class="btn-block">Invite Friends</button>
                     </mat-card-actions>
                     <mat-card-footer>
+                        <!-- todo only show if the user is creator of league -->
                         <pre *ngIf="showLink">{{ invitationLinks.get(element.id) | async }}</pre>
                     </mat-card-footer>
                 </mat-card>
             </ng-container>
         </div>
-
-
-        <!--
-        <mat-card>
-            <table mat-table [dataSource]="leagues">
-                <ng-container matColumnDef="Name">
-                    <th mat-header-cell *matHeaderCellDef> Name </th>
-                    <td mat-cell *matCellDef="let element"> {{element['name']}} </td>
-                </ng-container>
-                <ng-container matColumnDef="gameMode">
-                    <th mat-header-cell *matHeaderCellDef> Gamemode </th>
-                    <td mat-cell *matCellDef="let element"> {{element['gameMode']}} </td>
-                </ng-container>
-                <ng-container matColumnDef="challengeDuration">
-                    <th mat-header-cell *matHeaderCellDef> Duration </th>
-                    <td mat-cell *matCellDef="let element"> {{element['challengeDuration']}} days </td>
-                </ng-container>
-                <ng-container matColumnDef="region">
-                    <th mat-header-cell *matHeaderCellDef> Region </th>
-                    <td mat-cell *matCellDef="let element"> {{element['region']}} </td>
-                </ng-container>
-                <ng-container matColumnDef="action">
-                    <th mat-header-cell *matHeaderCellDef>Actions</th>
-                    <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button color="primary" class="btn-block">Details</button>
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="invitationLink">
-                    <th mat-header-cell *matHeaderCellDef>Invitation Link</th>
-                    <td mat-cell *matCellDef="let element">
-                      <pre>{{ getInvitationLink(element.id) | async }}</pre>
-                    </td>
-                </ng-container>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let emprow; columns: displayedColumns;"></tr>
-            </table>
-        </mat-card> -->
+        <div *ngIf="leagues.length < 1" style="margin-top: 32px">
+            Looks like you haven't created or joined any leagues yet :(
+        </div>
     </div>
-    <!--<div fxFlexFill fxFlex="0" fxLayout="column" fxLayoutAlign="start center">
-        <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-01.svg" alt="A person enjoying cooking" />
-    </div> -->
 </div>
