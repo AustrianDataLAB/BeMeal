@@ -53,7 +53,7 @@ export class CreateLeagueComponent {
                 tap(response => {
                     console.log(response);
                     console.log('Successfully create league');
-                    this.router.navigate(['/create-league']);
+                    this.router.navigate(['/leagues']);
                 }),
                 catchError(error => {
                     console.error('Error while creating a leauge:', error);
