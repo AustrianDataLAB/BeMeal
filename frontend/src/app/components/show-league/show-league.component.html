@@ -1,2 +1,27 @@
 <p>show-league works!</p>
 this is league with id {{leagueId}}
+
+
+<div class="container page-container mx-auto" fxLayout="row"  fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+        <h1 fxLayout="row" class="mat-headline-2">{{ league['name'] }}</h1>
+        <div fxLayout="row" fxLayoutGap="16px" class="card-container">
+            <ng-container>
+                <mat-card class="card-item">
+                    <mat-card-header>
+                        <mat-card-title>{{ league['name'] }}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="card-content-league">
+                        <span class="span-content-league">Gamemode: {{ prettyString(league['gameMode']) }}</span>
+                        <span class="span-content-league">Challenge duration: {{ league['challengeDuration'] }} days</span>
+                        <span class="span-content-league">Region: {{ prettyString(league['region']) }}</span>
+                    </mat-card-content>
+                    <mat-card-actions>
+                 </mat-card-actions>
+                    <mat-card-footer>
+                   </mat-card-footer>
+                </mat-card>
+            </ng-container>
+        </div>
+    </div>
+</div>

@@ -11,13 +11,16 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -80,6 +83,23 @@ public class LeagueEndpoint {
         String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<League> leagues = this.leagueService.getLeagues(user);
         return this.leagueMapper.leagueListToLeagueDtoList(leagues);
+    }
+
+    @GetMapping("/league/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "bearerToken")
+    public ResponseEntity<LeagueDto> getLeagueById(@NotNull @PathVariable final Long id) {
+        String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<League> leagues = this.leagueService.getLeagues(user);
+        Optional<League> leagueOptional = leagues.stream()
+                .filter(league -> league.getId().equals(id))
+                .findFirst();
+        if (leagueOptional.isPresent()) {
+            League league = leagueOptional.get();
+            return ResponseEntity.ok(this.leagueMapper.leagueToLeagueDto(league));
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not in league");
+        }
     }
 
     /**

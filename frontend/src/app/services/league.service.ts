@@ -45,13 +45,16 @@ export class LeagueService {
             }));
     }
 
-
     fetchLeagues(): Observable<League[]> {
         return this.httpClient.get<League[]>(this.baseUri + '/leagues');
     }
 
+    getLeagueById(id: number): Observable<League> {
+        return this.httpClient.get<(League)>(`${this.baseUri}/league/${id}`);
+    }
+
     getLeagueByHiddenIdentifier(hiddenIdentifier: string): Observable<League> {
-        return this.httpClient.get<League>(this.baseUri + `/hidden-identifier/${hiddenIdentifier}`);
+        return this.httpClient.get<League>(`${this.baseUri}/hidden-identifier/${hiddenIdentifier}`);
     }
 
 }
