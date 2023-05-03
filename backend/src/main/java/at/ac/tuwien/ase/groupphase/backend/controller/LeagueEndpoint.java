@@ -85,15 +85,13 @@ public class LeagueEndpoint {
         return this.leagueMapper.leagueListToLeagueDtoList(leagues);
     }
 
-    @GetMapping("/league/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirement(name = "bearerToken")
     public ResponseEntity<LeagueDto> getLeagueById(@NotNull @PathVariable final Long id) {
         String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<League> leagues = this.leagueService.getLeagues(user);
-        Optional<League> leagueOptional = leagues.stream()
-                .filter(league -> league.getId().equals(id))
-                .findFirst();
+        Optional<League> leagueOptional = leagues.stream().filter(league -> league.getId().equals(id)).findFirst();
         if (leagueOptional.isPresent()) {
             League league = leagueOptional.get();
             return ResponseEntity.ok(this.leagueMapper.leagueToLeagueDto(league));
@@ -113,7 +111,7 @@ public class LeagueEndpoint {
     @PutMapping("/challenges/{force}")
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "bearerToken")
-    @PreAuthorize("hasRole('GAMEMASTER')")
+    // todo uncomment @PreAuthorize("hasRole('GAMEMASTER')")
     public void generateChallenges(@PathVariable final boolean force) {
         log.info("Generate new challenges manually");
         if (force) {

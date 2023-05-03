@@ -1,6 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.integration;
 
-import at.ac.tuwien.ase.groupphase.backend.controller.SelfService;
+import at.ac.tuwien.ase.groupphase.backend.controller.UserEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
@@ -13,24 +13,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.web.servlet.MockMvc;
+
 import static util.Constants.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class SelfServiceViewProfileTest {
+public class UserEndpointViewProfileTest {
 
     // @Autowired
     // private MockMvc mockMvc;
 
     private final ParticipantRepository participantRepository;
-    private final SelfService selfService;
+    private final UserEndpoint userEndpoint;
 
     @Autowired
-    public SelfServiceViewProfileTest(ParticipantRepository participantRepository, SelfService selfService) {
+    public UserEndpointViewProfileTest(ParticipantRepository participantRepository, UserEndpoint userEndpoint) {
         this.participantRepository = participantRepository;
-        this.selfService = selfService;
+        this.userEndpoint = userEndpoint;
     }
 
     @BeforeEach
@@ -47,7 +47,7 @@ public class SelfServiceViewProfileTest {
 
     @Test
     void test_viewProfile_method() {
-        Assertions.assertEquals(VALID_PARTICIPANT_DTO_1, this.selfService.viewProfile());
+        Assertions.assertEquals(VALID_PARTICIPANT_DTO_1, this.userEndpoint.viewProfile());
     }
 
     // @Test

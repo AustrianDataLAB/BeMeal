@@ -50,7 +50,7 @@ export class LeagueService {
     }
 
     getLeagueById(id: number): Observable<League> {
-        return this.httpClient.get<(League)>(`${this.baseUri}/league/${id}`);
+        return this.httpClient.get<(League)>(`${this.baseUri}/${id}`);
     }
 
     getLeagueByHiddenIdentifier(hiddenIdentifier: string): Observable<League> {
