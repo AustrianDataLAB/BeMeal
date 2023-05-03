@@ -3,6 +3,8 @@
 
 <div class="container page-container mx-auto"
      fxLayout="column"  fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+
     <h1 class="mat-headline-2">Challenge</h1>
 
     <!-- challenge details todo -->
@@ -11,17 +13,28 @@
 
 
     <!-- vote submissions -->
-    <div>
-        <h2 class="mat-display-1">
-            Guess what? The submissions from the challenge are in and you can now judge and upvote your friends' submission.
-        </h2>
-        <button (click)="switchUpvotingContainer()" mat-raised-button color="primary" class="btn-block">Rate Submissions</button>
-    </div>
+    <ng-container>
+        <mat-card class="card-item">
+            <mat-card-header>
+                <mat-card-title>Rate Your Friends</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="card-content-league">
+                <div class="span-content-league">Guess what? The submissions from the challenge are in and you can now judge and upvote your friends' submission.
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button (click)="switchUpvotingContainer()" mat-raised-button color="primary" class="btn-block">Rate Submissions</button>
+            </mat-card-actions>
+        </mat-card>
+    </ng-container>
 
 </div>
+</div>
+
 
 <!-- swipe card for upvoting -->
 <div id="upvoting-container" *ngIf="upvotingEnabled" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+    <div style="position:absolute" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
     <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
         <div fxLayout="row" fxLayoutGap="16px" class="card-container"
              [@cardAnimator]="cardState"
@@ -49,4 +62,5 @@
         </button>
     </div>
     <button (click)="switchUpvotingContainer()" style="margin-left: 12px;" mat-button  color="secondary" class="btn-block">Cancel</button>
+</div>
 </div>

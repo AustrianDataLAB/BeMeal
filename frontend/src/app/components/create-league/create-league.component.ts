@@ -31,7 +31,7 @@ export class CreateLeagueComponent {
         this.registerForm = this.formBuilder.group({
             name: ['', [Validators.required]],
             gamemode: ['', [Validators.required]],
-            challengeDuration: [0, [Validators.required]],
+            challengeDuration: ['', [Validators.required]],
             region: ['', [Validators.required]]
         });
     }

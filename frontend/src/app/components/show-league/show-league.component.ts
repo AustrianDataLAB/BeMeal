@@ -26,6 +26,10 @@ export class ShowLeagueComponent implements OnInit{
         if (this.leagueId !== null) this.fetchLeague(this.leagueId);
     }
 
+    showChallenge() {
+        this.router.navigate([`league/${this.leagueId}/challenge`]);
+    }
+
     extractLeagueId(): void {
         const id = this.route.snapshot.paramMap.get('id');
         if (id !== null) {

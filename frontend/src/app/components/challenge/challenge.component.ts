@@ -42,7 +42,7 @@ export class ChallengeComponent {
             this.renderer.setStyle(element, 'filter', 'unset');
         } else {
             this.upvotingEnabled = true;
-            this.renderer.setStyle(element, 'filter', 'blur(2px)');
+            this.renderer.setStyle(element, 'filter', 'blur(3px)');
         }
     }
 
