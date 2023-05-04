@@ -7,7 +7,24 @@
 
     <h1 class="mat-headline-2">Challenge</h1>
 
-    <!-- challenge details todo -->
+        <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+            <div fxLayout="row" fxLayoutGap="16px" class="card-container">
+                <mat-card class="card-item">
+                    <mat-card-header>
+                        <mat-card-title>Challenge details</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="card-content-league">
+                        <span class="span-content-league">Name: {{ challenge.name }}</span>
+                        <span class="span-content-league">Description: {{ challenge.description }}</span>
+                        <span class="span-content-league">End date: {{ challenge.endDate}} </span>
+                        <span class="span-content-league">Ingredients:
+                            <div *ngFor="let ingridient of challenge.ingredients">{{ingridient.name}}</div>
+                        </span>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+        </div>
 
     <!-- upload submission todo -->
 

@@ -5,6 +5,7 @@ import {League} from "../dtos/league";
 import {map, Observable, throwError} from "rxjs";
 import {JoinLeague} from "../dtos/join-league";
 import {catchError} from "rxjs/operators";
+import {ChallengeInfo} from "../dtos/challengeInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,10 @@ export class LeagueService {
 
     fetchLeagues(): Observable<League[]> {
         return this.httpClient.get<League[]>(this.baseUri + '/leagues');
+    }
+
+    getChallengeForLeague(id: number): Observable<ChallengeInfo> {
+        return this.httpClient.get<ChallengeInfo>(this.baseUri + '/challenge/' + id);
     }
 
     getLeagueById(id: number): Observable<League> {
