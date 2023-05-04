@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.controller;
 
 import at.ac.tuwien.ase.groupphase.backend.service.SubmissionService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ public class SubmissionEndpoint {
 
     @PostMapping("submit/{challengeId}")
     @ResponseStatus(HttpStatus.CREATED)
+    @SecurityRequirement(name = "bearerToken")
     public void submit(@RequestParam("file") MultipartFile file, @NotNull @PathVariable final String challengeId) {
         this.submissionService.submit(file, challengeId);
         // TODO response / return ?

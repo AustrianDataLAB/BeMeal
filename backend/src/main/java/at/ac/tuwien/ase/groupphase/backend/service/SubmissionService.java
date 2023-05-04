@@ -5,6 +5,7 @@ import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.entity.Submission;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
+import at.ac.tuwien.ase.groupphase.backend.repository.SubmissionRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,13 @@ public class SubmissionService {
 
     private final ParticipantRepository participantRepository;
     private final ChallengeRepository challengeRepository;
+    private final SubmissionRepository submissionRepository;
 
     @Autowired
-    public SubmissionService(ParticipantRepository participantRepository, ChallengeRepository challengeRepository) {
+    public SubmissionService(ParticipantRepository participantRepository, ChallengeRepository challengeRepository, SubmissionRepository submissionRepository) {
         this.participantRepository = participantRepository;
         this.challengeRepository = challengeRepository;
+        this.submissionRepository = submissionRepository;
     }
 
     /*
@@ -91,6 +94,7 @@ public class SubmissionService {
         ////////////////////////////////////////////////////////////////
         // add/overwrite submission
         Submission newSubmission = this.getNewSubmission(newUUID, now, participant, challenge);
+        this.submissionRepository.save(newSubmission);
 
         List<Submission> submissions = participant.getSubmissions();
         Submission previousSubmission = submissions.stream().filter(x -> Long.valueOf(challengeId).equals(x.getChallenge().getId())).findAny().orElse(null);
