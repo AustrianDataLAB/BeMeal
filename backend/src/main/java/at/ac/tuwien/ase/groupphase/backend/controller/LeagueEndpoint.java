@@ -1,8 +1,10 @@
 package at.ac.tuwien.ase.groupphase.backend.controller;
 
+import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.JoinLeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.League;
+import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ChallengeGenerationService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -85,6 +88,21 @@ public class LeagueEndpoint {
         return this.leagueMapper.leagueListToLeagueDtoList(leagues);
     }
 
+
+    @GetMapping("/challenge/{id}")
+    @SecurityRequirement(name = "bearerToken")
+    @ResponseStatus(HttpStatus.OK)
+    public ChallengeInfoDto getChallengeForLeague(@NotNull @PathVariable final Long id) {
+        try {
+            return this.leagueService.getChallengeForLeague(id);
+        } catch (NoChallengeException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirement(name = "bearerToken")
@@ -111,7 +129,7 @@ public class LeagueEndpoint {
     @PutMapping("/challenges/{force}")
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "bearerToken")
-    @PreAuthorize("hasRole('GAMEMASTER')")
+//    @PreAuthorize("hasRole('GAMEMASTER')")
     public void generateChallenges(@PathVariable final boolean force) {
         log.info("Generate new challenges manually");
         if (force) {
