@@ -88,7 +88,6 @@ public class LeagueEndpoint {
         return this.leagueMapper.leagueListToLeagueDtoList(leagues);
     }
 
-
     @GetMapping("/challenge/{id}")
     @SecurityRequirement(name = "bearerToken")
     @ResponseStatus(HttpStatus.OK)
@@ -129,7 +128,7 @@ public class LeagueEndpoint {
     @PutMapping("/challenges/{force}")
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "bearerToken")
-//    @PreAuthorize("hasRole('GAMEMASTER')")
+    // @PreAuthorize("hasRole('GAMEMASTER')")
     public void generateChallenges(@PathVariable final boolean force) {
         log.info("Generate new challenges manually");
         if (force) {

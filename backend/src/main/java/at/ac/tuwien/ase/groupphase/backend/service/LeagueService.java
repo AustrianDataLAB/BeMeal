@@ -33,7 +33,8 @@ public class LeagueService {
 
     @Autowired
     @NotNull
-    public LeagueService(UserRepository userRepository, LeagueRepository leagueRepository, ChallengeRepository challengeRepository, RecipeService recipeService) {
+    public LeagueService(UserRepository userRepository, LeagueRepository leagueRepository,
+            ChallengeRepository challengeRepository, RecipeService recipeService) {
         this.userRepository = userRepository;
         this.leagueRepository = leagueRepository;
         this.challengeRepository = challengeRepository;
@@ -47,7 +48,7 @@ public class LeagueService {
             throw new NoChallengeException();
         }
 
-        //TODO dont take first one, but the correct one
+        // TODO dont take first one, but the correct one
         Challenge challenge = league.getChallenges().get(0);
         RecipeDto recipe = this.recipeService.getRecipeById(challenge.getRecipe());
 
