@@ -41,25 +41,19 @@ public class SubmissionService {
     private final SubmissionRepository submissionRepository;
 
     @Autowired
-    public SubmissionService(ParticipantRepository participantRepository, ChallengeRepository challengeRepository, SubmissionRepository submissionRepository) {
+    public SubmissionService(ParticipantRepository participantRepository, ChallengeRepository challengeRepository,
+            SubmissionRepository submissionRepository) {
         this.participantRepository = participantRepository;
         this.challengeRepository = challengeRepository;
         this.submissionRepository = submissionRepository;
     }
 
     /*
-    TODO
-    - handle file submission
-        - verify user
-        - verify challengeId
-        - check that participant is eligible to submit for this challenge --> i.e., part of the respective league?
-        - check if challenge still open for submissions
-        - check if participant already submitted --> update/override previous image
-        - handle image
-            - check size --> additionally to max file size option downscale so that all images have the same dimensions?
-            - generate UUID
-            - save file to disk
-            - insert/override UUID into submission DB
+     * TODO - handle file submission - verify user - verify challengeId - check that participant is eligible to submit
+     * for this challenge --> i.e., part of the respective league? - check if challenge still open for submissions -
+     * check if participant already submitted --> update/override previous image - handle image - check size -->
+     * additionally to max file size option downscale so that all images have the same dimensions? - generate UUID -
+     * save file to disk - insert/override UUID into submission DB
      */
 
     @Transactional(rollbackOn = Exception.class)
@@ -97,7 +91,8 @@ public class SubmissionService {
         this.submissionRepository.save(newSubmission);
 
         List<Submission> submissions = participant.getSubmissions();
-        Submission previousSubmission = submissions.stream().filter(x -> Long.valueOf(challengeId).equals(x.getChallenge().getId())).findAny().orElse(null);
+        Submission previousSubmission = submissions.stream()
+                .filter(x -> Long.valueOf(challengeId).equals(x.getChallenge().getId())).findAny().orElse(null);
         if (previousSubmission != null) {
             submissions.remove(previousSubmission);
             try {
@@ -107,12 +102,13 @@ public class SubmissionService {
             }
         }
         submissions.add(newSubmission);
-        participant.setSubmissions(submissions);  // TODO does this behave as expected in the DB ?
+        participant.setSubmissions(submissions); // TODO does this behave as expected in the DB ?
 
         // TODO return *success* ?
     }
 
-    private Submission getNewSubmission(UUID uuid, LocalDateTime localDateTime, Participant participant, Challenge challenge) {
+    private Submission getNewSubmission(UUID uuid, LocalDateTime localDateTime, Participant participant,
+            Challenge challenge) {
         Submission submission = new Submission();
         submission.setPicture(uuid);
         submission.setDate(localDateTime);
@@ -141,14 +137,17 @@ public class SubmissionService {
     /**
      * Calculates the width and height with the correct aspect ratio.
      *
-     * @param img the img
+     * @param img
+     *            the img
+     *
      * @return res array: width=res[0] height=res[1]
      */
     private static int[] widthHeightCorrectAspectRatio(BufferedImage img) {
         try {
-//            LOGGER.info("original width and height:  width: " + img.getWidth() + "  height: " + img.getHeight());
-            int[] res = {img.getWidth(), img.getHeight()};
-            if (img.getWidth() > SubmissionService.MAX_WIDTH_HEIGHT || img.getHeight() > SubmissionService.MAX_WIDTH_HEIGHT) {
+            // LOGGER.info("original width and height: width: " + img.getWidth() + " height: " + img.getHeight());
+            int[] res = { img.getWidth(), img.getHeight() };
+            if (img.getWidth() > SubmissionService.MAX_WIDTH_HEIGHT
+                    || img.getHeight() > SubmissionService.MAX_WIDTH_HEIGHT) {
                 if (img.getWidth() >= img.getHeight()) {
                     res[0] = SubmissionService.MAX_WIDTH_HEIGHT;
                     res[1] = (int) (((0.0 + img.getHeight()) / img.getWidth()) * SubmissionService.MAX_WIDTH_HEIGHT);
@@ -166,9 +165,13 @@ public class SubmissionService {
     /**
      * Resize BufferedImage.
      *
-     * @param originalImage the original image
-     * @param targetWidth   the target width
-     * @param targetHeight  the target height
+     * @param originalImage
+     *            the original image
+     * @param targetWidth
+     *            the target width
+     * @param targetHeight
+     *            the target height
+     *
      * @return the resized buffered image
      */
     private static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
@@ -182,7 +185,9 @@ public class SubmissionService {
     /**
      * Convert BufferedImage to byte array.
      *
-     * @param bi the BufferedImage
+     * @param bi
+     *            the BufferedImage
+     *
      * @return the byte array
      */
     private static byte[] bufferedImageToByteArray(BufferedImage bi) {
