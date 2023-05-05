@@ -4,6 +4,7 @@ import at.ac.tuwien.ase.groupphase.backend.dto.SubmissionDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Challenge;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.entity.Submission;
+import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
@@ -11,9 +12,11 @@ import at.ac.tuwien.ase.groupphase.backend.repository.SubmissionRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -46,7 +49,7 @@ public class SubmissionService {
 
     @Autowired
     public SubmissionService(ParticipantRepository participantRepository, ChallengeRepository challengeRepository,
-            SubmissionRepository submissionRepository, SubmissionMapper submissionMapper) {
+                             SubmissionRepository submissionRepository, SubmissionMapper submissionMapper) {
         this.participantRepository = participantRepository;
         this.challengeRepository = challengeRepository;
         this.submissionRepository = submissionRepository;
@@ -62,7 +65,7 @@ public class SubmissionService {
      */
 
     @Transactional(rollbackOn = Exception.class)
-    public void submit(MultipartFile file, @NotNull String challengeId) { // TODO throw correct exceptions
+    public void submit(MultipartFile file, @NotNull String challengeId) {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);
         Challenge challenge = this.challengeRepository.findById(Long.valueOf(challengeId)).orElseThrow();
@@ -87,7 +90,7 @@ public class SubmissionService {
 
             ImageIO.write(resizedImage, IMAGE_FORMAT, f);
         } catch (IOException e) {
-            throw new RuntimeException(e); // TODO
+            throw new RuntimeException(e);
         }
 
         ////////////////////////////////////////////////////////////////
@@ -107,13 +110,11 @@ public class SubmissionService {
             }
         }
         submissions.add(newSubmission);
-        participant.setSubmissions(submissions); // TODO does this behave as expected in the DB ?
-
-        // TODO return *success* ?
+        participant.setSubmissions(submissions);
     }
 
     private Submission getNewSubmission(UUID uuid, LocalDateTime localDateTime, Participant participant,
-            Challenge challenge) {
+                                        Challenge challenge) {
         Submission submission = new Submission();
         submission.setPicture(uuid);
         submission.setDate(localDateTime);
@@ -125,13 +126,18 @@ public class SubmissionService {
 
     private void verifyEligibility(Participant participant, Challenge challenge, LocalDateTime now) {
         // check challenge still open for submissions
-        if (now.isAfter(challenge.getEndDate().atTime(LocalTime.MIDNIGHT))) {
-            throw new RuntimeException(); // TODO forbidden?
+        if (now.isAfter(challenge.getEndDate().atTime(LocalTime.MAX))) {
+            throw new ForbiddenAccessException("Challenge is closed for submissions");
+        }
+
+        // check challenge still open for submissions
+        if (now.isBefore(challenge.getStartDate().atTime(LocalTime.MIN))) {
+            throw new ForbiddenAccessException("Challenge is not open for submissions yet");
         }
 
         // check participant part of league
         if (!participant.getLeagues().contains(challenge.getLeague())) {
-            throw new RuntimeException(); // TODO forbidden?
+            throw new ForbiddenAccessException("Participant is not part of league");
         }
     }
 
@@ -142,41 +148,31 @@ public class SubmissionService {
     /**
      * Calculates the width and height with the correct aspect ratio.
      *
-     * @param img
-     *            the img
-     *
+     * @param img the img
      * @return res array: width=res[0] height=res[1]
      */
     private static int[] widthHeightCorrectAspectRatio(BufferedImage img) {
-        try {
-            // LOGGER.info("original width and height: width: " + img.getWidth() + " height: " + img.getHeight());
-            int[] res = { img.getWidth(), img.getHeight() };
-            if (img.getWidth() > SubmissionService.MAX_WIDTH_HEIGHT
-                    || img.getHeight() > SubmissionService.MAX_WIDTH_HEIGHT) {
-                if (img.getWidth() >= img.getHeight()) {
-                    res[0] = SubmissionService.MAX_WIDTH_HEIGHT;
-                    res[1] = (int) (((0.0 + img.getHeight()) / img.getWidth()) * SubmissionService.MAX_WIDTH_HEIGHT);
-                } else {
-                    res[0] = (int) (((0.0 + img.getWidth()) / img.getHeight()) * SubmissionService.MAX_WIDTH_HEIGHT);
-                    res[1] = SubmissionService.MAX_WIDTH_HEIGHT;
-                }
+        // LOGGER.info("original width and height: width: " + img.getWidth() + " height: " + img.getHeight());
+        int[] res = {img.getWidth(), img.getHeight()};
+        if (img.getWidth() > SubmissionService.MAX_WIDTH_HEIGHT
+                || img.getHeight() > SubmissionService.MAX_WIDTH_HEIGHT) {
+            if (img.getWidth() >= img.getHeight()) {
+                res[0] = SubmissionService.MAX_WIDTH_HEIGHT;
+                res[1] = (int) (((0.0 + img.getHeight()) / img.getWidth()) * SubmissionService.MAX_WIDTH_HEIGHT);
+            } else {
+                res[0] = (int) (((0.0 + img.getWidth()) / img.getHeight()) * SubmissionService.MAX_WIDTH_HEIGHT);
+                res[1] = SubmissionService.MAX_WIDTH_HEIGHT;
             }
-            return res;
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e); // TODO
         }
+        return res;
     }
 
     /**
      * Resize BufferedImage.
      *
-     * @param originalImage
-     *            the original image
-     * @param targetWidth
-     *            the target width
-     * @param targetHeight
-     *            the target height
-     *
+     * @param originalImage the original image
+     * @param targetWidth   the target width
+     * @param targetHeight  the target height
      * @return the resized buffered image
      */
     private static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
@@ -190,9 +186,7 @@ public class SubmissionService {
     /**
      * Convert BufferedImage to byte array.
      *
-     * @param bi
-     *            the BufferedImage
-     *
+     * @param bi the BufferedImage
      * @return the byte array
      */
     private static byte[] bufferedImageToByteArray(BufferedImage bi) {
@@ -200,7 +194,7 @@ public class SubmissionService {
             ImageIO.write(bi, SubmissionService.IMAGE_FORMAT, baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage(), e); // TODO
+            throw new RuntimeException(e);
         }
     }
 
@@ -212,7 +206,7 @@ public class SubmissionService {
 
         // check if participant is allowed to see submission
         if (!participant.getLeagues().contains(submission.getChallenge().getLeague())) {
-            throw new RuntimeException("Participant is not eligible to view submission"); // TODO
+            throw new ForbiddenAccessException("Participant is not eligible to view submission");
         }
 
         SubmissionDto submissionDto = this.submissionMapper.submissionToSubmissionDto(submission);
