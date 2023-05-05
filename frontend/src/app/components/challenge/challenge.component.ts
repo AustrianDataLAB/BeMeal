@@ -7,6 +7,7 @@ import {League} from "../../dtos/league";
 import {ChallengeInfo} from "../../dtos/challengeInfo";
 import {LeagueService} from "../../services/league.service";
 import {ActivatedRoute} from "@angular/router";
+import {Submission} from "../../dtos/submission";
 
 @Component({
   selector: 'app-challenge',
@@ -24,6 +25,7 @@ export class ChallengeComponent {
     cardState: string;
     upvotingEnabled = false;
     challenge: ChallengeInfo;
+    submission: Submission = {} as Submission;
 
     error = false;
     errorMessage = '';
@@ -57,7 +59,9 @@ export class ChallengeComponent {
         this.leagueService.getChallengeForLeague(id).pipe(
             tap(response => {
                 this.challenge = response;
+                this.submission.challengeId = this.challenge.challengeId;
                 console.log(this.challenge);
+                console.log(this.submission)
                 console.log('Successfully fetched challenge');
             }),
             catchError(error => {
@@ -69,6 +73,20 @@ export class ChallengeComponent {
             })
         ).subscribe();
     }
+
+    onImageChangeNOCOMPRESSION(event: Event) {
+        const input = event.target as HTMLInputElement;
+        if (input.files != null) {
+            this.submission.image = input.files[0];
+            console.log(this.submission)
+        }
+
+    }
+
+    submit() {
+        console.log(this.submission)
+    }
+
 
 
     switchUpvotingContainer() {

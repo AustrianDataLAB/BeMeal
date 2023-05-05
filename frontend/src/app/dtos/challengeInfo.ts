@@ -6,7 +6,8 @@ export class ChallengeInfo {
         public name: string,
         public description: string,
         public endDate: Date,
-        public ingredients: Ingridient[]
+        public ingredients: Ingridient[],
+        public challengeId: number
     ) {
 
     }

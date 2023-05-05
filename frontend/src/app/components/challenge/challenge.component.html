@@ -27,6 +27,32 @@
         </div>
 
     <!-- upload submission todo -->
+        <ng-container>
+            <mat-card class="card-item">
+                <mat-card-header>
+                    <mat-card-title>Submit your result</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="card-content-league">
+                    <div class="span-content-league">Upload your creation
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+<!--                    <input type="file" mat-raised-button color="primary" class="btn-block" id="customFileInput" (change)="onImageChangeNOCOMPRESSION($event)"-->
+<!--                           accept="image/*">-->
+                    <button type="button" mat-raised-button color="primary" class="btn-block" (click)="fileInput.click()">Choose File</button>
+                    <input hidden (change)="onImageChangeNOCOMPRESSION($event)" #fileInput type="file" id="file">
+                </mat-card-actions>
+
+                <mat-card-actions *ngIf="this.submission.image">
+                    <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit</button>
+                </mat-card-actions>
+            </mat-card>
+        </ng-container>
+
+
+
+
+
 
 
     <!-- vote submissions -->
