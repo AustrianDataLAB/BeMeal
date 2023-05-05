@@ -11,12 +11,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/submission/")
+@RequestMapping("/api/v1/submission")
 public class SubmissionEndpoint {
 
     private final SubmissionService submissionService;
 
-    @PostMapping("submit/{challengeId}")
+    @PostMapping("/submit/{challengeId}")
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "bearerToken")
     public void submit(@RequestParam("file") MultipartFile file, @NotNull @PathVariable final String challengeId) {
@@ -24,7 +24,7 @@ public class SubmissionEndpoint {
         // TODO response / return ?
     }
 
-    @GetMapping("{submissionId}")
+    @GetMapping("/{submissionId}")
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirement(name = "bearerToken")
     public SubmissionDto getSubmission(@NotNull @PathVariable final String submissionId) {
