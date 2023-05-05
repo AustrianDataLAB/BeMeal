@@ -6,6 +6,7 @@ import {map, Observable, throwError} from "rxjs";
 import {JoinLeague} from "../dtos/join-league";
 import {catchError} from "rxjs/operators";
 import {ChallengeInfo} from "../dtos/challengeInfo";
+import {Submission} from "../dtos/submission";
 
 @Injectable({
   providedIn: 'root'
@@ -61,5 +62,7 @@ export class LeagueService {
     getLeagueByHiddenIdentifier(hiddenIdentifier: string): Observable<League> {
         return this.httpClient.get<League>(`${this.baseUri}/hidden-identifier/${hiddenIdentifier}`);
     }
+
+
 
 }

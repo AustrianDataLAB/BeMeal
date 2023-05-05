@@ -44,7 +44,7 @@
                 </mat-card-actions>
 
                 <mat-card-actions *ngIf="this.submission.image">
-                    <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit</button>
+                    <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit {{this.submission.image.name}}</button>
                 </mat-card-actions>
             </mat-card>
         </ng-container>

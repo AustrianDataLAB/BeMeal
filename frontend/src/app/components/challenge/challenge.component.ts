@@ -8,6 +8,7 @@ import {ChallengeInfo} from "../../dtos/challengeInfo";
 import {LeagueService} from "../../services/league.service";
 import {ActivatedRoute} from "@angular/router";
 import {Submission} from "../../dtos/submission";
+import {SubmissionService} from "../../services/submission.service";
 
 @Component({
   selector: 'app-challenge',
@@ -31,7 +32,7 @@ export class ChallengeComponent {
     errorMessage = '';
     leagueId: number;
 
-    constructor(private elementRef: ElementRef, private renderer: Renderer2, private leagueService: LeagueService, private route: ActivatedRoute) {
+    constructor(private elementRef: ElementRef, private renderer: Renderer2, private submissionService: SubmissionService, private leagueService: LeagueService, private route: ActivatedRoute) {
         const id = this.route.snapshot.paramMap.get('id');
         if (id !== null) {
             this.leagueId = parseInt(id);
@@ -84,7 +85,19 @@ export class ChallengeComponent {
     }
 
     submit() {
-        console.log(this.submission)
+        this.submissionService.postSubmission(this.submission).pipe(
+            tap(response => {
+                console.log(response)
+                console.log('Successfully submitted challenge');
+            }),
+            catchError(error => {
+                console.error('Error while fetching challenge:', error);
+                this.errorMessage = "Could not fetch challenge";
+                this.error = true;
+                // Handle the error here
+                return of(null);
+            })
+        ).subscribe();
     }
 
 
