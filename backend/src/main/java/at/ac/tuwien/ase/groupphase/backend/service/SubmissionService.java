@@ -34,7 +34,7 @@ import java.util.UUID;
 @Service
 public class SubmissionService {
 
-    private static final int MAX_WIDTH_HEIGHT = 800;
+    private static final int MAX_WIDTH_HEIGHT = 1000;
     private static final String IMAGE_FORMAT = "png";
     private static final String IMAGE_PATH = "src/main/resources/static/img/";
 
