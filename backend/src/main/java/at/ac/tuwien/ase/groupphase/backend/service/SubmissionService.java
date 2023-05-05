@@ -49,7 +49,7 @@ public class SubmissionService {
 
     @Autowired
     public SubmissionService(ParticipantRepository participantRepository, ChallengeRepository challengeRepository,
-                             SubmissionRepository submissionRepository, SubmissionMapper submissionMapper) {
+            SubmissionRepository submissionRepository, SubmissionMapper submissionMapper) {
         this.participantRepository = participantRepository;
         this.challengeRepository = challengeRepository;
         this.submissionRepository = submissionRepository;
@@ -114,7 +114,7 @@ public class SubmissionService {
     }
 
     private Submission getNewSubmission(UUID uuid, LocalDateTime localDateTime, Participant participant,
-                                        Challenge challenge) {
+            Challenge challenge) {
         Submission submission = new Submission();
         submission.setPicture(uuid);
         submission.setDate(localDateTime);
@@ -148,12 +148,14 @@ public class SubmissionService {
     /**
      * Calculates the width and height with the correct aspect ratio.
      *
-     * @param img the img
+     * @param img
+     *            the img
+     *
      * @return res array: width=res[0] height=res[1]
      */
     private static int[] widthHeightCorrectAspectRatio(BufferedImage img) {
         // LOGGER.info("original width and height: width: " + img.getWidth() + " height: " + img.getHeight());
-        int[] res = {img.getWidth(), img.getHeight()};
+        int[] res = { img.getWidth(), img.getHeight() };
         if (img.getWidth() > SubmissionService.MAX_WIDTH_HEIGHT
                 || img.getHeight() > SubmissionService.MAX_WIDTH_HEIGHT) {
             if (img.getWidth() >= img.getHeight()) {
@@ -170,9 +172,13 @@ public class SubmissionService {
     /**
      * Resize BufferedImage.
      *
-     * @param originalImage the original image
-     * @param targetWidth   the target width
-     * @param targetHeight  the target height
+     * @param originalImage
+     *            the original image
+     * @param targetWidth
+     *            the target width
+     * @param targetHeight
+     *            the target height
+     *
      * @return the resized buffered image
      */
     private static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
@@ -186,7 +192,9 @@ public class SubmissionService {
     /**
      * Convert BufferedImage to byte array.
      *
-     * @param bi the BufferedImage
+     * @param bi
+     *            the BufferedImage
+     *
      * @return the byte array
      */
     private static byte[] bufferedImageToByteArray(BufferedImage bi) {
