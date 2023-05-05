@@ -14,6 +14,7 @@ public class ChallengeInfoDto {
     private String description;
     private List<IngredientDto> ingredients;
     private LocalDate endDate;
+    private Long challengeId;
 
     public ChallengeInfoDto() {
     }

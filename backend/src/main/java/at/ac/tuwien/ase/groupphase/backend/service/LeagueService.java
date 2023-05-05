@@ -57,6 +57,7 @@ public class LeagueService {
         dto.setIngredients(recipe.getIngredients());
         dto.setName(recipe.getName());
         dto.setEndDate(challenge.getEndDate());
+        dto.setChallengeId(challenge.getId());
         return dto;
     }
 
