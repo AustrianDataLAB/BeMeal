@@ -1,8 +1,10 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
+import at.ac.tuwien.ase.groupphase.backend.dto.SubmissionDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Challenge;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.entity.Submission;
+import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.SubmissionRepository;
@@ -40,12 +42,15 @@ public class SubmissionService {
     private final ChallengeRepository challengeRepository;
     private final SubmissionRepository submissionRepository;
 
+    private final SubmissionMapper submissionMapper;
+
     @Autowired
     public SubmissionService(ParticipantRepository participantRepository, ChallengeRepository challengeRepository,
-            SubmissionRepository submissionRepository) {
+            SubmissionRepository submissionRepository, SubmissionMapper submissionMapper) {
         this.participantRepository = participantRepository;
         this.challengeRepository = challengeRepository;
         this.submissionRepository = submissionRepository;
+        this.submissionMapper = submissionMapper;
     }
 
     /*
@@ -195,8 +200,32 @@ public class SubmissionService {
             ImageIO.write(bi, SubmissionService.IMAGE_FORMAT, baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException(e.getMessage(), e); // TODO
         }
+    }
+
+    @Transactional
+    public SubmissionDto getSubmission(@NotNull String submissionId) {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Participant participant = this.participantRepository.findByUsername(username);
+        Submission submission = this.submissionRepository.findById(Long.valueOf(submissionId)).orElseThrow();
+
+        // check if participant is allowed to see submission
+        if (!participant.getLeagues().contains(submission.getChallenge().getLeague())) {
+            throw new RuntimeException("Participant is not eligible to view submission"); // TODO
+        }
+
+        SubmissionDto submissionDto = this.submissionMapper.submissionToSubmissionDto(submission);
+
+        UUID uuid = submission.getPicture();
+
+        try {
+            byte[] bytes = Files.readAllBytes(getPath(uuid));
+            submissionDto.setPicture(bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return submissionDto;
     }
 }
