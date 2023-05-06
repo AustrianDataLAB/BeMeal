@@ -34,7 +34,7 @@ export class ChallengeComponent implements OnInit{
     error = false;
     errorMessage = '';
     leagueId: number;
-    countdownString = "";
+    countdownString = "Time ";
 
     constructor(private elementRef: ElementRef, private renderer: Renderer2, private submissionService: SubmissionService, private leagueService: LeagueService, private route: ActivatedRoute) {
         const id = this.route.snapshot.paramMap.get('id');

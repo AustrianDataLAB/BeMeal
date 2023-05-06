@@ -28,6 +28,7 @@
                         <mat-card-title>Submit your result</mat-card-title>
                     </mat-card-header>
                     <mat-card-content class="card-content-league">
+                        <!-- todo disable if already submitted -->
                         <div class="span-content-league">Upload your creation
                         </div>
                     </mat-card-content>
@@ -63,8 +64,7 @@
             </div>
 
             <div fxLayout="row" fxLayoutGap="16px" class="card-container">
-
-                <mat-card class="card-item-top">
+                <mat-card class="card-item-top">   <!-- todo do not display when game mode ingredients -->
                     <mat-card-header>
                         <mat-card-title>The final product</mat-card-title>
                     </mat-card-header>
@@ -73,7 +73,7 @@
                         <img style="max-width: 100%;" src="https://www.dish-works.com/wp-content/uploads/Hatch-Chile-Chilaquiles_shot-1.jpg" />
                     </mat-card-content>
                 </mat-card>
-                <mat-card class="card-item-top">
+                <mat-card class="card-item-top">  <!-- todo do not display when game mode picture -->
                     <mat-card-header>
                         <mat-card-title>The ingredients</mat-card-title>
                     </mat-card-header>
@@ -101,7 +101,7 @@
              (swiperight)='onSwipeRight()'>
             <mat-card class="card-item">
                 <mat-card-header>
-                    <!-- todo display name of challenge, call backend with challenge id from submissiondtp -->
+                    <!-- todo display name of challenge if submissions from another challenge are displayed (decision to be made), call backend with challenge id from submissiondtp -->
                 </mat-card-header>
                 <mat-card-content class="card-content-league">
                     <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
