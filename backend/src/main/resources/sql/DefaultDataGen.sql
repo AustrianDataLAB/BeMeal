@@ -81,9 +81,24 @@ INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES
 
 /*      Create show Challenges      */
 -- ToDo: Beware of placeholder UUID
-INSERT INTO Challenge (id, description, start_date, end_date, recipe, league_id) VALUES (1, 'Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '2cac1d9a-c513-4daa-94a7-c11d6731ac51', 1);
+INSERT INTO Challenge (id, description, start_date, end_date, recipe, league_id) VALUES (1, 'Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '4138721', 1);
+INSERT INTO Challenge (id, description, start_date, end_date, recipe, league_id) VALUES (2, 'Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5834601', 2);
+INSERT INTO Challenge (id, description, start_date, end_date, recipe, league_id) VALUES (3, 'Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5766986', 3);
+INSERT INTO Challenge (id, description, start_date, end_date, recipe, league_id) VALUES (4, 'Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5728361', 4);
+INSERT INTO Challenge (id, description, start_date, end_date, recipe, league_id) VALUES (5, 'Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '7834996', 5);
+INSERT INTO Challenge (id, description, start_date, end_date, recipe, league_id) VALUES (6, 'Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5854161', 6);
+INSERT INTO Challenge (id, description, start_date, end_date, recipe, league_id) VALUES (7, 'Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '6363046', 7);
+INSERT INTO Challenge (id, description, start_date, end_date, recipe, league_id) VALUES (8, 'Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '101879', 8);
+INSERT INTO Challenge (id, description, start_date, end_date, recipe, league_id) VALUES (9, 'Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '95471', 9);
 --INSERT INTO League_Challenges (league_id, challenges_id) VALUES (1, 1);
+
+
 
 /*      Create Submission      */
 -- ToDo: Beware of placeholder UUID
-INSERT INTO Submission (id, date, picture, challenge_id, participant_participant_id) VALUES (1, DATEADD(day, 2, CURRENT_TIMESTAMP), '9908fe2f-3b78-4c0c-a8e0-34abff36e95a', 1, 7);
+INSERT INTO Submission (id, date, picture, challenge_id, participant_participant_id) VALUES (1, DATEADD(day, 2, CURRENT_TIMESTAMP), '518cf81f-0ff6-4999-b160-756e0dfeac0a', 1, 1);
+INSERT INTO Submission (id, date, picture, challenge_id, participant_participant_id) VALUES (2, DATEADD(day, 2, CURRENT_TIMESTAMP), '717c37e6-94e9-49a1-adf2-35617b91e0a6', 1, 2);
+INSERT INTO Submission (id, date, picture, challenge_id, participant_participant_id) VALUES (3, DATEADD(day, 2, CURRENT_TIMESTAMP), 'f7828b1f-9b3c-4ded-918a-c2cd8f20bfab', 1, 3);
+INSERT INTO Submission (id, date, picture, challenge_id, participant_participant_id) VALUES (4, DATEADD(day, 2, CURRENT_TIMESTAMP), '518cf81f-0ff6-4999-b160-756e0dfeac0a', 2, 4);
+INSERT INTO Submission (id, date, picture, challenge_id, participant_participant_id) VALUES (5, DATEADD(day, 2, CURRENT_TIMESTAMP), '717c37e6-94e9-49a1-adf2-35617b91e0a6', 2, 5);
+INSERT INTO Submission (id, date, picture, challenge_id, participant_participant_id) VALUES (6, DATEADD(day, 2, CURRENT_TIMESTAMP), 'f7828b1f-9b3c-4ded-918a-c2cd8f20bfab', 2, 6);

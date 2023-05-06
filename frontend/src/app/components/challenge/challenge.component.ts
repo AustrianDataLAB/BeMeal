@@ -9,6 +9,7 @@ import {LeagueService} from "../../services/league.service";
 import {ActivatedRoute} from "@angular/router";
 import {Submission} from "../../dtos/submission";
 import {SubmissionService} from "../../services/submission.service";
+import {SubmissionDisplay} from "../../dtos/submission-display";
 
 @Component({
   selector: 'app-challenge',
@@ -21,13 +22,15 @@ import {SubmissionService} from "../../services/submission.service";
     ])
 ]
 })
-export class ChallengeComponent {
+export class ChallengeComponent implements OnInit{
     public index = 0;
     cardState: string;
-    upvotingEnabled = false;
+    upvotingEnabled = false;    // for the swiping thing
+    canUpvote = false;  // for the "Rate for friends" box, if everything swiped already or nothing to swipe, hide
+    upvoteSubmissions: SubmissionDisplay[];
+    currentPicture: string;
     challenge: ChallengeInfo;
     submission: Submission = {} as Submission;
-
     error = false;
     errorMessage = '';
     leagueId: number;
@@ -43,17 +46,63 @@ export class ChallengeComponent {
         this.fetchChallenge(this.leagueId);
     }
 
-    resetAnimationState(state: AnimationEvent) {
-        this.cardState = '';
-        this.index++;
+    ngOnInit() {
+        this.getAllSubmissionsToUpvote();
     }
 
-    onSwipeRight() {
-        this.cardState = 'swiperight'; // trigger swiperight animation
+    resetAnimationState(state: AnimationEvent) {
+        console.log(state);
+        this.cardState = '';
+        console.log("RESET");
+        if (state.toState === 'swiperight' || state.toState === 'swipeleft') {
+            this.showNextSubmission();
+        }
+
+    }
+
+    // called if swipe right (upvote) AND swipe left (dislike)
+    doUpvoting(isUpvote: boolean) {
+        // do voting and load next if success (change cardState):
+        const id = this.upvoteSubmissions[this.index].id;
+        this.submissionService.upvoteSubmission(id, isUpvote).pipe(
+            tap(response => {
+                console.log(response)
+                console.log('Successfully voted submission');
+            }),
+            catchError(error => {
+                console.error('Error while voting submission:', error);
+                this.errorMessage = "Could not vote submission";
+                this.error = true;
+                // todo handle errors if not successful
+                // Handle the error here
+                return of(null);
+            })
+        ).subscribe();
     }
 
     onSwipeLeft() {
         this.cardState = 'swipeleft'; // trigger swipeleft animation
+        this.doUpvoting(false);
+    }
+
+    onSwipeRight() {
+        this.cardState = 'swiperight';
+        this.doUpvoting(true);
+    }
+
+
+    showNextSubmission() {
+        if ((this.index+1) < this.upvoteSubmissions.length) {
+            this.index += 1;
+            this.showImage();
+            console.log("next submission exists")
+        } else {
+            this.canUpvote = false;
+            this.switchUpvotingContainer();
+            console.log("next submission does not exist")
+            // todo show a message to user
+            // no more img to show and submissions to upvote
+        }
     }
 
     fetchChallenge(id: number) {
@@ -106,12 +155,41 @@ export class ChallengeComponent {
         const element = this.elementRef.nativeElement.querySelector('.container');
         if (this.upvotingEnabled) {
             this.upvotingEnabled = false;
+            this.index = 0;
             //this.renderer.setStyle(document.body, 'filter', 'unset');
             this.renderer.setStyle(element, 'filter', 'unset');
         } else {
             this.upvotingEnabled = true;
             this.renderer.setStyle(element, 'filter', 'blur(3px)');
         }
+    }
+
+    // takes the arraybuffer from submission and returns the base64
+    showImage(): void {
+        //console.log("current index for images: " + this.index);
+        //this.cardState = '';
+        this.currentPicture = 'data:image/png;base64,' + this.upvoteSubmissions[this.index].picture;
+    }
+
+    getAllSubmissionsToUpvote() {
+        this.submissionService.getAllSubmissions().pipe(
+            tap(response => {
+                console.log(response);
+                this.canUpvote = true;
+                this.upvoteSubmissions = response;
+                this.showImage();
+                //console.log(this.currentPicture);
+                //console.log(this.upvoteSubmissions)
+                console.log('Successfully fetched submissions');
+            }),
+            catchError(error => {
+                console.log("error fethcing submissions");
+                console.log(error);
+                // todo
+                // Handle the error here
+                return of(null);
+            })
+        ).subscribe();
     }
 
 

@@ -16,8 +16,8 @@ public class SubmissionDto {
     @NotNull
     @NotEmpty
     private Long id;
-
-    private byte[] picture;
+    // base64
+    private String picture;
 
     @NotNull
     @NotEmpty

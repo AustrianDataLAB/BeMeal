@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -223,7 +224,9 @@ public class SubmissionService {
 
         try {
             byte[] bytes = Files.readAllBytes(getPath(uuid));
-            submissionDto.setPicture(bytes);
+            String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
+            submissionDto.setPicture(imageString);
+            //submissionDto.setPicture(bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
