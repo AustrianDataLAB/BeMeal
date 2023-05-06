@@ -56,12 +56,14 @@ public class SubmissionEndpoint {
     @SecurityRequirement(name = "bearerToken")
     public List<SubmissionDto> getUpvoteSubmissions() {
         try {
-            //  todo @Manu impl this correctly,  get /  :all submissions that can be upvoted by a user: do not return if date is invalid or user has already upvoted it
+            // todo @Manu impl this correctly, get / :all submissions that can be upvoted by a user: do not return if
+            // date is invalid or user has already upvoted it
             List<SubmissionDto> submissions = new ArrayList<>();
             for (int i = 1; i < 7; i++) {
                 try {
                     submissions.add(getSubmission(String.valueOf(i)));
-                } catch (ResponseStatusException e) {}
+                } catch (ResponseStatusException e) {
+                }
             }
             return submissions;
         } catch (ForbiddenAccessException e) {
@@ -75,10 +77,12 @@ public class SubmissionEndpoint {
     @PostMapping("/upvote/{submissionId}/{isUpvote}")
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "bearerToken")
-    public void upvoteSubmission(@NotNull @PathVariable final String submissionId, @NotNull @PathVariable final String isUpvote) {
+    public void upvoteSubmission(@NotNull @PathVariable final String submissionId,
+            @NotNull @PathVariable final String isUpvote) {
         try {
             // todo @Manu upvote a submission, get user from context
-            // isUpvote: true --> swipe right, upvote. false --> swipe left, has to be saved in db too. otherwise the disliked submissions will appear
+            // isUpvote: true --> swipe right, upvote. false --> swipe left, has to be saved in db too. otherwise the
+            // disliked submissions will appear
             // again and again for user!
             System.out.println("wuff wuff");
         } catch (ForbiddenAccessException e) {

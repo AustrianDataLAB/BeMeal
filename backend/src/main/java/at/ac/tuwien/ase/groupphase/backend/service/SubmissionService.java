@@ -226,7 +226,7 @@ public class SubmissionService {
             byte[] bytes = Files.readAllBytes(getPath(uuid));
             String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
             submissionDto.setPicture(imageString);
-            //submissionDto.setPicture(bytes);
+            // submissionDto.setPicture(bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
