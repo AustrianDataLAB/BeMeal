@@ -34,6 +34,7 @@ export class ChallengeComponent implements OnInit{
     error = false;
     errorMessage = '';
     leagueId: number;
+    countdownString = "";
 
     constructor(private elementRef: ElementRef, private renderer: Renderer2, private submissionService: SubmissionService, private leagueService: LeagueService, private route: ActivatedRoute) {
         const id = this.route.snapshot.paramMap.get('id');
@@ -44,6 +45,7 @@ export class ChallengeComponent implements OnInit{
         }
         console.log(`league id is: ${id}`);
         this.fetchChallenge(this.leagueId);
+        setInterval(() => { this.deadlineCountdown(); }, 1000);
     }
 
     ngOnInit() {
@@ -105,6 +107,16 @@ export class ChallengeComponent implements OnInit{
         }
     }
 
+    deadlineCountdown(): void {
+        const now = new Date();
+        const challDate = new Date(this.challenge.endDate);
+        const timeDiffMs = challDate.getTime() - now.getTime();
+        const days = Math.floor(timeDiffMs / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiffMs % (1000 * 60)) / 1000);
+        this.countdownString = `${days} days, ${hours} hours, ${minutes} minutes & ${seconds} seconds `;
+    }
     fetchChallenge(id: number) {
         this.leagueService.getChallengeForLeague(id).pipe(
             tap(response => {
