@@ -48,6 +48,7 @@ export class CreateLeagueComponent {
                 gameModeValue,
                 parseInt(this.registerForm.controls['challengeDuration'].value), // TODO hier checken auch ob es wirklich eine zahl ist
                 regionValue,
+                []
             );
             this.leagueService.createLeague(leagueObj).pipe(
                 tap(response => {
