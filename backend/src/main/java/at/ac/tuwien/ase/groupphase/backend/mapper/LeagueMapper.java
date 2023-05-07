@@ -36,8 +36,10 @@ public class LeagueMapper {
                     .getSubmissions().stream().sorted(Comparator
                             .comparingInt((Submission submission) -> submission.getUpVotes().size()).reversed())
                     .toList();
-            final var maxUpVotes = orderedSubmissions.stream().findFirst().map(s -> s.getUpVotes().size()).orElse(0);
-            return orderedSubmissions.stream().filter(s -> s.getUpVotes().size() == maxUpVotes)
+            final var maxUpVotes = orderedSubmissions.stream().findFirst().map(s -> s.getUpVotes().size())
+                    .orElse(Integer.MAX_VALUE);
+            return orderedSubmissions.stream()
+                    .filter(s -> s.getUpVotes().size() == maxUpVotes && !s.getUpVotes().isEmpty())
                     .map(s -> s.getParticipant().getUsername()).toList();
         });
         return new LeagueDto(league.getId(), league.getName(), league.getGameMode(), league.getChallengeDuration(),
