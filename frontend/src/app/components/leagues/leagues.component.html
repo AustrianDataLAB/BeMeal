@@ -19,7 +19,7 @@
                         <button (click)="showLink = true" style="margin-left: 12px;" mat-button color="primary" class="btn-block">Invite Friends</button>
                     </mat-card-actions>
                     <mat-card-footer>
-                        <ng-container *ngIf="element.lastWinners.length > 0">Last Winner<ng-container *ngIf="element.lastWinners.length > 1">{{ element.lastWinners.join(', ')}}</ng-container>: </ng-container>
+                        <p *ngIf="element.lastWinners.length > 0">Last Winner<ng-container *ngIf="element.lastWinners.length > 1">{{ element.lastWinners.join(', ')}}</ng-container>: </p>
                         <!-- todo only show if the user is creator of league -->
                         <pre *ngIf="showLink">{{ invitationLinks.get(element.id) | async }}</pre>
                     </mat-card-footer>
