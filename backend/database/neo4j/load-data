@@ -13,13 +13,15 @@ WITH value.page.article.id AS id,
        value.page.article.description AS description,
        value.page.recipe.cooking_time AS cookingTime,
        value.page.recipe.prep_time AS preparationTime,
-       value.page.recipe.skill_level AS skillLevel
+       value.page.recipe.skill_level AS skillLevel,
+       value.page.recipe.picture_uuid as picture
 MERGE (r:Recipe {id: id})
 SET r.cookingTime = cookingTime,
     r.preparationTime = preparationTime,
     r.name = title,
     r.description = description,
-    r.skillLevel = skillLevel;
+    r.skillLevel = skillLevel,
+    r.picture = picture;
 
 //import authors and connect to recipes
 CALL apoc.load.json("file:///data.json") YIELD value
