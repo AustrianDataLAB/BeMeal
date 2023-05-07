@@ -24,7 +24,7 @@ public class Challenge {
     @Column(nullable = false)
     private String recipe;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "challenge")
     private List<Submission> submissions;
     @ManyToOne
     private League league;
