@@ -54,7 +54,7 @@ public class LeagueEndpointIntegrationTests {
     @Sql({ "classpath:sql/SelfServiceData.sql" })
     void CreateLeagueShouldReturn201() throws Exception {
         LeagueDto dto = new LeagueDto(null, Constants.VALID_LEAGUE_NAME, Constants.VALID_LEAGUE_GAMEMODE,
-                Constants.VALID_LEAGUE_CHALLENGE_DURATION, Constants.VALID_LEAGUE_REGION);
+                Constants.VALID_LEAGUE_CHALLENGE_DURATION, Constants.VALID_LEAGUE_REGION, List.of());
 
         this.leagueEndpoint.createLeague(dto);
 

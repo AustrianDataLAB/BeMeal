@@ -23,6 +23,8 @@ public class Recipe {
     private final String description;
     @Property("skillLevel")
     private final String skillLevel;
+    @Property("picture")
+    private final String pictureUUID;
 
     // TODO: how to solve the amount of ingredients issue?
     @Relationship(type = "CONTAINS_INGREDIENT", direction = Relationship.Direction.OUTGOING)

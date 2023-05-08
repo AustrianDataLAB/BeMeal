@@ -8,7 +8,8 @@ export class League {
         public name: string,
         public gameMode: GameMode,
         public challengeDuration: number,
-        public region: Region
+        public region: Region,
+        public lastWinners: string[]
     ) {
 
     }
