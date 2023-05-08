@@ -45,15 +45,15 @@ BURGENLAND      7
 VORARLBERG      8
 
 */
-INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (1, 2, 0, 7, 'ef2133ad-f5e9-4aac-bc1f-46dcf62f495e', 'Uni friends');
-INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 2, 1, 7, 'df3fe84b-6143-4d41-a0b9-a452c8c91b18', 'Work friends');
-INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (3, 2, 2, 7, 'd964c968-8078-40c7-b528-bb305ec7290a', 'The legends');
-INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (4, 2, 3, 7, '8b7edb62-a5db-4c65-9adb-c3a7d2fc9952', 'Cooking Experts');
-INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (5, 2, 4, 7, '300fdfc3-ebd1-4a5a-bb56-fbad47ae91ce', 'Broccoli lovers');
-INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (6, 2, 5, 7, '8fe94524-e052-49f8-a55d-3f4af99317bb', 'Heast, oida' );
-INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (7, 2, 6, 7, '645379dd-3b61-4635-817d-1ee9808e20b0', 'Foodies');
-INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (8, 2, 7, 7, '64188f31-9fc5-478f-9342-4ccd61cc0920', 'True legends');
-INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (9, 2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Turtles');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 0, 7, 'ef2133ad-f5e9-4aac-bc1f-46dcf62f495e', 'Uni friends');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 1, 7, 'df3fe84b-6143-4d41-a0b9-a452c8c91b18', 'Work friends');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 2, 7, 'd964c968-8078-40c7-b528-bb305ec7290a', 'The legends');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 3, 7, '8b7edb62-a5db-4c65-9adb-c3a7d2fc9952', 'Cooking Experts');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 4, 7, '300fdfc3-ebd1-4a5a-bb56-fbad47ae91ce', 'Broccoli lovers');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 5, 7, '8fe94524-e052-49f8-a55d-3f4af99317bb', 'Heast, oida' );
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 6, 7, '645379dd-3b61-4635-817d-1ee9808e20b0', 'Foodies');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 7, 7, '64188f31-9fc5-478f-9342-4ccd61cc0920', 'True legends');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Turtles');
 
 /*      Create show user league entries     */
 INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (1, 7);
