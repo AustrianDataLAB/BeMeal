@@ -28,6 +28,6 @@ public class Submission {
     @ManyToOne(optional = false)
     private Challenge challenge;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     private List<Participant> upVotes;
 }
