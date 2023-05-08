@@ -15,6 +15,7 @@ public class ChallengeInfoDto {
     private List<IngredientDto> ingredients;
     private LocalDate endDate;
     private Long challengeId;
+    private String picture; // base64
 
     public ChallengeInfoDto() {
     }
