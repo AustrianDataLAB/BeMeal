@@ -59,12 +59,12 @@ public class SubmissionEndpoint {
             // todo @Manu impl this correctly, get / :all submissions that can be upvoted by a user: do not return if
             // date is invalid or user has already upvoted it
             List<SubmissionDto> submissions = new ArrayList<>();
-            for (int i = 1; i < 7; i++) {
-                try {
-                    submissions.add(getSubmission(String.valueOf(i)));
-                } catch (ResponseStatusException e) {
-                }
-            }
+            // for (int i = 1; i < 7; i++) {
+            // try {
+            // submissions.add(getSubmission(String.valueOf(i)));
+            // } catch (ResponseStatusException e) {
+            // }
+            // }
             return submissions;
         } catch (ForbiddenAccessException e) {
             throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());

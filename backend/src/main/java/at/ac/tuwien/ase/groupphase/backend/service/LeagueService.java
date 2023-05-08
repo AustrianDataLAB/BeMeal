@@ -37,7 +37,7 @@ public class LeagueService {
     @Autowired
     @NotNull
     public LeagueService(UserRepository userRepository, LeagueRepository leagueRepository,
-                         ChallengeRepository challengeRepository, RecipeService recipeService) {
+            ChallengeRepository challengeRepository, RecipeService recipeService) {
         this.userRepository = userRepository;
         this.leagueRepository = leagueRepository;
         this.challengeRepository = challengeRepository;
@@ -52,7 +52,8 @@ public class LeagueService {
         }
 
         // TODO dont take first one, but the correct one
-        Challenge challenge = league.getChallenges().get(0);
+        // Challenge challenge = league.getChallenges().get(0);
+        Challenge challenge = this.challengeRepository.getLatestChallenge(league.getId());
         RecipeDto recipe = this.recipeService.getRecipeById(challenge.getRecipe());
 
         ChallengeInfoDto dto = new ChallengeInfoDto();
@@ -67,7 +68,8 @@ public class LeagueService {
             String uuid = recipe.getPictureUUID();
             try {
                 Path path = getPath(uuid);
-                if (!Files.exists(path)) throw new MissingPictureException();
+                if (!Files.exists(path))
+                    throw new MissingPictureException();
                 byte[] bytes = Files.readAllBytes(path);
                 String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
                 dto.setPicture(imageString);
@@ -101,8 +103,10 @@ public class LeagueService {
     /**
      * Adds a participant to a league
      *
-     * @param username username of the participant to be added to the league
-     * @param leagueId id of the league
+     * @param username
+     *            username of the participant to be added to the league
+     * @param leagueId
+     *            id of the league
      */
     public void joinLeague(String username, Long leagueId) {
         League league = this.leagueRepository.findById(leagueId)
