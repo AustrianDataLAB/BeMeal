@@ -98,8 +98,9 @@ public class ChallengeGenerationService {
      */
     public Optional<Recipe> randomRecipe(final GameMode gameMode) {
         if (!this.failMode) {
+            // TODO: do something with the pictureUUID here
             final var recipe = new Recipe(UUID.randomUUID().toString(), "Variation No. " + random.nextInt(73),
-                    random.nextInt(30), random.nextInt(30), "This is some description", "baum");
+                    random.nextInt(30), random.nextInt(30), "This is some description", "baum", null);
             return Optional.of(recipe);
         }
         if (GameMode.INGREDIENTS.equals(gameMode)) {
