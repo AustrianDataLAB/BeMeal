@@ -112,6 +112,7 @@ public class SubmissionService {
                 .filter(x -> Long.valueOf(challengeId).equals(x.getChallenge().getId())).findAny().orElse(null);
         if (previousSubmission != null) {
             submissions.remove(previousSubmission);
+            this.submissionRepository.delete(previousSubmission);
             try {
                 Files.delete(getPath(previousSubmission.getPicture()));
             } catch (IOException e) {
@@ -260,7 +261,17 @@ public class SubmissionService {
         List<SubmissionDto> submissionDtos = new ArrayList<>();
 
         for (Submission s : submissions) {
-            submissionDtos.add(submissionMapper.submissionToSubmissionDto(s));
+            SubmissionDto dto = submissionMapper.submissionToSubmissionDto(s);
+            UUID uuid = s.getPicture();
+            try {
+                byte[] bytes = Files.readAllBytes(getPath(uuid));
+                String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
+                dto.setPicture(imageString);
+                // submissionDto.setPicture(bytes);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            submissionDtos.add(dto);
         }
 
         return submissionDtos;
