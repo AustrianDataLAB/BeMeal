@@ -22,6 +22,7 @@ public interface SubmissionRepository extends CrudRepository<Submission, Long> {
     @Query("SELECT s FROM Submission s" + " WHERE s.challenge.id = :challengeId"
             + " AND s.participant.id != :participantId"
             + " AND s.id NOT IN (SELECT v.submission.id FROM ParticipantSubmissionVote v" + " INNER JOIN Submission s"
-            + " ON v.submission.id = s.id" + " WHERE s.participant.id != :participantId)")
+            + " ON v.submission.id = s.id"
+            + " WHERE s.participant.id != :participantId AND v.participant.id = :participantId)")
     List<Submission> getSubmissionNotUpvotedYetByUser(Long challengeId, Long participantId);
 }
