@@ -17,7 +17,7 @@ export class LeaguesComponent {
     errorMessage = '';
     showLink = false;
 
-    leagues: League[];
+    leagues: League[] = [];
     displayedColumns: string[] = ['Name', 'gameMode', 'challengeDuration', 'region', 'action', 'invitationLink']
     invitationLinks = new Map<number|null,Promise<string>>;
 
