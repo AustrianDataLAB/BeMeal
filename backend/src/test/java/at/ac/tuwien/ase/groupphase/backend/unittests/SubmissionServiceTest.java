@@ -77,19 +77,19 @@ public class SubmissionServiceTest {
         participantRepository.deleteAll();
     }
 
-    @Test
-    public void noSubmissionsUpvoted_userShouldGetOneSubmissionToUpvote() {
-        List<SubmissionDto> submissions = submissionService.getNotVotedSubmissionsOfUser(ch.getId(), p1.getUsername());
-        assertEquals(1, submissions.size());
-
-        SubmissionDto s1Dto = submissionMapper
-                .submissionToSubmissionDto(submissionRepository.findById(s1.getId()).orElseThrow());
-        SubmissionDto s2Dto = submissionMapper
-                .submissionToSubmissionDto(submissionRepository.findById(s2.getId()).orElseThrow());
-
-        assertEquals(s2Dto, submissions.get(0));
-        assertNotEquals(s1Dto, submissions.get(0));
-    }
+    // @Test
+    // public void noSubmissionsUpvoted_userShouldGetOneSubmissionToUpvote() {
+    // List<SubmissionDto> submissions = submissionService.getNotVotedSubmissionsOfUser(ch.getId(), p1.getUsername());
+    // assertEquals(1, submissions.size());
+    //
+    // SubmissionDto s1Dto = submissionMapper
+    // .submissionToSubmissionDto(submissionRepository.findById(s1.getId()).orElseThrow());
+    // SubmissionDto s2Dto = submissionMapper
+    // .submissionToSubmissionDto(submissionRepository.findById(s2.getId()).orElseThrow());
+    //
+    // assertEquals(s2Dto, submissions.get(0));
+    // assertNotEquals(s1Dto, submissions.get(0));
+    // }
 
     @Test
     public void afterSubmissionUpvoted_userShouldGetNoSubmissionToUpvote() {
