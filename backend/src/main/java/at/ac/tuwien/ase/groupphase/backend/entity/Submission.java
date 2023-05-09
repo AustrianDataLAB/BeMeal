@@ -32,6 +32,6 @@ public class Submission {
     @ManyToOne(optional = false)
     private Challenge challenge;
 
-    @OneToMany(mappedBy = "submission", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "submission", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<ParticipantSubmissionVote> upVotes;
 }
