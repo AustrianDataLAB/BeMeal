@@ -16,4 +16,5 @@ public class RecipeDto {
     private Integer cookingTime;
     private RecipeSkillLevel skillLevel;
     private List<IngredientDto> ingredients;
+    private String pictureUUID;
 }

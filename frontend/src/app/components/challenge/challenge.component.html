@@ -69,8 +69,8 @@
                         <mat-card-title>The final product</mat-card-title>
                     </mat-card-header>
                     <mat-card-content class="card-content-league">
-                        <!-- todo use recipe pic -->
-                        <img style="max-width: 100%;" src="https://www.dish-works.com/wp-content/uploads/Hatch-Chile-Chilaquiles_shot-1.jpg" />
+                        <!-- TODO dummy image iff challenge.picture == null -->
+                        <img style="max-width: 100%;" src="data:image/jpeg;base64, {{challenge.picture}}"/>
                     </mat-card-content>
                 </mat-card>
                 <mat-card class="card-item-top">  <!-- todo do not display when game mode picture -->

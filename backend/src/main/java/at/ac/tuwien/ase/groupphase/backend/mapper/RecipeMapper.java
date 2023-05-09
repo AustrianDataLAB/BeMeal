@@ -19,7 +19,7 @@ public class RecipeMapper {
                 .map(ingredientMapper::ingredientToIngredientDto).toList();
         return new RecipeDto(recipe.getRecipeId(), recipe.getName(), recipe.getDescription(),
                 recipe.getPreparationTime(), recipe.getCookingTime(), stringToRecipeSkillLevel(recipe.getSkillLevel()),
-                ingredients);
+                ingredients, recipe.getPictureUUID());
     }
 
     private RecipeSkillLevel stringToRecipeSkillLevel(String s) {
