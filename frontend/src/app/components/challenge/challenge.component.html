@@ -73,7 +73,7 @@
                         <img style="max-width: 100%;" src="data:image/jpeg;base64, {{challenge.picture}}"/>
                     </mat-card-content>
                 </mat-card>
-                <mat-card class="card-item-top">  <!-- todo do not display when game mode picture -->
+                <mat-card *ngIf="challenge.ingredients" class="card-item-top">  <!-- todo do not display when game mode picture -->
                     <mat-card-header>
                         <mat-card-title>The ingredients</mat-card-title>
                     </mat-card-header>
