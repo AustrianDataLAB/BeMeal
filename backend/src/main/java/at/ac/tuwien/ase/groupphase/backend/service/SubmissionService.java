@@ -1,22 +1,23 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
+import at.ac.tuwien.ase.groupphase.backend.controller.SubmissionEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.dto.SubmissionDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Challenge;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
+import at.ac.tuwien.ase.groupphase.backend.entity.ParticipantSubmissionVote;
 import at.ac.tuwien.ase.groupphase.backend.entity.Submission;
 import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
-import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
-import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
-import at.ac.tuwien.ase.groupphase.backend.repository.SubmissionRepository;
+import at.ac.tuwien.ase.groupphase.backend.repository.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -36,8 +37,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+// @RequiredArgsConstructor
 public class SubmissionService {
 
+    private final Logger logger = LoggerFactory.getLogger(SubmissionService.class);
     private static final int MAX_WIDTH_HEIGHT = 1000;
     private static final String IMAGE_FORMAT = "png";
     private static final String IMAGE_PATH = "src/main/resources/static/img/";
@@ -45,15 +48,20 @@ public class SubmissionService {
     private final ParticipantRepository participantRepository;
     private final ChallengeRepository challengeRepository;
     private final SubmissionRepository submissionRepository;
+    private final VoteRepository voteRepository;
+    private final UserRepository userRepository;
 
     private final SubmissionMapper submissionMapper;
 
     @Autowired
     public SubmissionService(ParticipantRepository participantRepository, ChallengeRepository challengeRepository,
-            SubmissionRepository submissionRepository, SubmissionMapper submissionMapper) {
+            SubmissionRepository submissionRepository, VoteRepository voteRepository, UserRepository userRepository,
+            SubmissionMapper submissionMapper) {
         this.participantRepository = participantRepository;
         this.challengeRepository = challengeRepository;
         this.submissionRepository = submissionRepository;
+        this.voteRepository = voteRepository;
+        this.userRepository = userRepository;
         this.submissionMapper = submissionMapper;
     }
 
@@ -232,5 +240,29 @@ public class SubmissionService {
         }
 
         return submissionDto;
+    }
+
+    @Transactional
+    public void saveVote(Long submissionId, String participantUsername, boolean isUpvote) {
+        logger.trace("saveVote({}, {}, {})", submissionId, participantUsername, isUpvote);
+        Participant user = (Participant) this.userRepository.findByUsername(participantUsername);
+        Submission submission = this.submissionRepository.findById(submissionId).orElseThrow();
+
+        ParticipantSubmissionVote vote = new ParticipantSubmissionVote(user, submission, isUpvote);
+        voteRepository.save(vote);
+    }
+
+    public List<SubmissionDto> getNotVotedSubmissionsOfUser(Long challengeId, String participantUsername) {
+        logger.trace("getNotVotedSubmissionsOfUser({}, {})", challengeId, participantUsername);
+        Participant user = (Participant) this.userRepository.findByUsername(participantUsername);
+
+        List<Submission> submissions = submissionRepository.getSubmissionNotUpvotedYetByUser(challengeId, user.getId());
+        List<SubmissionDto> submissionDtos = new ArrayList<>();
+
+        for (Submission s : submissions) {
+            submissionDtos.add(submissionMapper.submissionToSubmissionDto(s));
+        }
+
+        return submissionDtos;
     }
 }

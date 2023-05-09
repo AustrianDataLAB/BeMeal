@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
+import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import {animate, AnimationEvent, keyframes, transition, trigger} from "@angular/animations";
 import * as kf from './keyframes';
 import {firstValueFrom, map, of, Subject} from "rxjs";
@@ -22,7 +22,7 @@ import {SubmissionDisplay} from "../../dtos/submission-display";
     ])
 ]
 })
-export class ChallengeComponent implements OnInit{
+export class ChallengeComponent {
     public index = 0;
     cardState: string;
     upvotingEnabled = false;    // for the swiping thing
@@ -46,10 +46,6 @@ export class ChallengeComponent implements OnInit{
         console.log(`league id is: ${id}`);
         this.fetchChallenge(this.leagueId);
         setInterval(() => { this.deadlineCountdown(); }, 1000);
-    }
-
-    ngOnInit() {
-        this.getAllSubmissionsToUpvote();
     }
 
     resetAnimationState(state: AnimationEvent) {
@@ -121,10 +117,11 @@ export class ChallengeComponent implements OnInit{
         this.leagueService.getChallengeForLeague(id).pipe(
             tap(response => {
                 this.challenge = response;
-                this.submission.challengeId = this.challenge.challengeId;
                 console.log(this.challenge);
+                this.submission.challengeId = this.challenge.challengeId;
                 console.log(this.submission)
                 console.log('Successfully fetched challenge');
+                this.getAllSubmissionsToUpvote();
             }),
             catchError(error => {
                 console.error('Error while fetching challenge:', error);
@@ -184,7 +181,8 @@ export class ChallengeComponent implements OnInit{
     }
 
     getAllSubmissionsToUpvote() {
-        this.submissionService.getAllSubmissions().pipe(
+        console.debug('Fetching submissions with challengeId ' + this.challenge.challengeId)
+        this.submissionService.getAllSubmissions(this.challenge.challengeId).pipe(
             tap(response => {
                 console.log(response);
                 this.canUpvote = true;

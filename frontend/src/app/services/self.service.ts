@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Registration} from '../dtos/registration';
 import {map, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {tap} from 'rxjs/operators';
 
 import jwt_decode from 'jwt-decode';
 import {Globals} from '../shared/globals';

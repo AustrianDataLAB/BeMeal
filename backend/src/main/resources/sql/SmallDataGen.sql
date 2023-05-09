@@ -279,6 +279,6 @@ INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES
 INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (5, 100);
 
 /*      Create Upvotes      */
-INSERT INTO Submission_up_votes (votes_id, up_votes_participant_id) VALUES (1, 8);
-INSERT INTO Submission_up_votes (votes_id, up_votes_participant_id) VALUES (1, 25);
-INSERT INTO Submission_up_votes (votes_id, up_votes_participant_id) VALUES (1, 34);
+INSERT INTO Participant_Submission_Vote (submission_id, participant_participant_id, is_upvote) VALUES (1, 8, true);
+INSERT INTO Participant_Submission_Vote (submission_id, participant_participant_id, is_upvote) VALUES (1, 25, true);
+INSERT INTO Participant_Submission_Vote (submission_id, participant_participant_id, is_upvote) VALUES (1, 34, false);

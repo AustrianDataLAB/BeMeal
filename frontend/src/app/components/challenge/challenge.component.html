@@ -49,7 +49,7 @@
 
                 <!-- vote submissions todo: ngIf challenge ended? if submissions[] not empty?-->
 
-                <mat-card class="card-item" *ngIf="canUpvote">
+                <mat-card class="card-item" *ngIf="canUpvote && upvoteSubmissions.length > 0">
                     <mat-card-header>
                         <mat-card-title>Rate Your Friends</mat-card-title>
                     </mat-card-header>

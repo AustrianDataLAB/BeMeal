@@ -1,18 +1,20 @@
 package util;
 
-import at.ac.tuwien.ase.groupphase.backend.entity.GameMode;
+import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
-import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
-import at.ac.tuwien.ase.groupphase.backend.entity.Region;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public final class Constants {
 
     public static final Long VALID_USER_ID = 12121212L;
+    public static final Long VALID_USER_ID2 = 21212121L;
     public static final String VALID_USER_USERNAME = "Parkster";
+    public static final String VALID_USER_USERNAME2 = "Peter";
     public static final String VALID_USER_EMAIL = "parker@gmail.com";
+    public static final String VALID_USER_EMAIL2 = "peter@gmail.com";
     public static final String VALID_USER_PASSWORD = "12345678";
     public static final byte[] VALID_USER_PASSWORD_BYTES = "12345678".getBytes();
     public static final Region VALID_USER_REGION = Region.LOWER_AUSTRIA;
@@ -25,8 +27,24 @@ public final class Constants {
             VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
             new ArrayList<>());
 
+    public static final Participant VALID_PARTICIPANT_2 = new Participant(VALID_USER_ID2, VALID_USER_EMAIL2,
+            VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME2, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
+            VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
+            new ArrayList<>());
+
     public static final ParticipantDto VALID_PARTICIPANT_DTO_1 = new ParticipantDto(VALID_USER_USERNAME,
             VALID_USER_EMAIL, VALID_USER_POSTAL_CODE, VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME);
+
+    public static final League LEAGUE1 = new League(null, UUID.randomUUID(), GameMode.PICTURE_INGREDIENTS,
+            Region.VORARLBERG, 7, "League 1", new ArrayList<>(), new ArrayList<>());
+    public static final Challenge CHALLENGE1 = new Challenge(1L, "challenge description",
+            LocalDateTime.now().toLocalDate(), LocalDateTime.now().plusDays(7).toLocalDate(), "Recipe",
+            new ArrayList<>(), LEAGUE1);
+
+    public static final Submission VALID_SUBMISSION_P1 = new Submission(null, UUID.randomUUID(), LocalDateTime.now(),
+            null, null, new ArrayList<>());
+    public static final Submission VALID_SUBMISSION_P2 = new Submission(null, UUID.randomUUID(), LocalDateTime.now(),
+            null, null, new ArrayList<>());
 
     // IF changes are doen for the existing user, SelfServiceData.sql needs to be adjusted accordingly
     public static final String EXISTING_USER_USERNAME = "John";

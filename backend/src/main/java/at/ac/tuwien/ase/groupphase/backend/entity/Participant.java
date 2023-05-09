@@ -19,7 +19,7 @@ public class Participant extends PlatformUser {
 
     public Participant(Long id, String email, byte[] password, String username, Boolean isAdmin, List<League> ownerOf,
             String postalCode, Integer wins, Region region, LocalDateTime registered, List<Submission> submissions,
-            List<Submission> votes, List<League> leagues) {
+            List<ParticipantSubmissionVote> votes, List<League> leagues) {
         super(id, email, password, username, isAdmin, ownerOf);
         this.postalCode = postalCode;
         this.wins = wins;
@@ -41,8 +41,8 @@ public class Participant extends PlatformUser {
 
     @OneToMany
     private List<Submission> submissions;
-    @ManyToMany(mappedBy = "upVotes")
-    private List<Submission> votes;
+    @OneToMany(mappedBy = "participant")
+    private List<ParticipantSubmissionVote> votes;
     @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
     private List<League> leagues;
 }
