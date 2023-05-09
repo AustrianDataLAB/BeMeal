@@ -2,10 +2,7 @@ package at.ac.tuwien.ase.groupphase.backend.unittests;
 
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
-import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
-import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
-import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
-import at.ac.tuwien.ase.groupphase.backend.repository.SubmissionRepository;
+import at.ac.tuwien.ase.groupphase.backend.repository.*;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +27,7 @@ class LastWinnerTests {
     private final LeagueRepository leagueRepository;
     private final SubmissionRepository submissionRepository;
     private final LeagueMapper leagueMapper;
+    private final VoteRepository voteRepository;
 
     private Participant winner = null;
     private Participant p1 = null;
@@ -41,13 +39,15 @@ class LastWinnerTests {
     @Autowired
     public LastWinnerTests(final EntityManager entityManager, final ChallengeRepository challengeRepository,
             final ParticipantRepository participantRepository, final LeagueRepository leagueRepository,
-            final SubmissionRepository submissionRepository, final LeagueMapper leagueMapper) {
+            final SubmissionRepository submissionRepository, final LeagueMapper leagueMapper,
+            final VoteRepository voteRepository) {
         this.entityManager = entityManager;
         this.challengeRepository = challengeRepository;
         this.participantRepository = participantRepository;
         this.leagueRepository = leagueRepository;
         this.submissionRepository = submissionRepository;
         this.leagueMapper = leagueMapper;
+        this.voteRepository = voteRepository;
     }
 
     @BeforeEach
@@ -119,23 +119,35 @@ class LastWinnerTests {
         winnerSubmission.setDate(LocalDateTime.now());
         winnerSubmission.setChallenge(oldChallenge);
         winnerSubmission.setParticipant(p0);
-        winnerSubmission.setUpVotes(List.of(p1, p2, p3));
 
         final var anotherSubmission = new Submission();
         anotherSubmission.setPicture(UUID.randomUUID());
         anotherSubmission.setDate(LocalDateTime.now());
         anotherSubmission.setChallenge(oldChallenge);
         anotherSubmission.setParticipant(p1);
-        anotherSubmission.setUpVotes(List.of(p0));
 
         final var noiseSubmission = new Submission();
         noiseSubmission.setPicture(UUID.randomUUID());
         noiseSubmission.setDate(LocalDateTime.now());
         noiseSubmission.setChallenge(noiseChallenge);
         noiseSubmission.setParticipant(p0);
-        noiseSubmission.setUpVotes(List.of(n0, n1));
 
         this.submissionRepository.saveAll(List.of(winnerSubmission, anotherSubmission, noiseSubmission));
+
+        this.flush();
+
+        final var voteWinnerSubmissionP1 = new ParticipantSubmissionVote(p1, winnerSubmission, true);
+        final var voteWinnerSubmissionP2 = new ParticipantSubmissionVote(p2, winnerSubmission, true);
+        final var voteWinnerSubmissionP3 = new ParticipantSubmissionVote(p3, winnerSubmission, true);
+
+        final var voteAnotherSubmission = new ParticipantSubmissionVote(p0, anotherSubmission, true);
+
+        final var voteNoiseSubmissionN0 = new ParticipantSubmissionVote(n0, noiseSubmission, true);
+        final var voteNoiseSubmissionN1 = new ParticipantSubmissionVote(n1, noiseSubmission, true);
+
+        this.voteRepository.saveAll(List.of(voteWinnerSubmissionP1, voteWinnerSubmissionP2, voteWinnerSubmissionP3,
+                voteAnotherSubmission, voteNoiseSubmissionN0, voteNoiseSubmissionN1));
+
         this.flush();
     }
 
@@ -197,18 +209,28 @@ class LastWinnerTests {
         loosingSubmission.setPicture(UUID.randomUUID());
         loosingSubmission.setChallenge(challenge);
         loosingSubmission.setParticipant(this.p1);
-        loosingSubmission.setUpVotes(List.of(this.winner));
 
         final var submission = new Submission();
         submission.setDate(LocalDateTime.now());
         submission.setPicture(UUID.randomUUID());
         submission.setChallenge(challenge);
         submission.setParticipant(this.winner);
-        submission.setUpVotes(List.of(this.p1, this.p2, this.p4));
 
         this.submissionRepository.save(submission);
         this.submissionRepository.save(loosingSubmission);
         this.flush();
+
+        final var voteLoosingSubmission = new ParticipantSubmissionVote(winner, loosingSubmission, true);
+
+        final var voteSubmissionP1 = new ParticipantSubmissionVote(p1, submission, true);
+        final var voteSubmissionP2 = new ParticipantSubmissionVote(p2, submission, true);
+        final var voteSubmissionP4 = new ParticipantSubmissionVote(p4, submission, true);
+
+        this.voteRepository
+                .saveAll(List.of(voteLoosingSubmission, voteSubmissionP1, voteSubmissionP2, voteSubmissionP4));
+
+        this.flush();
+
         final var leagueDto = this.leagueMapper.leagueToLeagueDto(this.league);
         assertEquals(1, leagueDto.lastWinners().size());
         assertIterableEquals(List.of(this.winner.getUsername()), leagueDto.lastWinners());
@@ -231,18 +253,24 @@ class LastWinnerTests {
         submission.setPicture(UUID.randomUUID());
         submission.setChallenge(challenge);
         submission.setParticipant(this.p1);
-        submission.setUpVotes(List.of(this.winner));
 
         final var anotherSubmission = new Submission();
         anotherSubmission.setDate(LocalDateTime.now());
         anotherSubmission.setPicture(UUID.randomUUID());
         anotherSubmission.setChallenge(challenge);
         anotherSubmission.setParticipant(this.winner);
-        anotherSubmission.setUpVotes(List.of(this.p2));
 
         this.submissionRepository.save(anotherSubmission);
         this.submissionRepository.save(submission);
         this.flush();
+
+        final var voteSubmissionWinner = new ParticipantSubmissionVote(winner, submission, true);
+        final var voteAnotherSubmissionP2 = new ParticipantSubmissionVote(p2, anotherSubmission, true);
+
+        this.voteRepository.saveAll(List.of(voteSubmissionWinner, voteAnotherSubmissionP2));
+
+        this.flush();
+
         final var leagueDto = this.leagueMapper.leagueToLeagueDto(this.league);
         assertEquals(2, leagueDto.lastWinners().size());
         assertEquals(this.winner.getUsername(),

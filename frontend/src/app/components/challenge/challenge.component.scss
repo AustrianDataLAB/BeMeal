@@ -11,3 +11,21 @@
     margin-bottom: 8px;
     margin-top: 8px;
 }
+
+// overlay container center field
+#upvoting-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.card-item-top {
+    flex-basis: 50%;
+    margin-bottom: 20px;
+    padding: 16px;
+}
+
+#row-top{
+}

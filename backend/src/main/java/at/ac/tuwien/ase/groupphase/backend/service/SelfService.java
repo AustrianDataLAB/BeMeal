@@ -40,7 +40,7 @@ public class SelfService {
         if (this.userRepository.exists(registration.email(), registration.password())) {
             throw new UserAlreadyExistsException(registration.email(), registration.username());
         }
-        // todo check postal code
+        // check postal code
         if (!this.postalCodeValidator.isPostalCodeValid(registration.postalCode())) {
             throw new ValidationException("Invalid postal code: " + registration.postalCode());
         }

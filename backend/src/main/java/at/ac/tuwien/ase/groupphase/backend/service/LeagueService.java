@@ -1,33 +1,91 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
-import at.ac.tuwien.ase.groupphase.backend.controller.InvitationService;
-import at.ac.tuwien.ase.groupphase.backend.entity.League;
-import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
-import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
+import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
+import at.ac.tuwien.ase.groupphase.backend.entity.*;
+import at.ac.tuwien.ase.groupphase.backend.exception.MissingPictureException;
+import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
+import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 public class LeagueService {
 
+    private static final String IMAGE_FORMAT = "jpg";
+    private static final String IMAGE_PATH = "src/main/resources/recipes";
+
     private final UserRepository userRepository;
     private final LeagueRepository leagueRepository;
+    private final ChallengeRepository challengeRepository;
+
+    private final RecipeService recipeService;
     private final Logger logger = LoggerFactory.getLogger(LeagueService.class);
 
     @Autowired
     @NotNull
-    public LeagueService(UserRepository userRepository, LeagueRepository leagueRepository) {
+    public LeagueService(UserRepository userRepository, LeagueRepository leagueRepository,
+            ChallengeRepository challengeRepository, RecipeService recipeService) {
         this.userRepository = userRepository;
         this.leagueRepository = leagueRepository;
+        this.challengeRepository = challengeRepository;
+        this.recipeService = recipeService;
+    }
+
+    @Transactional
+    public ChallengeInfoDto getChallengeForLeague(Long id) {
+        League league = this.leagueRepository.findById(id).orElseThrow();
+        if (league.getChallenges().isEmpty()) {
+            throw new NoChallengeException();
+        }
+
+        // TODO dont take first one, but the correct one
+        // Challenge challenge = league.getChallenges().get(0);
+        Challenge challenge = this.challengeRepository.getLatestChallenge(league.getId());
+        RecipeDto recipe = this.recipeService.getRecipeById(challenge.getRecipe());
+
+        ChallengeInfoDto dto = new ChallengeInfoDto();
+        dto.setDescription(recipe.getDescription());
+        dto.setName(recipe.getName());
+        dto.setEndDate(challenge.getEndDate());
+        dto.setChallengeId(challenge.getId());
+
+        GameMode gameMode = league.getGameMode();
+
+        if (gameMode == GameMode.PICTURE || gameMode == GameMode.PICTURE_INGREDIENTS) {
+            String uuid = recipe.getPictureUUID();
+            try {
+                Path path = getPath(uuid);
+                if (!Files.exists(path))
+                    throw new MissingPictureException();
+                byte[] bytes = Files.readAllBytes(path);
+                String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
+                dto.setPicture(imageString);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (gameMode != GameMode.PICTURE) {
+            dto.setIngredients(recipe.getIngredients());
+        }
+
+        return dto;
+    }
+
+    private static Path getPath(String uuid) {
+        return Paths.get(IMAGE_PATH, uuid + "." + IMAGE_FORMAT);
     }
 
     public void createLeague(String username, League league) {

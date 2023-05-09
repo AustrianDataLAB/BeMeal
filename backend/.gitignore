@@ -38,3 +38,5 @@ database/**/*
 !database/neo4j/load-data
 
 log/
+/src/main/resources/static/img/*
+!/src/main/resources/static/img/.gitkeep
