@@ -11,8 +11,9 @@
                 </mat-card-header>
                 <form [formGroup]="registerForm">
                     <mat-card-content fxLayout="column" fxLayoutAlign="center center">
-                        <mat-form-field>
-                            <input formControlName="name" name="name" matInput placeholder="League name">
+                        <mat-form-field >
+                            <mat-label>League name</mat-label>
+                            <input formControlName="name" name="name" matInput>
                         </mat-form-field>
                         <mat-form-field >
                             <mat-label>Select your Gamemode</mat-label>
@@ -22,10 +23,11 @@
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field >
-                            <input type="number" formControlName="challengeDuration" name="challengeDuration" matInput placeholder="Challenge duration (days)">
+                            <mat-label>Challenge duration (days)</mat-label>
+                            <input type="number" formControlName="challengeDuration" name="challengeDuration" matInput >
                         </mat-form-field>
                         <mat-form-field >
-                            <mat-label>Select your region</mat-label>
+                            <mat-label>Your region</mat-label>
                             <mat-select name="region" formControlName="region">
                                 <mat-option [value]="region" *ngFor="let region of regionKeys(regions)">{{region}}
                                 </mat-option>

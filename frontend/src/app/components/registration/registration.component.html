@@ -15,16 +15,20 @@
             <form [formGroup]="registerForm" >
                 <mat-card-content>
                     <mat-form-field>
-                        <input formControlName="username" name="username" matInput placeholder="Username">
+                        <mat-label>Username</mat-label>
+                        <input formControlName="username" name="username" matInput>
                     </mat-form-field>
                     <mat-form-field >
-                        <input formControlName="email" name="email" matInput placeholder="Email">
+                        <mat-label>Email</mat-label>
+                        <input formControlName="email" name="email" matInput>
                     </mat-form-field>
                     <mat-form-field >
-                        <input type="password" name="password" formControlName="password" matInput placeholder="Password">
+                        <mat-label>Password</mat-label>
+                        <input type="password" name="password" formControlName="password" matInput>
                     </mat-form-field>
                     <mat-form-field>
-                        <input maxlength="4" minlength="4" name="postalCode" formControlName="postalCode" matInput placeholder="Postal Code">
+                        <mat-label>Postal Code</mat-label>
+                        <input maxlength="4" minlength="4" name="postalCode" formControlName="postalCode" matInput >
                     </mat-form-field>
                     <mat-form-field >
                         <mat-label>Select your region</mat-label>
