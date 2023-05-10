@@ -70,7 +70,7 @@
                     </mat-card-header>
                     <mat-card-content   class="card-content-league">
                         <!-- TODO dummy image iff challenge.picture == null -->
-                        <img style="max-width: 100%;" src="data:image/jpeg;base64, {{challenge.picture}}"/>
+                        <img style="max-width: 100%;" src="data:image/jpeg;base64, {{challenge?.picture}}"/>
                     </mat-card-content>
                 </mat-card>
                 <mat-card *ngIf="challenge.ingredients" class="card-item-top">  <!-- todo do not display when game mode picture -->
