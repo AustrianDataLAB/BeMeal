@@ -18,6 +18,9 @@ import java.util.stream.Stream;
 public interface LeagueRepository extends CrudRepository<League, Long> {
     List<League> findLeaguesByParticipantsIn(Set<Participant> participants);
 
+    // for regional leagues, name is: State league, e.g. Vorarlberg League, Vienna League, Upper Austria League
+    League findLeagueByName(String name);
+
     League findLeagueByHiddenIdentifier(UUID hiddenIdentifier);
 
     @Query("select distinct l from League l left join l.challenges c group by l having max(c.endDate) < :endExclusive")

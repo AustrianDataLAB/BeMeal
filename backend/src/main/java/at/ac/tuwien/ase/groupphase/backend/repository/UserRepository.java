@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends CrudRepository<PlatformUser, Long> {
 
@@ -12,6 +14,7 @@ public interface UserRepository extends CrudRepository<PlatformUser, Long> {
     boolean exists(String email, String username);
 
     PlatformUser findByUsername(String username);
+
 
     @Query("select count(*) > 0 from PlatformUser p inner join p.ownerOf l where p.username = :username and l.id = :leagueId")
     boolean isCreatorOfLeague(String username, Long leagueId);

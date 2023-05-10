@@ -118,10 +118,41 @@ public class LeagueService {
         this.leagueRepository.save(league);
     }
 
+    // important: regional leagues have to exist
+    public void joinRegionalLeague(String username, Region region) {
+        String leagueName = modifyString(region.toString()) + " League";
+        System.out.println(leagueName);
+        League league = this.leagueRepository.findLeagueByName(leagueName);
+        if (league == null) {
+            throw new IllegalArgumentException("could not find regional league");
+        };
+        List<Participant> participantList = league.getParticipants();
+        Participant user = (Participant) this.userRepository.findByUsername(username);
+        participantList.add(user);
+        league.setParticipants(participantList);
+        this.leagueRepository.save(league);
+    }
+
+
     public List<League> getLeagues(String username) {
         Participant user = (Participant) this.userRepository.findByUsername(username);
         List<Participant> participantList = new ArrayList<>();
         participantList.add(user);
         return this.leagueRepository.findLeaguesByParticipantsIn(new HashSet<>(participantList));
+    }
+
+    private String modifyString(String str) {
+        str = str.replace("_", " ").toLowerCase(); // replace '_' with ' ' and convert to lowercase
+        StringBuilder sb = new StringBuilder(str);
+        boolean capitalizeNext = true;
+        for (int i = 0; i < sb.length(); i++) {
+            if (Character.isWhitespace(sb.charAt(i))) {
+                capitalizeNext = true; // set flag to capitalize the next letter
+            } else if (capitalizeNext) {
+                sb.setCharAt(i, Character.toUpperCase(sb.charAt(i))); // capitalize current letter
+                capitalizeNext = false; // reset flag
+            }
+        }
+        return sb.toString();
     }
 }
