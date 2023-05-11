@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {LeagueService} from "../../services/league.service";
 import {catchError, tap} from "rxjs/operators";
-import {firstValueFrom, map, Observable, of} from 'rxjs';
+import {async, firstValueFrom, map, Observable, of} from 'rxjs';
 import {League} from "../../dtos/league";
 import {InvitationService} from '../../services/invitation.service';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-leagues',
@@ -15,13 +16,14 @@ export class LeaguesComponent {
 
     error = false;
     errorMessage = '';
-    showLink = false;
-
+    showInvitationLinks: Array<boolean>;
+    showInvitationLinksFeedback: Array<string>;
+    enableInviteFriends: Array<boolean>;
     leagues: League[] = [];
     displayedColumns: string[] = ['Name', 'gameMode', 'challengeDuration', 'region', 'action', 'invitationLink']
-    invitationLinks = new Map<number|null,Promise<string>>;
+    invitationLinks = new Map<number|null,Promise<string|null>>;
 
-    constructor(private router: Router, private leagueService: LeagueService, private invitationService: InvitationService) {
+    constructor(private clipboard: Clipboard, private router: Router, private leagueService: LeagueService, private invitationService: InvitationService) {
         this.fetchLeagues();
     }
 
@@ -39,9 +41,24 @@ export class LeaguesComponent {
                 this.leagues = response;
                 console.log(this.leagues);
                 console.log('Successfully fetched leagues');
+                this.showInvitationLinks = new Array<boolean>(this.leagues.length).fill(false); // initialize boolean array with all false values and same size as leagues
+                this.enableInviteFriends = new Array<boolean>(this.leagues.length).fill(true); // initialize boolean array with all false values and same size as leagues
+                this.showInvitationLinksFeedback = new Array<string>(this.leagues.length).fill("");
+                let index = 0;
                 for (const l of this.leagues) {
-                    const link = firstValueFrom(this.invitationService.getHiddenIdentifier(l.id!).pipe(map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`)));
+                    const link = firstValueFrom(
+                        this.invitationService.getHiddenIdentifier(l.id!).pipe(
+                                map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`),
+                                catchError(error => {
+                                    this.enableInviteFriends[index] = false;
+                                    index++;
+                                    console.log("couldnt get hidden identifier");
+                                    return of(null);
+                                })
+                            )
+                    );
                     this.invitationLinks.set(l.id!, link);
+
                 }
             }),
             catchError(error => {
@@ -69,5 +86,24 @@ export class LeaguesComponent {
     prettyString(str: string): string {
         str = str.replace(/_/g, ' ').toLowerCase();
         return str.replace(/(^|\s)\S/g, (match) => match.toUpperCase());
+    }
+
+    showHiddenIdentifier(index: number, leagueId: number|null) {
+        this.showInvitationLinks[index] = true;
+        this.invitationLinks.get(leagueId)?.then(
+            success => {
+                if (success !== null) {
+                    this.clipboard.copy(success);
+                }
+                // copy link to clipboard and show feedback
+                this.showInvitationLinksFeedback[index] = "Invitation copied to Clipboard!"
+                console.log(success);
+            },
+            error => {
+                console.log(error);
+                this.showInvitationLinksFeedback[index] = "Error: could not get invitation!"
+                return of(null);
+            }
+        )
     }
 }
