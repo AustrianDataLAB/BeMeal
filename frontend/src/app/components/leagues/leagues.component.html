@@ -20,7 +20,6 @@
                     </mat-card-actions>
                     <mat-card-footer  class="card-content-league">
                         <p *ngIf="element.lastWinners.length > 0">Last Winner: <ng-container *ngIf="element.lastWinners.length > 0">{{ element.lastWinners.join(', ')}}</ng-container> </p>
-                        <!-- todo only show if the user is creator of league -->
                         <span class="span-content-league" style="padding: 0 8px" *ngIf="InvitationLinksFeedback[i]">{{InvitationLinksFeedback[i]}}</span>
                     </mat-card-footer>
                 </mat-card>

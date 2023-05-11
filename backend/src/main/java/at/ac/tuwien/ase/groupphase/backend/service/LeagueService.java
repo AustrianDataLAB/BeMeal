@@ -30,6 +30,7 @@ public class LeagueService {
     private final UserRepository userRepository;
     private final LeagueRepository leagueRepository;
     private final ChallengeRepository challengeRepository;
+    private final ChallengeGenerationService challengeGenerationService;
 
     private final RecipeService recipeService;
     private final Logger logger = LoggerFactory.getLogger(LeagueService.class);
@@ -37,10 +38,11 @@ public class LeagueService {
     @Autowired
     @NotNull
     public LeagueService(UserRepository userRepository, LeagueRepository leagueRepository,
-            ChallengeRepository challengeRepository, RecipeService recipeService) {
+                         ChallengeRepository challengeRepository, ChallengeGenerationService challengeGenerationService, RecipeService recipeService) {
         this.userRepository = userRepository;
         this.leagueRepository = leagueRepository;
         this.challengeRepository = challengeRepository;
+        this.challengeGenerationService = challengeGenerationService;
         this.recipeService = recipeService;
     }
 
@@ -98,6 +100,8 @@ public class LeagueService {
         owned.add(l);
         user.setOwnerOf(owned);
         this.userRepository.save(user);
+        // create challenge for new league:
+        this.challengeGenerationService.generateForExpiredChallenges();
     }
 
     /**
