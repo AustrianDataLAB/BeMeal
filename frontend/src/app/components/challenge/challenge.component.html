@@ -33,8 +33,6 @@
                         </div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <!--                    <input type="file" mat-raised-button color="primary" class="btn-block" id="customFileInput" (change)="onImageChangeNOCOMPRESSION($event)"-->
-                        <!--                           accept="image/*">-->
                         <button type="button" mat-raised-button color="primary" class="btn-block" (click)="fileInput.click()">Choose File</button>
                         <input hidden (change)="onImageChangeNOCOMPRESSION($event)" #fileInput type="file" id="file">
                     </mat-card-actions>
@@ -70,7 +68,7 @@
                     </mat-card-header>
                     <mat-card-content   class="card-content-league">
                         <!-- TODO dummy image iff challenge.picture == null -->
-                        <img style="max-width: 100%;" src="data:image/jpeg;base64, {{challenge.picture}}"/>
+                        <img style="max-width: 100%;" src="data:image/jpeg;base64, {{challenge?.picture}}"/>
                     </mat-card-content>
                 </mat-card>
                 <mat-card *ngIf="challenge.ingredients" class="card-item-top">  <!-- todo do not display when game mode picture -->

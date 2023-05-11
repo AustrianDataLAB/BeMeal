@@ -82,4 +82,11 @@ export class RegistrationComponent implements OnInit{
     vanishError() {
         this.error = false;
     }
+
+    prettyString(str: string): string {
+        str = str.replace(/([a-z])([A-Z])/g, '$1 $2'); // Add space between lower and upper case letters
+        str = str.replace(/_/g, ' ').toLowerCase();
+        str = str.replace(/(^|\s)\S/g, (match) => match.toUpperCase());
+        return str;
+    }
 }

@@ -1,43 +1,86 @@
-<div class="container page-container mx-auto" fxLayout="row"  fxLayoutGap="16px">
+<div class="container page-container mx-auto" fxLayout="column"  fxLayoutGap="16px">
     <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
         <h1 fxLayout="row" class="mat-headline-2">{{ league['name'] }}</h1>
-        <div fxLayout="row" fxLayoutGap="16px" class="card-container">
-            <ng-container>
-                <mat-card class="card-item">
-                    <mat-card-header>
-                        <mat-card-title>League details</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content class="card-content-league">
-                        <div class="span-content-league">Gamemode: {{ prettyString(league['gameMode']) }}</div>
-                        <div class="span-content-league">Challenge duration: {{ league['challengeDuration'] }} days</div>
-                        <div class="span-content-league">Region: {{ prettyString(league['region']) }}</div>
-                    </mat-card-content>
-                </mat-card>
-            </ng-container>
-            <div>
-                <ng-container>
-                    <mat-card  class="card-item">
-
-                    <mat-card-header >
-                        <mat-card-title><mat-icon style="transform: scale(1.2); margin-right: 16px;">warning</mat-icon>Challenge</mat-card-title>
-                        </mat-card-header>
-                        <mat-card-content class="card-content-league">
-                            <span>
-                                A new challenge awaits you! Don't miss out on the opportunity to challenge yourself and showcase your skills.
-                            </span>
-                        </mat-card-content>
-                        <mat-card-actions>
-                            <button fxLayout="row"  mat-raised-button  color="primary" (click)="showChallenge()">View Challenge</button>
-
-                        </mat-card-actions>
-                    </mat-card>
-                </ng-container>
-         </div>
-
-        </div>
-
     </div>
+    <div fxFlexFill fxFlex="100" fxLayout="row" fxLayoutGap="16px"  >
+        <mat-card class="card-item">
+            <mat-card-header>
+                <mat-card-title>League details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="card-content-league">
+                <div class="span-content-league">Gamemode: {{ prettyString(league['gameMode']) }}</div>
+                <div class="span-content-league">Challenge duration: {{ league['challengeDuration'] }} days</div>
+                <div class="span-content-league">Region: {{ prettyString(league['region']) }}</div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card  class="card-item" style="flex: 1 1 100%">
+            <mat-card-header >
+                <mat-card-title><mat-icon style="transform: scale(1.2); margin-right: 16px;">warning</mat-icon>Challenge</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="card-content-league">
+                <span>
+                    A new challenge awaits you! Don't miss out on the opportunity to challenge yourself and showcase your skills.
+                </span>
+            </mat-card-content>
+            <mat-card-actions>
+                <button fxLayout="row"  mat-raised-button  color="primary" (click)="showChallenge()">View Challenge</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div fxFlexFill fxFlex="100" fxLayout="row" fxLayoutGap="16px"  >
 
-    <!-- todo show winner of latest challenge -->
-    <!-- todo leaderboard -->
+        <!-- leaderboard -->
+        <mat-card  class="card-item" style="flex: 1 1 100%">
+            <mat-card-header >
+                <mat-card-title>Leaderboard</mat-card-title>
+                <mat-card-subtitle>These are the current standings.</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content class="card-content-league">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                    <!--- Note that these columns can be defined in any order.
+                          The actual rendered columns are set as a property on the row definition" -->
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef> No. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="points">
+                        <th mat-header-cell *matHeaderCellDef> Points </th>
+                        <td mat-cell *matCellDef="let element"> {{element.points}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+
+            </mat-card-content>
+        </mat-card>
+
+        <!-- winner of latest challenge -->
+        <mat-card class="card-item">
+            <mat-card-header>
+                <mat-card-title>Previous Challenge</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="card-content-league" *ngIf="league.lastWinners.length > 0">
+                <span class="span-content-league" style="margin-bottom: 16px;">The results are from the last challenge are in.</span>
+                <img style="max-width: 300px;" src="https://www.vogtgmbh.com/wp-content/uploads/2019/11/mulchkopf-fuer-bagger-radlader-tifermec-1.jpg" />
+                <p class="span-content-league" >The winner was: <b><ng-container *ngIf="league.lastWinners.length > 0">{{ league.lastWinners.join(', ')}}</ng-container> </b></p>
+                <!-- todo move ngIf to card-content and display "no challenges yet" or sth -->
+            </mat-card-content>
+            <mat-card-content class="card-content-league" *ngIf="league.lastWinners.length <  1">
+                <span class="span-content-league" style="margin-bottom: 16px;">The first challenge is currently running! Find the winners here after the end of the challenge.</span>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>

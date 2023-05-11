@@ -23,17 +23,19 @@ public class SelfService {
     private final RegistrationMapper registrationMapper;
     private final ParticipantService participantService;
     private final PostalCodeValidator postalCodeValidator;
+    private final LeagueService leagueService;
 
     @Autowired
     @NotNull
     public SelfService(final UserRepository userRepository, final ParticipantRepository participantRepository,
             ParticipantService participantService, final RegistrationMapper registrationMapper,
-            PostalCodeValidator postalCodeValidator) {
+            PostalCodeValidator postalCodeValidator, LeagueService leagueService) {
         this.userRepository = userRepository;
         this.participantRepository = participantRepository;
         this.registrationMapper = registrationMapper;
         this.participantService = participantService;
         this.postalCodeValidator = postalCodeValidator;
+        this.leagueService = leagueService;
     }
 
     public void register(Registration registration) throws ValidationException {
@@ -48,5 +50,7 @@ public class SelfService {
         this.participantRepository.save(participant);
         logger.info("Registered participant with id: '{}' email: '{}' username: '{}'", participant.getId(),
                 participant.getEmail(), participant.getUsername());
+        // add user to regional league:
+        this.leagueService.joinRegionalLeague(participant.getUsername(), participant.getRegion());
     }
 }

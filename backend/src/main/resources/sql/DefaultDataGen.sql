@@ -23,7 +23,7 @@ INSERT INTO Participant (participant_id, postal_code, region, registered, wins) 
 INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (3, 2500, 1, '2020-05-20 23:14:37', 7);
 INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (4, 6890, 8, '2020-05-20 23:14:37', 8);
 INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (5, 6850, 8, '2020-05-20 23:14:37', 9);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (6, 1010, 0, '2020-05-20 23:14:37', 10);
+INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (6, 1010, 1, '2020-05-20 23:14:37', 10);
 
 
 /*      Create default Leagues      */
@@ -54,6 +54,25 @@ INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, n
 INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 6, 7, '645379dd-3b61-4635-817d-1ee9808e20b0', 'Foodies');
 INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 7, 7, '64188f31-9fc5-478f-9342-4ccd61cc0920', 'True legends');
 INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Turtles');
+
+-- game mode for regional leagues always picture_ingredients:
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 0, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Vienna League');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 1, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Lower Austria League');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 2, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Upper Austria League');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 3, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Styria League');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 4, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Tyrol League');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 5, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Salzburg League');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 6, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Carinthia League');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 7, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Burgenland League');
+INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Vorarlberg League');
+
+-- team member users participate in their regional leagues
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (11, 1);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (11, 2);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (11, 3);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (18, 4);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (18, 5);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (11, 6);
 
 /*      Create show user league entries     */
 INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (1, 7);

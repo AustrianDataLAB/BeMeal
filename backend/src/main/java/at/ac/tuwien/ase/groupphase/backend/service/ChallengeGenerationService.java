@@ -7,6 +7,7 @@ import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.RecipeRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -71,6 +72,7 @@ public class ChallengeGenerationService {
     /**
      * Generate new challenges for all leagues which either have no or only expired challenges.
      */
+    @Transactional
     public void generateForExpiredChallenges() {
         log.info("Generate new challenges for leagues with no valid challenge");
         Stream.concat(this.leagueRepository.findLeaguesWithNoValidChallengeAt(LocalDate.now()),
@@ -81,6 +83,7 @@ public class ChallengeGenerationService {
     /**
      * Generate new challenges for all leagues ignoring the current state of their challenges.
      */
+    @Transactional
     public void generateAllNewChallenges() {
         log.info("Generate new challenges for all leagues");
         this.leagueRepository.findAll().forEach(this::generateNewChallenge);
