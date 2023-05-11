@@ -44,6 +44,7 @@ export class ChallengeComponent {
             // todo show error
         }
         console.log(`league id is: ${id}`);
+        console.log(this.submission.image);
         this.fetchChallenge(this.leagueId);
         setInterval(() => { this.deadlineCountdown(); }, 1000);
     }

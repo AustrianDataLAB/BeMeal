@@ -20,7 +20,6 @@ export class LeaguesComponent {
     InvitationLinksFeedback: Array<string>;
     enableInviteFriends: Array<boolean>;
     leagues: League[] = [];
-    displayedColumns: string[] = ['Name', 'gameMode', 'challengeDuration', 'region', 'action', 'invitationLink']
     invitationLinks = new Map<number|null,Promise<string|null>>;
 
     constructor(private clipboard: Clipboard, private router: Router, private leagueService: LeagueService, private invitationService: InvitationService) {

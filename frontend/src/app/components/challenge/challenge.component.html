@@ -33,8 +33,6 @@
                         </div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <!--                    <input type="file" mat-raised-button color="primary" class="btn-block" id="customFileInput" (change)="onImageChangeNOCOMPRESSION($event)"-->
-                        <!--                           accept="image/*">-->
                         <button type="button" mat-raised-button color="primary" class="btn-block" (click)="fileInput.click()">Choose File</button>
                         <input hidden (change)="onImageChangeNOCOMPRESSION($event)" #fileInput type="file" id="file">
                     </mat-card-actions>

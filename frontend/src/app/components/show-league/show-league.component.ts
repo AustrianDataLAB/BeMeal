@@ -17,7 +17,16 @@ export class ShowLeagueComponent implements OnInit{
     league: League;
     error: boolean;
     errorMessage: string;
+    ELEMENT_DATA: Leaderboard[] = [
+        {position: 1, name: 'DerGabelstapler',points: 12},
+        {position: 2, name: 'Johnny123',points: 10},
+        {position: 3, name: 'Klausi',points: 8},
+        {position: 4, name: 'Hubertus123',points: 6},
+        {position: 5, name: 'Moneyboy',points: 4}
+    ];
 
+    displayedColumns: string[] = ['position', 'name', 'points'];
+    dataSource = this.ELEMENT_DATA;
     constructor(private selfService: SelfService, private router: Router, private leagueService: LeagueService, private route: ActivatedRoute) {
     }
 
@@ -67,4 +76,14 @@ export class ShowLeagueComponent implements OnInit{
     }
 
 
+
+
+
 }
+
+export interface Leaderboard {
+    name: string;
+    position: number;
+    points: number;
+}
+
