@@ -17,7 +17,7 @@ export class LeaguesComponent {
     error = false;
     errorMessage = '';
     showInvitationLinks: Array<boolean>;
-    showInvitationLinksFeedback: Array<string>;
+    InvitationLinksFeedback: Array<string>;
     enableInviteFriends: Array<boolean>;
     leagues: League[] = [];
     displayedColumns: string[] = ['Name', 'gameMode', 'challengeDuration', 'region', 'action', 'invitationLink']
@@ -43,7 +43,7 @@ export class LeaguesComponent {
                 console.log('Successfully fetched leagues');
                 this.showInvitationLinks = new Array<boolean>(this.leagues.length).fill(false); // initialize boolean array with all false values and same size as leagues
                 this.enableInviteFriends = new Array<boolean>(this.leagues.length).fill(true); // initialize boolean array with all false values and same size as leagues
-                this.showInvitationLinksFeedback = new Array<string>(this.leagues.length).fill("");
+                this.InvitationLinksFeedback = new Array<string>(this.leagues.length).fill("");
                 let index = 0;
                 for (const l of this.leagues) {
                     const link = firstValueFrom(
@@ -90,18 +90,23 @@ export class LeaguesComponent {
 
     showHiddenIdentifier(index: number, leagueId: number|null) {
         this.showInvitationLinks[index] = true;
+        // reset all fields
+        for (let i = 0; i < this.InvitationLinksFeedback.length; i++) {
+            this.InvitationLinksFeedback[i] = "";
+        }
+        // copy to clipboard
         this.invitationLinks.get(leagueId)?.then(
             success => {
                 if (success !== null) {
                     this.clipboard.copy(success);
                 }
                 // copy link to clipboard and show feedback
-                this.showInvitationLinksFeedback[index] = "Invitation copied to Clipboard!"
+                this.InvitationLinksFeedback[index] = "Invitation copied to Clipboard!"
                 console.log(success);
             },
             error => {
                 console.log(error);
-                this.showInvitationLinksFeedback[index] = "Error: could not get invitation!"
+                this.InvitationLinksFeedback[index] = "Error: could not get invitation!"
                 return of(null);
             }
         )

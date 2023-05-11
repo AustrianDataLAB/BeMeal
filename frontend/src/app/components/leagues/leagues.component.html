@@ -18,10 +18,10 @@
                         <button (click)="viewLeague(element['id'])" mat-raised-button color="primary" class="btn-block">View</button>
                         <button *ngIf="enableInviteFriends[i]" (click)="showHiddenIdentifier(i, element.id)" style="margin-left: 12px;" mat-button color="primary" class="btn-block">Invite Friends</button>
                     </mat-card-actions>
-                    <mat-card-footer>
+                    <mat-card-footer  class="card-content-league">
                         <p *ngIf="element.lastWinners.length > 0">Last Winner: <ng-container *ngIf="element.lastWinners.length > 0">{{ element.lastWinners.join(', ')}}</ng-container> </p>
                         <!-- todo only show if the user is creator of league -->
-                        <pre *ngIf="showInvitationLinks[i]">{{showInvitationLinksFeedback[i]}}</pre>
+                        <span class="span-content-league" style="padding: 0 8px" *ngIf="InvitationLinksFeedback[i]">{{InvitationLinksFeedback[i]}}</span>
                     </mat-card-footer>
                 </mat-card>
             </ng-container>
