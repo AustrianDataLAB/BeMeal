@@ -38,7 +38,8 @@ public class LeagueService {
     @Autowired
     @NotNull
     public LeagueService(UserRepository userRepository, LeagueRepository leagueRepository,
-                         ChallengeRepository challengeRepository, ChallengeGenerationService challengeGenerationService, RecipeService recipeService) {
+            ChallengeRepository challengeRepository, ChallengeGenerationService challengeGenerationService,
+            RecipeService recipeService) {
         this.userRepository = userRepository;
         this.leagueRepository = leagueRepository;
         this.challengeRepository = challengeRepository;
@@ -129,14 +130,14 @@ public class LeagueService {
         League league = this.leagueRepository.findLeagueByName(leagueName);
         if (league == null) {
             throw new IllegalArgumentException("could not find regional league");
-        };
+        }
+        ;
         List<Participant> participantList = league.getParticipants();
         Participant user = (Participant) this.userRepository.findByUsername(username);
         participantList.add(user);
         league.setParticipants(participantList);
         this.leagueRepository.save(league);
     }
-
 
     public List<League> getLeagues(String username) {
         Participant user = (Participant) this.userRepository.findByUsername(username);

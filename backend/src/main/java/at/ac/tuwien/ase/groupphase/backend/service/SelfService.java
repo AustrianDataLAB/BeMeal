@@ -28,8 +28,8 @@ public class SelfService {
     @Autowired
     @NotNull
     public SelfService(final UserRepository userRepository, final ParticipantRepository participantRepository,
-                       ParticipantService participantService, final RegistrationMapper registrationMapper,
-                       PostalCodeValidator postalCodeValidator, LeagueService leagueService) {
+            ParticipantService participantService, final RegistrationMapper registrationMapper,
+            PostalCodeValidator postalCodeValidator, LeagueService leagueService) {
         this.userRepository = userRepository;
         this.participantRepository = participantRepository;
         this.registrationMapper = registrationMapper;
