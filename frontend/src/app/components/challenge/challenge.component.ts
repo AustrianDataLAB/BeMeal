@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import {animate, AnimationEvent, keyframes, transition, trigger} from "@angular/animations";
 import * as kf from './keyframes';
-import {firstValueFrom, map, of, Subject} from "rxjs";
+import {firstValueFrom, map, of, Subject, switchMap} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
 import {League} from "../../dtos/league";
 import {ChallengeInfo} from "../../dtos/challengeInfo";
@@ -31,6 +31,7 @@ export class ChallengeComponent {
     currentPicture: string;
     challenge: ChallengeInfo;
     submission: Submission = {} as Submission;
+    currentSubmission : SubmissionDisplay; // if participant already uploaded a submission to the current challenge
     error = false;
     errorMessage = '';
     leagueId: number;
@@ -105,14 +106,16 @@ export class ChallengeComponent {
     }
 
     deadlineCountdown(): void {
-        const now = new Date();
-        const challDate = new Date(this.challenge.endDate);
-        const timeDiffMs = challDate.getTime() - now.getTime();
-        const days = Math.floor(timeDiffMs / (1000 * 60 * 60 * 24)) + 1;
-        const hours = Math.floor((timeDiffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDiffMs % (1000 * 60)) / 1000);
-        this.countdownString = `${days} days, ${hours} hours, ${minutes} minutes & ${seconds} seconds `;
+        if (this.challenge) {
+            const now = new Date();
+            const challDate = new Date(this.challenge.endDate);
+            const timeDiffMs = challDate.getTime() - now.getTime();
+            const days = Math.floor(timeDiffMs / (1000 * 60 * 60 * 24)) + 1;
+            const hours = Math.floor((timeDiffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDiffMs % (1000 * 60)) / 1000);
+            this.countdownString = `${days} days, ${hours} hours, ${minutes} minutes & ${seconds} seconds `;
+        }
     }
     fetchChallenge(id: number) {
         this.leagueService.getChallengeForLeague(id).pipe(
@@ -130,6 +133,9 @@ export class ChallengeComponent {
                 this.error = true;
                 // Handle the error here
                 return of(null);
+            }),
+            switchMap(() => {
+                return this.getCurrentSubmission();
             })
         ).subscribe();
     }
@@ -155,11 +161,29 @@ export class ChallengeComponent {
                 this.error = true;
                 // Handle the error here
                 return of(null);
+            }),
+            switchMap(() => {
+                return this.getCurrentSubmission();
             })
         ).subscribe();
     }
 
-
+    getCurrentSubmission() {
+        return this.submissionService.getCurrentSubmission(this.challenge.challengeId).pipe(
+            tap(response => {
+                console.log(response);
+                this.currentSubmission = response;
+                console.log('Successfully fetched current submission');
+            }),
+            catchError(error => {
+                console.log("error fetching current submission");
+                console.log(error);
+                // todo
+                // Handle the error here
+                return of(null);
+            })
+        );
+    }
 
     switchUpvotingContainer() {
         const element = this.elementRef.nativeElement.querySelector('.container');
@@ -194,7 +218,7 @@ export class ChallengeComponent {
                 console.log('Successfully fetched submissions');
             }),
             catchError(error => {
-                console.log("error fethcing submissions");
+                console.log("error fetching submissions");
                 console.log(error);
                 // todo
                 // Handle the error here

@@ -61,6 +61,22 @@ public class SubmissionEndpoint {
         }
     }
 
+    @GetMapping("/current/{challengeId}")
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "bearerToken")
+    public SubmissionDto getCurrentSubmission(@NotNull @PathVariable final String challengeId) {
+        logger.trace("getCurrentSubmission({})", challengeId);
+
+        try {
+            return this.submissionService.getCurrentSubmission(challengeId);
+        } catch (ForbiddenAccessException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
+        }
+    }
+
     @GetMapping("/upvotes/{challengeId}")
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirement(name = "bearerToken")

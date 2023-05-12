@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 // @RequiredArgsConstructor
@@ -89,7 +90,7 @@ public class SubmissionService {
         // transform and save image
         try {
             InputStream inputStream = file.getInputStream();
-            BufferedImage originalImage = ImageIO.read(inputStream);
+            BufferedImage originalImage = ImageIO.read(inputStream);    // javax.imageio has built-in support for GIF, PNG, JPEG, BMP, and WBMP
             inputStream.close();
 
             int[] correctWidthHeight = widthHeightCorrectAspectRatio(originalImage);
@@ -227,19 +228,33 @@ public class SubmissionService {
             throw new ForbiddenAccessException("Participant is not eligible to view submission");
         }
 
+        return this.buildSubmissionDto(submission);
+    }
+
+    @Transactional
+    public SubmissionDto getCurrentSubmission(String challengeId) {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Participant participant = this.participantRepository.findByUsername(username);
+        Submission submission = this.submissionRepository.getcurrentSubmission(Long.valueOf(challengeId), participant.getId());
+
+        // check if participant is allowed to see submission
+        if (!participant.getLeagues().contains(submission.getChallenge().getLeague())) {
+            throw new ForbiddenAccessException("Participant is not eligible to view submission");
+        }
+
+        return this.buildSubmissionDto(submission);
+    }
+
+    private SubmissionDto buildSubmissionDto(Submission submission) {
         SubmissionDto submissionDto = this.submissionMapper.submissionToSubmissionDto(submission);
-
         UUID uuid = submission.getPicture();
-
         try {
             byte[] bytes = Files.readAllBytes(getPath(uuid));
             String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
             submissionDto.setPicture(imageString);
-            // submissionDto.setPicture(bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return submissionDto;
     }
 
@@ -258,22 +273,7 @@ public class SubmissionService {
         Participant user = (Participant) this.userRepository.findByUsername(participantUsername);
 
         List<Submission> submissions = submissionRepository.getSubmissionNotUpvotedYetByUser(challengeId, user.getId());
-        List<SubmissionDto> submissionDtos = new ArrayList<>();
 
-        for (Submission s : submissions) {
-            SubmissionDto dto = submissionMapper.submissionToSubmissionDto(s);
-            UUID uuid = s.getPicture();
-            try {
-                byte[] bytes = Files.readAllBytes(getPath(uuid));
-                String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
-                dto.setPicture(imageString);
-                // submissionDto.setPicture(bytes);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            submissionDtos.add(dto);
-        }
-
-        return submissionDtos;
+        return submissions.stream().map(this::buildSubmissionDto).collect(Collectors.toList());
     }
 }

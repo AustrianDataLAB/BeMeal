@@ -18,6 +18,9 @@ export class SubmissionService {
       return this.httpClient.post<any>(this.baseUri + '/submit/' + submission.challengeId, imageFormData);
   }
 
+    getCurrentSubmission(challengeId: number): Observable<SubmissionDisplay> {
+        return this.httpClient.get<SubmissionDisplay>(`${this.baseUri}/current/${challengeId}`);
+    }
     getAllSubmissions(challengeId: number): Observable<SubmissionDisplay[]> {
         return this.httpClient.get<SubmissionDisplay[]>(`${this.baseUri}/upvotes/${challengeId}`);
     }

@@ -25,4 +25,8 @@ public interface SubmissionRepository extends CrudRepository<Submission, Long> {
             + " ON v.submission.id = s.id"
             + " WHERE s.participant.id != :participantId AND v.participant.id = :participantId)")
     List<Submission> getSubmissionNotUpvotedYetByUser(Long challengeId, Long participantId);
+
+
+    @Query("SELECT s FROM Submission s WHERE s.challenge.id = :challengeId AND s.participant.id = :participantId ORDER BY s.id DESC LIMIT 1")
+    Submission getcurrentSubmission(Long challengeId, Long participantId);
 }
