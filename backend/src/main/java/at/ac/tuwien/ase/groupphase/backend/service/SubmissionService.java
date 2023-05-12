@@ -90,7 +90,8 @@ public class SubmissionService {
         // transform and save image
         try {
             InputStream inputStream = file.getInputStream();
-            BufferedImage originalImage = ImageIO.read(inputStream);    // javax.imageio has built-in support for GIF, PNG, JPEG, BMP, and WBMP
+            BufferedImage originalImage = ImageIO.read(inputStream); // javax.imageio has built-in support for GIF, PNG,
+                                                                     // JPEG, BMP, and WBMP
             inputStream.close();
 
             int[] correctWidthHeight = widthHeightCorrectAspectRatio(originalImage);
@@ -235,7 +236,8 @@ public class SubmissionService {
     public SubmissionDto getCurrentSubmission(String challengeId) {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);
-        Submission submission = this.submissionRepository.getcurrentSubmission(Long.valueOf(challengeId), participant.getId());
+        Submission submission = this.submissionRepository.getcurrentSubmission(Long.valueOf(challengeId),
+                participant.getId());
 
         // check if participant is allowed to see submission
         if (!participant.getLeagues().contains(submission.getChallenge().getLeague())) {
