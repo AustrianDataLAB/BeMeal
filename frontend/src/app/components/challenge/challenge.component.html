@@ -24,26 +24,40 @@
                     </mat-card-content>
                 </mat-card>
                 <mat-card class="card-item" style="flex: none">
-                    <mat-card-header>
-                        <mat-card-title>Submit your result</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content class="card-content-league">
-                        <!-- todo disable if already submitted -->
-                        <div class="span-content-league">Upload your creation
-                        </div>
-                    </mat-card-content>
-                    <mat-card-actions>
-                        <button type="button" mat-raised-button color="primary" class="btn-block" (click)="fileInput.click()">Choose File</button>
-                        <input hidden (change)="onImageChangeNOCOMPRESSION($event)" #fileInput type="file" id="file">
-                    </mat-card-actions>
+                    <ng-container *ngIf="!currentSubmission">
+                        <mat-card-header>
+                            <mat-card-title>Submit your result</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="card-content-league">
+                            <div class="span-content-league">Upload your creation</div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button type="button" mat-raised-button color="primary" class="btn-block" (click)="fileInput.click()">Choose File</button>
+                            <input hidden (change)="onImageChangeNOCOMPRESSION($event)" #fileInput type="file" id="file1" accept="image/bmp, image/jpeg, image/png, image/gif">
+                        </mat-card-actions>
 
-                    <mat-card-actions *ngIf="this.submission.image">
-                        <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit {{this.submission.image.name}}</button>
-                    </mat-card-actions>
+                        <mat-card-actions *ngIf="this.submission.image">
+                            <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit {{this.submission.image.name}}</button>
+                        </mat-card-actions>
+                    </ng-container>
+                    <ng-container *ngIf="currentSubmission">
+                        <mat-card-header>
+                            <mat-card-title>Your submission</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="card-content-league">
+                            <div class="card-content-league-image-container">
+                                <img class="card-content-league-image" src="data:image/jpeg;base64, {{currentSubmission?.picture}}" alt="your current submission"/>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button type="button" mat-raised-button color="primary" class="btn-block" (click)="fileInput.click()">Change submission</button>
+                            <input hidden (change)="onImageChangeNOCOMPRESSION($event)" #fileInput type="file" id="file2" accept="image/bmp, image/jpeg, image/png, image/gif">
+                        </mat-card-actions>
+                        <mat-card-actions *ngIf="this.submission.image">
+                            <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit {{this.submission.image.name}}</button>
+                        </mat-card-actions>
+                    </ng-container>
                 </mat-card>
-
-
-
 
                 <!-- vote submissions todo: ngIf challenge ended? if submissions[] not empty?-->
 
@@ -62,16 +76,17 @@
             </div>
 
             <div fxLayout="row" fxLayoutGap="16px" class="card-container">
-                <mat-card *ngIf="challenge.picture" class="card-item-top">   <!-- todo do not display when game mode ingredients -->
+                <mat-card *ngIf="challenge?.picture" class="card-item-top">   <!-- todo do not display when game mode ingredients -->
                     <mat-card-header>
                         <mat-card-title>The final product</mat-card-title>
                     </mat-card-header>
                     <mat-card-content   class="card-content-league">
-                        <!-- TODO dummy image iff challenge.picture == null -->
-                        <img style="max-width: 100%;" src="data:image/jpeg;base64, {{challenge?.picture}}"/>
+                        <div class="card-content-league-image-container">
+                            <img class="card-content-league-image" src="data:image/jpeg;base64, {{challenge?.picture}}" alt="The final product"/>
+                        </div>
                     </mat-card-content>
                 </mat-card>
-                <mat-card *ngIf="challenge.ingredients" class="card-item-top">  <!-- todo do not display when game mode picture -->
+                <mat-card *ngIf="challenge?.ingredients" class="card-item-top">  <!-- todo do not display when game mode picture -->
                     <mat-card-header>
                         <mat-card-title>The ingredients</mat-card-title>
                     </mat-card-header>
