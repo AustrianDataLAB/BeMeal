@@ -40,3 +40,5 @@ database/**/*
 log/
 /src/main/resources/static/img/*
 !/src/main/resources/static/img/.gitkeep
+
+/src/main/recipes/*
