@@ -52,10 +52,7 @@ public class BBCGoodFoodsCrawler {
                     // Process the JSON object
                     var row = objectMapper.readValue(jsonParser, Row.class);
                     if (row.page.recipe.pictureUUID == null) {
-                        String sanitizedTitle = row.page.title
-                                .replace(' ', '-')
-                                .toLowerCase()
-                                .replaceAll("-&-", "-");
+                        String sanitizedTitle = row.page.title.replace(' ', '-').toLowerCase().replaceAll("-&-", "-");
                         row.page.recipe.pictureUUID = crawlPicture(BBC_RECIPES + sanitizedTitle);
                     }
                     output.append(objectMapper.writeValueAsString(row)).append("\n");
