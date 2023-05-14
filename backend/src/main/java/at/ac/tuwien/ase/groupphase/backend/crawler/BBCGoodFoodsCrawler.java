@@ -1,4 +1,4 @@
-package at.ac.tuwien.ase.groupphase.backend;
+package at.ac.tuwien.ase.groupphase.backend.crawler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
