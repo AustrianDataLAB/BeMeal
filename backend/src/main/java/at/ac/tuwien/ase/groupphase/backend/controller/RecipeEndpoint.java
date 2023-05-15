@@ -48,4 +48,17 @@ public class RecipeEndpoint {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/collections")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<RecipeDto>> getRecipesFromCollection(@RequestParam(value = "name") final String name) {
+        logger.trace("GET /api/v1/recipe/collections?name={}", name);
+
+        List<RecipeDto> dto = recipeService.getRecipesFromCollection(name);
+
+        if (dto == null) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
+        return ResponseEntity.ok(dto);
+    }
 }

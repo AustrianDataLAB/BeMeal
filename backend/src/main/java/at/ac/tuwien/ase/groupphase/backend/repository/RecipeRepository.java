@@ -17,4 +17,7 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
     @Query("MATCH (r:Recipe) WHERE r.picture IS NOT NULL RETURN r ORDER BY rand() LIMIT 1") // todo: handle picture uuid
                                                                                             // attribute
     Optional<Recipe> findAnyRecipeWithPicture();
+
+    @Query("MATCH (:Collection {name: $name})<-[:COLLECTION]-(r:Recipe) RETURN r")
+    List<Recipe> getRecipesFromCollection(@Param("name") String name);
 }

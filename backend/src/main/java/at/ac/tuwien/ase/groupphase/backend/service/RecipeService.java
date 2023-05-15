@@ -40,4 +40,14 @@ public class RecipeService {
         }
         return recipeMapper.recipeToRecipeDto(recipe.get());
     }
+
+    public List<RecipeDto> getRecipesFromCollection(String name) {
+        logger.trace("Getting recipes for collection " + name);
+        var recipes = recipeRepository.getRecipesFromCollection(name).stream().map(recipeMapper::recipeToRecipeDto)
+                .toList();
+        if (recipes.isEmpty()) {
+            throw new NoSuchElementException("No recipe collection with the name " + name);
+        }
+        return recipes;
+    }
 }
