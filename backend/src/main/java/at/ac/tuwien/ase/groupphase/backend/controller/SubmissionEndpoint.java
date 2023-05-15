@@ -34,15 +34,16 @@ public class SubmissionEndpoint {
     @SecurityRequirement(name = "bearerToken")
     public void submit(@RequestParam("file") MultipartFile file, @NotNull @PathVariable final String challengeId) {
         logger.trace("submit({}, {})", file, challengeId);
+        this.submissionService.submit(file, challengeId);
 
-        try {
-            this.submissionService.submit(file, challengeId);
-        } catch (ForbiddenAccessException e) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
-        }
+        // try {
+        // this.submissionService.submit(file, challengeId);
+        // } catch (ForbiddenAccessException e) {
+        // throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
+        // } catch (RuntimeException e) {
+        // e.printStackTrace();
+        // throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
+        // }
     }
 
     @GetMapping("/{submissionId}")
@@ -50,15 +51,16 @@ public class SubmissionEndpoint {
     @SecurityRequirement(name = "bearerToken")
     public SubmissionDto getSubmission(@NotNull @PathVariable final String submissionId) {
         logger.trace("getSubmission({})", submissionId);
+        return this.submissionService.getSubmission(submissionId);
 
-        try {
-            return this.submissionService.getSubmission(submissionId);
-        } catch (ForbiddenAccessException e) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
-        }
+        // try {
+        // return this.submissionService.getSubmission(submissionId);
+        // } catch (ForbiddenAccessException e) {
+        // throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
+        // } catch (RuntimeException e) {
+        // e.printStackTrace();
+        // throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
+        // }
     }
 
     @GetMapping("/current/{challengeId}")
@@ -66,15 +68,16 @@ public class SubmissionEndpoint {
     @SecurityRequirement(name = "bearerToken")
     public SubmissionDto getCurrentSubmission(@NotNull @PathVariable final String challengeId) {
         logger.trace("getCurrentSubmission({})", challengeId);
-
-        try {
-            return this.submissionService.getCurrentSubmission(challengeId);
-        } catch (ForbiddenAccessException e) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
-        }
+        return this.submissionService.getCurrentSubmission(challengeId);
+        //
+        // try {
+        // return this.submissionService.getCurrentSubmission(challengeId);
+        // } catch (ForbiddenAccessException e) {
+        // throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
+        // } catch (RuntimeException e) {
+        // e.printStackTrace();
+        // throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
+        // }
     }
 
     @GetMapping("/upvotes/{challengeId}")
@@ -82,17 +85,19 @@ public class SubmissionEndpoint {
     @SecurityRequirement(name = "bearerToken")
     public List<SubmissionDto> getUpvoteSubmissions(@NotNull @PathVariable final Long challengeId) {
         logger.trace("getUpvoteSubmissions({})", challengeId);
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return submissionService.getNotVotedSubmissionsOfUser(challengeId, username);
 
-        try {
-            String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            return submissionService.getNotVotedSubmissionsOfUser(challengeId, username);
-        } catch (ForbiddenAccessException e) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
-        }
+        // try {
+        // String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //
+        // return submissionService.getNotVotedSubmissionsOfUser(challengeId, username);
+        // } catch (ForbiddenAccessException e) {
+        // throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
+        // } catch (RuntimeException e) {
+        // e.printStackTrace();
+        // throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
+        // }
     }
 
     @PostMapping("/upvote/{submissionId}/{isUpvote}")
@@ -101,17 +106,20 @@ public class SubmissionEndpoint {
     public void upvoteSubmission(@NotNull @PathVariable final Long submissionId,
             @NotNull @PathVariable final boolean isUpvote) {
         logger.trace("upvoteSubmission({},{})", submissionId, isUpvote);
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        try {
-            String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            submissionService.saveVote(submissionId, username, isUpvote);
-        } catch (ForbiddenAccessException e) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
-        }
+        submissionService.saveVote(submissionId, username, isUpvote);
+        //
+        // try {
+        // String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //
+        // submissionService.saveVote(submissionId, username, isUpvote);
+        // } catch (ForbiddenAccessException e) {
+        // throw new ResponseStatusException(HttpStatusCode.valueOf(403), e.getMessage());
+        // } catch (RuntimeException e) {
+        // e.printStackTrace();
+        // throw new ResponseStatusException(HttpStatusCode.valueOf(500), "Oops");
+        // }
     }
 
 }

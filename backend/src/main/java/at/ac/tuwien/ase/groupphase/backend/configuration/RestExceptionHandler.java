@@ -1,6 +1,8 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ErrorData;
+import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
+import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.exception.NotCreatorOfException;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
@@ -43,6 +47,36 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorData> handleNotCreatorOfException(final NotCreatorOfException notCreatorOfException) {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(notCreatorOfException.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ApiResponse(responseCode = "409", description = "Illegal Argument")
+    public ResponseEntity<ErrorData> handleNotCreatorOfException(
+            final IllegalArgumentException illegalArgumentException) {
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(illegalArgumentException.getMessage()));
+    }
+
+    @ExceptionHandler(NoChallengeException.class)
+    @ApiResponse(responseCode = "409", description = "No challenge found")
+    public ResponseEntity<ErrorData> handleNotCreatorOfException(final NoChallengeException noChallengeException) {
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(noChallengeException.getMessage()));
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    @ApiResponse(responseCode = "404", description = "No such element")
+    public ResponseEntity<ErrorData> handleNotCreatorOfException(final NoSuchElementException noSuchElementException) {
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(noSuchElementException.getMessage()));
+    }
+
+    @ExceptionHandler(ForbiddenAccessException.class)
+    @ApiResponse(responseCode = "404", description = "No access allowed")
+    public ResponseEntity<ErrorData> handleNotCreatorOfException(
+            final ForbiddenAccessException forbiddenAccessException) {
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(forbiddenAccessException.getMessage()));
     }
 
 }
