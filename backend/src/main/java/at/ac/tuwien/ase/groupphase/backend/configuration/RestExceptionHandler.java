@@ -54,7 +54,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ApiResponse(responseCode = "409", description = "Illegal Argument")
-    public ResponseEntity<ErrorData> handleNotCreatorOfException(
+    public ResponseEntity<ErrorData> handleIllegalArgumentException(
             final IllegalArgumentException illegalArgumentException) {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(illegalArgumentException.getMessage()));
@@ -62,21 +62,21 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(NoChallengeException.class)
     @ApiResponse(responseCode = "409", description = "No challenge found")
-    public ResponseEntity<ErrorData> handleNotCreatorOfException(final NoChallengeException noChallengeException) {
+    public ResponseEntity<ErrorData> handleNoChallengeException(final NoChallengeException noChallengeException) {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(noChallengeException.getMessage()));
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     @ApiResponse(responseCode = "404", description = "No such element")
-    public ResponseEntity<ErrorData> handleNotCreatorOfException(final NoSuchElementException noSuchElementException) {
+    public ResponseEntity<ErrorData> handleNoSuchElementException(final NoSuchElementException noSuchElementException) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(noSuchElementException.getMessage()));
     }
 
     @ExceptionHandler(ForbiddenAccessException.class)
     @ApiResponse(responseCode = "404", description = "No access allowed")
-    public ResponseEntity<ErrorData> handleNotCreatorOfException(
+    public ResponseEntity<ErrorData> handleForbiddenAccessException(
             final ForbiddenAccessException forbiddenAccessException) {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(forbiddenAccessException.getMessage()));
