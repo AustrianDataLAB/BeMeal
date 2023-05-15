@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.NoSuchElementException;
@@ -22,8 +23,10 @@ public class RestExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     @ExceptionHandler(Exception.class)
-    public void logException(final Exception exception) {
+    public ResponseEntity<ErrorData> logException(final Exception exception) {
         logger.error("Exception from a RestController", exception);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorData("der sollte ned durchrutschen"));
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
