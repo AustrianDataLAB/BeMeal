@@ -26,7 +26,7 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorData> logException(final Exception exception) {
         logger.error("Exception from a RestController", exception);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorData("der sollte ned durchrutschen"));
+                .body(new ErrorData("An error has occurred. Please try again later"));
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
