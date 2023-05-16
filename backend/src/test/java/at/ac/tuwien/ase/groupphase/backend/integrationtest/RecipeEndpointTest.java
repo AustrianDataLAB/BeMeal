@@ -1,6 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
-import at.ac.tuwien.ase.groupphase.backend.controller.RecipeEndpoint;
+import at.ac.tuwien.ase.groupphase.backend.endpoint.RecipeEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Disabled;

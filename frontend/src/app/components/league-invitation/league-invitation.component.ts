@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SelfService} from "../../services/self.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LeagueService} from "../../services/league.service";
+import {InvitationService} from '../../services/invitation.service';
 import {catchError, tap} from "rxjs/operators";
 import {of} from "rxjs";
 import {League} from "../../dtos/league";
@@ -22,7 +23,7 @@ export class LeagueInvitationComponent implements OnInit{
     league: League;
     leagueValid = false;
     leagueJoinSuccess = false;
-    constructor(private selfService: SelfService, private router: Router, private leagueService: LeagueService, private route: ActivatedRoute) {
+    constructor(private selfService: SelfService, private router: Router, private leagueService: LeagueService, private route: ActivatedRoute, private invitationService: InvitationService) {
 
     }
 
@@ -43,11 +44,7 @@ export class LeagueInvitationComponent implements OnInit{
 
     }
     joinLeague() {
-        const obj: JoinLeague = new JoinLeague(
-            this.league.id,
-            this.hiddenIdentifier
-        );
-        this.leagueService.joinLeague(obj).pipe(
+        this.invitationService.joinLeague(this.hiddenIdentifier!).pipe(
             tap(response => {
                 console.log(response);
                 console.log('Successful joined league');

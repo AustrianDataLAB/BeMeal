@@ -52,7 +52,7 @@ public class LeagueService {
         this.leagueMapper = leagueMapper;
     }
 
-    public LeagueSecretsDto getLeagueWithId(Long id) {
+    public LeagueSecretsDto getLeagueSecretsWithLeagueId(Long id) {
         var league = leagueRepository.findById(id);
 
         if (league.isEmpty()) {
