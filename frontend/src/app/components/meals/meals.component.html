@@ -1,1 +1,23 @@
-<p>meals works!</p>
+<div class="container page-container mx-auto"
+     fxLayout="column" fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
+        <h1 class="mat-headline-2" style="margin-bottom: 20px">Meals and Recipes</h1>
+        <h2 class="mat-display-1" style="font-weight: 400;">
+            Need some inspiration? Browse our cookbooks!
+        </h2>
+
+        <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
+            <div *ngIf="!error" fxLayout="row" fxLayoutGap="16px" class="card-container" id="row-top">
+                <ng-container>
+                    <mat-chip-listbox aria-label="Cookbooks" [multiple]="true">
+                        <mat-chip-option class="reload-chip" [selectable]="false" [highlighted]="true"
+                                         (click)="getRandomizedRecipeCollectionSelection()">&#10227;
+                        </mat-chip-option>
+                        <mat-chip-option *ngFor="let cb of cookbooks; let i = index">{{cb['name']}}</mat-chip-option>
+                    </mat-chip-listbox>
+                </ng-container>
+            </div>
+            <span *ngIf="error">{{errorMessage}}</span>
+        </div>
+    </div>
+</div>

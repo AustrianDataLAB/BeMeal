@@ -23,10 +23,10 @@ public class RecipeCollectionEndpoint {
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<RecipeCollectionDto>> getAllRecipeCollections() {
+    public ResponseEntity<List<RecipeCollectionDto>> getRandomizedRecipeCollectionSelection() {
         logger.trace("GET /api/v1/recipeCollection");
 
-        List<RecipeCollectionDto> recipeCollectionDtoList = collectionService.getAllCollections();
+        List<RecipeCollectionDto> recipeCollectionDtoList = collectionService.getRandomizedRecipeCollectionSelection();
 
         if (recipeCollectionDtoList == null) {
             return ResponseEntity.unprocessableEntity().build();

@@ -27,9 +27,9 @@ public class RecipeCollectionService {
         this.collectionMapper = new RecipeCollectionMapper();
     }
 
-    public List<RecipeCollectionDto> getAllCollections() {
+    public List<RecipeCollectionDto> getRandomizedRecipeCollectionSelection() {
         logger.trace("Getting all collections");
-        List<RecipeCollection> collections = collectionRepository.findAll();
+        List<RecipeCollection> collections = collectionRepository.getRandomizedRecipeCollectionSelection();
         if (collections.isEmpty()) {
             throw new NoSuchElementException("No recipe collections found");
         }
