@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.NoSuchElementException;
@@ -21,8 +22,10 @@ public class RestExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     @ExceptionHandler(Exception.class)
-    public void logException(final Exception exception) {
+    public ResponseEntity<ErrorData> logException(final Exception exception) {
         logger.error("Exception from a RestController", exception);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorData("An error has occurred. Please try again later"));
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
@@ -48,11 +51,34 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(notCreatorOfException.getMessage()));
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ApiResponse(responseCode = "409", description = "Illegal Argument")
+    public ResponseEntity<ErrorData> handleIllegalArgumentException(
+            final IllegalArgumentException illegalArgumentException) {
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(illegalArgumentException.getMessage()));
+    }
+
+    @ExceptionHandler(NoChallengeException.class)
+    @ApiResponse(responseCode = "409", description = "No challenge found")
+    public ResponseEntity<ErrorData> handleNoChallengeException(final NoChallengeException noChallengeException) {
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(noChallengeException.getMessage()));
+    }
+
     @ExceptionHandler(NoSuchElementException.class)
-    @ApiResponse(responseCode = "404", description = "Could not find Element")
+    @ApiResponse(responseCode = "404", description = "No such element")
     public ResponseEntity<ErrorData> handleNoSuchElementException(final NoSuchElementException noSuchElementException) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(noSuchElementException.getMessage()));
+    }
+
+    @ExceptionHandler(ForbiddenAccessException.class)
+    @ApiResponse(responseCode = "404", description = "No access allowed")
+    public ResponseEntity<ErrorData> handleForbiddenAccessException(
+            final ForbiddenAccessException forbiddenAccessException) {
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(forbiddenAccessException.getMessage()));
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)

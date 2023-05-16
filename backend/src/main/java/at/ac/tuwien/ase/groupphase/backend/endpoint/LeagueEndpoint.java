@@ -65,13 +65,14 @@ public class LeagueEndpoint {
     @SecurityRequirement(name = "bearerToken")
     @ResponseStatus(HttpStatus.OK)
     public ChallengeInfoDto getChallengeForLeague(@NotNull @PathVariable final Long id) {
-        try {
-            return this.leagueService.getChallengeForLeague(id);
-        } catch (NoChallengeException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return this.leagueService.getChallengeForLeague(id);
+        // try {
+        // return this.leagueService.getChallengeForLeague(id);
+        // } catch (NoChallengeException e) {
+        // throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        // } catch (NoSuchElementException e) {
+        // throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        // }
 
     }
 
@@ -86,7 +87,8 @@ public class LeagueEndpoint {
             League league = leagueOptional.get();
             return ResponseEntity.ok(this.leagueMapper.leagueToLeagueDto(league));
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not in league");
+            throw new NoSuchElementException("User not in league");
+            // throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not in league");
         }
     }
 
