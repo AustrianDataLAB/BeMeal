@@ -239,6 +239,8 @@ public class SubmissionService {
         Submission submission = this.submissionRepository.getcurrentSubmission(Long.valueOf(challengeId),
                 participant.getId());
 
+        if (submission == null) return null;
+
         // check if participant is allowed to see submission
         if (!participant.getLeagues().contains(submission.getChallenge().getLeague())) {
             throw new ForbiddenAccessException("Participant is not eligible to view submission");
