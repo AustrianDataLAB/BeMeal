@@ -26,7 +26,7 @@ export class HeatMapComponent {
     private heatMapSpec(): VisualizationSpec {
         return {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json', data: {
-                url: '', format: {
+                url: '/assets/vega-lite/stat-austria-gem-20230101.topo.json', format: {
                     type: 'topojson', feature: 'gemeinden'
                 }
             }, mark: {
