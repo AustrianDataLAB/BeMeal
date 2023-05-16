@@ -23,7 +23,6 @@ public class LeagueMapper {
     public League leagueDtoToLeague(@NotNull final LeagueDto dto) {
         final var league = new League();
         league.setChallengeDuration(dto.challengeDuration());
-        league.setRegion(dto.region());
         league.setGameMode(dto.gameMode());
         league.setName(dto.name());
         return league;
@@ -46,7 +45,7 @@ public class LeagueMapper {
                     .map(s -> s.getParticipant().getUsername()).toList();
         });
         return new LeagueDto(league.getId(), league.getName(), league.getGameMode(), league.getChallengeDuration(),
-                league.getRegion(), lastWinners.orElse(List.of()));
+                lastWinners.orElse(List.of()));
     }
 
     public List<LeagueDto> leagueListToLeagueDtoList(@NotNull final List<League> leagueList) {

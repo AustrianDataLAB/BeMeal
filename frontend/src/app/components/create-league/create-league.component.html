@@ -26,13 +26,6 @@
                             <mat-label>Challenge duration (days)</mat-label>
                             <input type="number" formControlName="challengeDuration" name="challengeDuration" matInput >
                         </mat-form-field>
-                        <mat-form-field >
-                            <mat-label>Your region</mat-label>
-                            <mat-select name="region" formControlName="region">
-                                <mat-option [value]="region" *ngFor="let region of regionKeys(regions)">{{prettyString(region)}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
                         <button mat-raised-button color="primary" class="btn-block" (click)="createLeague()">Create</button>
                         <br>
                         <span *ngIf="error">{{errorMessage}}</span>
