@@ -35,7 +35,6 @@ public class LeagueEndpoint {
     private final LeagueMapper leagueMapper;
     private final LeagueService leagueService;
 
-    private final LeagueRepository leagueRepository;
     private final ChallengeGenerationService challengeGenerationService;
 
     @PostMapping("/create-league")
@@ -50,15 +49,12 @@ public class LeagueEndpoint {
     @PostMapping("/join-league")
     @SecurityRequirement(name = "bearerToken")
     @ResponseStatus(HttpStatus.CREATED)
+    // ToDo: make joinLeague take only UUid instead of whole league
     public ResponseEntity<?> joinLeague(@NotNull @RequestBody final JoinLeagueDto joinLeagueDto) {
-        League league = this.leagueRepository
-                .findLeagueByHiddenIdentifier(UUID.fromString(joinLeagueDto.hiddenIdentifier()));
-        // league does not exist
-        if (league == null) {
-            return ResponseEntity.unprocessableEntity().build();
-        }
+        LeagueDto leagueDto = leagueService
+                .getLeagueWithHiddenIdentifier(UUID.fromString(joinLeagueDto.hiddenIdentifier()));
         String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        this.leagueService.joinLeague(user, joinLeagueDto.leagueId());
+        this.leagueService.joinLeague(user, leagueDto.id());
         return ResponseEntity.noContent().build();
 
     }
@@ -68,14 +64,7 @@ public class LeagueEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirement(name = "bearerToken")
     public ResponseEntity<LeagueDto> getLeagueByHiddenIdentifier(@NotNull @PathVariable final String hiddenIdentifier) {
-        UUID hi = UUID.fromString(hiddenIdentifier);
-        League league = this.leagueRepository.findLeagueByHiddenIdentifier(hi);
-        // league does not exist
-        if (league == null) {
-            return ResponseEntity.unprocessableEntity().build();
-        }
-        // league exists
-        LeagueDto leagueDto = this.leagueMapper.leagueToLeagueDto(league);
+        LeagueDto leagueDto = leagueService.getLeagueWithHiddenIdentifier(UUID.fromString(hiddenIdentifier));
         return ResponseEntity.ok(leagueDto);
     }
 

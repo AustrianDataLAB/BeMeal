@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.NoSuchElementException;
+
 @RestControllerAdvice
 public class RestExceptionHandler {
 
@@ -43,6 +45,13 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorData> handleNotCreatorOfException(final NotCreatorOfException notCreatorOfException) {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(notCreatorOfException.getMessage()));
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    @ApiResponse(responseCode = "404", description = "Could not find Element")
+    public ResponseEntity<ErrorData> handleNoSuchElementException(final NoSuchElementException noSuchElementException) {
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(noSuchElementException.getMessage()));
     }
 
 }

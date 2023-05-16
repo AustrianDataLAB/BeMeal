@@ -1,10 +1,12 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.exception.MissingPictureException;
 import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
+import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
@@ -33,18 +35,20 @@ public class LeagueService {
     private final ChallengeGenerationService challengeGenerationService;
 
     private final RecipeService recipeService;
+    private final LeagueMapper leagueMapper;
     private final Logger logger = LoggerFactory.getLogger(LeagueService.class);
 
     @Autowired
     @NotNull
     public LeagueService(UserRepository userRepository, LeagueRepository leagueRepository,
             ChallengeRepository challengeRepository, ChallengeGenerationService challengeGenerationService,
-            RecipeService recipeService) {
+            RecipeService recipeService, LeagueMapper leagueMapper) {
         this.userRepository = userRepository;
         this.leagueRepository = leagueRepository;
         this.challengeRepository = challengeRepository;
         this.challengeGenerationService = challengeGenerationService;
         this.recipeService = recipeService;
+        this.leagueMapper = leagueMapper;
     }
 
     @Transactional
@@ -131,7 +135,7 @@ public class LeagueService {
         if (league == null) {
             throw new IllegalArgumentException("could not find regional league");
         }
-        ;
+
         List<Participant> participantList = league.getParticipants();
         Participant user = (Participant) this.userRepository.findByUsername(username);
         participantList.add(user);
@@ -144,6 +148,16 @@ public class LeagueService {
         List<Participant> participantList = new ArrayList<>();
         participantList.add(user);
         return this.leagueRepository.findLeaguesByParticipantsIn(new HashSet<>(participantList));
+    }
+
+    public LeagueDto getLeagueWithHiddenIdentifier(UUID hiddenIdentifier) {
+        League league = this.leagueRepository.findLeagueByHiddenIdentifier(hiddenIdentifier);
+
+        if (league == null) {
+            throw new NoSuchElementException("Could not find league with hidden identifier " + hiddenIdentifier);
+        }
+
+        return leagueMapper.leagueToLeagueDto(league);
     }
 
     private String modifyString(String str) {
