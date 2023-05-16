@@ -1,6 +1,8 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ErrorData;
+import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
+import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.exception.NotCreatorOfException;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
