@@ -1,4 +1,4 @@
-package at.ac.tuwien.ase.groupphase.backend.controller;
+package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.JoinLeagueDto;
@@ -6,17 +6,14 @@ import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
-import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ChallengeGenerationService;
 import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,19 +41,6 @@ public class LeagueEndpoint {
         String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         League league = this.leagueMapper.leagueDtoToLeague(leagueDto);
         this.leagueService.createLeague(user, league);
-    }
-
-    @PostMapping("/join-league")
-    @SecurityRequirement(name = "bearerToken")
-    @ResponseStatus(HttpStatus.CREATED)
-    // ToDo: make joinLeague take only UUid instead of whole league
-    public ResponseEntity<?> joinLeague(@NotNull @RequestBody final JoinLeagueDto joinLeagueDto) {
-        LeagueDto leagueDto = leagueService
-                .getLeagueWithHiddenIdentifier(UUID.fromString(joinLeagueDto.hiddenIdentifier()));
-        String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        this.leagueService.joinLeague(user, leagueDto.id());
-        return ResponseEntity.noContent().build();
-
     }
 
     // e.g. http://localhost:4200/league/join/f172c3e8-4a27-4cb4-bd16-ee3e97bf5583

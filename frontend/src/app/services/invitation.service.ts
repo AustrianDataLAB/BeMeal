@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Globals} from '../shared/globals';
 import {LeagueSecrets} from '../dtos/league';
+import {League} from "../dtos/league";
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -22,5 +23,9 @@ export class InvitationService {
      */
     getHiddenIdentifier(id: number): Observable<LeagueSecrets> {
         return this.httpClient.get<LeagueSecrets>(this.baseUri + `/hidden-identifier/${id}`);
+    }
+
+    joinLeague(hiddenIdentifier: string): Observable<League> {
+        return this.httpClient.get<any>(`${this.baseUri}/join-league/${hiddenIdentifier}`);
     }
 }

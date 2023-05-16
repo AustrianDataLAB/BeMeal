@@ -1,10 +1,7 @@
-package at.ac.tuwien.ase.groupphase.backend.controller;
+package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
-import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
-import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.dto.SubmissionDto;
 import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
-import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
 import at.ac.tuwien.ase.groupphase.backend.service.SubmissionService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor

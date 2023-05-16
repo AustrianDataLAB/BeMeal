@@ -1,6 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
-import at.ac.tuwien.ase.groupphase.backend.controller.UserEndpoint;
+import at.ac.tuwien.ase.groupphase.backend.endpoint.UserEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
