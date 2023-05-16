@@ -1,14 +1,14 @@
-package at.ac.tuwien.ase.groupphase.backend.integration;
+package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
-import at.ac.tuwien.ase.groupphase.backend.controller.UserEndpoint;
+import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
+import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -17,20 +17,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import static util.Constants.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
-public class UserEndpointViewProfileTest {
+public class ParticipantServiceTest {
 
-    // @Autowired
-    // private MockMvc mockMvc;
-
+    private final ParticipantService participantService;
     private final ParticipantRepository participantRepository;
-    private final UserEndpoint userEndpoint;
 
     @Autowired
-    public UserEndpointViewProfileTest(ParticipantRepository participantRepository, UserEndpoint userEndpoint) {
+    public ParticipantServiceTest(ParticipantService participantService, ParticipantRepository participantRepository) {
+        this.participantService = participantService;
         this.participantRepository = participantRepository;
-        this.userEndpoint = userEndpoint;
     }
 
     @BeforeEach
@@ -46,22 +42,9 @@ public class UserEndpointViewProfileTest {
     }
 
     @Test
-    void test_viewProfile_method() {
-        Assertions.assertEquals(VALID_PARTICIPANT_DTO_1, this.userEndpoint.viewProfile());
+    void test_getParticipantDto() {
+        ParticipantDto actualParticipantDto = this.participantService.getParticipantDto();
+        Assertions.assertEquals(VALID_PARTICIPANT_DTO_1, actualParticipantDto);
     }
-
-    // @Test
-    // @WithUserDetails(VALID_USER_USERNAME)
-    // void test_viewProfile_request() throws Exception {
-    // this.participantRepository.save(VALID_PARTICIPANT_1);
-    //// Assertions.assertEquals(VALID_PARTICIPANT_DTO_1, this.selfService.viewProfile());
-    // MvcResult mvcResult = mockMvc.perform(
-    // MockMvcRequestBuilders.get("/api/v1/self-service/profile")
-    // ).andReturn();
-    // MockHttpServletResponse response = mvcResult.getResponse();
-    //
-    // System.out.println(response);
-    // System.out.println(response.getContentAsString());
-    // }
 
 }

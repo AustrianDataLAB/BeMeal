@@ -1,4 +1,4 @@
-package at.ac.tuwien.ase.groupphase.backend.integration;
+package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.ase.groupphase.backend.controller.LeagueEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
