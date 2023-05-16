@@ -30,7 +30,7 @@ public class InvitationEndpoint {
     @GetMapping("/hidden-identifier/{leagueId}")
     @ResponseStatus(HttpStatus.OK)
     public LeagueSecretsDto getHiddenIdentifier(@NotNull @PathVariable final long leagueId,
-                                                @NotNull @Autowired final Principal principal) {
+            @NotNull @Autowired final Principal principal) {
         logger.trace("getHiddenIdentifier({},{})", leagueId, principal.getName());
         if (!this.leagueService.isUserCreatorOfLeague(principal.getName(), leagueId)) {
             logger.info(
