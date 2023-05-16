@@ -4,5 +4,5 @@ import org.springframework.lang.Nullable;
 
 import java.util.UUID;
 
-public record LeagueSecrets(@Nullable UUID hiddenIdentifier) {
+public record LeagueSecretsDto(@Nullable UUID hiddenIdentifier) {
 }

@@ -2,6 +2,7 @@ package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.LeagueSecretsDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.exception.MissingPictureException;
@@ -49,6 +50,18 @@ public class LeagueService {
         this.challengeGenerationService = challengeGenerationService;
         this.recipeService = recipeService;
         this.leagueMapper = leagueMapper;
+    }
+
+    public LeagueSecretsDto getLeagueWithId(Long id) {
+        var league = leagueRepository.findById(id);
+
+        if (league.isEmpty()) {
+            logger.warn("League with id '{}' does not seems to exist, even it was the case during creator validation",
+                    id);
+            throw new NoSuchElementException("Could not find league");
+        }
+
+        return new LeagueSecretsDto(league.map(League::getHiddenIdentifier).orElse(null));
     }
 
     @Transactional
@@ -156,6 +169,10 @@ public class LeagueService {
         }
 
         return leagueMapper.leagueToLeagueDto(league);
+    }
+
+    public boolean isUserCreatorOfLeague(String username, long leagueId) {
+        return this.userRepository.isCreatorOfLeague(username, leagueId);
     }
 
     private String modifyString(String str) {

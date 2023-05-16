@@ -1,10 +1,8 @@
 package at.ac.tuwien.ase.groupphase.backend.controller;
 
-import at.ac.tuwien.ase.groupphase.backend.dto.LeagueSecrets;
-import at.ac.tuwien.ase.groupphase.backend.entity.League;
+import at.ac.tuwien.ase.groupphase.backend.dto.LeagueSecretsDto;
 import at.ac.tuwien.ase.groupphase.backend.exception.NotCreatorOfException;
-import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
-import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
+import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -26,26 +24,22 @@ import java.security.Principal;
 public class InvitationEndpoint {
 
     private final Logger logger = LoggerFactory.getLogger(InvitationEndpoint.class);
-    private final UserRepository userRepository;
-    private final LeagueRepository leagueRepository;
+    @Autowired
+    private final LeagueService leagueService;
 
     @GetMapping("/hidden-identifier/{leagueId}")
     @ResponseStatus(HttpStatus.OK)
-    public LeagueSecrets getHiddenIdentifier(@NotNull @PathVariable final long leagueId,
-            @NotNull @Autowired final Principal principal) {
+    public LeagueSecretsDto getHiddenIdentifier(@NotNull @PathVariable final long leagueId,
+                                                @NotNull @Autowired final Principal principal) {
         logger.trace("getHiddenIdentifier({},{})", leagueId, principal.getName());
-        if (!this.userRepository.isCreatorOfLeague(principal.getName(), leagueId)) {
+        if (!this.leagueService.isUserCreatorOfLeague(principal.getName(), leagueId)) {
             logger.info(
                     "Unauthorized access to the hidden identifier of the league with the id '{}' from the user '{}', rejecting",
                     leagueId, principal.getName());
             throw new NotCreatorOfException(principal.getName(), leagueId);
         }
-        final var league = this.leagueRepository.findById(leagueId);
-        if (league.isEmpty()) {
-            logger.warn("League with id '{}' does not seems to exist, even it was the case during creator validation",
-                    leagueId);
-        }
-        return new LeagueSecrets(league.map(League::getHiddenIdentifier).orElse(null));
+
+        return this.leagueService.getLeagueWithId(leagueId);
     }
 
 }

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -52,6 +53,14 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorData> handleNoSuchElementException(final NoSuchElementException noSuchElementException) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(noSuchElementException.getMessage()));
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ApiResponse(responseCode = "404", description = "No user found with this username")
+    public ResponseEntity<ErrorData> handleNoSuchElementException(
+            final UsernameNotFoundException usernameNotFoundException) {
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(usernameNotFoundException.getMessage()));
     }
 
 }
