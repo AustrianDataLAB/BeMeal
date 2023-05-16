@@ -26,7 +26,6 @@ public class Recipe {
     @Property("picture")
     private final String pictureUUID;
 
-    // TODO: how to solve the amount of ingredients issue?
     @Relationship(type = "CONTAINS_INGREDIENT", direction = Relationship.Direction.OUTGOING)
     private List<Ingredient> ingredients;
 }
