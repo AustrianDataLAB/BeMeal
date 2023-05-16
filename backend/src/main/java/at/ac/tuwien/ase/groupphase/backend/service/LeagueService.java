@@ -58,8 +58,6 @@ public class LeagueService {
             throw new NoChallengeException();
         }
 
-        // TODO dont take first one, but the correct one
-        // Challenge challenge = league.getChallenges().get(0);
         Challenge challenge = this.challengeRepository.getLatestChallenge(league.getId());
         RecipeDto recipe = this.recipeService.getRecipeById(challenge.getRecipe());
 
