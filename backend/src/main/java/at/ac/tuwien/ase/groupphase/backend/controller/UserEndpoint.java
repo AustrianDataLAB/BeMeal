@@ -32,19 +32,14 @@ public class UserEndpoint {
 
     private final Logger logger = LoggerFactory.getLogger(UserEndpoint.class);
 
-    private final UserRepository userRepository;
-    private final ParticipantRepository participantRepository;
     private final RegistrationMapper registrationMapper;
     private final SelfService selfService;
     private final ParticipantService participantService;
 
     @Autowired
     @NotNull
-    public UserEndpoint(final UserRepository userRepository, final ParticipantRepository participantRepository,
-            ParticipantService participantService, final RegistrationMapper registrationMapper,
+    public UserEndpoint(ParticipantService participantService, final RegistrationMapper registrationMapper,
             SelfService selfService) {
-        this.userRepository = userRepository;
-        this.participantRepository = participantRepository;
         this.registrationMapper = registrationMapper;
         this.participantService = participantService;
         this.selfService = selfService;
