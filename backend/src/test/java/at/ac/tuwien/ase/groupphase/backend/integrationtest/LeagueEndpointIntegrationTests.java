@@ -1,10 +1,7 @@
-package at.ac.tuwien.ase.groupphase.backend.integration;
+package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
-import at.ac.tuwien.ase.groupphase.backend.controller.LeagueEndpoint;
-import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
-import at.ac.tuwien.ase.groupphase.backend.entity.League;
+import at.ac.tuwien.ase.groupphase.backend.endpoint.LeagueEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
-import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import util.Constants;
-import java.util.ArrayList;
-import java.util.List;
+
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;

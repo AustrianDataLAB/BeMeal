@@ -1,6 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
-import at.ac.tuwien.ase.groupphase.backend.security.BeMealUserDetailsService;
+import at.ac.tuwien.ase.groupphase.backend.security.UserDetailsManager;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthenticationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthorizationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.TokenManager;
@@ -29,7 +29,7 @@ public class SecurityConfiguration {
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfiguration(final BeMealUserDetailsService userDetailsService) {
+    public SecurityConfiguration(final UserDetailsManager userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 

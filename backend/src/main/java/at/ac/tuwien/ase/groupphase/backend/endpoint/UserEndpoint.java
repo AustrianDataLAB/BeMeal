@@ -1,25 +1,19 @@
-package at.ac.tuwien.ase.groupphase.backend.controller;
+package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
-import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
-import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
 import at.ac.tuwien.ase.groupphase.backend.service.SelfService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,19 +26,14 @@ public class UserEndpoint {
 
     private final Logger logger = LoggerFactory.getLogger(UserEndpoint.class);
 
-    private final UserRepository userRepository;
-    private final ParticipantRepository participantRepository;
     private final RegistrationMapper registrationMapper;
     private final SelfService selfService;
     private final ParticipantService participantService;
 
     @Autowired
     @NotNull
-    public UserEndpoint(final UserRepository userRepository, final ParticipantRepository participantRepository,
-            ParticipantService participantService, final RegistrationMapper registrationMapper,
+    public UserEndpoint(ParticipantService participantService, final RegistrationMapper registrationMapper,
             SelfService selfService) {
-        this.userRepository = userRepository;
-        this.participantRepository = participantRepository;
         this.registrationMapper = registrationMapper;
         this.participantService = participantService;
         this.selfService = selfService;

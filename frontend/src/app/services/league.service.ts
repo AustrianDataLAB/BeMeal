@@ -32,21 +32,6 @@ export class LeagueService {
             }));
     }
 
-    joinLeague(obj: JoinLeague): Observable<League> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            })
-        };
-        console.log(obj);
-        return this.httpClient.post<any>(this.baseUri + '/join-league', obj, httpOptions)
-            .pipe(map(response => {
-                // todo catch 422, ...
-                return response;
-            }));
-    }
-
     fetchLeagues(): Observable<League[]> {
         return this.httpClient.get<League[]>(this.baseUri + '/leagues');
     }

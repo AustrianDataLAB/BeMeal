@@ -1,4 +1,4 @@
-package at.ac.tuwien.ase.groupphase.backend.controller;
+package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeCollectionDto;
 import at.ac.tuwien.ase.groupphase.backend.service.RecipeCollectionService;

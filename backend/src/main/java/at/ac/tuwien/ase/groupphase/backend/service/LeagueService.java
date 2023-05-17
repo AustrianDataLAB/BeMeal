@@ -1,10 +1,13 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.LeagueSecretsDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.exception.MissingPictureException;
 import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
+import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
@@ -33,18 +36,32 @@ public class LeagueService {
     private final ChallengeGenerationService challengeGenerationService;
 
     private final RecipeService recipeService;
+    private final LeagueMapper leagueMapper;
     private final Logger logger = LoggerFactory.getLogger(LeagueService.class);
 
     @Autowired
     @NotNull
     public LeagueService(UserRepository userRepository, LeagueRepository leagueRepository,
             ChallengeRepository challengeRepository, ChallengeGenerationService challengeGenerationService,
-            RecipeService recipeService) {
+            RecipeService recipeService, LeagueMapper leagueMapper) {
         this.userRepository = userRepository;
         this.leagueRepository = leagueRepository;
         this.challengeRepository = challengeRepository;
         this.challengeGenerationService = challengeGenerationService;
         this.recipeService = recipeService;
+        this.leagueMapper = leagueMapper;
+    }
+
+    public LeagueSecretsDto getLeagueSecretsWithLeagueId(Long id) {
+        var league = leagueRepository.findById(id);
+
+        if (league.isEmpty()) {
+            logger.warn("League with id '{}' does not seems to exist, even it was the case during creator validation",
+                    id);
+            throw new NoSuchElementException("Could not find league");
+        }
+
+        return new LeagueSecretsDto(league.map(League::getHiddenIdentifier).orElse(null));
     }
 
     @Transactional
@@ -54,8 +71,6 @@ public class LeagueService {
             throw new NoChallengeException();
         }
 
-        // TODO dont take first one, but the correct one
-        // Challenge challenge = league.getChallenges().get(0);
         Challenge challenge = this.challengeRepository.getLatestChallenge(league.getId());
         RecipeDto recipe = this.recipeService.getRecipeById(challenge.getRecipe());
 
@@ -131,7 +146,7 @@ public class LeagueService {
         if (league == null) {
             throw new IllegalArgumentException("could not find regional league");
         }
-        ;
+
         List<Participant> participantList = league.getParticipants();
         Participant user = (Participant) this.userRepository.findByUsername(username);
         participantList.add(user);
@@ -144,6 +159,20 @@ public class LeagueService {
         List<Participant> participantList = new ArrayList<>();
         participantList.add(user);
         return this.leagueRepository.findLeaguesByParticipantsIn(new HashSet<>(participantList));
+    }
+
+    public LeagueDto getLeagueWithHiddenIdentifier(UUID hiddenIdentifier) {
+        League league = this.leagueRepository.findLeagueByHiddenIdentifier(hiddenIdentifier);
+
+        if (league == null) {
+            throw new NoSuchElementException("Could not find league with hidden identifier " + hiddenIdentifier);
+        }
+
+        return leagueMapper.leagueToLeagueDto(league);
+    }
+
+    public boolean isUserCreatorOfLeague(String username, long leagueId) {
+        return this.userRepository.isCreatorOfLeague(username, leagueId);
     }
 
     private String modifyString(String str) {
