@@ -26,12 +26,16 @@ export class HeatMapComponent {
     private heatMapSpec(): VisualizationSpec {
         return {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json', data: {
-                url: '/assets/vega-lite/stat-austria-gem-20230101.topo.json', format: {
-                    type: 'topojson', feature: 'gemeinden'
+                url: '/assets/vega-lite/stat-austria-bez-20230101.topo.json', format: {
+                    type: 'topojson', feature: 'STATISTIK_AUSTRIA_POLBEZ_20230101'
                 }
             }, mark: {
                 type: 'geoshape', stroke: 'white'
-            }, width: 1000, height: 1000
+            }, width: 1000, height: 1000,
+            projection: {
+                type: "identity",
+                reflectY: true
+            }
         };
     }
 }
