@@ -14,8 +14,8 @@ export class StatisticsService {
     constructor(private httpClient: HttpClient, private globals: Globals) {
     }
 
-    public getHeatMap(type: HeatMapType, relative: boolean): Observable<HeatMap> {
-        const params = new HttpParams().set('type', type).set('relative', relative);
+    public getHeatMap(type: HeatMapType, relative: boolean, granularity: number): Observable<HeatMap> {
+        const params = new HttpParams().set('type', type).set('relative', relative).set('granularity', granularity);
         return this.httpClient.get<HeatMap>(`${this.baseUri}/heat-map`, {params: params});
     }
 }

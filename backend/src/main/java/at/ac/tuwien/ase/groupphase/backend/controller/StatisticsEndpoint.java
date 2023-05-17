@@ -17,7 +17,7 @@ public class StatisticsEndpoint {
     @GetMapping("/heat-map")
     @ResponseStatus(HttpStatus.OK)
     public HeatMap getStatistics(@RequestParam @NotNull final HeatMap.Type type,
-            @RequestParam @NotNull final boolean relative) {
-        return this.statisticsService.getStatistics(type, relative);
+            @RequestParam @NotNull final boolean relative, @RequestParam @NotNull final int granularity) {
+        return this.statisticsService.getStatistics(type, relative, granularity);
     }
 }

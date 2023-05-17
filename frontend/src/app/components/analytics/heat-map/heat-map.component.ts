@@ -13,7 +13,7 @@ export class HeatMapComponent {
     private heatMap: HeatMap;
 
     constructor(private statisticsService: StatisticsService) {
-        statisticsService.getHeatMap(HeatMapType.RANDOM, false).subscribe({
+        statisticsService.getHeatMap(HeatMapType.RANDOM, false, 3).subscribe({
             next: value => {
                 this.heatMap = value;
                 embed(this.heatMapContainer.nativeElement, this.heatMapSpec(value)).then(r => console.debug(r));

@@ -17,12 +17,13 @@ public class StatisticsService {
 
     private final Random random = new Random();
 
-    public HeatMap getStatistics(final HeatMap.Type type, final boolean relative) {
+    public HeatMap getStatistics(final HeatMap.Type type, final boolean relative, final int granularity) {
         if (type.equals(HeatMap.Type.RANDOM)) {
             final var data = LongStream.range(10000, 100000).boxed()
                     .collect(Collectors.toMap(l -> l, l -> this.random.nextDouble(100000)));
-            final var groupedData = data.entrySet().stream().collect(Collectors
-                    .groupingBy(entry -> entry.getKey() / 100, Collectors.summingDouble(Map.Entry::getValue)));
+            final var groupedData = data.entrySet().stream()
+                    .collect(Collectors.groupingBy(entry -> entry.getKey() / ((long) Math.pow(10, 5 - granularity)),
+                            Collectors.summingDouble(Map.Entry::getValue)));
             if (relative) {
                 return HeatMap.createRelative(groupedData, type);
             }
