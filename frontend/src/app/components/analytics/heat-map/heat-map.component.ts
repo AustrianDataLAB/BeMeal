@@ -24,14 +24,15 @@ export class HeatMapComponent {
         topojson: 'stat-austria-gem-20230101.topo.json'
     }]
 
-    granularity: Granularity = this.granularities[0]
+    granularity: Granularity = this.granularities[0];
+    relative: boolean = false;
 
     constructor(private statisticsService: StatisticsService) {
         this.refreshHeatmap();
     }
 
     refreshHeatmap() {
-        this.statisticsService.getHeatMap(HeatMapType.RANDOM, false, this.granularity.granularity).subscribe({
+        this.statisticsService.getHeatMap(HeatMapType.RANDOM, this.relative, this.granularity.granularity).subscribe({
             next: value => {
                 this.heatMap = value;
                 embed(this.heatMapContainer.nativeElement, this.heatMapSpec(value)).then(r => console.debug(r));

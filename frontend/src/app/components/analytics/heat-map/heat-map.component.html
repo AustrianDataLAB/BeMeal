@@ -1,13 +1,22 @@
 <h2>Heat Map</h2>
 
-<label id="example-radio-group-label">Granularity</label>
-<mat-radio-group
-    aria-labelledby="example-radio-group-label"
-    [(ngModel)]="granularity" (change)="refreshHeatmap()">
-    <mat-radio-button class="example-radio-button" *ngFor="let g of granularities" [value]="g">
-        {{g.name}}
-    </mat-radio-button>
-</mat-radio-group>
-
-
+<p>
+    <label id="granularity">Granularity</label>
+    <mat-radio-group
+        (change)="refreshHeatmap()"
+        [(ngModel)]="granularity" aria-labelledby="granularity">
+        <mat-radio-button *ngFor="let g of granularities" [value]="g">
+            {{g.name}}
+        </mat-radio-button>
+    </mat-radio-group>
+</p>
+<p>
+    <label id="relative">Comparison</label>
+    <mat-radio-group
+        (change)="refreshHeatmap()"
+        [(ngModel)]="relative" aria-labelledby="relative">
+        <mat-radio-button [value]="false">Absolute</mat-radio-button>
+        <mat-radio-button [value]="true">Relative</mat-radio-button>
+    </mat-radio-group>
+</p>
 <div #heatMapContainer></div>
