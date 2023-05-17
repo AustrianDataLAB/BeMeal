@@ -2,6 +2,7 @@ package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.JoinLeagueDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.LeaderboardDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
@@ -18,10 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/league")
@@ -90,6 +88,40 @@ public class LeagueEndpoint {
             throw new NoSuchElementException("User not in league");
             // throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not in league");
         }
+    }
+
+
+    @GetMapping("/{id}/leaderboard")
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "bearerToken")
+    public List<LeaderboardDto> getLeaderboardByLeagueId(@NotNull @PathVariable final Long id) {
+        // todo @Manu impl this method and return a List<LeaderboardDto> , Array including all usernames with their points
+        List<LeaderboardDto> leaderboardList = new ArrayList<>();
+        LeaderboardDto l1 = new LeaderboardDto( "user1", 10L);
+        LeaderboardDto l2 = new LeaderboardDto("franzi123", 0L);
+        LeaderboardDto l3 = new LeaderboardDto("locoloco", 10L);
+        LeaderboardDto l4 = new LeaderboardDto("eatybabo", 5L);
+        LeaderboardDto l5 = new LeaderboardDto("longusername123456", 6L);
+        leaderboardList.add(l1);
+        leaderboardList.add(l2);
+        leaderboardList.add(l3);
+        leaderboardList.add(l4);
+        leaderboardList.add(l5);
+
+        // Sort the leaderboardList based on points in descending order
+        Collections.sort(leaderboardList);
+
+        // Update the position field based on the sorted order
+        for (int i = 0; i < leaderboardList.size(); i++) {
+            leaderboardList.get(i).setPosition(i + 1);
+            // check if same amount of points and user before, then same position
+            if (i > 0) {
+                if (leaderboardList.get(i-1).getPoints() == leaderboardList.get(i).getPoints()) {
+                    leaderboardList.get(i).setPosition(leaderboardList.get(i-1).getPosition());
+                }
+            }
+        }
+        return leaderboardList;
     }
 
     /**
