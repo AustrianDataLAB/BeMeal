@@ -41,12 +41,12 @@ public class RecipeService {
         return recipeMapper.recipeToRecipeDto(recipe.get());
     }
 
-    public List<RecipeDto> getRecipesFromCollection(String name) {
-        logger.trace("Getting recipes for collection " + name);
-        var recipes = recipeRepository.getRecipesFromCollection(name).stream().map(recipeMapper::recipeToRecipeDto)
+    public List<RecipeDto> getRecipesFromCollections(List<String> names) {
+        logger.trace("Getting recipes for {} collections", names.size());
+        var recipes = recipeRepository.getRecipesFromCollection(names).stream().map(recipeMapper::recipeToRecipeDto)
                 .toList();
         if (recipes.isEmpty()) {
-            throw new NoSuchElementException("No recipe collection with the name " + name);
+            throw new NoSuchElementException("No recipes from the union collections with the size " + names.size());
         }
         return recipes;
     }

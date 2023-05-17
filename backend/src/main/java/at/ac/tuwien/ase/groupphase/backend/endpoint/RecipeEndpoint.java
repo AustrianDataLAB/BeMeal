@@ -50,15 +50,13 @@ public class RecipeEndpoint {
 
     @GetMapping("/collections")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<RecipeDto>> getRecipesFromCollection(@RequestParam(value = "name") final String name) {
-        logger.trace("GET /api/v1/recipe/collections?name={}", name);
-
-        List<RecipeDto> dto = recipeService.getRecipesFromCollection(name);
-
+    public ResponseEntity<List<RecipeDto>> getRecipesFromCollection(
+            @RequestParam(value = "name") final List<String> names) {
+        logger.trace("GET /api/v1/recipe/collections?names.size={}", names.size());
+        List<RecipeDto> dto = recipeService.getRecipesFromCollections(names);
         if (dto == null) {
             return ResponseEntity.unprocessableEntity().build();
         }
-
         return ResponseEntity.ok(dto);
     }
 }

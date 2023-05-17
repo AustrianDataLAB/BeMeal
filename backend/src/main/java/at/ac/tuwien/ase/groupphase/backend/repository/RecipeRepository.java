@@ -18,6 +18,6 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
                                                                                             // attribute
     Optional<Recipe> findAnyRecipeWithPicture();
 
-    @Query("MATCH (:Collection {name: $name})<-[:COLLECTION]-(r:Recipe) RETURN r")
-    List<Recipe> getRecipesFromCollection(@Param("name") String name);
+    @Query("MATCH (:Collection {name IN $names})<-[:COLLECTION]-(r:Recipe) RETURN r")
+    List<Recipe> getRecipesFromCollection(@Param("names") List<String> names);
 }

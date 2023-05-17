@@ -5,7 +5,6 @@ import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeagueSecretsDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
-import at.ac.tuwien.ase.groupphase.backend.exception.MissingPictureException;
 import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
@@ -18,18 +17,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Service
 public class LeagueService {
-
-    private static final String IMAGE_FORMAT = "jpg";
-    private static final String IMAGE_PATH = "src/main/resources/recipes";
-
     private final UserRepository userRepository;
     private final LeagueRepository leagueRepository;
     private final ChallengeRepository challengeRepository;
@@ -83,27 +74,12 @@ public class LeagueService {
         GameMode gameMode = league.getGameMode();
 
         if (gameMode == GameMode.PICTURE || gameMode == GameMode.PICTURE_INGREDIENTS) {
-            String uuid = recipe.getPictureUUID();
-            try {
-                Path path = getPath(uuid);
-                if (!Files.exists(path))
-                    throw new MissingPictureException();
-                byte[] bytes = Files.readAllBytes(path);
-                String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
-                dto.setPicture(imageString);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            dto.setPicture(recipe.getPicture());
         }
         if (gameMode != GameMode.PICTURE) {
             dto.setIngredients(recipe.getIngredients());
         }
-
         return dto;
-    }
-
-    private static Path getPath(String uuid) {
-        return Paths.get(IMAGE_PATH, uuid + "." + IMAGE_FORMAT);
     }
 
     public void createLeague(String username, League league) {
