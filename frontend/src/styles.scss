@@ -10,6 +10,9 @@ body {
     background: #F7F3EF;
     display: flex;
     justify-content: center;
+    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
 }
 
 .container {
@@ -28,4 +31,46 @@ body {
     right: 0;
     z-index: 2;
     box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+}
+
+/* dark mode styles */
+
+/* light grey bg */
+body.dark-mode,
+body.dark-mode .mat-mdc-text-field-wrapper,
+body.dark-mode .mat-mdc-table,
+body.dark-mode .mdc-data-table__header-cell,
+body.dark-mode .mdc-data-table__cell,
+body.dark-mode .mdc-menu-surface,
+body.dark-mode .mdc-floating-label,
+body.dark-mode .mdc-text-field,
+body.dark-mode .mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label,
+body.dark-mode .mat-mdc-text-field-wrapper .mat-mdc-form-field-infix .mat-mdc-floating-label,
+body.dark-mode .mat-mdc-floating-label,
+body.dark-mode .mdc-text-field__input,
+body.dark-mode .mdc-list-item__primary-text,
+body.dark-mode .mat-mdc-select-value-text{
+    background-color: #2d3436 !important;
+    color: #dfe6e9 !important;
+}
+
+/* autofill input fields should not have white bg */
+body.dark-mode input:-webkit-autofill{
+    -webkit-text-fill-color: #dfe6e9  !important;
+    color: transparent;
+    background: transparent;
+    -webkit-background-clip: text;
+}
+
+/* darker */
+body.dark-mode .card-item,
+body.dark-mode .mat-mdc-card,
+body.dark-mode .mat-mdc-card-title,
+body.dark-mode .mat-mdc-card-subtitle{
+    background: #23292a;
+    color: #dfe6e9;
+}
+
+body:not(.dark-mode-preloading) {
+    transition: all 0.3s linear;
 }
