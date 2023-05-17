@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {StatisticsService} from '../../../services/statistics.service';
-import {HeatMap, HeatMapTye} from '../../../dtos/statistics';
+import {HeatMap, HeatMapType} from '../../../dtos/statistics';
 import embed, {VisualizationSpec} from 'vega-embed';
 
 @Component({
@@ -13,17 +13,18 @@ export class HeatMapComponent {
     private heatMap: HeatMap;
 
     constructor(private statisticsService: StatisticsService) {
-        statisticsService.getHeatMap(HeatMapTye.RANDOM, false).subscribe({
+        statisticsService.getHeatMap(HeatMapType.RANDOM, false).subscribe({
             next: value => {
                 this.heatMap = value;
-                embed(this.heatMapContainer.nativeElement, this.heatMapSpec()).then(r => console.debug(r));
+                embed(this.heatMapContainer.nativeElement, this.heatMapSpec(value)).then(r => console.debug(r));
             }, error: err => {
                 console.error(err);
             }
         });
     }
 
-    private heatMapSpec(): VisualizationSpec {
+    private heatMapSpec(heatMap: HeatMap): VisualizationSpec {
+        console.debug("try to plot heatmap", heatMap);
         return {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json', data: {
                 url: '/assets/vega-lite/stat-austria-bez-20230101.topo.json', format: {
@@ -35,7 +36,27 @@ export class HeatMapComponent {
             projection: {
                 type: "identity",
                 reflectY: true
+            },
+            transform: [
+                {
+                    lookup: "properties.g_id",
+                    from: {
+                        data: {
+                            values: heatMap.entries,
+                        },
+                        key: "id",
+                        fields: ["rate"]
+                    },
+                }
+            ],
+            encoding: {
+                color: {
+                    field: "rate",
+                    type: "quantitative",
+                    title: ""
+                }
             }
         };
     }
 }
+

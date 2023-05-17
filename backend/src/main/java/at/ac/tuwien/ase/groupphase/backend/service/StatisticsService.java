@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
@@ -20,11 +21,12 @@ public class StatisticsService {
         if (type.equals(HeatMap.Type.RANDOM)) {
             final var data = LongStream.range(10000, 100000).boxed()
                     .collect(Collectors.toMap(l -> l, l -> this.random.nextDouble(100000)));
-            final var heatMap = new HeatMap(data, HeatMap.Type.RANDOM, false);
+            final var groupedData = data.entrySet().stream().collect(Collectors
+                    .groupingBy(entry -> entry.getKey() / 100, Collectors.summingDouble(Map.Entry::getValue)));
             if (relative) {
-                return heatMap.toRelative();
+                return HeatMap.createRelative(groupedData, type);
             }
-            return heatMap;
+            return HeatMap.createAbsolute(groupedData, type);
         }
         return null;
     }

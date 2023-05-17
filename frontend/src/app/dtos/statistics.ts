@@ -1,11 +1,13 @@
 
 
 export interface HeatMap {
-    data: Map<number, number>,
-    type: HeatMapTye,
+    entries: {
+        id: number, rate: number
+    }[],
+    type: HeatMapType,
     relative: boolean
 }
 
-export enum HeatMapTye {
-    RANDOM= "RANDOM"
+export enum HeatMapType {
+    RANDOM = 'RANDOM'
 }
