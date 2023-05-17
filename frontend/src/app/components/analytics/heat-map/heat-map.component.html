@@ -1,2 +1,13 @@
 <h2>Heat Map</h2>
+
+<label id="example-radio-group-label">Granularity</label>
+<mat-radio-group
+    aria-labelledby="example-radio-group-label"
+    [(ngModel)]="granularity" (change)="refreshHeatmap()">
+    <mat-radio-button class="example-radio-button" *ngFor="let g of granularities" [value]="g">
+        {{g.name}}
+    </mat-radio-button>
+</mat-radio-group>
+
+
 <div #heatMapContainer></div>

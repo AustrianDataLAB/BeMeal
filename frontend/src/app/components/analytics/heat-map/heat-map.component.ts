@@ -12,8 +12,26 @@ export class HeatMapComponent {
 
     private heatMap: HeatMap;
 
+    granularities: Granularity[] = [{
+        name: 'District',
+        feature: 'STATISTIK_AUSTRIA_POLBEZ_20230101',
+        granularity: 3,
+        topojson: 'stat-austria-bez-20230101.topo.json'
+    },{
+        name: 'Communal',
+        feature: 'STATISTIK_AUSTRIA_GEM_20230101',
+        granularity: 5,
+        topojson: 'stat-austria-gem-20230101.topo.json'
+    }]
+
+    granularity: Granularity = this.granularities[0]
+
     constructor(private statisticsService: StatisticsService) {
-        statisticsService.getHeatMap(HeatMapType.RANDOM, false, 3).subscribe({
+        this.refreshHeatmap();
+    }
+
+    refreshHeatmap() {
+        this.statisticsService.getHeatMap(HeatMapType.RANDOM, false, this.granularity.granularity).subscribe({
             next: value => {
                 this.heatMap = value;
                 embed(this.heatMapContainer.nativeElement, this.heatMapSpec(value)).then(r => console.debug(r));
@@ -27,8 +45,8 @@ export class HeatMapComponent {
         console.debug("try to plot heatmap", heatMap);
         return {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json', data: {
-                url: '/assets/vega-lite/stat-austria-bez-20230101.topo.json', format: {
-                    type: 'topojson', feature: 'STATISTIK_AUSTRIA_POLBEZ_20230101'
+                url:  `/assets/vega-lite/${this.granularity.topojson}`, format: {
+                    type: 'topojson', feature: this.granularity.feature
                 }
             }, mark: {
                 type: 'geoshape', stroke: 'white'
@@ -60,3 +78,9 @@ export class HeatMapComponent {
     }
 }
 
+interface Granularity {
+    name: string,
+    feature: string,
+    topojson: string,
+    granularity: number,
+}

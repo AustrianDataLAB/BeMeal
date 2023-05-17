@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { AngularMaterialModule } from './material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LoginComponent } from './components/login/login.component';
 import {MatCardModule} from "@angular/material/card";
@@ -51,7 +51,8 @@ import {HeatMapComponent} from './components/analytics/heat-map/heat-map.compone
         AngularMaterialModule,
         FlexLayoutModule,
         MatCardModule,
-        DragDropModule
+        DragDropModule,
+        FormsModule
     ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
