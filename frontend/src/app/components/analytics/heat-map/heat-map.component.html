@@ -1,6 +1,16 @@
 <h2>Heat Map</h2>
 
 <p>
+    <mat-form-field>
+        <mat-label>Statistics Type</mat-label>
+        <mat-select [(ngModel)]="heatMapType" (ngModelChange)="refreshHeatmap()">
+            <mat-option *ngFor="let t of listedHeatMapTypes" [value]="t">
+                {{heatMapTypeToString(t)}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</p>
+<p>
     <label id="granularity">Granularity</label>
     <mat-radio-group
         (change)="refreshHeatmap()"

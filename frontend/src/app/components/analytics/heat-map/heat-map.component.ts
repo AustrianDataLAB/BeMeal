@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {StatisticsService} from '../../../services/statistics.service';
-import {HeatMap, HeatMapType} from '../../../dtos/statistics';
+import {HeatMap, HeatMapType, heatMapTypeToString} from '../../../dtos/statistics';
 import embed, {VisualizationSpec} from 'vega-embed';
 
 @Component({
@@ -18,34 +18,25 @@ export class HeatMapComponent {
         feature: 'STATISTIK_AUSTRIA_POLBEZ_20230101',
         granularity: 3,
         topojson: 'stat-austria-bez-20230101.topo.json'
-    },{
+    }, {
         name: 'Communal',
         feature: 'STATISTIK_AUSTRIA_GEM_20230101',
         granularity: 5,
         topojson: 'stat-austria-gem-20230101.topo.json'
     }]
 
+    listedHeatMapTypes = [HeatMapType.RANDOM, HeatMapType.USER_BASE];
+
+    heatMapType: HeatMapType = HeatMapType.RANDOM;
     granularity: Granularity = this.granularities[0];
     relative = false;
 
     constructor(private statisticsService: StatisticsService) {
         this.refreshHeatmap();
     }
-
-    refreshHeatmap() {
-        this.statisticsService.getHeatMap(HeatMapType.RANDOM, this.relative, this.granularity.granularity).subscribe({
-            next: value => {
-                this.heatMap = value;
-                embed(this.heatMapContainer.nativeElement, this.heatMapSpec(value)).then(r => console.debug(r));
-                embed(this.topFiveContainer.nativeElement, this.barChartSpec(value)).then(r => console.debug(r));
-            }, error: err => {
-                console.error(err);
-            }
-        });
-    }
+    protected readonly heatMapTypeToString = heatMapTypeToString;
 
     private heatMapSpec(heatMap: HeatMap): VisualizationSpec {
-        console.debug('try to plot heatmap', heatMap);
         return {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json', data: {
                 url: `/assets/vega-lite/${this.granularity.topojson}`, format: {
@@ -67,6 +58,19 @@ export class HeatMapComponent {
                 }
             }, background: 'rgba(255, 255, 255, 0)'
         };
+    }
+
+    refreshHeatmap() {
+        console.debug('Request statistics with', this.granularity, this.relative, this.heatMapType);
+        this.statisticsService.getHeatMap(this.heatMapType, this.relative, this.granularity.granularity).subscribe({
+            next: value => {
+                this.heatMap = value;
+                embed(this.heatMapContainer.nativeElement, this.heatMapSpec(value)).then(r => console.debug(r));
+                embed(this.topFiveContainer.nativeElement, this.barChartSpec(value)).then(r => console.debug(r));
+            }, error: err => {
+                console.error(err);
+            }
+        });
     }
 
     private barChartSpec(heatMap: HeatMap): VisualizationSpec {
@@ -124,10 +128,7 @@ export class HeatMapComponent {
                 }, x: {
                     field: 'rate', aggregate: 'sum', axis: {grid: false}, title: 'Number'
                 }
-            },
-            background: 'rgba(255, 255, 255, 0)',
-            width: 1000,
-            title: 'The Top and the Bottom 5'
+            }, background: 'rgba(255, 255, 255, 0)', width: 1000, title: 'The Top and the Bottom 5'
         };
     }
 }
