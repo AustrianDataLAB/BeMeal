@@ -25,7 +25,7 @@ export class HeatMapComponent {
     }]
 
     granularity: Granularity = this.granularities[0];
-    relative: boolean = false;
+    relative = false;
 
     constructor(private statisticsService: StatisticsService) {
         this.refreshHeatmap();
@@ -46,35 +46,25 @@ export class HeatMapComponent {
         console.debug("try to plot heatmap", heatMap);
         return {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json', data: {
-                url:  `/assets/vega-lite/${this.granularity.topojson}`, format: {
+                url: `/assets/vega-lite/${this.granularity.topojson}`, format: {
                     type: 'topojson', feature: this.granularity.feature
                 }
             }, mark: {
                 type: 'geoshape', stroke: 'white'
-            }, width: 1000, height: 1000,
-            projection: {
-                type: "identity",
-                reflectY: true
-            },
-            transform: [
-                {
-                    lookup: "properties.g_id",
-                    from: {
-                        data: {
-                            values: heatMap.entries,
+            }, width: 1000, height: 600, projection: {
+                type: 'identity', reflectY: true
+            }, transform: [{
+                lookup: 'properties.g_id', from: {
+                    data: {
+                        values: heatMap.entries,
                         },
-                        key: "id",
-                        fields: ["rate"]
-                    },
-                }
-            ],
-            encoding: {
+                        key: "id", fields: ['rate']
+                },
+            }], encoding: {
                 color: {
-                    field: "rate",
-                    type: "quantitative",
-                    title: ""
+                    field: 'rate', type: 'quantitative', title: ''
                 }
-            }
+            }, background: 'rgba(255, 255, 255, 0)'
         };
     }
 }
