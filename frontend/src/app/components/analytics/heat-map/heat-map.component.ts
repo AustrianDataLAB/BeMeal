@@ -9,6 +9,7 @@ import embed, {VisualizationSpec} from 'vega-embed';
 export class HeatMapComponent {
 
     @ViewChild('heatMapContainer') heatMapContainer: ElementRef;
+    @ViewChild('topFiveContainer') topFiveContainer: ElementRef;
 
     private heatMap: HeatMap;
 
@@ -36,6 +37,7 @@ export class HeatMapComponent {
             next: value => {
                 this.heatMap = value;
                 embed(this.heatMapContainer.nativeElement, this.heatMapSpec(value)).then(r => console.debug(r));
+                embed(this.topFiveContainer.nativeElement, this.barChartSpec(value)).then(r => console.debug(r));
             }, error: err => {
                 console.error(err);
             }
@@ -43,7 +45,7 @@ export class HeatMapComponent {
     }
 
     private heatMapSpec(heatMap: HeatMap): VisualizationSpec {
-        console.debug("try to plot heatmap", heatMap);
+        console.debug('try to plot heatmap', heatMap);
         return {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json', data: {
                 url: `/assets/vega-lite/${this.granularity.topojson}`, format: {
@@ -57,14 +59,75 @@ export class HeatMapComponent {
                 lookup: 'properties.g_id', from: {
                     data: {
                         values: heatMap.entries,
-                        },
-                        key: "id", fields: ['rate']
+                    }, key: 'id', fields: ['rate']
                 },
             }], encoding: {
                 color: {
                     field: 'rate', type: 'quantitative', title: ''
                 }
             }, background: 'rgba(255, 255, 255, 0)'
+        };
+    }
+
+    private barChartSpec(heatMap: HeatMap): VisualizationSpec {
+        return {
+            $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+            description: 'Bar Chart with a spacing-saving y-axis',
+            data: {
+                url: `/assets/vega-lite/${this.granularity.topojson}`, format: {
+                    type: 'topojson', feature: this.granularity.feature
+                }
+            },
+            transform: [{
+                lookup: 'properties.g_id', from: {
+                    data: {
+                        values: heatMap.entries,
+                    }, key: 'id', fields: ['rate']
+                },
+            }, {
+                window: [{
+                    op: 'rank', as: 'rank'
+                }], sort: [{
+                    field: 'rate', order: 'descending'
+                }]
+            }, {
+                window: [{
+                    op: 'rank', as: 'invrank'
+                }], sort: [{
+                    field: 'rate', order: 'ascending'
+                }]
+            }, {
+                filter: 'datum.rank <= 5 || datum.invrank <= 5'
+            }],
+            height: {
+                step: 50
+            },
+            mark: {
+                type: 'bar', yOffset: 5, cornerRadiusEnd: 2, height: 20
+            },
+            encoding: {
+                y: {
+                    field: 'properties.g_name', scale: {padding: 0}, axis: {
+                        bandPosition: 0,
+                        grid: true,
+                        domain: false,
+                        ticks: false,
+                        labelAlign: 'left',
+                        labelBaseline: 'middle',
+                        labelPadding: -5,
+                        labelOffset: -15,
+                        titleX: 5,
+                        titleY: -5,
+                        titleAngle: 0,
+                        titleAlign: 'left'
+                    }, sort: '-x', title: this.granularity.name
+                }, x: {
+                    field: 'rate', aggregate: 'sum', axis: {grid: false}, title: 'Number'
+                }
+            },
+            background: 'rgba(255, 255, 255, 0)',
+            width: 1000,
+            title: 'The Top and the Bottom 5'
         };
     }
 }
