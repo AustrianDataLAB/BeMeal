@@ -91,9 +91,11 @@
                         <mat-card-title>The ingredients</mat-card-title>
                     </mat-card-header>
                     <mat-card-content class="card-content-league">
-                        <span class="span-content-league">
-                            <div *ngFor="let ingridient of challenge?.ingredients">{{ingridient?.name}}</div>
-                        </span>
+                        <div class="span-content-league; card-content-ingredients">
+                            <ul class="card-content-ingredients-list">
+                                <li class="card-content-ingredients-list-item" *ngFor="let ingredient of challenge.ingredients">{{prettyString(ingredient.name)}}</li>
+                            </ul>
+                        </div>
                     </mat-card-content>
                 </mat-card>
             </div>
