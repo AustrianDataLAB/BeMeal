@@ -154,6 +154,9 @@ export class ChallengeComponent {
             tap(response => {
                 console.log(response)
                 console.log('Successfully submitted challenge');
+                const newSubmission: Submission = {} as Submission;
+                newSubmission.challengeId = this.submission.challengeId;
+                this.submission = newSubmission;
             }),
             catchError(error => {
                 console.error('Error while fetching challenge:', error);
