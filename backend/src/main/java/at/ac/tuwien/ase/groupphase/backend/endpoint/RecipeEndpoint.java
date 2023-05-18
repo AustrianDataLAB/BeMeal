@@ -51,9 +51,11 @@ public class RecipeEndpoint {
     @GetMapping("/collections")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<RecipeDto>> getRecipesFromCollection(
-            @RequestParam(value = "name") final List<String> names) {
+            @RequestParam(value = "name") final List<String> names,
+            @RequestParam(required = false, defaultValue = "0", value = "page") Integer page,
+            @RequestParam(required = false, defaultValue = "25", value = "size") Integer size) {
         logger.trace("GET /api/v1/recipe/collections?names.size={}", names.size());
-        List<RecipeDto> dto = recipeService.getRecipesFromCollections(names);
+        List<RecipeDto> dto = recipeService.getRecipesFromCollections(names, page, size);
         if (dto == null) {
             return ResponseEntity.unprocessableEntity().build();
         }
