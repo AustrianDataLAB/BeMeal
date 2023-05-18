@@ -2,6 +2,7 @@ package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.entity.CommunityIdentification;
 import at.ac.tuwien.ase.groupphase.backend.repository.CommunityIdentificationRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class CommunityIdentificationService {
      * `src/main/resources/ci-postal-mapping.csv`. The old community identifications will be removed.
      */
     @Transactional
+    @PostConstruct
     public void reloadCommunityIdentifications() {
         this.communityIdentificationRepository.deleteAll();
         try (final var mappingReader = new BufferedReader(new FileReader(MAPPING_PATH))) {
