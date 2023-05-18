@@ -9,7 +9,8 @@
         <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
             <div *ngIf="!error" fxLayout="row" fxLayoutGap="16px" class="card-container" id="row-top">
                 <ng-container>
-                    <mat-chip-listbox aria-label="Cookbooks" [multiple]="true">
+                    <mat-chip-listbox aria-label="Cookbooks" [multiple]="true" hideSingleSelectionIndicator="true"
+                                      (change)="onChipSelectionChange($event)">
                         <mat-chip-option class="reload-chip" [selectable]="false" [highlighted]="true"
                                          (click)="getRandomizedRecipeCollectionSelection()">&#10227;
                         </mat-chip-option>
@@ -18,6 +19,18 @@
                 </ng-container>
             </div>
             <span *ngIf="error">{{errorMessage}}</span>
+            <mat-list>
+                <mat-list-item *ngFor="let recipe of recipes">
+
+                    <!-- TODO: fix this picture mess -->
+
+                    <div matListItemAvatar>
+                        <img src="data:image/jpeg;base64, {{recipe.picture}}" alt="R">
+                    </div>
+                    <div matListItemTitle>{{recipe.name}}</div>
+                    <div matListItemLine>{{recipe.description}}</div>
+                </mat-list-item>
+            </mat-list>
         </div>
     </div>
 </div>
