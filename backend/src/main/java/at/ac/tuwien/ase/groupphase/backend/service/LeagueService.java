@@ -52,6 +52,7 @@ public class LeagueService {
         this.leagueMapper = leagueMapper;
     }
 
+    @Transactional
     public LeagueSecretsDto getLeagueSecretsWithLeagueId(Long id) {
         var league = leagueRepository.findById(id);
 
@@ -60,6 +61,9 @@ public class LeagueService {
                     id);
             throw new NoSuchElementException("Could not find league");
         }
+
+        // create new hidden identifier with each request
+        league.get().setHiddenIdentifier(UUID.randomUUID());
 
         return new LeagueSecretsDto(league.map(League::getHiddenIdentifier).orElse(null));
     }
