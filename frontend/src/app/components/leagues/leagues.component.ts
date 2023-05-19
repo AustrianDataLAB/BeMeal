@@ -43,22 +43,22 @@ export class LeaguesComponent {
                 this.showInvitationLinks = new Array<boolean>(this.leagues.length).fill(false); // initialize boolean array with all false values and same size as leagues
                 this.enableInviteFriends = new Array<boolean>(this.leagues.length).fill(true); // initialize boolean array with all false values and same size as leagues
                 this.InvitationLinksFeedback = new Array<string>(this.leagues.length).fill("");
-                // let index = 0;
-                // for (const l of this.leagues) {
-                //     const link = firstValueFrom(
-                //         this.invitationService.getHiddenIdentifier(l.id!).pipe(
-                //                 map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`),
-                //                 catchError(error => {
-                //                     this.enableInviteFriends[index] = false;
-                //                     index++;
-                //                     console.log("couldnt get hidden identifier");
-                //                     return of(null);
-                //                 })
-                //             )
-                //     );
-                //     this.invitationLinks.set(l.id!, link);
-                //
-                // }
+                let index = 0;
+                for (const l of this.leagues) {
+                    const link = firstValueFrom(
+                        this.invitationService.getHiddenIdentifier(l.id!, false).pipe(
+                                map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`),
+                                catchError(error => {
+                                    this.enableInviteFriends[index] = false;
+                                    index++;
+                                    console.log("couldnt get hidden identifier");
+                                    return of(null);
+                                })
+                            )
+                    );
+                    this.invitationLinks.set(l.id!, link);
+
+                }
             }),
             catchError(error => {
                 console.error('Error while creating a leauge:', error);
@@ -74,9 +74,9 @@ export class LeaguesComponent {
         this.error = false;
     }
 
-    getInvitationLink(id: number): Observable<string> {
-        return this.invitationService.getHiddenIdentifier(id).pipe(map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`));
-    }
+    // getInvitationLink(id: number): Observable<string> {
+    //     return this.invitationService.getHiddenIdentifier(id, false).pipe(map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`));
+    // }
 
     /**
      * Takes in a string and makes it presentable to the frontend. Removes camelcase and uppercases
@@ -89,22 +89,18 @@ export class LeaguesComponent {
 
     showHiddenIdentifier(index: number, leagueId: number|null) {
 
-        if (this.invitationLinks.get(leagueId) == null) {
-            const link = firstValueFrom(
-                this.invitationService.getHiddenIdentifier(leagueId!).pipe(
-                    map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`),
-                    catchError(error => {
-                        this.enableInviteFriends[index] = false;
-                        index++;
-                        console.log("couldnt get hidden identifier");
-                        return of(null);
-                    })
-                )
-            );
-            this.invitationLinks.set(leagueId, link);
-        }
-
-
+        const link = firstValueFrom(
+            this.invitationService.getHiddenIdentifier(leagueId!, true).pipe(
+                map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`),
+                catchError(error => {
+                    this.enableInviteFriends[index] = false;
+                    index++;
+                    console.log("couldnt get hidden identifier");
+                    return of(null);
+                })
+            )
+        );
+        this.invitationLinks.set(leagueId, link);
 
         this.showInvitationLinks[index] = true;
         // reset all fields
