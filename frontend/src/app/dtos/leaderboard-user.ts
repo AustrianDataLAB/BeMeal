@@ -1,6 +1,6 @@
 export class LeaderboardUser {
     constructor(
         public username: string | null,
-        public userPoints: number | null,
+        public wins: number | null,
     ) {}
 }
