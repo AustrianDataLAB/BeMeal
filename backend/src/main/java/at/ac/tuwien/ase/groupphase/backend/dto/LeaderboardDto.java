@@ -1,23 +1,22 @@
 package at.ac.tuwien.ase.groupphase.backend.dto;
 
 public class LeaderboardDto implements Comparable<LeaderboardDto> {
-    private String username;
-    private Long points;
+    private final String username;
+    private final Integer wins;
     private int position;
 
-    public LeaderboardDto(String username, Long points) {
+    public LeaderboardDto(String username, Integer points) {
         this.username = username;
-        this.points = points;
+        this.wins = points;
         this.position = 0;
     }
-
 
     public String getUsername() {
         return username;
     }
 
-    public Long getPoints() {
-        return points;
+    public Integer getWins() {
+        return wins;
     }
 
     public int getPosition() {
@@ -31,6 +30,6 @@ public class LeaderboardDto implements Comparable<LeaderboardDto> {
     @Override
     public int compareTo(LeaderboardDto other) {
         // Compare based on points in descending order
-        return other.getPoints().compareTo(this.getPoints());
+        return other.getWins().compareTo(this.getWins());
     }
 }
