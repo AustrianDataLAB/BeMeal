@@ -11,10 +11,15 @@ public final class Constants {
 
     public static final Long VALID_USER_ID = 12121212L;
     public static final Long VALID_USER_ID2 = 21212121L;
+    public static final Long VALID_USER_ID3 = 345354L;
     public static final String VALID_USER_USERNAME = "Parkster";
     public static final String VALID_USER_USERNAME2 = "Peter";
+    public static final String VALID_USER_USERNAME3 = "Hubertus";
+    public static final UUID VALID_PICTURE_UUID1 = UUID.fromString("518cf81f-0ff6-4999-b160-756e0dfeac0a");
+    public static final UUID VALID_PICTURE_UUID2 = UUID.fromString("717c37e6-94e9-49a1-adf2-35617b91e0a6");
     public static final String VALID_USER_EMAIL = "parker@gmail.com";
     public static final String VALID_USER_EMAIL2 = "peter@gmail.com";
+    public static final String VALID_USER_EMAIL3 = "hubertus@gmail.com";
     public static final String VALID_USER_PASSWORD = "12345678";
     public static final byte[] VALID_USER_PASSWORD_BYTES = "12345678".getBytes();
     public static final Region VALID_USER_REGION = Region.LOWER_AUSTRIA;
@@ -29,6 +34,11 @@ public final class Constants {
 
     public static final Participant VALID_PARTICIPANT_2 = new Participant(VALID_USER_ID2, VALID_USER_EMAIL2,
             VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME2, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
+            VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
+            new ArrayList<>());
+
+    public static final Participant VALID_PARTICIPANT_3 = new Participant(VALID_USER_ID3, VALID_USER_EMAIL3,
+            VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME3, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
             VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
             new ArrayList<>());
 
