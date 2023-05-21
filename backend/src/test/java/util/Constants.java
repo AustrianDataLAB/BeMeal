@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public final class Constants {
+    public static final String LEAGUE_ENDPOINT_BASEURI = "/api/v1/league";
 
     public static final Long VALID_USER_ID = 12121212L;
     public static final Long VALID_USER_ID2 = 21212121L;

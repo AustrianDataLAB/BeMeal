@@ -1,5 +1,10 @@
 package at.ac.tuwien.ase.groupphase.backend.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(force = true)
+@AllArgsConstructor
 public class LeaderboardDto implements Comparable<LeaderboardDto> {
     private final String username;
     private final Integer wins;
