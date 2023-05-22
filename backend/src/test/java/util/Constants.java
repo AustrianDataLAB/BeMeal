@@ -62,6 +62,7 @@ public final class Constants {
     public static final String EXISTING_USER_PASSWORD = "12345678";
     public static final Region EXISTING_USER_REGION = Region.UPPER_AUSTRIA;
     public static final String EXISTING_USER_POSTAL_CODE = "1010";
+    public static final String NON_EXISTING_USER_POSTAL_CODE = "9999";
 
     public static final String INVALID_EMAIL = "peterHuber.com";
     public static final String VALID_LEAGUE_NAME = "Drei Kuchen hoch";
