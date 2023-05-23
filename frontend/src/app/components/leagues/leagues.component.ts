@@ -46,7 +46,7 @@ export class LeaguesComponent {
                 let index = 0;
                 for (const l of this.leagues) {
                     const link = firstValueFrom(
-                        this.invitationService.getHiddenIdentifier(l.id!).pipe(
+                        this.invitationService.getHiddenIdentifier(l.id!, false).pipe(
                                 map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`),
                                 catchError(error => {
                                     this.enableInviteFriends[index] = false;
@@ -74,9 +74,9 @@ export class LeaguesComponent {
         this.error = false;
     }
 
-    getInvitationLink(id: number): Observable<string> {
-        return this.invitationService.getHiddenIdentifier(id).pipe(map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`));
-    }
+    // getInvitationLink(id: number): Observable<string> {
+    //     return this.invitationService.getHiddenIdentifier(id, false).pipe(map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`));
+    // }
 
     /**
      * Takes in a string and makes it presentable to the frontend. Removes camelcase and uppercases
@@ -88,6 +88,20 @@ export class LeaguesComponent {
     }
 
     showHiddenIdentifier(index: number, leagueId: number|null) {
+
+        const link = firstValueFrom(
+            this.invitationService.getHiddenIdentifier(leagueId!, true).pipe(
+                map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`),
+                catchError(error => {
+                    this.enableInviteFriends[index] = false;
+                    index++;
+                    console.log("couldnt get hidden identifier");
+                    return of(null);
+                })
+            )
+        );
+        this.invitationLinks.set(leagueId, link);
+
         this.showInvitationLinks[index] = true;
         // reset all fields
         for (let i = 0; i < this.InvitationLinksFeedback.length; i++) {
