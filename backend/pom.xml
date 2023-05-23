@@ -254,6 +254,7 @@
 						<exclude>**/security/*</exclude>
 						<exclude>**/configuration/*</exclude>
 						<exclude>**/crawler/*</exclude>
+						<exclude>**/datagenerator/*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
