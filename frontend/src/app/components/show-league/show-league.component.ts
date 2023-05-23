@@ -5,6 +5,7 @@ import {LeagueService} from "../../services/league.service";
 import {catchError, tap} from "rxjs/operators";
 import {firstValueFrom, map, of} from "rxjs";
 import {League} from "../../dtos/league";
+import {LeaderboardUser} from "../../dtos/leaderboard-user";
 
 @Component({
   selector: 'app-show-league',
@@ -17,22 +18,18 @@ export class ShowLeagueComponent implements OnInit{
     league: League;
     error: boolean;
     errorMessage: string;
-    ELEMENT_DATA: Leaderboard[] = [
-        {position: 1, name: 'DerGabelstapler',points: 12},
-        {position: 2, name: 'Johnny123',points: 10},
-        {position: 3, name: 'Klausi',points: 8},
-        {position: 4, name: 'Hubertus123',points: 6},
-        {position: 5, name: 'Moneyboy',points: 4}
-    ];
+    leaderboardUsers: LeaderboardUser[] = [];
 
     displayedColumns: string[] = ['position', 'name', 'points'];
-    dataSource = this.ELEMENT_DATA;
     constructor(private selfService: SelfService, private router: Router, private leagueService: LeagueService, private route: ActivatedRoute) {
     }
 
     ngOnInit() {
         this.extractLeagueId();
-        if (this.leagueId !== null) this.fetchLeague(this.leagueId);
+        if (this.leagueId !== null) {
+            this.fetchLeague(this.leagueId);
+            this.getLeaderboardById(this.leagueId);
+        }
     }
 
     showChallenge() {
@@ -57,8 +54,8 @@ export class ShowLeagueComponent implements OnInit{
                 console.log('Successfully fetched league');
             }),
             catchError(error => {
-                console.error('Error while creating a leauge:', error);
-                this.errorMessage = "Could not create the league";
+                console.error('Error while fetching a leauge:', error);
+                this.errorMessage = "Could not fetch the league";
                 this.error = true;
                 // Handle the error here
                 return of(null);
@@ -75,14 +72,28 @@ export class ShowLeagueComponent implements OnInit{
         return str.replace(/(^|\s)\S/g, (match) => match.toUpperCase());
     }
 
-
-
+    getLeaderboardById(id: number) {
+        this.leagueService.getLeaderboardByLeagueId(id).pipe(
+            tap(response => {
+                this.leaderboardUsers = response;   // already sorted by backend
+                console.log(this.leaderboardUsers);
+                console.log('Successfully fetched leaderboard');
+            }),
+            catchError(error => {
+                console.error('Error while fetching leaderboard', error);
+                this.errorMessage = "Could not fetch the leaderboard";
+                this.error = true;
+                // Handle the error here
+                return of(null);
+            })
+        ).subscribe();
+    }
 
 
 }
 
 export interface Leaderboard {
-    name: string;
+    username: string;
     position: number;
     points: number;
 }

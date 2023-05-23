@@ -1,13 +1,17 @@
 package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
+import at.ac.tuwien.ase.groupphase.backend.dto.LeaderboardDto;
 import at.ac.tuwien.ase.groupphase.backend.endpoint.LeagueEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.junit.jupiter.api.Test;
@@ -15,11 +19,18 @@ import org.mockito.Mockito;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import util.Constants;
 
+import java.util.List;
+
+import static org.hibernate.validator.internal.util.Contracts.assertNotEmpty;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,6 +59,7 @@ public class LeagueEndpointIntegrationTests {
 
     @Test
     @Sql({ "classpath:sql/SelfServiceData.sql" })
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
     void CreateLeagueShouldReturn201() throws Exception {
         // todo fix test, failed because for challenge creation docker is necessary
         /*
@@ -63,10 +75,57 @@ public class LeagueEndpointIntegrationTests {
          * assertEquals(Constants.VALID_LEAGUE_CHALLENGE_DURATION, league.getChallengeDuration()), () ->
          * assertEquals(Constants.VALID_LEAGUE_REGION, league.getRegion()));
          */
-        // TODO sollte so gehen, aber das mit dem mocken passt ned wirklich @WithMockUser muss dann oben hin
         // String json = this.objectMapper.writeValueAsString(dto);
         // mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/league/create-league").content(json)
         // .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
     }
+
+    @Test
+    @Sql({ "classpath:sql/SelfServiceData.sql" })
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    void givenPlatformUsersInLeague_getLeaderboardIsNotEmpty() throws Exception {
+        MvcResult response = mockMvc
+                .perform(MockMvcRequestBuilders.get(Constants.LEAGUE_ENDPOINT_BASEURI + "/1/leaderboard")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
+
+        List<LeaderboardDto> leaderboard = objectMapper.readValue(response.getResponse().getContentAsString(),
+                new TypeReference<>() {
+                });
+        assertNotNull(leaderboard);
+        assertNotEmpty(leaderboard, "Leaderboard list should not be empty");
+        assertEquals(3, leaderboard.size());
+    }
+
+    @Test
+    @Sql({ "classpath:sql/SelfServiceData.sql" })
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    void givenPlatformUsersInLeague_LeaderboardRankingsAreCorrect() throws Exception {
+        MvcResult response = mockMvc
+                .perform(MockMvcRequestBuilders.get(Constants.LEAGUE_ENDPOINT_BASEURI + "/1/leaderboard")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
+
+        List<LeaderboardDto> leaderboard = objectMapper.readValue(response.getResponse().getContentAsString(),
+                new TypeReference<>() {
+                });
+        assertEquals(3, leaderboard.size());
+
+        assertEquals(1, leaderboard.get(0).getPosition());
+        assertEquals(1, leaderboard.get(1).getPosition());
+        assertEquals(2, leaderboard.get(2).getPosition());
+    }
+
+    /*
+     * @Test
+     *
+     * @Sql({ "classpath:sql/SelfServiceData.sql" })
+     *
+     * @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD) void
+     * givenPlatformUsersInLeague_getLeaderboardOfInvalidLeageShouldReturn404() throws Exception {
+     * mockMvc.perform(MockMvcRequestBuilders.get(Constants.LEAGUE_ENDPOINT_BASEURI + "/1000/leaderboard")
+     * .contentType(MediaType.APPLICATION_JSON)) .andDo(MockMvcResultHandlers.print())
+     * .andExpect(status().isNotFound()); }
+     */
 
 }
