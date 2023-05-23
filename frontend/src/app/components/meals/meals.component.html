@@ -18,9 +18,17 @@
                     </mat-chip-listbox>
                 </ng-container>
             </div>
+
             <span *ngIf="error">{{errorMessage}}</span>
+
+            <pagination-controls
+                (pageChange)="onTableDataChange($event)"
+                nextLabel="Next"
+                previousLabel="Prev">
+            </pagination-controls>
             <mat-list>
-                <mat-list-item *ngFor="let recipe of recipes">
+                <mat-list-item
+                    *ngFor="let recipe of recipes | paginate: {itemsPerPage: 25, currentPage: pageIndex, totalItems: totalElements}">
 
                     <!-- TODO: fix this picture mess -->
 

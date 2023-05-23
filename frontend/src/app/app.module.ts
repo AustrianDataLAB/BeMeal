@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import {AuthInterceptor} from "./interceptors/auth.interceptor";
+import {HttpClientModule} from '@angular/common/http';
 import {httpInterceptorProviders} from './interceptors';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -22,6 +21,7 @@ import {ChallengeComponent} from './components/challenge/challenge.component';
 import {ShowLeagueComponent} from './components/show-league/show-league.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MealsComponent} from "./components/meals/meals.component";
+import {NgxPaginationModule} from "ngx-pagination";
 
 
 @NgModule({
@@ -49,7 +49,8 @@ import {MealsComponent} from "./components/meals/meals.component";
         AngularMaterialModule,
         FlexLayoutModule,
         MatCardModule,
-        DragDropModule
+        DragDropModule,
+        NgxPaginationModule
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]
