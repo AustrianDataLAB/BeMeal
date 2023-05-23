@@ -75,7 +75,7 @@ public class InvitationEndpointTest {
                 return p1.getUsername();
             }
         };
-        LeagueSecretsDto dto = this.invitationEndpoint.getHiddenIdentifier(league.getId(), principal);
+        LeagueSecretsDto dto = this.invitationEndpoint.getHiddenIdentifier(league.getId(), false, principal);
         assertEquals(league.getHiddenIdentifier(), dto.hiddenIdentifier());
 
     }
@@ -91,7 +91,7 @@ public class InvitationEndpointTest {
         };
         // TODO sollte ja eigentlich eine NoCreatorOfException werfen, aber aus irgendeinem grund passiert das ned
         assertThrows(DataIntegrityViolationException.class,
-                () -> this.invitationEndpoint.getHiddenIdentifier(league.getId(), principal));
+                () -> this.invitationEndpoint.getHiddenIdentifier(league.getId(), false, principal));
     }
 
     @Test
