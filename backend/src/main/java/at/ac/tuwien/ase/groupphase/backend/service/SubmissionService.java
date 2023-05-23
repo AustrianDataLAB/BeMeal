@@ -199,7 +199,6 @@ public class SubmissionService {
         return resizedImage;
     }
 
-
     @Transactional
     public SubmissionDto getSubmission(@NotNull String submissionId) {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
