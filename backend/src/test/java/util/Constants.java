@@ -51,6 +51,14 @@ public final class Constants {
             LocalDateTime.now().toLocalDate(), LocalDateTime.now().plusDays(7).toLocalDate(), "Recipe",
             new ArrayList<>(), LEAGUE1);
 
+    public static final Recipe RECIPE1 = new Recipe("99", "recipe1", 10, 11, "description", "skill level",
+            "518cf81f-0ff6-4999-b160-756e0dfeac0a.png");
+
+    public static final Participant PARTICIPANT_NOID = new Participant(null, VALID_USER_EMAIL,
+            VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
+            VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
+            new ArrayList<>());
+
     public static final Submission VALID_SUBMISSION_P1 = new Submission(null, UUID.randomUUID(), LocalDateTime.now(),
             null, null, new ArrayList<>());
     public static final Submission VALID_SUBMISSION_P2 = new Submission(null, UUID.randomUUID(), LocalDateTime.now(),
