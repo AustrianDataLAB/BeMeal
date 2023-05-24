@@ -29,12 +29,6 @@ public class RecipeService {
         recipeMapper = new RecipeMapper();
     }
 
-    // TODO: remove
-    public List<RecipeDto> searchRecipeByName(String name) {
-        logger.trace("Searching for recipe with name " + name);
-        return recipeRepository.findByNameIsLike(name).stream().map(recipeMapper::recipeToRecipeDto).toList();
-    }
-
     public RecipeDto getRecipeById(String id) {
         logger.trace("Getting recipe with id " + id);
         Optional<Recipe> recipe = recipeRepository.findById(id);
