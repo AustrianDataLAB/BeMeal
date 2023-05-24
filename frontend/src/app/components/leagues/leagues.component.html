@@ -12,7 +12,6 @@
                     <mat-card-content class="card-content-league">
                         <span class="span-content-league">Gamemode: {{ prettyString(element['gameMode']) }}</span>
                         <span class="span-content-league">Challenge duration: {{ element['challengeDuration'] }} days</span>
-                        <span class="span-content-league">Region: {{ prettyString(element['region']) }}</span>
                     </mat-card-content>
                     <mat-card-actions>
                         <button (click)="viewLeague(element['id'])" mat-raised-button color="primary" class="btn-block">View</button>

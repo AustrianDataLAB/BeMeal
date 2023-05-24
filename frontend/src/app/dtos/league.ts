@@ -1,4 +1,4 @@
-import {Region} from "../shared/region";
+// import {Region} from "../shared/region";
 import {GameMode} from "../shared/game-mode";
 
 export class League {
@@ -8,7 +8,6 @@ export class League {
         public name: string,
         public gameMode: GameMode,
         public challengeDuration: number,
-        public region: Region,
         public lastWinners: string[]
     ) {
 

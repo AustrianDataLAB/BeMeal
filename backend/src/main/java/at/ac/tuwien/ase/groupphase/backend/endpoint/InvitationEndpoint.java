@@ -33,10 +33,10 @@ public class InvitationEndpoint {
     @Autowired
     private final LeagueService leagueService;
 
-    @GetMapping("/hidden-identifier/{leagueId}")
+    @GetMapping("/hidden-identifier/{leagueId}/{refresh}")
     @ResponseStatus(HttpStatus.OK)
     public LeagueSecretsDto getHiddenIdentifier(@NotNull @PathVariable final long leagueId,
-            @NotNull @Autowired final Principal principal) {
+            @NotNull @PathVariable final boolean refresh, @NotNull @Autowired final Principal principal) {
         logger.trace("getHiddenIdentifier({},{})", leagueId, principal.getName());
         if (!this.leagueService.isUserCreatorOfLeague(principal.getName(), leagueId)) {
             logger.info(
@@ -45,7 +45,7 @@ public class InvitationEndpoint {
             throw new NotCreatorOfException(principal.getName(), leagueId);
         }
 
-        return this.leagueService.getLeagueSecretsWithLeagueId(leagueId);
+        return this.leagueService.getLeagueSecretsWithLeagueId(leagueId, refresh);
     }
 
     @GetMapping("/join-league/{hiddenIdentifier}")

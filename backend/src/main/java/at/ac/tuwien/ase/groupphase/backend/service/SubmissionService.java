@@ -199,23 +199,6 @@ public class SubmissionService {
         return resizedImage;
     }
 
-    /**
-     * Convert BufferedImage to byte array.
-     *
-     * @param bi
-     *            the BufferedImage
-     *
-     * @return the byte array
-     */
-    private static byte[] bufferedImageToByteArray(BufferedImage bi) {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            ImageIO.write(bi, SubmissionService.IMAGE_FORMAT, baos);
-            return baos.toByteArray();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Transactional
     public SubmissionDto getSubmission(@NotNull String submissionId) {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -236,6 +219,9 @@ public class SubmissionService {
         Participant participant = this.participantRepository.findByUsername(username);
         Submission submission = this.submissionRepository.getcurrentSubmission(Long.valueOf(challengeId),
                 participant.getId());
+
+        if (submission == null)
+            return null;
 
         // check if participant is allowed to see submission
         if (!participant.getLeagues().contains(submission.getChallenge().getLeague())) {

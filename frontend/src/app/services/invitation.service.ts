@@ -21,8 +21,8 @@ export class InvitationService {
      * This identifier may be used for the invitation link.
      * @param id the id of the league to receive the hidden identifier
      */
-    getHiddenIdentifier(id: number): Observable<LeagueSecrets> {
-        return this.httpClient.get<LeagueSecrets>(this.baseUri + `/hidden-identifier/${id}`);
+    getHiddenIdentifier(id: number, refresh: boolean): Observable<LeagueSecrets> {
+        return this.httpClient.get<LeagueSecrets>(this.baseUri + `/hidden-identifier/${id}/${refresh}`);
     }
 
     joinLeague(hiddenIdentifier: string): Observable<League> {

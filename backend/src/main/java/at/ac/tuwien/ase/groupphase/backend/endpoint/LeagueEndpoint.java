@@ -1,10 +1,9 @@
 package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
-import at.ac.tuwien.ase.groupphase.backend.dto.JoinLeagueDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.LeaderboardDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.League;
-import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
 import at.ac.tuwien.ase.groupphase.backend.service.ChallengeGenerationService;
 import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
@@ -16,12 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/league")
@@ -90,6 +85,13 @@ public class LeagueEndpoint {
             throw new NoSuchElementException("User not in league");
             // throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not in league");
         }
+    }
+
+    @GetMapping("/{leagueId}/leaderboard")
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "bearerToken")
+    public List<LeaderboardDto> getLeaderboardByLeagueId(@NotNull @PathVariable final Long leagueId) {
+        return leagueService.getLeaderboardOfLeague(leagueId);
     }
 
     /**

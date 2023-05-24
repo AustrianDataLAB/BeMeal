@@ -7,6 +7,7 @@ import {JoinLeague} from "../dtos/join-league";
 import {catchError} from "rxjs/operators";
 import {ChallengeInfo} from "../dtos/challengeInfo";
 import {Submission} from "../dtos/submission";
+import {LeaderboardUser} from "../dtos/leaderboard-user";
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,10 @@ export class LeagueService {
 
     getLeagueByHiddenIdentifier(hiddenIdentifier: string): Observable<League> {
         return this.httpClient.get<League>(`${this.baseUri}/hidden-identifier/${hiddenIdentifier}`);
+    }
+
+    getLeaderboardByLeagueId(id: number): Observable<LeaderboardUser[]> {
+        return this.httpClient.get<LeaderboardUser[]>(`${this.baseUri}/${id}/leaderboard`);
     }
 
 

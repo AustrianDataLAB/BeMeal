@@ -20,9 +20,9 @@ import {ProfileComponent} from './components/profile/profile.component';
 import {ChallengeComponent} from './components/challenge/challenge.component';
 import {ShowLeagueComponent} from './components/show-league/show-league.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {DarkModeComponent} from "./components/shared/dark-mode/dark-mode.component";
 import {MealsComponent} from "./components/meals/meals.component";
 import {NgxPaginationModule} from "ngx-pagination";
-
 
 @NgModule({
     declarations: [
@@ -38,6 +38,7 @@ import {NgxPaginationModule} from "ngx-pagination";
         HeaderComponent,
         ChallengeComponent,
         ShowLeagueComponent,
+        DarkModeComponent,
         MealsComponent
     ],
     imports: [
