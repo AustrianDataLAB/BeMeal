@@ -22,4 +22,7 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
 
     @Query(value = "MATCH (r:Recipe)-[:COLLECTION]->(c:Collection) WHERE c.name IN $names RETURN r SKIP $skip LIMIT $limit", countQuery = "MATCH (r:Recipe)-[:COLLECTION]->(c:Collection) WHERE c.name IN $names RETURN COUNT(r)")
     Page<Recipe> getRecipesFromCollection(List<String> names, Pageable pageable);
+
+    @Query(value = "MATCH (r:Recipe) WHERE r.name =~ '(?i).*' + $searchString + '.*' RETURN r SKIP $skip LIMIT $limit", countQuery = "MATCH (r:Recipe) WHERE r.name =~ '(?i).*' + $searchString + '.*' RETURN COUNT(r)")
+    Page<Recipe> findRecipesBySearchString(String searchString, Pageable pageable);
 }

@@ -37,15 +37,15 @@ public class RecipeEndpoint {
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<RecipeDto>> searchRecipeByName(@RequestParam(value = "name") final String name) {
-        logger.trace("GET /api/v1/recipe/search?name={}", name);
-
-        List<RecipeDto> dto = recipeService.searchRecipeByName(name);
-
+    public ResponseEntity<Page<RecipeDto>> findRecipeCollectionsBySearchString(
+            @RequestParam(value = "name") final String name,
+            @RequestParam(required = false, defaultValue = "0", value = "page") Integer page,
+            @RequestParam(required = false, defaultValue = "25", value = "size") Integer size) {
+        logger.trace("GET /api/v1/recipe/recipe/search?name={}", name);
+        Page<RecipeDto> dto = recipeService.findRecipesBySearchString(name, page, size);
         if (dto == null) {
             return ResponseEntity.unprocessableEntity().build();
         }
-
         return ResponseEntity.ok(dto);
     }
 

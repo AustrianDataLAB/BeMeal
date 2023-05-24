@@ -29,6 +29,7 @@ public class RecipeService {
         recipeMapper = new RecipeMapper();
     }
 
+    // TODO: remove
     public List<RecipeDto> searchRecipeByName(String name) {
         logger.trace("Searching for recipe with name " + name);
         return recipeRepository.findByNameIsLike(name).stream().map(recipeMapper::recipeToRecipeDto).toList();
@@ -51,5 +52,15 @@ public class RecipeService {
             throw new NoSuchElementException("No recipes from the union collections with the size " + names.size());
         }
         return recipes;
+    }
+
+    public Page<RecipeDto> findRecipesBySearchString(String searchString, int page, int size) {
+        logger.trace("Searching for recipes which contain the string: " + searchString);
+        var collections = recipeRepository.findRecipesBySearchString(searchString, PageRequest.of(page, size))
+                .map(recipeMapper::recipeToRecipeDto);
+        if (collections.isEmpty()) {
+            throw new NoSuchElementException("No recipe collections found");
+        }
+        return collections;
     }
 }
