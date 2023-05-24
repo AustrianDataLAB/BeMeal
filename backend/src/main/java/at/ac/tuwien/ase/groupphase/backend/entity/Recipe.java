@@ -28,4 +28,7 @@ public class Recipe {
 
     @Relationship(type = "CONTAINS_INGREDIENT", direction = Relationship.Direction.OUTGOING)
     private List<Ingredient> ingredients;
+
+    @Relationship(type = "COLLECTION", direction = Relationship.Direction.OUTGOING)
+    private List<RecipeCollection> collections;
 }

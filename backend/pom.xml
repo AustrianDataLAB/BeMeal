@@ -27,6 +27,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+<!--			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-bom</artifactId>
+				<version>2023.0.0</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>-->
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -60,6 +67,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-neo4j</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-neo4j -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-neo4j</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
