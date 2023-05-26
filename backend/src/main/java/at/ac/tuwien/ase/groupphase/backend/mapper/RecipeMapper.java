@@ -44,7 +44,7 @@ public class RecipeMapper {
         }
     }
 
-    private String uuidToBase64Converter(String uuid) {
+    public String uuidToBase64Converter(String uuid) {
         if (uuid == null) {
             return null;
         }

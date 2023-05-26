@@ -1,7 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.data.neo4j.core.schema.*;
 
 import java.util.List;
@@ -9,6 +8,8 @@ import java.util.List;
 @Node("Recipe")
 @Data
 @EqualsAndHashCode
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Recipe {
     @Id
     @Property("id")

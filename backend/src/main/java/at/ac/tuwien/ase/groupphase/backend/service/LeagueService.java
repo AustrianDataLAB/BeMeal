@@ -59,11 +59,14 @@ public class LeagueService {
     @Transactional
     public ChallengeInfoDto getChallengeForLeague(Long id) {
         League league = this.leagueRepository.findById(id).orElseThrow();
-        if (league.getChallenges().isEmpty()) {
+        // if (league.getChallenges().isEmpty()) {
+        // throw new NoChallengeException();
+        // }
+        Challenge challenge = this.challengeRepository.getLatestChallenge(league.getId());
+        if (challenge == null) {
             throw new NoChallengeException();
         }
 
-        Challenge challenge = this.challengeRepository.getLatestChallenge(league.getId());
         RecipeDto recipe = this.recipeService.getRecipeById(challenge.getRecipe());
 
         ChallengeInfoDto dto = new ChallengeInfoDto();
