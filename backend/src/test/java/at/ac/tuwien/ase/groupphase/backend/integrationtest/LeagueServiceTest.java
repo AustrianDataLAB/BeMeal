@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.ase.groupphase.backend.entity.GameMode;
+import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
@@ -22,7 +23,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static util.Constants.*;
 
 @SpringBootTest
@@ -73,7 +74,13 @@ public class LeagueServiceTest {
         this.leagueService.createLeague(VALID_USER_USERNAME, LEAGUE1);
 
         assertEquals(1, StreamSupport.stream(this.leagueRepository.findAll().spliterator(), false).count());
-        assertEquals(LEAGUE1, this.leagueRepository.findAll().iterator().next());
+        League result = this.leagueRepository.findAll().iterator().next();
+        assertNotNull(result);
+        assertAll(() -> assertEquals(LEAGUE1.getHiddenIdentifier(), result.getHiddenIdentifier()),
+                () -> assertEquals(LEAGUE1.getGameMode(), result.getGameMode()),
+                () -> assertEquals(LEAGUE1.getRegion(), result.getRegion()),
+                () -> assertEquals(LEAGUE1.getName(), result.getName()),
+                () -> assertEquals(LEAGUE1.getParticipants(), result.getParticipants()));
     }
 
 }
