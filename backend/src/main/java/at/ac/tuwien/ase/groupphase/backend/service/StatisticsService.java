@@ -72,12 +72,20 @@ public class StatisticsService {
                     .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants()
                             .stream().map(p -> p.getUsername().length()).reduce(Integer::sum).orElse(0)));
         }
-        final var groupedData = heatMapData.entrySet().stream()
-                .collect(Collectors.groupingBy(entry -> entry.getKey() / ((long) Math.pow(10, 5 - granularity)),
-                        Collectors.summingDouble(Map.Entry::getValue)));
+        final var groupedData = groupByGranularity(heatMapData, granularity);
+        final var userMap = new HashMap<Long, Double>();
+        this.communityIdentificationRepository.findAll()
+                .forEach(c -> userMap.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants().size()));
+        final var groupedUserMap = groupByGranularity(userMap, granularity);
         if (relative) {
-            return HeatMap.createRelative(groupedData, type);
+            return HeatMap.createRelative(groupedData, groupedUserMap, type);
         }
         return HeatMap.createAbsolute(groupedData, type);
+    }
+
+    private static Map<Long, Double> groupByGranularity(final Map<Long, Double> data, final int granularity) {
+        return data.entrySet().stream()
+                .collect(Collectors.groupingBy(entry -> entry.getKey() / ((long) Math.pow(10, 5 - granularity)),
+                        Collectors.summingDouble(Map.Entry::getValue)));
     }
 }
