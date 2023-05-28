@@ -9,7 +9,7 @@ export interface HeatMap {
 }
 
 export enum HeatMapType {
-    RANDOM = 'RANDOM', USER_BASE = 'USER_BASE', SUBMISSIONS = 'SUBMISSIONS', VOTES = 'VOTES'
+    RANDOM = 'RANDOM', USER_BASE = 'USER_BASE', SUBMISSIONS = 'SUBMISSIONS', VOTES = 'VOTES', WINS = 'WINS'
 }
 
 export function heatMapTypeToString(type: HeatMapType) {
@@ -22,5 +22,7 @@ export function heatMapTypeToString(type: HeatMapType) {
             return 'Submissions';
         case HeatMapType.VOTES:
             return 'Votes';
+        case HeatMapType.WINS:
+            return 'Wins';
     }
 }
