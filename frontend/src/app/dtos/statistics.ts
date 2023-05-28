@@ -9,7 +9,7 @@ export interface HeatMap {
 }
 
 export enum HeatMapType {
-    RANDOM = 'RANDOM', USER_BASE = 'USER_BASE', SUBMISSIONS = 'SUBMISSIONS', VOTES = 'VOTES', WINS = 'WINS', UP_VOTES = 'UP_VOTES', DOWN_VOTES = 'DOWN_VOTES'
+    RANDOM = 'RANDOM', USER_BASE = 'USER_BASE', SUBMISSIONS = 'SUBMISSIONS', VOTES = 'VOTES', WINS = 'WINS', UP_VOTES = 'UP_VOTES', DOWN_VOTES = 'DOWN_VOTES', USERNAME = 'USERNAME'
 }
 
 export function heatMapTypeToString(type: HeatMapType) {
@@ -28,5 +28,7 @@ export function heatMapTypeToString(type: HeatMapType) {
             return 'Issued Up-Votes';
         case HeatMapType.DOWN_VOTES:
             return 'Issued Down-Votes';
+        case HeatMapType.USERNAME:
+            return 'Username Length';
     }
 }

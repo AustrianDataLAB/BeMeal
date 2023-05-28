@@ -67,6 +67,11 @@ public class StatisticsService {
                                     .map(p -> p.getVotes().stream().filter(v -> !v.isUpvote()).count())
                                     .reduce(Long::sum).orElse(0L)));
         }
+        if (type.equals(HeatMap.Type.USERNAME)) {
+            this.communityIdentificationRepository.findAll()
+                    .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants()
+                            .stream().map(p -> p.getUsername().length()).reduce(Integer::sum).orElse(0)));
+        }
         final var groupedData = heatMapData.entrySet().stream()
                 .collect(Collectors.groupingBy(entry -> entry.getKey() / ((long) Math.pow(10, 5 - granularity)),
                         Collectors.summingDouble(Map.Entry::getValue)));
