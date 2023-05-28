@@ -62,7 +62,7 @@ public class RecipeMapper {
 
     public List<RecipeDto> recipeListToRecipeDtoList(List<Recipe> list) {
         List<RecipeDto> ret = new ArrayList<>();
-        for (Recipe recipe: list) {
+        for (Recipe recipe : list) {
             ret.add(recipeToRecipeDto(recipe));
         }
         return ret;

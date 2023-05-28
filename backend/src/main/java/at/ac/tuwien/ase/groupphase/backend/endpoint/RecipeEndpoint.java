@@ -63,7 +63,6 @@ public class RecipeEndpoint {
         return ResponseEntity.ok(dto);
     }
 
-
     @GetMapping("/suggestion")
     @ResponseStatus(HttpStatus.OK)
     public List<RecipeDto> getSuggestions(@RequestParam(value = "id") final List<String> ids) {
