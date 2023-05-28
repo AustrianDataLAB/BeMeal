@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,5 +41,15 @@ public class RecipeService {
             throw new NoSuchElementException("No recipe with id " + id);
         }
         return recipeMapper.recipeToRecipeDto(recipe.get());
+    }
+
+    public Page<RecipeDto> getRecipesFromCollections(List<String> names, int page, int size) {
+        logger.trace("Getting recipes for {} collections", names.size());
+        var recipes = recipeRepository.getRecipesFromCollection(names, PageRequest.of(page, size))
+                .map(recipeMapper::recipeToRecipeDto);
+        if (recipes.isEmpty()) {
+            throw new NoSuchElementException("No recipes from the union collections with the size " + names.size());
+        }
+        return recipes;
     }
 }

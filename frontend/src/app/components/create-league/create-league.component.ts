@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {SelfService} from "../../services/self.service";
-import {Region} from "../../shared/region";
-import {Registration} from "../../dtos/registration";
 import {catchError, tap} from "rxjs/operators";
 import {of} from "rxjs";
 import {League} from "../../dtos/league";
@@ -18,8 +15,6 @@ import {GameMode} from "../../shared/game-mode";
 export class CreateLeagueComponent {
 
     registerForm: FormGroup;
-    regions = Region;
-    regionKeys = Object.keys;
 
     gamemodes = GameMode;
     gameModeKeys = Object.keys;
@@ -31,23 +26,19 @@ export class CreateLeagueComponent {
         this.registerForm = this.formBuilder.group({
             name: ['', [Validators.required]],
             gamemode: ['', [Validators.required]],
-            challengeDuration: ['', [Validators.required]],
-            region: ['', [Validators.required]]
+            challengeDuration: ['', [Validators.required]]
         });
     }
 
     createLeague() {
         this.submitted = true;
         if (this.registerForm.valid) {
-            const regionEnumIndex = Object.keys(Region).indexOf(this.registerForm.controls['region'].value);
-            const regionValue = Object.values(Region)[regionEnumIndex];
             const gameModeEnumIndex = Object.keys(GameMode).indexOf(this.registerForm.controls['gamemode'].value);
             const gameModeValue = Object.values(GameMode)[gameModeEnumIndex];
             const leagueObj: League = new League(null,
                 this.registerForm.controls['name'].value,
                 gameModeValue,
                 parseInt(this.registerForm.controls['challengeDuration'].value), // TODO hier checken auch ob es wirklich eine zahl ist
-                regionValue,
                 []
             );
             this.leagueService.createLeague(leagueObj).pipe(

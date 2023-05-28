@@ -1,6 +1,6 @@
-package at.ac.tuwien.ase.groupphase.backend.integration;
+package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
-import at.ac.tuwien.ase.groupphase.backend.controller.UserEndpoint;
+import at.ac.tuwien.ase.groupphase.backend.endpoint.UserEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;

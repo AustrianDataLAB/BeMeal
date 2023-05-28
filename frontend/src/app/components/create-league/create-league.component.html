@@ -1,6 +1,6 @@
 <div class="container mx-auto" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap>
     <div  fxFlex="33" fxLayout="column" fxLayoutAlign="start start">
-        <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-07.svg" alt="A person enjoying cooking" />
+        <img src="assets/cooking/PNG/DrawKit-cooking-kitchen-food-vector-illustrations-07.png" alt="A person enjoying cooking" />
     </div>
         <div class="flex-weg" fxLayout="column" fxLayoutAlign="center center">
             <mat-card >
@@ -26,13 +26,6 @@
                             <mat-label>Challenge duration (days)</mat-label>
                             <input type="number" formControlName="challengeDuration" name="challengeDuration" matInput >
                         </mat-form-field>
-                        <mat-form-field >
-                            <mat-label>Your region</mat-label>
-                            <mat-select name="region" formControlName="region">
-                                <mat-option [value]="region" *ngFor="let region of regionKeys(regions)">{{prettyString(region)}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
                         <button mat-raised-button color="primary" class="btn-block" (click)="createLeague()">Create</button>
                         <br>
                         <span *ngIf="error">{{errorMessage}}</span>
@@ -44,6 +37,6 @@
             </mat-card>
         </div>
     <div fxFlexFill fxFlex="33" fxLayout="column" fxLayoutAlign="start center">
-        <img src="assets/cooking/SVG/DrawKit-cooking-kitchen-food-vector-illustrations-04.svg" alt="A person enjoying cooking" />
+        <img src="assets/cooking/PNG/DrawKit-cooking-kitchen-food-vector-illustrations-04.png" alt="A person enjoying cooking" />
     </div>
 </div>

@@ -1,4 +1,4 @@
-package at.ac.tuwien.ase.groupphase.backend.controller;
+package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.service.CommunityIdentificationService;
 import lombok.RequiredArgsConstructor;

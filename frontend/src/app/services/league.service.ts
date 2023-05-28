@@ -7,6 +7,7 @@ import {JoinLeague} from "../dtos/join-league";
 import {catchError} from "rxjs/operators";
 import {ChallengeInfo} from "../dtos/challengeInfo";
 import {Submission} from "../dtos/submission";
+import {LeaderboardUser} from "../dtos/leaderboard-user";
 
 @Injectable({
   providedIn: 'root'
@@ -32,21 +33,6 @@ export class LeagueService {
             }));
     }
 
-    joinLeague(obj: JoinLeague): Observable<League> {
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            })
-        };
-        console.log(obj);
-        return this.httpClient.post<any>(this.baseUri + '/join-league', obj, httpOptions)
-            .pipe(map(response => {
-                // todo catch 422, ...
-                return response;
-            }));
-    }
-
     fetchLeagues(): Observable<League[]> {
         return this.httpClient.get<League[]>(this.baseUri + '/leagues');
     }
@@ -61,6 +47,10 @@ export class LeagueService {
 
     getLeagueByHiddenIdentifier(hiddenIdentifier: string): Observable<League> {
         return this.httpClient.get<League>(`${this.baseUri}/hidden-identifier/${hiddenIdentifier}`);
+    }
+
+    getLeaderboardByLeagueId(id: number): Observable<LeaderboardUser[]> {
+        return this.httpClient.get<LeaderboardUser[]>(`${this.baseUri}/${id}/leaderboard`);
     }
 
 

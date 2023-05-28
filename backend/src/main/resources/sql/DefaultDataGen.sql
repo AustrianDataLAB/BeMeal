@@ -1,12 +1,12 @@
 /*      Create users        */
 -- Admin accounts
 -- Passwords are encrypted matriculation IDs
-INSERT INTO Platform_User (email, username, password, is_admin) VALUES ( 'benjamin.probst@bemeal.at', 'Bini', '$2a$12$nsiO.0j8gKPbbLssvXxR5.F6NuIX1BAb5Ll14LH.6MJHjxKuVvI/O', true);
+INSERT INTO Platform_User (email, username, password, is_admin) VALUES ('benjamin.probst@bemeal.at', 'Bini', '$2a$12$nsiO.0j8gKPbbLssvXxR5.F6NuIX1BAb5Ll14LH.6MJHjxKuVvI/O', true);
 INSERT INTO Platform_User ( email, username, password, is_admin) VALUES ('dave.pfliegler@bemeal.at', 'Dave', '$2a$12$37Oc6dzwqWXR2Jn1mkCs.uLOPkzpBUdj8M0bHtwYybBwSG.7Gj/OG', true);
 INSERT INTO Platform_User (email, username, password, is_admin) VALUES ('dennis.toth@bemeal.at', 'Dennis', '$2a$10$DFYTkpABc.pTpJWCYMBvW.Wijxwl3lr67G6I5r5Pzcr.5/p2V4xwm', true);
-INSERT INTO Platform_User ( email, username, password, is_admin) VALUES ( 'manuel.waibel@bemeal.at', 'Manu', '$2a$10$TOPbeItKkxyC2SAIw6DXN.y725xGXG5Rxs8ZG6JaaZU..gDCU.DWy', true);
+INSERT INTO Platform_User ( email, username, password, is_admin) VALUES ('manuel.waibel@bemeal.at', 'Manu', '$2a$10$TOPbeItKkxyC2SAIw6DXN.y725xGXG5Rxs8ZG6JaaZU..gDCU.DWy', true);
 INSERT INTO Platform_User ( email, username, password, is_admin) VALUES ('matteo.kofler@bemeal.at', 'Matteo', '$2a$10$p61cLtBQ3h3vwXy2GB9c.OJPX9ae3qp8SLNNmCxt0mZXPd.rWOicG', true);
-INSERT INTO Platform_User ( email, username, password, is_admin) VALUES ( 'richard.stoeckl@bemeal.at', 'Richi', '$2a$10$diB3.0ugwJk.7wdeAY0PBOU90Ukw4MQtOAvbMxnO.tsE7mtRsLv5C', true);
+INSERT INTO Platform_User ( email, username, password, is_admin) VALUES ('richard.stoeckl@bemeal.at', 'Richi', '$2a$10$diB3.0ugwJk.7wdeAY0PBOU90Ukw4MQtOAvbMxnO.tsE7mtRsLv5C', true);
 -- Show user accounts
 INSERT INTO Platform_User ( email, username, password, is_admin) VALUES ( 'test1@gmail.com', 'test1', '$2a$10$qlE9fTpRBEsw1nBpFXvcPOPafSnlKKIfSNHMceKizTGdckSU1qbJi', false);
 INSERT INTO Platform_User ( email, username, password, is_admin) VALUES ( 'test2@gmail.com', 'test2', '$2a$10$2CUt/N6l99GmxWmfBBXnDOTMueJDFOhKUdQDUyk7NQpxX4gmDVPpO', false);
@@ -45,26 +45,26 @@ BURGENLAND      7
 VORARLBERG      8
 
 */
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 0, 7, 'ef2133ad-f5e9-4aac-bc1f-46dcf62f495e', 'Uni friends');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 1, 7, 'df3fe84b-6143-4d41-a0b9-a452c8c91b18', 'Work friends');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 2, 7, 'd964c968-8078-40c7-b528-bb305ec7290a', 'The legends');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 3, 7, '8b7edb62-a5db-4c65-9adb-c3a7d2fc9952', 'Cooking Experts');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 4, 7, '300fdfc3-ebd1-4a5a-bb56-fbad47ae91ce', 'Broccoli lovers');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 5, 7, '8fe94524-e052-49f8-a55d-3f4af99317bb', 'Heast, oida' );
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 6, 7, '645379dd-3b61-4635-817d-1ee9808e20b0', 'Foodies');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 7, 7, '64188f31-9fc5-478f-9342-4ccd61cc0920', 'True legends');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Turtles');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 0, 7, 'ef2133ad-f5e9-4aac-bc1f-46dcf62f495e', 'Uni friends');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 1, 7, 'df3fe84b-6143-4d41-a0b9-a452c8c91b18', 'Work friends');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 2, 7, 'd964c968-8078-40c7-b528-bb305ec7290a', 'The legends');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 3, 7, '8b7edb62-a5db-4c65-9adb-c3a7d2fc9952', 'Cooking Experts');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 4, 7, '300fdfc3-ebd1-4a5a-bb56-fbad47ae91ce', 'Broccoli lovers');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 5, 7, '8fe94524-e052-49f8-a55d-3f4af99317bb', 'Heast, oida' );
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 6, 7, '645379dd-3b61-4635-817d-1ee9808e20b0', 'Foodies');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 7, 7, '64188f31-9fc5-478f-9342-4ccd61cc0920', 'True legends');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Turtles');
 
 -- game mode for regional leagues always picture_ingredients:
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 0, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Vienna League');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 1, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Lower Austria League');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 2, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Upper Austria League');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 3, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Styria League');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 4, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Tyrol League');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 5, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Salzburg League');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 6, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Carinthia League');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 7, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Burgenland League');
-INSERT INTO League ( game_mode, region, challenge_duration, hidden_identifier, name) VALUES ( 2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Vorarlberg League');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 0, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Vienna League');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 1, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Lower Austria League');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 2, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Upper Austria League');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 3, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Styria League');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 4, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Tyrol League');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 5, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Salzburg League');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 6, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Carinthia League');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 7, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Burgenland League');
+INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Vorarlberg League');
 
 -- team member users participate in their regional leagues
 INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (11, 1);

@@ -1,30 +1,22 @@
-package at.ac.tuwien.ase.groupphase.backend.controller;
+package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
-import at.ac.tuwien.ase.groupphase.backend.dto.JoinLeagueDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.LeaderboardDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.League;
-import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
-import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ChallengeGenerationService;
 import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/league")
@@ -35,7 +27,6 @@ public class LeagueEndpoint {
     private final LeagueMapper leagueMapper;
     private final LeagueService leagueService;
 
-    private final LeagueRepository leagueRepository;
     private final ChallengeGenerationService challengeGenerationService;
 
     @PostMapping("/create-league")
@@ -47,35 +38,12 @@ public class LeagueEndpoint {
         this.leagueService.createLeague(user, league);
     }
 
-    @PostMapping("/join-league")
-    @SecurityRequirement(name = "bearerToken")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> joinLeague(@NotNull @RequestBody final JoinLeagueDto joinLeagueDto) {
-        League league = this.leagueRepository
-                .findLeagueByHiddenIdentifier(UUID.fromString(joinLeagueDto.hiddenIdentifier()));
-        // league does not exist
-        if (league == null) {
-            return ResponseEntity.unprocessableEntity().build();
-        }
-        String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        this.leagueService.joinLeague(user, joinLeagueDto.leagueId());
-        return ResponseEntity.noContent().build();
-
-    }
-
     // e.g. http://localhost:4200/league/join/f172c3e8-4a27-4cb4-bd16-ee3e97bf5583
     @GetMapping("/hidden-identifier/{hiddenIdentifier}")
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirement(name = "bearerToken")
     public ResponseEntity<LeagueDto> getLeagueByHiddenIdentifier(@NotNull @PathVariable final String hiddenIdentifier) {
-        UUID hi = UUID.fromString(hiddenIdentifier);
-        League league = this.leagueRepository.findLeagueByHiddenIdentifier(hi);
-        // league does not exist
-        if (league == null) {
-            return ResponseEntity.unprocessableEntity().build();
-        }
-        // league exists
-        LeagueDto leagueDto = this.leagueMapper.leagueToLeagueDto(league);
+        LeagueDto leagueDto = leagueService.getLeagueWithHiddenIdentifier(UUID.fromString(hiddenIdentifier));
         return ResponseEntity.ok(leagueDto);
     }
 
@@ -92,13 +60,14 @@ public class LeagueEndpoint {
     @SecurityRequirement(name = "bearerToken")
     @ResponseStatus(HttpStatus.OK)
     public ChallengeInfoDto getChallengeForLeague(@NotNull @PathVariable final Long id) {
-        try {
-            return this.leagueService.getChallengeForLeague(id);
-        } catch (NoChallengeException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return this.leagueService.getChallengeForLeague(id);
+        // try {
+        // return this.leagueService.getChallengeForLeague(id);
+        // } catch (NoChallengeException e) {
+        // throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        // } catch (NoSuchElementException e) {
+        // throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        // }
 
     }
 
@@ -113,8 +82,16 @@ public class LeagueEndpoint {
             League league = leagueOptional.get();
             return ResponseEntity.ok(this.leagueMapper.leagueToLeagueDto(league));
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not in league");
+            throw new NoSuchElementException("User not in league");
+            // throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not in league");
         }
+    }
+
+    @GetMapping("/{leagueId}/leaderboard")
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "bearerToken")
+    public List<LeaderboardDto> getLeaderboardByLeagueId(@NotNull @PathVariable final Long leagueId) {
+        return leagueService.getLeaderboardOfLeague(leagueId);
     }
 
     /**

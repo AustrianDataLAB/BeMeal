@@ -11,6 +11,7 @@ import {CreateLeagueComponent} from "./components/create-league/create-league.co
 import {ShowLeagueComponent} from "./components/show-league/show-league.component";
 import {ChallengeComponent} from "./components/challenge/challenge.component";
 import {AnalyticsComponent} from './components/analytics/analytics.component';
+import {MealsComponent} from "./components/meals/meals.component";
 
 
 const routes: Routes = [
@@ -23,7 +24,8 @@ const routes: Routes = [
     {path: 'league/:id/challenge',  canActivate: [AuthGuard], component: ChallengeComponent},
     {path: 'league/join/:hiddenIdentifier',  canActivate: [AuthGuard], component: LeagueInvitationComponent},
     {path: 'create-league',  canActivate: [AuthGuard], component: CreateLeagueComponent},
-    {path: 'analytics', canActivate: [AuthGuard], component: AnalyticsComponent}
+    {path: 'analytics', canActivate: [AuthGuard], component: AnalyticsComponent},
+    {path: 'meals',  canActivate: [AuthGuard], component: MealsComponent}
 ];
 
 

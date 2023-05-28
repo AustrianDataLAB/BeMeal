@@ -1,4 +1,4 @@
-package at.ac.tuwien.ase.groupphase.backend.integration;
+package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
@@ -35,19 +35,16 @@ public class UserEndpointIntegrationTests {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
+    @Sql({ "classpath:sql/RegionalLeague.sql" })
     void registerPlatformUserShouldReturn201() throws Exception {
-        /*
-         * Registration reg = new Registration(Constants.VALID_USER_EMAIL, Constants.VALID_USER_USERNAME,
-         * Constants.VALID_USER_PASSWORD, Constants.VALID_USER_REGION, Constants.VALID_USER_POSTAL_CODE);
-         *
-         * String json = this.objectMapper.writeValueAsString(reg);
-         * mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/self-service/registration/participant").content(json)
-         * .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
-         *
-         * List<Participant> list1 = new ArrayList<>(); this.participantRepository.findAll().forEach(list1::add);
-         * assertEquals(1, list1.size());
-         */
-        // todo fix test, failed because for challenge creation docker is necessary
+        Registration reg = new Registration(Constants.VALID_USER_EMAIL, Constants.VALID_USER_USERNAME,
+                Constants.VALID_USER_PASSWORD, Constants.VALID_USER_REGION, Constants.VALID_USER_POSTAL_CODE);
+        String json = this.objectMapper.writeValueAsString(reg);
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/self-service/registration/participant").content(json)
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+        List<Participant> list1 = new ArrayList<>();
+        this.participantRepository.findAll().forEach(list1::add);
+        assertEquals(1, list1.size());
     }
 
     @Test
@@ -59,6 +56,18 @@ public class UserEndpointIntegrationTests {
         String json = this.objectMapper.writeValueAsString(reg);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/self-service/registration/participant").content(json)
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isConflict());
+
+    }
+
+    @Test
+    void registerPlatformUserWithInvalidPostalCodeShouldReturn422() throws Exception {
+        Registration reg = new Registration(Constants.EXISTING_USER_EMAIL, Constants.EXISTING_USER_USERNAME,
+                Constants.EXISTING_USER_PASSWORD, Constants.EXISTING_USER_REGION,
+                Constants.NON_EXISTING_USER_POSTAL_CODE);
+
+        String json = this.objectMapper.writeValueAsString(reg);
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/self-service/registration/participant").content(json)
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isUnprocessableEntity());
 
     }
 

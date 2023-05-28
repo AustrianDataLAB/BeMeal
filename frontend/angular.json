@@ -35,15 +35,17 @@
               "src/assets/styles/_colors.scss",
               "src/assets/styles/_typography.scss"
             ],
-            "scripts": []
+            "scripts": [
+                "./node_modules/angular-dark-mode/angular-dark-mode.js"
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",

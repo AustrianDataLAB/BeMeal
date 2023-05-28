@@ -1,6 +1,6 @@
 <div class="container page-container mx-auto" fxLayout="column"  fxLayoutGap="16px">
     <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
-        <h1 fxLayout="row" class="mat-headline-2">{{ league['name'] }}</h1>
+        <h1 fxLayout="row" class="mat-headline-2">{{ league?.name}}</h1>
     </div>
     <div fxFlexFill fxFlex="100" fxLayout="row" fxLayoutGap="16px"  >
         <mat-card class="card-item">
@@ -8,9 +8,9 @@
                 <mat-card-title>League details</mat-card-title>
             </mat-card-header>
             <mat-card-content class="card-content-league">
-                <div class="span-content-league">Gamemode: {{ prettyString(league['gameMode']) }}</div>
-                <div class="span-content-league">Challenge duration: {{ league['challengeDuration'] }} days</div>
-                <div class="span-content-league">Region: {{ prettyString(league['region']) }}</div>
+                <div class="span-content-league">Gamemode: {{ prettyString(league.gameMode) }}</div>
+                <div class="span-content-league">Challenge duration: {{ league?.challengeDuration }} days</div>
+<!--                <div class="span-content-league">Region: {{ prettyString(league.region) }}</div>-->
             </mat-card-content>
         </mat-card>
         <mat-card  class="card-item" style="flex: 1 1 100%">
@@ -36,33 +36,33 @@
                 <mat-card-subtitle>These are the current standings.</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content class="card-content-league">
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <table mat-table [dataSource]="this.leaderboardUsers" class="mat-elevation-z8">
 
                     <!--- Note that these columns can be defined in any order.
                           The actual rendered columns are set as a property on the row definition" -->
 
                     <!-- Position Column -->
                     <ng-container matColumnDef="position">
-                        <th mat-header-cell *matHeaderCellDef> No. </th>
+                        <th mat-header-cell *matHeaderCellDef> Rank </th>
                         <td mat-cell *matCellDef="let element"> {{element.position}} </td>
                     </ng-container>
 
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef> Name </th>
-                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                        <th mat-header-cell *matHeaderCellDef> Username </th>
+                        <td mat-cell *matCellDef="let element"> {{element.username}} </td>
                     </ng-container>
 
                     <!-- Weight Column -->
                     <ng-container matColumnDef="points">
-                        <th mat-header-cell *matHeaderCellDef> Points </th>
-                        <td mat-cell *matCellDef="let element"> {{element.points}} </td>
+                        <th mat-header-cell *matHeaderCellDef> Wins </th>
+                        <td mat-cell *matCellDef="let element"> {{element.wins}} </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
-
+                <span *ngIf="this.leaderboardUsers === []">Leaderboard could not be fetched</span>
 
             </mat-card-content>
         </mat-card>
