@@ -25,7 +25,7 @@ export class HeatMapComponent {
         topojson: 'stat-austria-gem-20230101.topo.json'
     }]
 
-    listedHeatMapTypes = [HeatMapType.RANDOM, HeatMapType.USER_BASE];
+    listedHeatMapTypes = [HeatMapType.RANDOM, HeatMapType.USER_BASE, HeatMapType.SUBMISSIONS, HeatMapType.VOTES, HeatMapType.WINS, HeatMapType.UP_VOTES, HeatMapType.DOWN_VOTES, HeatMapType.USERNAME];
 
     heatMapType: HeatMapType = HeatMapType.RANDOM;
     granularity: Granularity = this.granularities[0];
