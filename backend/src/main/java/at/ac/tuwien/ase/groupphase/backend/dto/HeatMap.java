@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public record HeatMap(List<HeatMapEntry> entries, Type type, boolean relative) {
 
     public enum Type {
-        RANDOM, USER_BASE, SUBMISSIONS
+        RANDOM, USER_BASE, SUBMISSIONS, VOTES
     }
 
     public record HeatMapEntry(long id, double rate) {
