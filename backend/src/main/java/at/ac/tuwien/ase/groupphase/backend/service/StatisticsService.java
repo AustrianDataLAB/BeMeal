@@ -1,6 +1,8 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.HeatMap;
+import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
+import at.ac.tuwien.ase.groupphase.backend.entity.ParticipantSubmissionVote;
 import at.ac.tuwien.ase.groupphase.backend.repository.CommunityIdentificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,12 +38,54 @@ public class StatisticsService {
             this.communityIdentificationRepository.findAll().forEach(
                     c -> heatMapData.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants().size()));
         }
-        final var groupedData = heatMapData.entrySet().stream()
-                .collect(Collectors.groupingBy(entry -> entry.getKey() / ((long) Math.pow(10, 5 - granularity)),
-                        Collectors.summingDouble(Map.Entry::getValue)));
+        if (type.equals(HeatMap.Type.SUBMISSIONS)) {
+            this.communityIdentificationRepository.findAll()
+                    .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants()
+                            .stream().map(p -> p.getSubmissions().size()).reduce(Integer::sum).orElse(0)));
+        }
+        if (type.equals(HeatMap.Type.VOTES)) {
+            this.communityIdentificationRepository.findAll()
+                    .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants()
+                            .stream().map(p -> p.getVotes().size()).reduce(Integer::sum).orElse(0)));
+        }
+        if (type.equals(HeatMap.Type.WINS)) {
+            this.communityIdentificationRepository.findAll().forEach(c -> heatMapData.put(
+                    c.getCommunityIdentificationNumber(),
+                    (double) c.getParticipants().stream().map(Participant::getWins).reduce(Integer::sum).orElse(0)));
+        }
+        if (type.equals(HeatMap.Type.UP_VOTES)) {
+            this.communityIdentificationRepository.findAll()
+                    .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(),
+                            (double) c.getParticipants().stream()
+                                    .map(p -> p.getVotes().stream().filter(ParticipantSubmissionVote::isUpvote).count())
+                                    .reduce(Long::sum).orElse(0L)));
+        }
+        if (type.equals(HeatMap.Type.DOWN_VOTES)) {
+            this.communityIdentificationRepository.findAll()
+                    .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(),
+                            (double) c.getParticipants().stream()
+                                    .map(p -> p.getVotes().stream().filter(v -> !v.isUpvote()).count())
+                                    .reduce(Long::sum).orElse(0L)));
+        }
+        if (type.equals(HeatMap.Type.USERNAME)) {
+            this.communityIdentificationRepository.findAll()
+                    .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants()
+                            .stream().map(p -> p.getUsername().length()).reduce(Integer::sum).orElse(0)));
+        }
+        final var groupedData = groupByGranularity(heatMapData, granularity);
+        final var userMap = new HashMap<Long, Double>();
+        this.communityIdentificationRepository.findAll()
+                .forEach(c -> userMap.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants().size()));
+        final var groupedUserMap = groupByGranularity(userMap, granularity);
         if (relative) {
-            return HeatMap.createRelative(groupedData, type);
+            return HeatMap.createRelative(groupedData, groupedUserMap, type);
         }
         return HeatMap.createAbsolute(groupedData, type);
+    }
+
+    private static Map<Long, Double> groupByGranularity(final Map<Long, Double> data, final int granularity) {
+        return data.entrySet().stream()
+                .collect(Collectors.groupingBy(entry -> entry.getKey() / ((long) Math.pow(10, 5 - granularity)),
+                        Collectors.summingDouble(Map.Entry::getValue)));
     }
 }

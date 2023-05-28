@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public record HeatMap(List<HeatMapEntry> entries, Type type, boolean relative) {
 
     public enum Type {
-        RANDOM, USER_BASE
+        RANDOM, USER_BASE, SUBMISSIONS, VOTES, WINS, UP_VOTES, DOWN_VOTES, USERNAME
     }
 
     public record HeatMapEntry(long id, double rate) {
@@ -17,11 +17,10 @@ public record HeatMap(List<HeatMapEntry> entries, Type type, boolean relative) {
         return create(data, type, false);
     }
 
-    public static HeatMap createRelative(final Map<Long, Double> data, final Type type) {
-        final var maximum = data.values().stream().max(Double::compareTo)
-                .orElseThrow(() -> new RuntimeException("Found no maximum"));
-        final var relativeData = data.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() / maximum));
+    public static HeatMap createRelative(final Map<Long, Double> data, final Map<Long, Double> userMap,
+            final Type type) {
+        final var relativeData = data.entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey, e -> e.getValue() / userMap.getOrDefault(e.getKey(), 1.0)));
         return create(relativeData, type, true);
     }
 
