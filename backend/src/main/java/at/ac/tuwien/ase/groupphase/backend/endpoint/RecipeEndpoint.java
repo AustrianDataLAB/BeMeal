@@ -62,4 +62,12 @@ public class RecipeEndpoint {
         }
         return ResponseEntity.ok(dto);
     }
+
+
+    @GetMapping("/suggestion")
+    @ResponseStatus(HttpStatus.OK)
+    public List<RecipeDto> getSuggestions(@RequestParam(value = "id") final List<String> ids) {
+        logger.info("GET /api/v1/recipe/suggestions?ids.size={}", ids.size());
+        return this.recipeService.getSuggestions(ids);
+    }
 }
