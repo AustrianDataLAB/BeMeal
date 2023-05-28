@@ -30,7 +30,10 @@ public class CommunityIdentificationService {
     @Transactional
     @PostConstruct
     public void reloadCommunityIdentifications() {
-        this.communityIdentificationRepository.deleteAll();
+        if (this.communityIdentificationRepository.count() > 0) {
+            log.info("There is a mapping present, reload is aborted");
+            return;
+        }
         try (final var mappingReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(Objects
                 .requireNonNull(BackendApplication.class.getClassLoader().getResource(MAPPING_PATH)).openStream())))) {
             final var communityIdentifications = mappingReader.lines().map(l -> {
