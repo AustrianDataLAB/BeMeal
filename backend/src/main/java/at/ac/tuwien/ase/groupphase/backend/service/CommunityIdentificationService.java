@@ -1,5 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
+import at.ac.tuwien.ase.groupphase.backend.BackendApplication;
 import at.ac.tuwien.ase.groupphase.backend.entity.CommunityIdentification;
 import at.ac.tuwien.ase.groupphase.backend.repository.CommunityIdentificationRepository;
 import jakarta.annotation.PostConstruct;
@@ -8,10 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommunityIdentificationService {
 
-    private static final String MAPPING_PATH = "src/main/resources/ci-postal-mapping.csv";
+    private static final String MAPPING_PATH = "ci-postal-mapping.csv";
     private final CommunityIdentificationRepository communityIdentificationRepository;
 
     /**
@@ -31,7 +31,8 @@ public class CommunityIdentificationService {
     @PostConstruct
     public void reloadCommunityIdentifications() {
         this.communityIdentificationRepository.deleteAll();
-        try (final var mappingReader = new BufferedReader(new FileReader(MAPPING_PATH))) {
+        try (final var mappingReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(Objects
+                .requireNonNull(BackendApplication.class.getClassLoader().getResource(MAPPING_PATH)).openStream())))) {
             final var communityIdentifications = mappingReader.lines().map(l -> {
                 final var parts = l.split(",");
                 final var communityIdentificationNumber = Long.parseLong(parts[0]);
