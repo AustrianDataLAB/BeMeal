@@ -5,7 +5,6 @@ import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -24,6 +23,7 @@ public class ParticipantServiceTest {
 
     private final ParticipantService participantService;
     private final ParticipantRepository participantRepository;
+    private Participant participant;
 
     @Autowired
     public ParticipantServiceTest(ParticipantService participantService, ParticipantRepository participantRepository) {
@@ -34,7 +34,7 @@ public class ParticipantServiceTest {
     @BeforeEach
     void beforeEach() {
         this.participantRepository.deleteAll();
-        this.participantRepository.save(VALID_PARTICIPANT_1);
+        this.participant = this.participantRepository.save(VALID_PARTICIPANT_1);
 
         Authentication authentication = Mockito.mock(Authentication.class);
         Mockito.when(authentication.getPrincipal()).thenReturn(VALID_USER_USERNAME);
@@ -51,11 +51,11 @@ public class ParticipantServiceTest {
 
     @Test
     void givenParticipant_increaseWinsIncreasesWinsByOne() {
-        Participant participantBefore = participantRepository.findById(1L).orElseThrow();
+        Participant participantBefore = participantRepository.findById(this.participant.getId()).orElseThrow();
         assertEquals(VALID_PARTICIPANT_1.getWins(), participantBefore.getWins());
 
-        participantService.increaseWinsOfParticipant(1L);
-        Participant participantAfter = participantRepository.findById(1L).orElseThrow();
+        participantService.increaseWinsOfParticipant(this.participant.getId());
+        Participant participantAfter = participantRepository.findById(this.participant.getId()).orElseThrow();
         assertEquals(VALID_PARTICIPANT_1.getWins() + 1, participantAfter.getWins());
     }
 
