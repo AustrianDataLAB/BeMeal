@@ -282,7 +282,7 @@ public class SubmissionService {
         logger.trace("getWinningSubmissionForChallange({})", challengeId);
         SubmissionWithUpvotes sub = submissionRepository.getWinnerSubmissionOfChallenge(challengeId);
 
-        if (sub == null  || sub.getUpvotes() < 1) {
+        if (sub == null || sub.getUpvotes() < 1) {
             logger.debug("No upvotes for submissions in challenge with id {}", challengeId);
             return null;
         }

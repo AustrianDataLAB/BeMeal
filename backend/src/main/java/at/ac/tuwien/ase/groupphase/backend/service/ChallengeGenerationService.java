@@ -80,12 +80,10 @@ public class ChallengeGenerationService {
         log.info("Updating wins now");
         List<League> leaguesWithExpiredChallenges = this.leagueRepository
                 .findLeaguesWithExpiredChallenges(LocalDate.now());
-        // List<Challenge> lastExpiredChallenges = new ArrayList<>();
 
         log.info("Found {} leagues with expired challenges", leaguesWithExpiredChallenges.size());
 
         for (League l : leaguesWithExpiredChallenges) {
-            // lastExpiredChallenges.add(challengeRepository.getLastExpiredChallenge(l.getId()));
             var opt = leagueRepository.findLastEndedChallenge(l.getId(), LocalDate.now());
 
             if (opt.isEmpty()) {
