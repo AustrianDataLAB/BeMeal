@@ -1,6 +1,7 @@
-package at.ac.tuwien.ase.groupphase.backend.integrationtest;
+package at.ac.tuwien.ase.groupphase.backend.unittests;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
+import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static util.Constants.*;
 
 @SpringBootTest
@@ -44,7 +46,17 @@ public class ParticipantServiceTest {
     @Test
     void test_getParticipantDto() {
         ParticipantDto actualParticipantDto = this.participantService.getParticipantDto();
-        Assertions.assertEquals(VALID_PARTICIPANT_DTO_1, actualParticipantDto);
+        assertEquals(VALID_PARTICIPANT_DTO_1, actualParticipantDto);
+    }
+
+    @Test
+    void givenParticipant_increaseWinsIncreasesWinsByOne() {
+        Participant participantBefore = participantRepository.findById(1L).orElseThrow();
+        assertEquals(VALID_PARTICIPANT_1.getWins(), participantBefore.getWins());
+
+        participantService.increaseWinsOfParticipant(1L);
+        Participant participantAfter = participantRepository.findById(1L).orElseThrow();
+        assertEquals(VALID_PARTICIPANT_1.getWins() + 1, participantAfter.getWins());
     }
 
 }
