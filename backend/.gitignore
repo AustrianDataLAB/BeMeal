@@ -33,7 +33,7 @@ build/
 .vscode/
 
 database/**/*
-!database/neo4j/data.json
+!database/neo4j/import/data.json
 !database/neo4j/docker-compose.yml
 !database/neo4j/load-data
 
