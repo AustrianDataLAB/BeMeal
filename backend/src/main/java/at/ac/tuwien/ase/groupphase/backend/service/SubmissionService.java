@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.SubmissionDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.WinningSubmissionDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Challenge;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.entity.ParticipantSubmissionVote;
@@ -234,6 +235,20 @@ public class SubmissionService {
     private SubmissionDto buildSubmissionDto(Submission submission) {
         SubmissionDto submissionDto = this.submissionMapper.submissionToSubmissionDto(submission);
         UUID uuid = submission.getPicture();
+        addPicture(submissionDto, uuid);
+        return submissionDto;
+    }
+
+    public WinningSubmissionDto buildWinningSubmissionDto(Submission submission) {
+        WinningSubmissionDto submissionDto = this.submissionMapper.submissionToWinningSubmissionDto(submission);
+        submissionDto.setParticipantName(submission.getParticipant().getUsername());
+        submissionDto.setChallengeId(submission.getChallenge().getId());
+        UUID uuid = submission.getPicture();
+        addPicture(submissionDto, uuid);
+        return submissionDto;
+    }
+
+    private static void addPicture(SubmissionDto submissionDto, UUID uuid) {
         try {
             byte[] bytes = Files.readAllBytes(getPath(uuid));
             String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
@@ -241,7 +256,6 @@ public class SubmissionService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return submissionDto;
     }
 
     @Transactional

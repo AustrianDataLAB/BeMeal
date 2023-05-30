@@ -3,9 +3,10 @@ import {SelfService} from "../../services/self.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LeagueService} from "../../services/league.service";
 import {catchError, tap} from "rxjs/operators";
-import {firstValueFrom, map, of} from "rxjs";
+import {firstValueFrom, map, of, switchMap} from "rxjs";
 import {League} from "../../dtos/league";
 import {LeaderboardUser} from "../../dtos/leaderboard-user";
+import {WinningSubmissionDisplay} from "../../dtos/winning-submission-display";
 
 @Component({
   selector: 'app-show-league',
@@ -19,6 +20,7 @@ export class ShowLeagueComponent implements OnInit{
     error: boolean;
     errorMessage: string;
     leaderboardUsers: LeaderboardUser[] = [];
+    lastWinningSubmissions: WinningSubmissionDisplay[];
 
     displayedColumns: string[] = ['position', 'name', 'points'];
     constructor(private selfService: SelfService, private router: Router, private leagueService: LeagueService, private route: ActivatedRoute) {
@@ -59,6 +61,9 @@ export class ShowLeagueComponent implements OnInit{
                 this.error = true;
                 // Handle the error here
                 return of(null);
+            }),
+            switchMap(() => {
+                return this.fetchWinningSubmissions();
             })
         ).subscribe();
     }
@@ -90,6 +95,22 @@ export class ShowLeagueComponent implements OnInit{
     }
 
 
+    private fetchWinningSubmissions() {
+        if (!this.leagueId || !this.league.lastWinners) return of(null);
+        return this.leagueService.getLastWinningSubmissions(this.leagueId).pipe(
+            tap(response => {
+                this.lastWinningSubmissions = response;
+                console.log(response);
+                console.log('Successfully fetched winningSubmissions');
+            }),
+            catchError(error => {
+                console.error('Error while fetching winningSubmissions');
+                this.error = true;
+                // Handle the error here
+                return of(null);
+            })
+        );
+    }
 }
 
 export interface Leaderboard {

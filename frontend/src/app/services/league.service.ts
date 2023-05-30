@@ -8,6 +8,7 @@ import {catchError} from "rxjs/operators";
 import {ChallengeInfo} from "../dtos/challengeInfo";
 import {Submission} from "../dtos/submission";
 import {LeaderboardUser} from "../dtos/leaderboard-user";
+import {WinningSubmissionDisplay} from "../dtos/winning-submission-display";
 
 @Injectable({
   providedIn: 'root'
@@ -54,5 +55,7 @@ export class LeagueService {
     }
 
 
-
+    getLastWinningSubmissions(leagueId: number) {
+        return this.httpClient.get<WinningSubmissionDisplay[]>(`${this.baseUri}/${leagueId}/winningSubmissions`);
+    }
 }

@@ -1,10 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ErrorData;
-import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
-import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
-import at.ac.tuwien.ase.groupphase.backend.exception.NotCreatorOfException;
-import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
+import at.ac.tuwien.ase.groupphase.backend.exception.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.ValidationException;
 import org.slf4j.Logger;
@@ -66,6 +63,13 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorData> handleNoChallengeException(final NoChallengeException noChallengeException) {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(noChallengeException.getMessage()));
+    }
+
+    @ExceptionHandler(NoLatestChallengeException.class)
+    @ApiResponse(responseCode = "409", description = "No latest ending challenge found")
+    public ResponseEntity<ErrorData> handleNoLatestChallengeException(
+            final NoLatestChallengeException noLatestChallengeException) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(noLatestChallengeException.getMessage()));
     }
 
     @ExceptionHandler(NoSuchElementException.class)
