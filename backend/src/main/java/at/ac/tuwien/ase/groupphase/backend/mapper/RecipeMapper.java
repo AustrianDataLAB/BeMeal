@@ -9,6 +9,7 @@ import at.ac.tuwien.ase.groupphase.backend.exception.MissingPictureException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class RecipeMapper {
         }
     }
 
-    private String uuidToBase64Converter(String uuid) {
+    public String uuidToBase64Converter(String uuid) {
         if (uuid == null) {
             return null;
         }
@@ -57,5 +58,13 @@ public class RecipeMapper {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<RecipeDto> recipeListToRecipeDtoList(List<Recipe> list) {
+        List<RecipeDto> ret = new ArrayList<>();
+        for (Recipe recipe : list) {
+            ret.add(recipeToRecipeDto(recipe));
+        }
+        return ret;
     }
 }

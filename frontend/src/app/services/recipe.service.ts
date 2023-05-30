@@ -29,4 +29,18 @@ export class RecipeService {
         }
         return of(null);
     }
+
+    getSuggestionFromRecipes(recipes: string[]): Observable<any> {
+        let uri = this.baseUri + "/suggestion";
+        if (recipes.length > 0) {
+            uri += "?id="
+            for (let i = 0; i < recipes.length; i++) {
+                uri += recipes[i];
+                if (i != (recipes.length - 1))
+                    uri += "&id=";
+            }
+            return this.httpClient.get<Recipe[]>(uri);
+        }
+        return of(null);
+    }
 }

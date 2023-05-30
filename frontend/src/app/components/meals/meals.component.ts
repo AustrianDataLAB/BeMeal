@@ -25,11 +25,25 @@ export class MealsComponent implements OnInit {
     pageIndex = 1;
     totalElements = 0;
 
+    meals = ['1234', '2345', '11111']
+    suggestions: Recipe[]
+
     constructor(private router: Router, private recipeCollectionService: RecipeCollectionService, private recipeService: RecipeService) {
     }
 
     ngOnInit(): void {
         this.getRandomizedRecipeCollectionSelection();
+    }
+
+    getSuggestions() {
+        this.recipeService.getSuggestionFromRecipes(this.meals).pipe(
+            tap(response => {
+                this.suggestions = response;
+            }),
+            catchError(() => {
+                return of(null);
+            })
+        ).subscribe();
     }
 
     getRandomizedRecipeCollectionSelection() {

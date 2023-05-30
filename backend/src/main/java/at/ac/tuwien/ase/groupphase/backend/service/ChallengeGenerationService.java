@@ -1,9 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
-import at.ac.tuwien.ase.groupphase.backend.entity.Challenge;
-import at.ac.tuwien.ase.groupphase.backend.entity.GameMode;
-import at.ac.tuwien.ase.groupphase.backend.entity.League;
-import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
+import at.ac.tuwien.ase.groupphase.backend.dto.SubmissionDto;
+import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.RecipeRepository;
@@ -15,9 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -28,6 +24,8 @@ public class ChallengeGenerationService {
     private final ChallengeRepository challengeRepository;
     private final LeagueRepository leagueRepository;
     private final RecipeRepository recipeRepository;
+    private final ParticipantService participantService;
+    private final SubmissionService submissionService;
 
     private final Random random = new Random();
 
@@ -78,6 +76,35 @@ public class ChallengeGenerationService {
         Stream.concat(this.leagueRepository.findLeaguesWithNoValidChallengeAt(LocalDate.now()),
                 this.leagueRepository.findLeaguesWithNoChallenges()).forEach(this::generateNewChallenge);
         log.info("Done generating new challenges");
+
+        log.info("Updating wins now");
+        List<League> leaguesWithExpiredChallenges = this.leagueRepository
+                .findLeaguesWithExpiredChallenges(LocalDate.now());
+
+        log.info("Found {} leagues with expired challenges", leaguesWithExpiredChallenges.size());
+
+        for (League l : leaguesWithExpiredChallenges) {
+            var opt = leagueRepository.findLastEndedChallenge(l.getId(), LocalDate.now());
+
+            if (opt.isEmpty()) {
+                continue;
+            }
+
+            Challenge challenge = opt.get();
+
+            log.info("Expired challenge id is {}", challenge.getId());
+
+            SubmissionWithUpvotes winningSubmission = submissionService
+                    .getWinningSubmissionForChallange(challenge.getId());
+
+            log.info("Winning submission {}", winningSubmission);
+            if (winningSubmission != null) {
+                log.info("Winning submission participant id {}",
+                        winningSubmission.getSubmission().getParticipant().getId());
+                participantService
+                        .increaseWinsOfParticipant(winningSubmission.getSubmission().getParticipant().getId());
+            }
+        }
     }
 
     /**

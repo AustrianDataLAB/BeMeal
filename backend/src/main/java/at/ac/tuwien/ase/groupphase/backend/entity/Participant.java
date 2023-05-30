@@ -45,4 +45,8 @@ public class Participant extends PlatformUser {
     private List<ParticipantSubmissionVote> votes;
     @ManyToMany(mappedBy = "participants", fetch = FetchType.EAGER)
     private List<League> leagues;
+
+    @ManyToOne
+    @JoinColumn(name = "postalCode", referencedColumnName = "postalCode", insertable = false, updatable = false)
+    private CommunityIdentification communityIdentification;
 }

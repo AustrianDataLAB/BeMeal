@@ -26,6 +26,9 @@ public interface LeagueRepository extends CrudRepository<League, Long> {
     @Query("select distinct l from League l left join l.challenges c group by l having max(c.endDate) < :endExclusive")
     Stream<League> findLeaguesWithNoValidChallengeAt(LocalDate endExclusive);
 
+    @Query("SELECT DISTINCT c.league from Challenge c GROUP BY c HAVING MAX(c.endDate) < :endExclusive")
+    List<League> findLeaguesWithExpiredChallenges(LocalDate endExclusive);
+
     @Query("select distinct l from League l left join l.challenges c where c is null")
     Stream<League> findLeaguesWithNoChallenges();
 

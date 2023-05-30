@@ -15,6 +15,18 @@ body {
     height: 100%;
 }
 
+.fab-button {
+    position: fixed;
+    bottom: 30px;
+    right: 50px;
+}
+
+#myActionButton {
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+}
+
 .container {
     max-width: 1400px;
     width: 100%;

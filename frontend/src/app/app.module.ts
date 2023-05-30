@@ -7,7 +7,7 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {AngularMaterialModule} from './material.module';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {LoginComponent} from './components/login/login.component';
 import {MatCardModule} from "@angular/material/card";
@@ -23,6 +23,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {DarkModeComponent} from "./components/shared/dark-mode/dark-mode.component";
 import {MealsComponent} from "./components/meals/meals.component";
 import {NgxPaginationModule} from "ngx-pagination";
+import {AnalyticsComponent} from './components/analytics/analytics.component';
+import {HeatMapComponent} from './components/analytics/heat-map/heat-map.component';
 
 @NgModule({
     declarations: [
@@ -39,7 +41,9 @@ import {NgxPaginationModule} from "ngx-pagination";
         ChallengeComponent,
         ShowLeagueComponent,
         DarkModeComponent,
-        MealsComponent
+        MealsComponent,
+        AnalyticsComponent,
+        HeatMapComponent
     ],
     imports: [
         BrowserModule,
@@ -51,6 +55,7 @@ import {NgxPaginationModule} from "ngx-pagination";
         FlexLayoutModule,
         MatCardModule,
         DragDropModule,
+        FormsModule,
         NgxPaginationModule
     ],
     providers: [httpInterceptorProviders],

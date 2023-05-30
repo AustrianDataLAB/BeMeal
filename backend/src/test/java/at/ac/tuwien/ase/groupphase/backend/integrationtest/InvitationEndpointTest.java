@@ -58,16 +58,16 @@ public class InvitationEndpointTest {
         league = LEAGUE1;
         List<Participant> participants = new ArrayList<>();
         List<League> ownerOf = new ArrayList<>();
-        ownerOf.add(league);
         participants.add(p1);
-        p1.setOwnerOf(ownerOf);
         league.setParticipants(participants);
         league = leagueRepository.save(league);
+        ownerOf.add(league);
+        p1.setOwnerOf(ownerOf);
+        participantRepository.save(p1);
+
     }
 
-    // TODO this tests works when only InvitationEndpointTests is executed, but if all test are executed it fails
     @Test
-    @Disabled
     public void getHIddenIdentifierShouldReturnCorrectValue() {
         Principal principal = new UserPrincipal() {
             @Override
@@ -77,11 +77,11 @@ public class InvitationEndpointTest {
         };
         LeagueSecretsDto dto = this.invitationEndpoint.getHiddenIdentifier(league.getId(), false, principal);
         assertEquals(league.getHiddenIdentifier(), dto.hiddenIdentifier());
+        // System.out.println("hello");
 
     }
 
     @Test
-    @Disabled
     public void getHiddenIdentifierWhenUserIsNotCreaterShouldThrowNotCreatorOfException() {
         Principal principal = new UserPrincipal() {
             @Override
@@ -89,13 +89,11 @@ public class InvitationEndpointTest {
                 return "invalid user";
             }
         };
-        // TODO sollte ja eigentlich eine NoCreatorOfException werfen, aber aus irgendeinem grund passiert das ned
-        assertThrows(DataIntegrityViolationException.class,
+        assertThrows(NotCreatorOfException.class,
                 () -> this.invitationEndpoint.getHiddenIdentifier(league.getId(), false, principal));
     }
 
     @Test
-    @Disabled
     public void joinLeagueUserShouldJoinLeague() {
         Authentication authentication = Mockito.mock(Authentication.class);
         Mockito.when(authentication.getPrincipal()).thenReturn(p2.getUsername());
