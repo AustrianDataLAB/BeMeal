@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 
 import jwt_decode from 'jwt-decode';
 import {Globals} from '../shared/globals';
+import {Profile} from "../dtos/profile";
 import {Login, PasswordReset} from '../dtos/login';
 
 @Injectable({
@@ -61,6 +62,11 @@ export class SelfService {
                 }
                 return response;
             }));
+    }
+
+
+    getProfile(): Observable<Profile> {
+        return this.httpClient.get<Profile>(this.authBaseUri + '/profile');
     }
 
     /**

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {SelfService} from "../../services/self.service";
 import {Registration} from "../../dtos/registration";
 import {Region} from "../../shared/region";
@@ -13,7 +13,7 @@ import {of} from "rxjs";
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss']
 })
-export class RegistrationComponent {
+export class RegistrationComponent implements OnInit{
 
     submitted = true;
     error = false;
@@ -34,11 +34,18 @@ export class RegistrationComponent {
 
     }
 
+    ngOnInit() {
+        if(this.selfService.isLoggedIn()) {
+            this.router.navigate(['/leagues'])
+        }
+    }
+
     toLogin() {
         this.router.navigate(['/login']);
     }
     registerParticipant() {
         this.submitted = true;
+        this.error = false;
         if (this.registerForm.valid) {
             const regionEnumIndex = Object.keys(Region).indexOf(this.registerForm.controls['region'].value);
             const regionValue = Object.values(Region)[regionEnumIndex];
@@ -56,8 +63,8 @@ export class RegistrationComponent {
                     this.router.navigate(['/login']);
                 }),
                 catchError(error => {
-                    console.error(error);
-                    this.errorMessage = "Could not register user";
+                    console.error('Error while registration:', error);
+                    this.errorMessage = "Error: " + error.error.message;
                     this.error = true;
                     // Handle the error here
                     return of(null);
@@ -74,5 +81,12 @@ export class RegistrationComponent {
 
     vanishError() {
         this.error = false;
+    }
+
+    prettyString(str: string): string {
+        str = str.replace(/([a-z])([A-Z])/g, '$1 $2'); // Add space between lower and upper case letters
+        str = str.replace(/_/g, ' ').toLowerCase();
+        str = str.replace(/(^|\s)\S/g, (match) => match.toUpperCase());
+        return str;
     }
 }

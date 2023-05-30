@@ -1,0 +1,43 @@
+
+<div class="container page-container mx-auto" fxLayout="row"  fxLayoutGap="16px">
+
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+        <h1 fxLayout="row" class="mat-headline-2">Profile</h1>
+        <div fxLayout="row" fxLayoutGap="16px" class="card-container">
+        <mat-card class="card-item">
+            <mat-card-header>
+                <mat-card-title>Profile details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="card-content-league">
+                <span class="span-content-league">Username: {{ profile.username }}</span>
+                <span class="span-content-league">Email: {{ profile.email }}</span>
+                <span class="span-content-league">Postal Code: {{ profile.postalCode}} </span>
+                <span class="span-content-league">Region: {{ prettyString(profile.region) }}</span>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button  (click)="resetPassword()">Reset Password</button>
+            </mat-card-actions>
+        </mat-card>
+
+            <mat-card class="card-item">
+                <mat-card-header>
+                    <mat-card-title>Badges & Milestones</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="card-content-league">
+
+                    <a><mat-icon color="#f0bb28">emoji_events</mat-icon>   {{profile.wins}} wins</a>
+
+                   <!-- todo "joined a league", "participated in a challenge" ... -->
+                </mat-card-content>
+                <mat-card-actions>
+                </mat-card-actions>
+            </mat-card>
+    </div>
+
+    </div>
+
+    <div fxFlexFill fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+        <img src="assets/cooking/PNG/DrawKit-cooking-kitchen-food-vector-illustrations-04.png"
+             alt="A person decorating a cake" />
+    </div>
+</div>

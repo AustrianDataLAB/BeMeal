@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BeMealUserDetailsService implements UserDetailsService {
+public class UserDetailsManager implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public BeMealUserDetailsService(final UserRepository userRepository) {
+    public UserDetailsManager(final UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

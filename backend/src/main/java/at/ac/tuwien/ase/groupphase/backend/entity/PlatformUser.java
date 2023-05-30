@@ -1,8 +1,10 @@
 package at.ac.tuwien.ase.groupphase.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,6 +13,8 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlatformUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +31,6 @@ public class PlatformUser {
     @Column(unique = true)
     private UUID passwordResetToken;
 
-    @OneToMany
-    private List<League> leagues;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<League> ownerOf;
 }

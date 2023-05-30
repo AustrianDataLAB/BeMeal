@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SelfService} from "../../services/self.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
@@ -13,7 +13,7 @@ import {of} from "rxjs";
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
     submitted = true;
     error = false;
@@ -31,6 +31,7 @@ export class LoginComponent {
     }
 
 
+
     loginUser() {
         this.submitted = true;
         if (this.loginForm.valid) {
@@ -39,7 +40,6 @@ export class LoginComponent {
                 this.loginForm.controls['password'].value
             );
             console.log('Try to authenticate user: ' + loginObj.toString());
-            // todo: error handling
             this.selfService.loginUser(loginObj).pipe(
                 tap(response => {
                     console.log(response);
@@ -47,9 +47,9 @@ export class LoginComponent {
                     this.router.navigate(['/leagues']);
                 }),
                 catchError(error => {
-                    console.error(error);
-                    this.errorMessage = "Wrong credentials";
+                    console.error('Error logging in:', error);
                     this.error = true;
+                    this.errorMessage = "Error: " + error.error.message;
                     // Handle the error here
                     return of(null);
                 })
@@ -65,6 +65,12 @@ export class LoginComponent {
 
     resetPassword() {
         // todo
+    }
+
+    ngOnInit() {
+        if(this.selfService.isLoggedIn()) {
+            this.router.navigate(['/leagues'])
+        }
     }
 
     vanishError() {

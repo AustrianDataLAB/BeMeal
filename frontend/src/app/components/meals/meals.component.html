@@ -1,0 +1,46 @@
+<div class="container page-container mx-auto"
+     fxLayout="column" fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
+        <h1 class="mat-headline-2" style="margin-bottom: 20px">Meals and Recipes</h1>
+        <h2 class="mat-display-1" style="font-weight: 400;">
+            Need some inspiration? Browse our cookbooks!
+        </h2>
+
+        <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
+            <div *ngIf="!error" fxLayout="row" fxLayoutGap="16px" class="card-container" id="row-top">
+                <ng-container>
+                    <mat-chip-listbox aria-label="Cookbooks" [multiple]="true" hideSingleSelectionIndicator="true"
+                                      (change)="onChipSelectionChange($event)">
+                        <mat-chip-option class="reload-chip" [selectable]="false" [highlighted]="true"
+                                         (click)="getRandomizedRecipeCollectionSelection()">&#10227;
+                        </mat-chip-option>
+                        <mat-chip-option *ngFor="let cb of cookbooks; let i = index">{{cb['name']}}</mat-chip-option>
+                    </mat-chip-listbox>
+                </ng-container>
+            </div>
+
+            <span *ngIf="error">{{errorMessage}}</span>
+
+            <pagination-controls
+                (pageChange)="onTableDataChange($event)"
+                nextLabel="Next"
+                previousLabel="Prev">
+            </pagination-controls>
+            <mat-list>
+                <mat-list-item
+                    *ngFor="let recipe of recipes | paginate: {itemsPerPage: 25, currentPage: pageIndex, totalItems: totalElements}">
+
+                    <!-- TODO: fix this picture mess -->
+
+                    <div matListItemAvatar>
+                        <img src="data:image/jpeg;base64, {{recipe.picture}}" alt="R">
+                    </div>
+                    <div matListItemTitle>{{recipe.name}}</div>
+                    <div matListItemLine>{{recipe.description}}</div>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+</div>
+
+<button mat-raised-button color="primary" id="myActionButton" class="btn-block pmd-btn-fab" (click)="getSuggestions()">get Suggestions</button>

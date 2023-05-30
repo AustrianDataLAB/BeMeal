@@ -1,1 +1,30 @@
-<p>leagues works!</p>
+
+<div class="container page-container mx-auto" fxLayout="row"  fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+        <h1 fxLayout="row" class="mat-headline-2">My Leagues</h1>
+        <button fxLayout="row"  mat-raised-button  color="primary" (click)="createLeague()">Create League</button>
+        <div *ngIf="leagues.length > 0" fxLayout="row" fxLayoutGap="16px" class="card-container">
+            <ng-container *ngFor="let element of leagues; let i = index">
+                <mat-card class="card-item">
+                    <mat-card-header>
+                        <mat-card-title>{{ element['name'] }}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="card-content-league">
+                        <span class="span-content-league">Gamemode: {{ prettyString(element['gameMode']) }}</span>
+                        <span class="span-content-league">Challenge duration: {{ element['challengeDuration'] }} days</span>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button (click)="viewLeague(element['id'])" mat-raised-button color="primary" class="btn-block">View</button>
+                        <button *ngIf="enableInviteFriends[i]" (click)="showHiddenIdentifier(i, element.id)" style="margin-left: 12px;" mat-button color="primary" class="btn-block">Invite Friends</button>
+                    </mat-card-actions>
+                    <mat-card-footer  class="card-content-league">
+                        <span class="span-content-league" style="padding: 0 8px" *ngIf="InvitationLinksFeedback[i]">{{InvitationLinksFeedback[i]}}</span>
+                    </mat-card-footer>
+                </mat-card>
+            </ng-container>
+        </div>
+        <div *ngIf="leagues.length < 1" style="margin-top: 32px">
+            Looks like you haven't created or joined any leagues yet :(
+        </div>
+    </div>
+</div>

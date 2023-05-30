@@ -1,0 +1,14 @@
+<mat-toolbar *ngIf="loggedin()"class="custom-header" color="primary">
+    <mat-toolbar-row>
+        <span>beMeal</span>
+        <span class="spacer"></span>
+        <span class="nav-buttons">
+            <button routerLink="leagues" mat-button>Leagues</button>
+            <button routerLink="meals" mat-button>Meals</button>
+            <button routerLink="analytics" mat-button>Analytics</button> <!-- todo auth guard, only admins -->
+            <button routerLink="profile" mat-button>Profile</button>
+            <button (click)="logout()" mat-button>Logout</button>
+        </span>
+
+    </mat-toolbar-row>
+</mat-toolbar>

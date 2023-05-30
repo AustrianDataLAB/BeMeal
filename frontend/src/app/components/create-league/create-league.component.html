@@ -1,0 +1,42 @@
+<div class="container mx-auto" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap>
+    <div  fxFlex="33" fxLayout="column" fxLayoutAlign="start start">
+        <img src="assets/cooking/PNG/DrawKit-cooking-kitchen-food-vector-illustrations-07.png" alt="A person enjoying cooking" />
+    </div>
+        <div class="flex-weg" fxLayout="column" fxLayoutAlign="center center">
+            <mat-card >
+                <mat-card-header >
+                    <mat-card-title class="mat-h1">Create league</mat-card-title>
+                    <mat-card-subtitle>Set up the details below.
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <form [formGroup]="registerForm">
+                    <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+                        <mat-form-field >
+                            <mat-label>League name</mat-label>
+                            <input formControlName="name" name="name" matInput>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <mat-label>Select your Gamemode</mat-label>
+                            <mat-select name="gamemode" formControlName="gamemode">
+                                <mat-option [value]="mode" *ngFor="let mode of gameModeKeys(gamemodes)">{{prettyString(mode)}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field >
+                            <mat-label>Challenge duration (days)</mat-label>
+                            <input type="number" formControlName="challengeDuration" name="challengeDuration" matInput >
+                        </mat-form-field>
+                        <button mat-raised-button color="primary" class="btn-block" (click)="createLeague()">Create</button>
+                        <br>
+                        <span *ngIf="error">{{errorMessage}}</span>
+
+                    </mat-card-content>
+                </form>
+                <div style="min-width: 300px"></div>
+
+            </mat-card>
+        </div>
+    <div fxFlexFill fxFlex="33" fxLayout="column" fxLayoutAlign="start center">
+        <img src="assets/cooking/PNG/DrawKit-cooking-kitchen-food-vector-illustrations-04.png" alt="A person enjoying cooking" />
+    </div>
+</div>

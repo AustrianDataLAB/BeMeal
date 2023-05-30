@@ -1,12 +1,13 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
-import at.ac.tuwien.ase.groupphase.backend.security.BeMealUserDetailsService;
+import at.ac.tuwien.ase.groupphase.backend.security.UserDetailsManager;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthenticationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthorizationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -16,24 +17,26 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 @Configuration
 @EnableMethodSecurity
+@EnableScheduling
 public class SecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfiguration(final BeMealUserDetailsService userDetailsService) {
+    public SecurityConfiguration(final UserDetailsManager userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     private static final String[] AUTH_WHITELIST = { "/error", "/api/v1/self-service/registration/participant",
             "/api/v1/self-service/password-token/**", "/api/v1/self-service/password/**", "/v3/api-docs/**",
-            "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html" };
+            "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html", "/api/v1/community-identification/reload" };
 
     @Bean
     public PasswordEncoder passwordEncoder() {

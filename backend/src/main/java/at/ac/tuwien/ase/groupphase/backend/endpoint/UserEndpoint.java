@@ -1,15 +1,18 @@
-package at.ac.tuwien.ase.groupphase.backend.controller;
+package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
+import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.PasswordReset;
 import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
 import at.ac.tuwien.ase.groupphase.backend.event.RequestPasswordResetEvent;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
-import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
+import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
+import at.ac.tuwien.ase.groupphase.backend.service.SelfService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,32 +23,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/self-service")
 /**
  * Responsible for all request a user might want to perform on its own profile. Examples for that are, registration,
  * login,....
  */
-@RestController
-@RequestMapping("/api/v1/self-service")
-public class SelfService {
+public class UserEndpoint {
 
-    private final Logger logger = LoggerFactory.getLogger(SelfService.class);
+    private final Logger logger = LoggerFactory.getLogger(UserEndpoint.class);
 
-    private final UserRepository userRepository;
-    private final ParticipantRepository participantRepository;
-    private final RegistrationMapper registrationMapper;
+    private final SelfService selfService;
+    private final ParticipantService participantService;
     private final ApplicationEventPublisher eventPublisher;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     @Autowired
     @NotNull
-    public SelfService(final UserRepository userRepository, final ParticipantRepository participantRepository,
-            final RegistrationMapper registrationMapper, final ApplicationEventPublisher eventPublisher,
-            final PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.participantRepository = participantRepository;
-        this.registrationMapper = registrationMapper;
+    public UserEndpoint(ParticipantService participantService, SelfService selfService,
+            final ApplicationEventPublisher eventPublisher, final PasswordEncoder passwordEncoder,
+            final UserRepository userRepository) {
+        this.participantService = participantService;
+        this.selfService = selfService;
         this.eventPublisher = eventPublisher;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -63,13 +67,7 @@ public class SelfService {
     @ResponseStatus(HttpStatus.CREATED)
     public void registerParticipant(@NotNull @RequestBody final Registration registration) {
         logger.trace("registerParticipant(...)");
-        if (this.userRepository.exists(registration.email(), registration.password())) {
-            throw new UserAlreadyExistsException(registration.email(), registration.username());
-        }
-        final var participant = this.registrationMapper.registrationToParticipant(registration);
-        this.participantRepository.save(participant);
-        logger.info("Registered participant with id: '{}' email: '{}' username: '{}'", participant.getId(),
-                participant.getEmail(), participant.getUsername());
+        this.selfService.register(registration);
     }
 
     /**
@@ -83,11 +81,16 @@ public class SelfService {
         throw new RuntimeException();
     }
 
-    @GetMapping("/test")
+    /**
+     * Retrieves the profile of the authenticated participant.
+     *
+     * @return the ParticipantDto of the authenticated participant.
+     */
+    @GetMapping("/profile")
     @SecurityRequirement(name = "bearerToken")
     @ResponseStatus(HttpStatus.OK)
-    public String test() {
-        return "junge";
+    public ParticipantDto viewProfile() {
+        return this.participantService.getParticipantDto();
     }
 
     /**

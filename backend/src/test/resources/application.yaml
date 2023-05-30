@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver
+    username: admin
+    password: password
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: password
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+#    database-platform: org.hibernate.dialect.H2Dialect
