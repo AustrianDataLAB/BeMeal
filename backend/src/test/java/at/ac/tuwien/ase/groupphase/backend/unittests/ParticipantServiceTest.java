@@ -1,10 +1,10 @@
-package at.ac.tuwien.ase.groupphase.backend.integrationtest;
+package at.ac.tuwien.ase.groupphase.backend.unittests;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
+import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static util.Constants.*;
 
 @SpringBootTest
@@ -22,6 +23,7 @@ public class ParticipantServiceTest {
 
     private final ParticipantService participantService;
     private final ParticipantRepository participantRepository;
+    private Participant participant;
 
     @Autowired
     public ParticipantServiceTest(ParticipantService participantService, ParticipantRepository participantRepository) {
@@ -32,7 +34,7 @@ public class ParticipantServiceTest {
     @BeforeEach
     void beforeEach() {
         this.participantRepository.deleteAll();
-        this.participantRepository.save(VALID_PARTICIPANT_1);
+        this.participant = this.participantRepository.save(VALID_PARTICIPANT_1);
 
         Authentication authentication = Mockito.mock(Authentication.class);
         Mockito.when(authentication.getPrincipal()).thenReturn(VALID_USER_USERNAME);
@@ -44,7 +46,17 @@ public class ParticipantServiceTest {
     @Test
     void test_getParticipantDto() {
         ParticipantDto actualParticipantDto = this.participantService.getParticipantDto();
-        Assertions.assertEquals(VALID_PARTICIPANT_DTO_1, actualParticipantDto);
+        assertEquals(VALID_PARTICIPANT_DTO_1, actualParticipantDto);
+    }
+
+    @Test
+    void givenParticipant_increaseWinsIncreasesWinsByOne() {
+        Participant participantBefore = participantRepository.findById(this.participant.getId()).orElseThrow();
+        assertEquals(VALID_PARTICIPANT_1.getWins(), participantBefore.getWins());
+
+        participantService.increaseWinsOfParticipant(this.participant.getId());
+        Participant participantAfter = participantRepository.findById(this.participant.getId()).orElseThrow();
+        assertEquals(VALID_PARTICIPANT_1.getWins() + 1, participantAfter.getWins());
     }
 
 }

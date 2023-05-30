@@ -1,10 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.SubmissionDto;
-import at.ac.tuwien.ase.groupphase.backend.entity.Challenge;
-import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
-import at.ac.tuwien.ase.groupphase.backend.entity.ParticipantSubmissionVote;
-import at.ac.tuwien.ase.groupphase.backend.entity.Submission;
+import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.*;
@@ -25,14 +22,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Base64;
+import java.util.*;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -238,6 +234,8 @@ public class SubmissionService {
             byte[] bytes = Files.readAllBytes(getPath(uuid));
             String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
             submissionDto.setPicture(imageString);
+        } catch (NoSuchFileException nsfe) {
+            logger.info("File {} of submission with id {} could not be found.", getPath(uuid), submission.getId());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -261,5 +259,17 @@ public class SubmissionService {
         List<Submission> submissions = submissionRepository.getSubmissionNotUpvotedYetByUser(challengeId, user.getId());
 
         return submissions.stream().map(this::buildSubmissionDto).collect(Collectors.toList());
+    }
+
+    public SubmissionWithUpvotes getWinningSubmissionForChallange(Long challengeId) {
+        logger.trace("getWinningSubmissionForChallange({})", challengeId);
+        SubmissionWithUpvotes sub = submissionRepository.getWinnerSubmissionOfChallenge(challengeId);
+
+        if (sub == null || sub.getUpvotes() < 1) {
+            logger.debug("No upvotes for submissions in challenge with id {}", challengeId);
+            return null;
+        }
+
+        return sub;
     }
 }
