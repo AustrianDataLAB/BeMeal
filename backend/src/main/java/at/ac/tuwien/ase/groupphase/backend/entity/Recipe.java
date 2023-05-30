@@ -7,9 +7,6 @@ import java.util.List;
 
 @Node("Recipe")
 @Data
-@EqualsAndHashCode
-@AllArgsConstructor
-@RequiredArgsConstructor
 public class Recipe {
     @Id
     @Property("id")

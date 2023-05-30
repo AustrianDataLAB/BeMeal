@@ -58,9 +58,12 @@ public class LeagueServiceTest {
     private final static League LEAGUE1 = new League(null, UUID.randomUUID(), GameMode.PICTURE_INGREDIENTS,
             Region.VORARLBERG, 7, "League 1", new ArrayList<>(), new ArrayList<>());
 
+    // private final static Recipe RECIPE1 = new Recipe("99", "recipe1", 10, 11, "description", "skill level",
+    // "7ee65cc3-b719-4bf6-872e-b253dace5ff1", List.of(new Ingredient(UUID.randomUUID(), "ayyLmao")),
+    // new ArrayList<>());
+
     private final static Recipe RECIPE1 = new Recipe("99", "recipe1", 10, 11, "description", "skill level",
-            "7ee65cc3-b719-4bf6-872e-b253dace5ff1", List.of(new Ingredient(UUID.randomUUID(), "ayyLmao")),
-            new ArrayList<>());
+            "7ee65cc3-b719-4bf6-872e-b253dace5ff1");
 
     private final static Participant VALID_PARTICIPANT_1 = new Participant(VALID_USER_ID, VALID_USER_EMAIL,
             VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
@@ -87,6 +90,19 @@ public class LeagueServiceTest {
     void beforeEach() {
         assertEquals(0, StreamSupport.stream(this.participantRepository.findAll().spliterator(), false).count());
         this.participantRepository.save(VALID_PARTICIPANT_1);
+
+        Ingredient i1 = new Ingredient(UUID.randomUUID(), "i1");
+        Ingredient i2 = new Ingredient(UUID.randomUUID(), "i2");
+        Ingredient i3 = new Ingredient(UUID.randomUUID(), "i3");
+        Ingredient i4 = new Ingredient(UUID.randomUUID(), "i4");
+        Ingredient i5 = new Ingredient(UUID.randomUUID(), "i5");
+        List<Ingredient> list = new ArrayList<>();
+        list.add(i1);
+        list.add(i2);
+        list.add(i3);
+        list.add(i4);
+        list.add(i5);
+        this.RECIPE1.setIngredients(list);
 
         Authentication authentication = Mockito.mock(Authentication.class);
         Mockito.when(authentication.getPrincipal()).thenReturn(VALID_USER_USERNAME);
