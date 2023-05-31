@@ -82,8 +82,8 @@ verify-backend:
     reports:
       junit:
         - backend/target/surefire-reports/*Test.xml
-      paths:
-        - backend/target/site/jacoco/jacoco.xml
+    paths:
+      - backend/target/site/jacoco/jacoco.xml
 
 
 coverage-jdk11:
