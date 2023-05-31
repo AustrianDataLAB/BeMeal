@@ -84,9 +84,10 @@ verify-backend:
         - backend/target/surefire-reports/*Test.xml
     paths:
       - backend/target/site/jacoco/jacoco.xml
+      - backend/target/site/jacoco/*
+ 
 
-
-coverage-jdk11:
+coverage:
   # Must be in a stage later than test-jdk11's stage.
   # The `visualize` stage does not exist by default.
   # Please define it first, or choose an existing stage like `deploy`.
