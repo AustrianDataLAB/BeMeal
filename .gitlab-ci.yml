@@ -94,7 +94,7 @@ coverage-jdk11:
   image: registry.gitlab.com/haynes/jacoco2cobertura:1.0.7
   script:
     # convert report from jacoco to cobertura, using relative project path
-    - python /opt/cover2cover.py backend/target/site/jacoco/jacoco.xml $CI_PROJECT_DIR/src/main/java/ > backend/target/site/cobertura.xml
+    - python /opt/cover2cover.py backend/target/site/jacoco/jacoco.xml $CI_PROJECT_DIR/backend/src/main/java/ > backend/target/site/cobertura.xml
   needs: ["verify-backend"]
   artifacts:
     reports:
