@@ -81,7 +81,9 @@ verify-backend:
     reports:
       junit:
         - target/surefire-reports/*Test.xml
-      cobertura: target/site/jacoco/jacoco.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: target/site/jacoco/jacoco.xml
 
 build-frontend:
   stage: test
