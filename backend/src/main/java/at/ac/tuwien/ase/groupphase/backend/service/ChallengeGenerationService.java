@@ -69,6 +69,7 @@ public class ChallengeGenerationService {
 
     /**
      * Generate new challenges for all leagues which either have no or only expired challenges.
+     * Also updates wins of Participants, if they have won the previous expired challenge
      */
     @Transactional
     public void generateForExpiredChallenges() {
