@@ -79,8 +79,7 @@ public class ChallengeGenerationService {
         log.info("Done generating new challenges");
 
         log.info("Updating wins now");
-        List<League> leaguesWithExpiredChallenges = this.leagueRepository
-                .findLeaguesWithExpiredChallenges(dateNow);
+        List<League> leaguesWithExpiredChallenges = this.leagueRepository.findLeaguesWithExpiredChallenges(dateNow);
 
         log.info("Found {} leagues with expired challenges", leaguesWithExpiredChallenges.size());
 
@@ -95,15 +94,14 @@ public class ChallengeGenerationService {
 
             log.info("Expired challenge id is {}", challenge.getId());
 
-            SubmissionWithUpvotes winningSubmission = submissionService
+            List<SubmissionWithUpvotes> winningSubmissions = submissionService
                     .getWinningSubmissionForChallange(challenge.getId());
 
-            log.info("Winning submission {}", winningSubmission);
-            if (winningSubmission != null) {
-                log.info("Winning submission participant id {}",
-                        winningSubmission.getSubmission().getParticipant().getId());
-                participantService
-                        .increaseWinsOfParticipant(winningSubmission.getSubmission().getParticipant().getId());
+            log.info("Winning submissions: {}", winningSubmissions.size());
+
+            for (SubmissionWithUpvotes s : winningSubmissions) {
+                log.info("Winning submission participant id {}", s.getSubmission().getParticipant().getId());
+                participantService.increaseWinsOfParticipant(s.getSubmission().getParticipant().getId());
             }
         }
     }

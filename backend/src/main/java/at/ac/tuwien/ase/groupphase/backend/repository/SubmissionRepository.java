@@ -34,7 +34,7 @@ public interface SubmissionRepository extends CrudRepository<Submission, Long> {
             + " SELECT COUNT(*) AS c FROM ParticipantSubmissionVote AS sv2 INNER JOIN Submission s2"
             + " ON s2.id = sv2.submission.id WHERE sv2.isUpvote = TRUE"
             + " AND s2.challenge.id = :challengeId GROUP BY s2) AS upvotes_c)")
-    SubmissionWithUpvotes getWinnerSubmissionOfChallenge(Long challengeId);
+    List<SubmissionWithUpvotes> getWinnerSubmissionOfChallenge(Long challengeId);
 
     @Query("SELECT s FROM Submission s WHERE s.challenge.id = :challengeId AND s.participant.id = :participantId ORDER BY s.id DESC LIMIT 1")
     Submission getcurrentSubmission(Long challengeId, Long participantId);
