@@ -91,7 +91,8 @@ public class LeagueEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirement(name = "bearerToken")
     public List<LeaderboardDto> getLeaderboardByLeagueId(@NotNull @PathVariable final Long leagueId) {
-        return leagueService.getLeaderboardOfLeague(leagueId);
+        String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return leagueService.getLeaderboardOfLeague(leagueId, user);
     }
 
     /**

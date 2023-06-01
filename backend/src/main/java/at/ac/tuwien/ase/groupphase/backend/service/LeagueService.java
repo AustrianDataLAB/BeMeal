@@ -155,8 +155,8 @@ public class LeagueService {
         return this.userRepository.isCreatorOfLeague(username, leagueId);
     }
 
-    public List<LeaderboardDto> getLeaderboardOfLeague(Long leagueId) {
-        logger.trace("Constructing leaderboard with getLeaderboardOfLeague({})", leagueId);
+    public List<LeaderboardDto> getLeaderboardOfLeague(Long leagueId, String currentUsername) {
+        logger.trace("Constructing leaderboard with getLeaderboardOfLeague({}, {})", leagueId, currentUsername);
         List<LeaderboardDto> leaderboard = new ArrayList<>();
         for (Participant p : participantRepository.getParticipantRankingForLeague(leagueId)) {
             logger.debug("Got Participant for league with id {}: {Username: {}, Wins: {}}", leagueId, p.getUsername(),
@@ -165,23 +165,67 @@ public class LeagueService {
             leaderboard.add(leaderboardDto);
         }
 
+        if (leaderboard.size() < 1) {
+            return List.of();
+        }
+
         // Sort the leaderboard based on points in descending order
         Collections.sort(leaderboard);
 
-        int ranking = 1;
-        if (leaderboard.size() > 0) {
-            leaderboard.get(0).setPosition(ranking);
+        // If the first placed participant has 0 wins no ranking possible -> return empty list
+        if (leaderboard.get(0).getWins().equals(0)) {
+            return List.of();
         }
 
-        // Update the position field based on the sorted order
-        for (int i = 1; i < leaderboard.size(); i++) {
+        int ranking = 1;
+        boolean currentUserRanked = false;
+        leaderboard.get(0).setPosition(ranking);
+
+        if (leaderboard.get(0).getUsername().equals(currentUsername)) {
+            currentUserRanked = true;
+        }
+
+        int clearStartIndex = 0;
+        int sameRankings = 0;
+        // Update the position field based on the sorted order (only show until rank 10 or first 10 participants
+        // if a lot of participants have the same rank)
+        for (int i = 1; i < leaderboard.size() && ranking < 11 && (10 - (sameRankings - 1) - ranking) >= 0; i++) {
+            if (leaderboard.get(i).getUsername().equals(currentUsername)) {
+                currentUserRanked = true;
+            }
             // If two participants have the same amount of wins, their position should be the same
             // if not, the ranking is increased (= "lower ranking")
             if (!leaderboard.get(i - 1).getWins().equals(leaderboard.get(i).getWins())) {
                 ranking++;
+                sameRankings = 0;
+            } else {
+                sameRankings++;
             }
 
             leaderboard.get(i).setPosition(ranking);
+
+            clearStartIndex = i;
+        }
+
+        LeaderboardDto currentUser = null;
+        if (!currentUserRanked) {
+            for (int i = clearStartIndex; i < leaderboard.size(); i++) {
+                if (!leaderboard.get(i - 1).getWins().equals(leaderboard.get(i).getWins())) {
+                    ranking++;
+                }
+
+                if (leaderboard.get(i).getUsername().equals(currentUsername)) {
+                    currentUser = new LeaderboardDto(leaderboard.get(i).getUsername(), leaderboard.get(i).getWins());
+                    currentUser.setPosition(ranking);
+                    break;
+                }
+            }
+        }
+
+        leaderboard.subList(clearStartIndex, leaderboard.size()).clear();
+
+        if (!currentUserRanked) {
+            leaderboard.add(currentUser);
         }
 
         return leaderboard;

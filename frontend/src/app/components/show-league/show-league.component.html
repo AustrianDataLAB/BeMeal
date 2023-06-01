@@ -32,7 +32,7 @@
         <!-- leaderboard -->
         <mat-card  class="card-item" style="flex: 1 1 100%">
             <mat-card-header >
-                <mat-card-title>Leaderboard</mat-card-title>
+                <mat-card-title>Leaderboard - Top 10</mat-card-title>
                 <mat-card-subtitle>These are the current standings.</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content class="card-content-league">
@@ -40,6 +40,8 @@
 
                     <!--- Note that these columns can be defined in any order.
                           The actual rendered columns are set as a property on the row definition" -->
+
+                    <!-- ToDo: Show current user in ranking with different color -->
 
                     <!-- Position Column -->
                     <ng-container matColumnDef="position">
@@ -62,7 +64,7 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
-                <span *ngIf="this.leaderboardUsers === []">Leaderboard could not be fetched</span>
+                <span *ngIf="this.leaderboardUsers === []">No ranking available yet.</span>
 
             </mat-card-content>
         </mat-card>
