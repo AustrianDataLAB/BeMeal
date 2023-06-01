@@ -72,19 +72,20 @@ public class ChallengeGenerationService {
      */
     @Transactional
     public void generateForExpiredChallenges() {
+        var dateNow = LocalDate.now();
         log.info("Generate new challenges for leagues with no valid challenge");
-        Stream.concat(this.leagueRepository.findLeaguesWithNoValidChallengeAt(LocalDate.now()),
+        Stream.concat(this.leagueRepository.findLeaguesWithNoValidChallengeAt(dateNow),
                 this.leagueRepository.findLeaguesWithNoChallenges()).forEach(this::generateNewChallenge);
         log.info("Done generating new challenges");
 
         log.info("Updating wins now");
         List<League> leaguesWithExpiredChallenges = this.leagueRepository
-                .findLeaguesWithExpiredChallenges(LocalDate.now());
+                .findLeaguesWithExpiredChallenges(dateNow);
 
         log.info("Found {} leagues with expired challenges", leaguesWithExpiredChallenges.size());
 
         for (League l : leaguesWithExpiredChallenges) {
-            var opt = leagueRepository.findLastEndedChallenge(l.getId(), LocalDate.now());
+            var opt = leagueRepository.findLastEndedChallenge(l.getId(), dateNow);
 
             if (opt.isEmpty()) {
                 continue;
