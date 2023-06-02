@@ -222,7 +222,7 @@ public class LeagueService {
             }
         }
 
-        leaderboard.subList(clearStartIndex, leaderboard.size()).clear();
+        leaderboard.subList(clearStartIndex + 1, leaderboard.size()).clear();
 
         if (!currentUserRanked) {
             leaderboard.add(currentUser);
