@@ -86,3 +86,9 @@ body.dark-mode .mat-mdc-card-subtitle{
 body:not(.dark-mode-preloading) {
     transition: all 0.3s linear;
 }
+
+body.dark-mode .leaderboard-highlight-user{
+    background: #f0bb28 !important;
+    color: black !important;
+}
+
