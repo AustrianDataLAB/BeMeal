@@ -129,20 +129,23 @@ export class HeatMapComponent {
                 type: 'bar', yOffset: 5, cornerRadiusEnd: 2, height: 20
             },
             encoding: {
+                color: { 'value': '#212121'},
                 y: {
-                    field: 'properties.g_name', scale: {padding: 0}, axis: {
+                    field: 'properties.g_name', scale: {padding: 2}, axis: {
                         bandPosition: 0,
                         grid: true,
                         domain: false,
                         ticks: false,
                         labelAlign: 'left',
                         labelBaseline: 'middle',
-                        labelPadding: -5,
+                        labelPadding: 0,
                         labelOffset: -15,
                         titleX: 5,
                         titleY: -5,
                         titleAngle: 0,
-                        titleAlign: 'left'
+                        titleAlign: 'left',
+                        labelFontSize: 14, // Increase the font size for y-axis labels
+                        titleFontSize: 16 // Increase the font size for y-axis title
                     }, sort: '-x', title: this.granularity.name
                 }, x: {
                     field: 'rate', aggregate: 'sum', axis: {grid: false}, title: 'Amount'
