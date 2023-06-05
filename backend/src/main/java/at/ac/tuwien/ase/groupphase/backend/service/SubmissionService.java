@@ -248,13 +248,13 @@ public class SubmissionService {
         return submissionDto;
     }
 
-    private static void addPicture(SubmissionDto submissionDto, UUID uuid) {
+    private void addPicture(SubmissionDto submissionDto, UUID uuid) {
         try {
             byte[] bytes = Files.readAllBytes(getPath(uuid));
             String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
             submissionDto.setPicture(imageString);
         } catch (NoSuchFileException nsfe) {
-            logger.info("File {} of submission with id {} could not be found.", getPath(uuid), submission.getId());
+            logger.info("File {} of submission with id {} could not be found.", getPath(uuid), submissionDto.getId());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
