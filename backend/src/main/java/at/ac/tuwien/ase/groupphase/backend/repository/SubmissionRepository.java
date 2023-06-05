@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.repository;
 
 import at.ac.tuwien.ase.groupphase.backend.entity.Submission;
+import at.ac.tuwien.ase.groupphase.backend.entity.SubmissionWithUpvotes;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,15 @@ public interface SubmissionRepository extends CrudRepository<Submission, Long> {
             + " ON v.submission.id = s.id"
             + " WHERE s.participant.id != :participantId AND v.participant.id = :participantId)")
     List<Submission> getSubmissionNotUpvotedYetByUser(Long challengeId, Long participantId);
+
+    @Query("SELECT NEW at.ac.tuwien.ase.groupphase.backend.entity.SubmissionWithUpvotes(s, COUNT(*)) FROM Submission s"
+            + " INNER JOIN ParticipantSubmissionVote sv"
+            + " ON s.id = sv.submission.id WHERE sv.isUpvote = TRUE AND s.challenge.id = :challengeId"
+            + " GROUP BY s HAVING COUNT(*) = (SELECT MAX(upvotes_c.c) FROM ("
+            + " SELECT COUNT(*) AS c FROM ParticipantSubmissionVote AS sv2 INNER JOIN Submission s2"
+            + " ON s2.id = sv2.submission.id WHERE sv2.isUpvote = TRUE"
+            + " AND s2.challenge.id = :challengeId GROUP BY s2) AS upvotes_c)")
+    List<SubmissionWithUpvotes> getWinnerSubmissionOfChallenge(Long challengeId);
 
     @Query("SELECT s FROM Submission s WHERE s.challenge.id = :challengeId AND s.participant.id = :participantId ORDER BY s.id DESC LIMIT 1")
     Submission getcurrentSubmission(Long challengeId, Long participantId);

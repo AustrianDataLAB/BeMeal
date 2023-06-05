@@ -52,4 +52,10 @@ public class RecipeService {
         }
         return recipes;
     }
+
+    public List<RecipeDto> getSuggestions(List<String> ids) {
+        logger.trace("Getting suggestions from the given input");
+        System.out.println(ids.toString());
+        return null;
+    }
 }
