@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgModule, OnInit} from '@angular/core';
 import {SelfService} from "../../services/self.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LeagueService} from "../../services/league.service";
@@ -7,6 +7,8 @@ import {firstValueFrom, map, of, switchMap} from "rxjs";
 import {League} from "../../dtos/league";
 import {LeaderboardUser} from "../../dtos/leaderboard-user";
 import {WinningSubmissionDisplay} from "../../dtos/winning-submission-display";
+import {IvyCarouselModule} from 'angular-responsive-carousel';
+
 
 @Component({
   selector: 'app-show-league',

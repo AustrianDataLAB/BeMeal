@@ -76,23 +76,31 @@
             <mat-card-header>
                 <mat-card-title>Previous Challenge</mat-card-title>
             </mat-card-header>
-            <mat-card-content class="card-content-league" *ngIf="lastWinningSubmissions.length > 0">
+            <mat-card-content style="width: 300px" class="card-content-league" *ngIf="lastWinningSubmissions.length > 0">
                 <span class="span-content-league" *ngIf="lastWinningSubmissions.length === 1"
                       style="margin-bottom: 16px;">Votes from the last challenge are in! The current winner is:</span>
                 <span class="span-content-league" *ngIf="lastWinningSubmissions.length > 1"
                       style="margin-bottom: 16px;">Votes from the last challenge are in! The current winners are:</span>
-                <ng-container *ngFor="let winningSubmission of lastWinningSubmissions">
-                    <mat-card class="card-item">
-                        <mat-card-header>
-                            <mat-card-title>{{winningSubmission.participantName}}</mat-card-title>
-                        </mat-card-header>
-                        <mat-card-content class="card-content-league">
-                            <div class="card-content-league-image-container">
-                                <img class="card-content-league-image" src="data:image/jpeg;base64, {{winningSubmission.picture}}" alt="winning submission"/>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
-                </ng-container>
+
+                <!--                    <mat-card class="card-item">-->
+                <!--                        <mat-card-header>-->
+                <!--                            <mat-card-title>{{winningSubmission.participantName}}</mat-card-title>-->
+                <!--                        </mat-card-header>-->
+                <!--                        <mat-card-content class="card-content-league">-->
+                <!--                            <div class="card-content-league-image-container">-->
+                <!--                                <img class="card-content-league-image" src="data:image/jpeg;base64, {{winningSubmission.picture}}" alt="winning submission"/>-->
+                <!--                            </div>-->
+                <!--                        </mat-card-content>-->
+                <!--                    </mat-card>-->
+                <carousel cellWidth="100%" [cellsToShow]="1">
+                    <div class="carousel-cell" *ngFor="let winningSubmission of lastWinningSubmissions">
+                        <img src="data:image/jpeg;base64, {{winningSubmission.picture}}">
+                    </div>
+                    <div class="carousel-cell" *ngFor="let winningSubmission of lastWinningSubmissions">
+                        <img src="data:image/jpeg;base64, {{winningSubmission.picture}}">
+                    </div>
+                </carousel>
+
             </mat-card-content>
             <mat-card-content class="card-content-league" *ngIf="league.lastWinners.length <  1">
                 <span class="span-content-league" style="margin-bottom: 16px;">There are no votes yet for the last challenge! Find the winners here after some submissions are voted for.</span>

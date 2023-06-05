@@ -25,6 +25,7 @@ import {MealsComponent} from "./components/meals/meals.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {HeatMapComponent} from './components/analytics/heat-map/heat-map.component';
+import {IvyCarouselModule} from "angular-responsive-carousel";
 
 @NgModule({
     declarations: [
@@ -56,7 +57,8 @@ import {HeatMapComponent} from './components/analytics/heat-map/heat-map.compone
         MatCardModule,
         DragDropModule,
         FormsModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        IvyCarouselModule
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]
