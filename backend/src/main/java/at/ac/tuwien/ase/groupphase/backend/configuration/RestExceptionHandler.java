@@ -1,10 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ErrorData;
-import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
-import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
-import at.ac.tuwien.ase.groupphase.backend.exception.NotCreatorOfException;
-import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
+import at.ac.tuwien.ase.groupphase.backend.exception.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.ValidationException;
 import org.slf4j.Logger;
@@ -91,4 +88,9 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(usernameNotFoundException.getMessage()));
     }
 
+    @ExceptionHandler(AlreadyJoinedException.class)
+    @ApiResponse(responseCode = "200", description = "The user already joined this league")
+    public ResponseEntity<ErrorData> handleAlreadyJoinedException(final AlreadyJoinedException alreadyJoinedException) {
+        return ResponseEntity.ok(new ErrorData(alreadyJoinedException.getMessage()));
+    }
 }
