@@ -1,0 +1,14 @@
+<div class="container page-container mx-auto"
+     fxLayout="column" fxLayoutGap="16px">
+    <mat-form-field>
+        <mat-label>Search for recipes and cookbooks</mat-label>
+        <input matInput type="search" placeholder="">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <mat-grid-list [cols]="4">
+        <mat-grid-tile [rowspan]="2">
+            
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3">results</mat-grid-tile>
+    </mat-grid-list>
+</div>
