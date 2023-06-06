@@ -261,15 +261,16 @@ public class SubmissionService {
         return submissions.stream().map(this::buildSubmissionDto).collect(Collectors.toList());
     }
 
-    public SubmissionWithUpvotes getWinningSubmissionForChallange(Long challengeId) {
+    public List<SubmissionWithUpvotes> getWinningSubmissionForChallange(Long challengeId) {
         logger.trace("getWinningSubmissionForChallange({})", challengeId);
-        SubmissionWithUpvotes sub = submissionRepository.getWinnerSubmissionOfChallenge(challengeId);
+        List<SubmissionWithUpvotes> sub = submissionRepository.getWinnerSubmissionOfChallenge(challengeId);
 
-        if (sub == null || sub.getUpvotes() < 1) {
+        if (sub == null || sub.isEmpty()) {
             logger.debug("No upvotes for submissions in challenge with id {}", challengeId);
-            return null;
+            return List.of();
         }
 
-        return sub;
+        // Only return upvotes, that have more than 0 upvotes
+        return sub.stream().filter(s -> s.getUpvotes() > 0).collect(Collectors.toList());
     }
 }

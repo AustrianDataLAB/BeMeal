@@ -135,9 +135,11 @@ public class SubmissionServiceTest {
     public void givenSubmissionsWithUpvotes_GetWinningSubmissionNotEmpty() {
         submissionService.saveVote(s2.getId(), p1.getUsername(), true);
 
-        SubmissionWithUpvotes sub = submissionService.getWinningSubmissionForChallange(ch.getId());
+        List<SubmissionWithUpvotes> sub = submissionService.getWinningSubmissionForChallange(ch.getId());
         assertNotNull(sub, "Submission must not be null");
-        assertEquals(s2.getId(), sub.getSubmission().getId());
+        assertFalse(sub.isEmpty(), "Submission must not be null");
+        assertEquals(1, sub.size());
+        assertEquals(s2.getId(), sub.get(0).getSubmission().getId());
     }
 
     private void flush() {
