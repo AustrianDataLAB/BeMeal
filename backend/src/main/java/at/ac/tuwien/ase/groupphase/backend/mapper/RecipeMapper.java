@@ -30,8 +30,8 @@ public class RecipeMapper {
                 .map(ingredientMapper::ingredientToIngredientDto).toList();
         // convert uuid to base64
         var base64 = uuidToBase64Converter(recipe.getPictureUUID());
-        List<RecipeDietTypeDto> dietTypes = recipe.getDietTypes().stream()
-                .map(dietTypeMapper::dietTypeToDietTypeDto).toList();
+        List<RecipeDietTypeDto> dietTypes = recipe.getDietTypes().stream().map(dietTypeMapper::dietTypeToDietTypeDto)
+                .toList();
 
         return new RecipeDto(recipe.getRecipeId(), recipe.getName(), recipe.getDescription(),
                 recipe.getPreparationTime(), recipe.getCookingTime(), stringToRecipeSkillLevel(recipe.getSkillLevel()),
