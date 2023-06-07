@@ -48,12 +48,14 @@ public class RecipeService {
         return recipes;
     }
 
-    public Page<RecipeDto> findRecipesBySearchString(String searchString, int page, int size) {
+    public Page<RecipeDto> findRecipesBySearchString(String searchString, String skillLevel, Integer maxTime,
+            List<String> dietTypes, int page, int size) {
         logger.trace("Searching for recipes which contain the string: " + searchString);
-        var collections = recipeRepository.findRecipesBySearchString(searchString, PageRequest.of(page, size))
+        var collections = recipeRepository
+                .findRecipesBySearchString(searchString, skillLevel, maxTime, dietTypes, PageRequest.of(page, size))
                 .map(recipeMapper::recipeToRecipeDto);
         if (collections.isEmpty()) {
-            throw new NoSuchElementException("No recipe collections found");
+            throw new NoSuchElementException("No recipes found");
         }
         return collections;
     }

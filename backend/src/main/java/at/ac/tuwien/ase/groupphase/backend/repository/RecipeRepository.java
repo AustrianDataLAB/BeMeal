@@ -20,6 +20,15 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
     @Query(value = "MATCH (r:Recipe)-[:COLLECTION]->(c:Collection) WHERE c.name IN $names RETURN r SKIP $skip LIMIT $limit", countQuery = "MATCH (r:Recipe)-[:COLLECTION]->(c:Collection) WHERE c.name IN $names RETURN COUNT(r)")
     Page<Recipe> getRecipesFromCollection(List<String> names, Pageable pageable);
 
-    @Query(value = "MATCH (r:Recipe) WHERE r.name =~ '(?i).*' + $searchString + '.*' RETURN r SKIP $skip LIMIT $limit", countQuery = "MATCH (r:Recipe) WHERE r.name =~ '(?i).*' + $searchString + '.*' RETURN COUNT(r)")
-    Page<Recipe> findRecipesBySearchString(String searchString, Pageable pageable);
+    @Query(value = "MATCH (r:Recipe)-[:DIET_TYPE]->(d:DietType) WHERE r.name =~ '(?i).*' + $searchString + '.*' "
+            + "AND CASE WHEN $maxTime IS NOT NULL THEN r.cookingTime + r.preparationTime <= $maxTime ELSE TRUE END "
+            + "AND CASE WHEN $skillLevel IS NOT NULL THEN r.skillLevel = $skillLevel ELSE TRUE END "
+            + "AND CASE WHEN $dietTypes IS NOT NULL THEN d.name IN $dietTypes ELSE TRUE END "
+            + "RETURN r SKIP $skip LIMIT $limit", countQuery = "MATCH (r:Recipe)-[:DIET_TYPE]->(d:DietType) WHERE r.name =~ '(?i).*' + $searchString + '.*' "
+                    + "AND CASE WHEN $maxTime IS NOT NULL THEN r.cookingTime + r.preparationTime <= $maxTime ELSE TRUE END "
+                    + "AND CASE WHEN $skillLevel IS NOT NULL THEN r.skillLevel = $skillLevel ELSE TRUE END "
+                    + "AND CASE WHEN $dietTypes IS NOT NULL THEN d.name IN $dietTypes ELSE TRUE END "
+                    + "RETURN COUNT(r)")
+    Page<Recipe> findRecipesBySearchString(String searchString, String skillLevel, Integer maxTime,
+            List<String> dietTypes, Pageable pageable);
 }

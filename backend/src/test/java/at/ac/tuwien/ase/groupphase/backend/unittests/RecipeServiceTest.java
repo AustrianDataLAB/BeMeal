@@ -23,14 +23,14 @@ public class RecipeServiceTest {
 
     @Test
     public void givenData_searchForFoodReturnsList() {
-        Page<RecipeDto> recipes = recipeService.findRecipesBySearchString("eesecak", 0, 5);
+        Page<RecipeDto> recipes = recipeService.findRecipesBySearchString("eesecak", null, null, null, 0, 5);
         assertEquals(5, recipes.getNumberOfElements());
     }
 
     @Test
     public void givenData_searchForNonExistentFoodReturnsEmptyList() {
         assertThrows(NoSuchElementException.class,
-                () -> recipeService.findRecipesBySearchString("!nonexistent!", 0, 5));
+                () -> recipeService.findRecipesBySearchString("!nonexistent!", null, null, null, 0, 5));
     }
 
     @Test

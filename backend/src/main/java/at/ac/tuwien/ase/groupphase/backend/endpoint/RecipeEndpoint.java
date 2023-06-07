@@ -39,10 +39,13 @@ public class RecipeEndpoint {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Page<RecipeDto>> findRecipeCollectionsBySearchString(
             @RequestParam(value = "name") final String name,
+            @RequestParam(required = false, value = "skillLevel") final String skillLevel,
+            @RequestParam(required = false, value = "maxTime") final Integer maxTime,
+            @RequestParam(required = false, value = "dietType") final List<String> dietTypes,
             @RequestParam(required = false, defaultValue = "0", value = "page") Integer page,
             @RequestParam(required = false, defaultValue = "25", value = "size") Integer size) {
         logger.trace("GET /api/v1/recipe/recipe/search?name={}", name);
-        Page<RecipeDto> dto = recipeService.findRecipesBySearchString(name, page, size);
+        Page<RecipeDto> dto = recipeService.findRecipesBySearchString(name, skillLevel, maxTime, dietTypes, page, size);
         if (dto == null) {
             return ResponseEntity.unprocessableEntity().build();
         }
