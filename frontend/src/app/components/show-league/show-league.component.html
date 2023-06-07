@@ -81,26 +81,12 @@
                       style="margin-bottom: 16px;">Votes from the last challenge are in! The current winner is:</span>
                 <span class="span-content-league" *ngIf="lastWinningSubmissions.length > 1"
                       style="margin-bottom: 16px;">Votes from the last challenge are in! The current winners are:</span>
-
-                <!--                    <mat-card class="card-item">-->
-                <!--                        <mat-card-header>-->
-                <!--                            <mat-card-title>{{winningSubmission.participantName}}</mat-card-title>-->
-                <!--                        </mat-card-header>-->
-                <!--                        <mat-card-content class="card-content-league">-->
-                <!--                            <div class="card-content-league-image-container">-->
-                <!--                                <img class="card-content-league-image" src="data:image/jpeg;base64, {{winningSubmission.picture}}" alt="winning submission"/>-->
-                <!--                            </div>-->
-                <!--                        </mat-card-content>-->
-                <!--                    </mat-card>-->
-                <carousel cellWidth="100%" [cellsToShow]="1">
+                <carousel cellWidth="100%" [cellsToShow]="1" [loop]="true">
                     <div class="carousel-cell" *ngFor="let winningSubmission of lastWinningSubmissions">
                         <img src="data:image/jpeg;base64, {{winningSubmission.picture}}">
-                    </div>
-                    <div class="carousel-cell" *ngFor="let winningSubmission of lastWinningSubmissions">
-                        <img src="data:image/jpeg;base64, {{winningSubmission.picture}}">
+                        <p>{{winningSubmission.participantName}}</p>
                     </div>
                 </carousel>
-
             </mat-card-content>
             <mat-card-content class="card-content-league" *ngIf="league.lastWinners.length <  1">
                 <span class="span-content-league" style="margin-bottom: 16px;">There are no votes yet for the last challenge! Find the winners here after some submissions are voted for.</span>
