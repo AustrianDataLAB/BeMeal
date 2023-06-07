@@ -20,6 +20,7 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
     @Query(value = "MATCH (r:Recipe)-[:COLLECTION]->(c:Collection) WHERE c.name IN $names RETURN r SKIP $skip LIMIT $limit", countQuery = "MATCH (r:Recipe)-[:COLLECTION]->(c:Collection) WHERE c.name IN $names RETURN COUNT(r)")
     Page<Recipe> getRecipesFromCollection(List<String> names, Pageable pageable);
 
+    // TODO: also return the dietTypes of the recipes
     @Query(value = "MATCH (r:Recipe)-[:DIET_TYPE]->(d:DietType) WHERE r.name =~ '(?i).*' + $searchString + '.*' "
             + "AND CASE WHEN $maxTime IS NOT NULL THEN r.cookingTime + r.preparationTime <= $maxTime ELSE TRUE END "
             + "AND CASE WHEN $skillLevel IS NOT NULL THEN r.skillLevel = $skillLevel ELSE TRUE END "
