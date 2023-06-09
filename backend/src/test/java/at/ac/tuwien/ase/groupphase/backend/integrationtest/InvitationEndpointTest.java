@@ -4,6 +4,7 @@ import at.ac.tuwien.ase.groupphase.backend.dto.LeagueSecretsDto;
 import at.ac.tuwien.ase.groupphase.backend.endpoint.InvitationEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
+import at.ac.tuwien.ase.groupphase.backend.exception.AlreadyJoinedException;
 import at.ac.tuwien.ase.groupphase.backend.exception.NotCreatorOfException;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -104,6 +106,22 @@ public class InvitationEndpointTest {
         ResponseEntity<?> reponse = this.invitationEndpoint.joinLeague(league.getHiddenIdentifier().toString());
         assertEquals(204, reponse.getStatusCode().value());
 
+    }
+
+    @Test
+    void userCannotJoinMultipleTimes() {
+        final var authentication = Mockito.mock(Authentication.class);
+        Mockito.when(authentication.getPrincipal()).thenReturn(p2.getUsername());
+        final var securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        this.invitationEndpoint.joinLeague(league.getHiddenIdentifier().toString());
+        final var hiddenIdentifier = league.getHiddenIdentifier().toString();
+
+        assertThrows(AlreadyJoinedException.class, () -> this.invitationEndpoint.joinLeague(hiddenIdentifier));
+        assertEquals(1, this.leagueRepository.findById(league.getId()).get().getParticipants().stream()
+                .filter(p -> p.getId().equals(p2.getId())).count());
     }
 
 }
