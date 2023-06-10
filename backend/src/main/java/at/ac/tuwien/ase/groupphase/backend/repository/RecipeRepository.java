@@ -20,6 +20,16 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
                                                                                             // attribute
     Optional<Recipe> findAnyRecipeWithPicture();
 
+
+    @Query("MATCH (r:Recipe) \n" +
+            "WHERE r.picture IS NOT NULL \n" +
+            "WITH r \n" +
+            "ORDER BY rand() \n" +
+            "LIMIT $amount\n" +
+            "OPTIONAL MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)\n" +
+            "RETURN r, collect(c), collect(i)")
+    Optional<List<Recipe>> findAnyRecipeWithPictureWithIngredients(int amount);
+
     @Query(value = "MATCH (r:Recipe)-[:COLLECTION]->(c:Collection) WHERE c.name IN $names RETURN r SKIP $skip LIMIT $limit", countQuery = "MATCH (r:Recipe)-[:COLLECTION]->(c:Collection) WHERE c.name IN $names RETURN COUNT(r)")
     Page<Recipe> getRecipesFromCollection(List<String> names, Pageable pageable);
 }

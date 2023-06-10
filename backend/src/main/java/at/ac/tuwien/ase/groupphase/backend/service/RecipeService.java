@@ -46,11 +46,8 @@ public class RecipeService {
 
     public List<RecipeDto> getMultipleRandomRecipes(int amount) {
         logger.trace("Getting " + amount + " random recipes");
-        List<RecipeDto> ret = new ArrayList<>();
-        for (int i = 0; i < amount; i++) {
-            Optional<Recipe> recipe = this.recipeRepository.findAnyRecipeWithPicture();
-            recipe.ifPresent(value -> ret.add(this.recipeMapper.recipeToRecipeDto(value)));
-        }
+        Optional<List<Recipe>> temp = this.recipeRepository.findAnyRecipeWithPictureWithIngredients(amount);
+        List<RecipeDto> ret = temp.map(this.recipeMapper::recipeListToRecipeDtoList).orElse(null);
         return ret;
     }
 
