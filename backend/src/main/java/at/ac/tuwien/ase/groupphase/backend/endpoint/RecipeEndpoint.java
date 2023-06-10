@@ -49,6 +49,13 @@ public class RecipeEndpoint {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/randomRecipes/{amount}")
+    public ResponseEntity<List<RecipeDto>> getMultipleRandomRecipes(@NotNull @PathVariable final int amount) {
+        List<RecipeDto> ret = recipeService.getMultipleRandomRecipes(amount);
+        return ResponseEntity.ok(ret);
+
+    }
+
     @GetMapping("/collections")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Page<RecipeDto>> getRecipesFromCollection(

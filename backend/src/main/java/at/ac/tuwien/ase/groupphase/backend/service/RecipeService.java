@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -41,6 +42,16 @@ public class RecipeService {
             throw new NoSuchElementException("No recipe with id " + id);
         }
         return recipeMapper.recipeToRecipeDto(recipe.get());
+    }
+
+    public List<RecipeDto> getMultipleRandomRecipes(int amount) {
+        logger.trace("Getting " + amount + " random recipes");
+        List<RecipeDto> ret = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            Optional<Recipe> recipe = this.recipeRepository.findAnyRecipeWithPicture();
+            recipe.ifPresent(value -> ret.add(this.recipeMapper.recipeToRecipeDto(value)));
+        }
+        return ret;
     }
 
     public Page<RecipeDto> getRecipesFromCollections(List<String> names, int page, int size) {
