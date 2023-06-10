@@ -25,7 +25,8 @@ import {MealsComponent} from "./components/meals/meals.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {HeatMapComponent} from './components/analytics/heat-map/heat-map.component';
-import {IvyCarouselModule} from "angular-responsive-carousel";
+import {NgImageSliderModule} from 'ng-image-slider';
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
     declarations: [
@@ -58,7 +59,8 @@ import {IvyCarouselModule} from "angular-responsive-carousel";
         DragDropModule,
         FormsModule,
         NgxPaginationModule,
-        IvyCarouselModule
+        NgImageSliderModule,
+        NgOptimizedImage
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]

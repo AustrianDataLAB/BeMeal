@@ -1,13 +1,14 @@
-import {Component, NgModule, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SelfService} from "../../services/self.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LeagueService} from "../../services/league.service";
 import {catchError, tap} from "rxjs/operators";
-import {firstValueFrom, map, of, switchMap} from "rxjs";
+import {of, switchMap} from "rxjs";
 import {League} from "../../dtos/league";
 import {LeaderboardUser} from "../../dtos/leaderboard-user";
 import {WinningSubmissionDisplay} from "../../dtos/winning-submission-display";
-import {IvyCarouselModule} from 'angular-responsive-carousel';
+import {Ingridient} from "../../dtos/ingridient";
+
 
 
 @Component({
@@ -22,7 +23,7 @@ export class ShowLeagueComponent implements OnInit{
     error: boolean;
     errorMessage: string;
     leaderboardUsers: LeaderboardUser[] = [];
-    lastWinningSubmissions: WinningSubmissionDisplay[];
+    lastWinningSubmissions: ImageSliderObj[];
 
     displayedColumns: string[] = ['position', 'name', 'points'];
     constructor(private selfService: SelfService, private router: Router, private leagueService: LeagueService, private route: ActivatedRoute) {
@@ -101,7 +102,14 @@ export class ShowLeagueComponent implements OnInit{
         if (!this.leagueId || !this.league.lastWinners) return of(null);
         return this.leagueService.getLastWinningSubmissions(this.leagueId).pipe(
             tap(response => {
-                this.lastWinningSubmissions = response;
+                this.lastWinningSubmissions = response.map(x => {
+                    return {
+                        image: "data:image/jpeg;base64, " +  x.picture,
+                        thumbImage: "data:image/jpeg;base64, " +  x.picture,
+                        alt: "winning submission",
+                        title: x.participantName
+                    }
+                });
                 console.log(response);
                 console.log('Successfully fetched winningSubmissions');
             }),
@@ -119,5 +127,15 @@ export interface Leaderboard {
     username: string;
     position: number;
     points: number;
+}
+
+export class ImageSliderObj {
+    constructor(
+        public image: string,
+        public thumbImage: string,
+        public alt: string,
+        public title: string,
+    ) {
+    }
 }
 
