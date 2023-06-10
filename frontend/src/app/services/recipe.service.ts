@@ -43,4 +43,9 @@ export class RecipeService {
         }
         return of(null);
     }
+    
+    getMultipleRandomRecipes(): Observable<any> {
+        const amount = 10;
+        return this.httpClient.get<Recipe[]>(this.baseUri + "/randomRecipes/" + amount)
+    }
 }

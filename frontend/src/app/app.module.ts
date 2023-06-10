@@ -25,6 +25,7 @@ import {MealsComponent} from "./components/meals/meals.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {HeatMapComponent} from './components/analytics/heat-map/heat-map.component';
+import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import {HeatMapComponent} from './components/analytics/heat-map/heat-map.compone
         DarkModeComponent,
         MealsComponent,
         AnalyticsComponent,
-        HeatMapComponent
+        HeatMapComponent,
+        SuggestionsComponent
     ],
     imports: [
         BrowserModule,
