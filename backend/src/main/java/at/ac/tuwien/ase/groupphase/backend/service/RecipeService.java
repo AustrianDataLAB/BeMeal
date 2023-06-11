@@ -48,7 +48,7 @@ public class RecipeService {
         return recipes;
     }
 
-    public Page<RecipeDto> findRecipesBySearchString(String searchString, String skillLevel, Integer maxTime,
+    public Page<RecipeDto> findRecipesBySearchString(String searchString, List<String> skillLevel, Integer maxTime,
             List<String> dietTypes, int page, int size) {
         logger.trace("Searching for recipes which contain the string: " + searchString);
         var collections = recipeRepository
