@@ -92,7 +92,7 @@ public class RecipeService {
         // !! DONT FORGET to normalize ingredients of similarMeals (we searched for .*garlic.*, got garlic clove
         // and need to apply .*garlic.* weight to this ingredients and not 'garlic clove' weight
         Map<Recipe, Double> resultMap = new HashMap<>();
-        similarMeals.forEach(x -> resultMap.put(x, calulateWeightOfRecipe(weightMap, x)));
+        similarMeals.forEach(x -> resultMap.put(x, calculateWeightOfRecipe(weightMap, x)));
         System.out.println("hello");
         // TODO
 
@@ -120,7 +120,7 @@ public class RecipeService {
         }
     }
 
-    private Double calulateWeightOfRecipe(Map<String, Double> weightMap, Recipe recipe) {
+    private Double calculateWeightOfRecipe(Map<String, Double> weightMap, Recipe recipe) {
         Double ret = 0D;
         for (Ingredient i : recipe.getIngredients()) {
             if (weightMap.containsKey(i.getName())) {
