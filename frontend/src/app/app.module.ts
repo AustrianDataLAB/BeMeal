@@ -25,6 +25,9 @@ import {MealsComponent} from "./components/meals/meals.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {HeatMapComponent} from './components/analytics/heat-map/heat-map.component';
+import {SearchComponent} from "./components/search/search.component";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSliderModule} from "@angular/material/slider";
 
 @NgModule({
     declarations: [
@@ -43,7 +46,8 @@ import {HeatMapComponent} from './components/analytics/heat-map/heat-map.compone
         DarkModeComponent,
         MealsComponent,
         AnalyticsComponent,
-        HeatMapComponent
+        HeatMapComponent,
+        SearchComponent
     ],
     imports: [
         BrowserModule,
@@ -56,7 +60,9 @@ import {HeatMapComponent} from './components/analytics/heat-map/heat-map.compone
         MatCardModule,
         DragDropModule,
         FormsModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        MatSlideToggleModule,
+        MatSliderModule,
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]

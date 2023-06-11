@@ -1,0 +1,61 @@
+<div class="container page-container mx-auto"
+     fxLayout="column" fxLayoutGap="16px">
+    <mat-form-field>
+        <mat-label>Search for recipes</mat-label>
+        <input matInput type="search" (keyup)="checkForNewSearch()" (keyup.enter)="findRecipesBySearchString()"
+               [(ngModel)]="searchString">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <mat-grid-list [cols]="4" *ngIf="recipes.length > 0 && stateSearched">
+        <mat-grid-tile [rowspan]="2">
+            <mat-list>
+                <mat-list-item>Diet Types</mat-list-item>
+                <mat-divider></mat-divider>
+                <ng-container>
+                    <mat-chip-listbox aria-label="Diet Types" [multiple]="true"
+                                      (change)="onChipSelectionChange($event)">
+                        <mat-chip-option *ngFor="let dt of dietTypes; let i = index">{{dt}}</mat-chip-option>
+                    </mat-chip-listbox>
+                </ng-container>
+
+                <mat-list-item>Skill-Level</mat-list-item>
+                <mat-divider></mat-divider>
+                <ng-container>
+                    <mat-chip-listbox aria-label="Skill Level" [multiple]="true" (change)="onSkillLevelChange($event)">
+                        <mat-chip-option *ngFor="let sl of skillLevels; let i = index">{{sl}}</mat-chip-option>
+                    </mat-chip-listbox>
+                </ng-container>
+                <br/>
+
+                <mat-list-item>Maximum Time Required</mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-slider min="0" max="6" showTickMarks discrete step="1" [displayWith]="formatLabel">
+                    <input matSliderThumb [(ngModel)]="sliderValue">
+                </mat-slider>
+                <br/>
+                <button mat-raised-button color="primary" (click)="findRecipesBySearchStringWithFilter()">Filter
+                </button>
+            </mat-list>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3" [rowspan]="2">
+            <mat-list>
+                <pagination-controls
+                    (pageChange)="onTableDataChange($event)"
+                    nextLabel="Next"
+                    previousLabel="Prev">
+                </pagination-controls>
+                <mat-list-item
+                    *ngFor="let recipe of recipes | paginate: {itemsPerPage: 8, currentPage: pageIndex, totalItems: totalElements}">
+
+                    <!-- TODO: fix this mess -->
+
+                    <div matListItemAvatar>
+                        <img src="data:image/jpeg;base64, {{recipe.picture}}" alt="R">
+                    </div>
+                    <div matListItemTitle>{{recipe.name}}</div>
+                    <div matListItemLine>{{recipe.description}}</div>
+                </mat-list-item>
+            </mat-list>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
