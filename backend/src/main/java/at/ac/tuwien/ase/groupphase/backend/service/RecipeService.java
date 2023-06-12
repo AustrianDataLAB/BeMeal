@@ -107,7 +107,7 @@ public class RecipeService {
         // ingredients vereinheitlichen damit man besser weighten kann?
         // e.g garlic clove vs garlic bulb, red wine vinegar
         // sugar, bacon, vinegar, cheese, potatoe, tomato, salt,
-        return null;
+        return this.recipeMapper.recipeListToRecipeDtoList(ret.keySet().stream().toList());
     }
 
     private void populateWeightMap(Map<String, Double> weightMap, List<Ingredient> allIngredients) {

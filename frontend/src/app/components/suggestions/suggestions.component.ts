@@ -26,7 +26,8 @@ export class SuggestionsComponent {
     randomRecipes: RecipeWithId[] = [];
     likedRecipes: string[] = [];
 
-    suggestions: Recipe[];
+    suggestions: Recipe[] = [];
+    sugg = true;
 
     public index = 0;
     toggle = true;
@@ -61,14 +62,23 @@ export class SuggestionsComponent {
     }
 
     getSuggestions() {
+        this.sugg = false;
         this.recipeService.getSuggestionFromRecipes(this.likedRecipes).pipe(
             tap(response => {
                 this.suggestions = response;
+                console.log("Response");
+                console.log(this.suggestions);
             }),
             catchError(() => {
                 return of(null);
             })
         ).subscribe();
+    }
+
+    reset() {
+        this.sugg = true;
+        this.suggestions = [];
+        this.getRandomRecipes();
     }
 
 
