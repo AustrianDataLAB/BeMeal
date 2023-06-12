@@ -3,9 +3,13 @@ import {SelfService} from "../../services/self.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LeagueService} from "../../services/league.service";
 import {catchError, tap} from "rxjs/operators";
-import {firstValueFrom, map, of} from "rxjs";
+import {of, switchMap} from "rxjs";
 import {League} from "../../dtos/league";
 import {LeaderboardUser} from "../../dtos/leaderboard-user";
+import {WinningSubmissionDisplay} from "../../dtos/winning-submission-display";
+import {Ingridient} from "../../dtos/ingridient";
+
+
 
 @Component({
   selector: 'app-show-league',
@@ -19,6 +23,7 @@ export class ShowLeagueComponent implements OnInit{
     error: boolean;
     errorMessage: string;
     leaderboardUsers: LeaderboardUser[] = [];
+    lastWinningSubmissions: ImageSliderObj[];
 
     displayedColumns: string[] = ['position', 'name', 'points'];
     constructor(private selfService: SelfService, private router: Router, private leagueService: LeagueService, private route: ActivatedRoute) {
@@ -59,6 +64,9 @@ export class ShowLeagueComponent implements OnInit{
                 this.error = true;
                 // Handle the error here
                 return of(null);
+            }),
+            switchMap(() => {
+                return this.fetchWinningSubmissions();
             })
         ).subscribe();
     }
@@ -90,11 +98,44 @@ export class ShowLeagueComponent implements OnInit{
     }
 
 
+    private fetchWinningSubmissions() {
+        if (!this.leagueId || !this.league.lastWinners) return of(null);
+        return this.leagueService.getLastWinningSubmissions(this.leagueId).pipe(
+            tap(response => {
+                this.lastWinningSubmissions = response.map(x => {
+                    return {
+                        image: "data:image/jpeg;base64, " +  x.picture,
+                        thumbImage: "data:image/jpeg;base64, " +  x.picture,
+                        alt: "winning submission",
+                        title: x.participantName
+                    }
+                });
+                console.log(response);
+                console.log('Successfully fetched winningSubmissions');
+            }),
+            catchError(error => {
+                console.error('Error while fetching winningSubmissions');
+                this.error = true;
+                // Handle the error here
+                return of(null);
+            })
+        );
+    }
 }
 
 export interface Leaderboard {
     username: string;
     position: number;
     points: number;
+}
+
+export class ImageSliderObj {
+    constructor(
+        public image: string,
+        public thumbImage: string,
+        public alt: string,
+        public title: string,
+    ) {
+    }
 }
 

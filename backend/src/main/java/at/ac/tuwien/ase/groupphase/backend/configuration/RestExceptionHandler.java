@@ -65,6 +65,13 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(noChallengeException.getMessage()));
     }
 
+    @ExceptionHandler(NoLatestChallengeException.class)
+    @ApiResponse(responseCode = "409", description = "No latest ending challenge found")
+    public ResponseEntity<ErrorData> handleNoLatestChallengeException(
+            final NoLatestChallengeException noLatestChallengeException) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(noLatestChallengeException.getMessage()));
+    }
+
     @ExceptionHandler(NoSuchElementException.class)
     @ApiResponse(responseCode = "404", description = "No such element")
     public ResponseEntity<ErrorData> handleNoSuchElementException(final NoSuchElementException noSuchElementException) {

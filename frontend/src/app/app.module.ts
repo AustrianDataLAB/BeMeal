@@ -29,6 +29,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {SearchComponent} from "./components/search/search.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSliderModule} from "@angular/material/slider";
+import {NgImageSliderModule} from 'ng-image-slider';
 
 @NgModule({
     declarations: [
@@ -64,7 +65,8 @@ import {MatSliderModule} from "@angular/material/slider";
         NgxPaginationModule,
         MatSlideToggleModule,
         MatSliderModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        NgImageSliderModule
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]
