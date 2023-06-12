@@ -7,9 +7,6 @@ import java.util.List;
 
 @Node("Recipe")
 @Data
-@EqualsAndHashCode
-@AllArgsConstructor
-@RequiredArgsConstructor
 public class Recipe {
     @Id
     @Property("id")
@@ -32,4 +29,7 @@ public class Recipe {
 
     @Relationship(type = "COLLECTION", direction = Relationship.Direction.OUTGOING)
     private List<RecipeCollection> collections;
+
+    @Relationship(type = "DIET_TYPE", direction = Relationship.Direction.OUTGOING)
+    private List<RecipeDietType> dietTypes;
 }

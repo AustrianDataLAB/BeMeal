@@ -68,23 +68,24 @@ public class ChallengeGenerationService {
     }
 
     /**
-     * Generate new challenges for all leagues which either have no or only expired challenges.
+     * Generate new challenges for all leagues which either have no or only expired challenges. Also updates wins of
+     * Participants, if they have won the previous expired challenge
      */
     @Transactional
     public void generateForExpiredChallenges() {
+        var dateNow = LocalDate.now();
         log.info("Generate new challenges for leagues with no valid challenge");
-        Stream.concat(this.leagueRepository.findLeaguesWithNoValidChallengeAt(LocalDate.now()),
+        Stream.concat(this.leagueRepository.findLeaguesWithNoValidChallengeAt(dateNow),
                 this.leagueRepository.findLeaguesWithNoChallenges()).forEach(this::generateNewChallenge);
         log.info("Done generating new challenges");
 
         log.info("Updating wins now");
-        List<League> leaguesWithExpiredChallenges = this.leagueRepository
-                .findLeaguesWithExpiredChallenges(LocalDate.now());
+        List<League> leaguesWithExpiredChallenges = this.leagueRepository.findLeaguesWithExpiredChallenges(dateNow);
 
         log.info("Found {} leagues with expired challenges", leaguesWithExpiredChallenges.size());
 
         for (League l : leaguesWithExpiredChallenges) {
-            var opt = leagueRepository.findLastEndedChallenge(l.getId(), LocalDate.now());
+            var opt = leagueRepository.findLastEndedChallenge(l.getId(), dateNow);
 
             if (opt.isEmpty()) {
                 continue;
@@ -94,15 +95,14 @@ public class ChallengeGenerationService {
 
             log.info("Expired challenge id is {}", challenge.getId());
 
-            SubmissionWithUpvotes winningSubmission = submissionService
+            List<SubmissionWithUpvotes> winningSubmissions = submissionService
                     .getWinningSubmissionForChallange(challenge.getId());
 
-            log.info("Winning submission {}", winningSubmission);
-            if (winningSubmission != null) {
-                log.info("Winning submission participant id {}",
-                        winningSubmission.getSubmission().getParticipant().getId());
-                participantService
-                        .increaseWinsOfParticipant(winningSubmission.getSubmission().getParticipant().getId());
+            log.info("Winning submissions: {}", winningSubmissions.size());
+
+            for (SubmissionWithUpvotes s : winningSubmissions) {
+                log.info("Winning submission participant id {}", s.getSubmission().getParticipant().getId());
+                participantService.increaseWinsOfParticipant(s.getSubmission().getParticipant().getId());
             }
         }
     }

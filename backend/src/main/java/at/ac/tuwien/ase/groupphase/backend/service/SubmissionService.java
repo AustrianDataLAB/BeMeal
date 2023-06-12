@@ -1,6 +1,11 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.SubmissionDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.WinningSubmissionDto;
+import at.ac.tuwien.ase.groupphase.backend.entity.Challenge;
+import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
+import at.ac.tuwien.ase.groupphase.backend.entity.ParticipantSubmissionVote;
+import at.ac.tuwien.ase.groupphase.backend.entity.Submission;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
@@ -230,16 +235,29 @@ public class SubmissionService {
     private SubmissionDto buildSubmissionDto(Submission submission) {
         SubmissionDto submissionDto = this.submissionMapper.submissionToSubmissionDto(submission);
         UUID uuid = submission.getPicture();
+        addPicture(submissionDto, uuid);
+        return submissionDto;
+    }
+
+    public WinningSubmissionDto buildWinningSubmissionDto(Submission submission) {
+        WinningSubmissionDto submissionDto = this.submissionMapper.submissionToWinningSubmissionDto(submission);
+        submissionDto.setParticipantName(submission.getParticipant().getUsername());
+        submissionDto.setChallengeId(submission.getChallenge().getId());
+        UUID uuid = submission.getPicture();
+        addPicture(submissionDto, uuid);
+        return submissionDto;
+    }
+
+    private void addPicture(SubmissionDto submissionDto, UUID uuid) {
         try {
             byte[] bytes = Files.readAllBytes(getPath(uuid));
             String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
             submissionDto.setPicture(imageString);
         } catch (NoSuchFileException nsfe) {
-            logger.info("File {} of submission with id {} could not be found.", getPath(uuid), submission.getId());
+            logger.info("File {} of submission with id {} could not be found.", getPath(uuid), submissionDto.getId());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return submissionDto;
     }
 
     @Transactional
@@ -261,15 +279,16 @@ public class SubmissionService {
         return submissions.stream().map(this::buildSubmissionDto).collect(Collectors.toList());
     }
 
-    public SubmissionWithUpvotes getWinningSubmissionForChallange(Long challengeId) {
+    public List<SubmissionWithUpvotes> getWinningSubmissionForChallange(Long challengeId) {
         logger.trace("getWinningSubmissionForChallange({})", challengeId);
-        SubmissionWithUpvotes sub = submissionRepository.getWinnerSubmissionOfChallenge(challengeId);
+        List<SubmissionWithUpvotes> sub = submissionRepository.getWinnerSubmissionOfChallenge(challengeId);
 
-        if (sub == null || sub.getUpvotes() < 1) {
+        if (sub == null || sub.isEmpty()) {
             logger.debug("No upvotes for submissions in challenge with id {}", challengeId);
-            return null;
+            return List.of();
         }
 
-        return sub;
+        // Only return upvotes, that have more than 0 upvotes
+        return sub.stream().filter(s -> s.getUpvotes() > 0).collect(Collectors.toList());
     }
 }

@@ -7,9 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,14 +23,14 @@ public class RecipeServiceTest {
 
     @Test
     public void givenData_searchForFoodReturnsList() {
-        List<RecipeDto> recipes = recipeService.searchRecipeByName("cheesecake");
-        assertFalse(recipes.isEmpty());
+        Page<RecipeDto> recipes = recipeService.findRecipesBySearchString("eesecak", null, null, null, 0, 5);
+        assertEquals(5, recipes.getNumberOfElements());
     }
 
     @Test
     public void givenData_searchForNonExistentFoodReturnsEmptyList() {
-        List<RecipeDto> recipes = recipeService.searchRecipeByName("nonexistent");
-        assertTrue(recipes.isEmpty());
+        assertThrows(NoSuchElementException.class,
+                () -> recipeService.findRecipesBySearchString("!nonexistent!", null, null, null, 0, 5));
     }
 
     @Test

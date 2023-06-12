@@ -18,9 +18,9 @@ INSERT INTO Participant (participant_id, postal_code, region, registered, wins) 
 INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (8, 6890, 6, '2021-08-21 18:42:41', 28);
 INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (9, 2100, 4, '2021-07-02 21:32:05', 75);
 INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (10, 5020, 6, '2020-05-20 23:14:37', 89);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (1, 2300, 1, '2020-05-20 23:14:37', 5);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (2, 2400, 1, '2020-05-20 23:14:37', 6);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (3, 2500, 1, '2020-05-20 23:14:37', 7);
+INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (1, 2301, 1, '2020-05-20 23:14:37', 5);
+INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (2, 2401, 1, '2020-05-20 23:14:37', 6);
+INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (3, 3804, 1, '2020-05-20 23:14:37', 7);
 INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (4, 6890, 8, '2020-05-20 23:14:37', 8);
 INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (5, 6850, 8, '2020-05-20 23:14:37', 9);
 INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (6, 1010, 1, '2020-05-20 23:14:37', 10);
@@ -100,15 +100,25 @@ INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES
 
 /*      Create show Challenges      */
 -- ToDo: Beware of placeholder UUID
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '4138721', 1);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5834601', 2);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5766986', 3);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5728361', 4);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '7834996', 5);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5854161', 6);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '6363046', 7);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '101879', 8);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '95471', 9);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Uni friends', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '4138721', 1);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Work friends', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5834601', 2);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for The legends', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5766986', 3);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Cooking Experts', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5728361', 4);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Broccoli lovers', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '7834996', 5);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Heast, oida', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5854161', 6);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Foodies', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '6363046', 7);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for True legends', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '101879', 8);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Turtles', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '95471', 9);
+
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '4138721', 10);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Lower Austria League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5834601', 11);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Upper Austria League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5766986', 12);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Styria League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5728361', 13);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Tyrol League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '7834996', 14);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Salzburg League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '5854161', 15);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Carinthia League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '6363046', 16);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Burgenland League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '101879', 17);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vorarlberg League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '95471', 18);
 --INSERT INTO League_Challenges (league_id, challenges_id) VALUES (1, 1);
 
 

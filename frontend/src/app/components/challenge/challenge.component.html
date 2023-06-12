@@ -38,6 +38,9 @@
 
                         <mat-card-actions *ngIf="this.submission.image">
                             <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit {{this.submission.image.name}}</button>
+                            <span style="margin-left: 10px;" *ngIf="isUploading">
+                                <mat-spinner style="margin:0 auto;" [diameter]="30"/>
+                            </span>
                         </mat-card-actions>
                     </ng-container>
                     <ng-container *ngIf="currentSubmission">
@@ -54,7 +57,10 @@
                             <input hidden (change)="onImageChangeNOCOMPRESSION($event)" #fileInput type="file" id="file2" accept="image/bmp, image/jpeg, image/png, image/gif">
                         </mat-card-actions>
                         <mat-card-actions *ngIf="this.submission.image">
-                            <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit {{this.submission.image.name}}</button>
+                                <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit {{this.submission.image.name}}</button>
+                                <span style="margin-left: 10px;" *ngIf="isUploading">
+                                    <mat-spinner style="margin:0 auto;" [diameter]="30"/>
+                                </span>
                         </mat-card-actions>
                     </ng-container>
                 </mat-card>
