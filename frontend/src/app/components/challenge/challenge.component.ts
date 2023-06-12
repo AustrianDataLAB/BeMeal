@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, Renderer2} from '@angular/core';
 import {animate, AnimationEvent, keyframes, transition, trigger} from "@angular/animations";
 import * as kf from './keyframes';
-import {firstValueFrom, map, of, Subject, switchMap} from "rxjs";
+import {finalize, firstValueFrom, map, of, Subject, switchMap} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
 import {League} from "../../dtos/league";
 import {ChallengeInfo} from "../../dtos/challengeInfo";
@@ -36,6 +36,7 @@ export class ChallengeComponent {
     errorMessage = '';
     leagueId: number;
     countdownString = "Time ";
+    isUploading = false;
 
     constructor(private elementRef: ElementRef, private renderer: Renderer2, private submissionService: SubmissionService, private leagueService: LeagueService, private route: ActivatedRoute) {
         const id = this.route.snapshot.paramMap.get('id');
@@ -150,6 +151,7 @@ export class ChallengeComponent {
     }
 
     submit() {
+        this.isUploading = true;
         this.submissionService.postSubmission(this.submission).pipe(
             tap(response => {
                 console.log(response)
@@ -167,6 +169,9 @@ export class ChallengeComponent {
             }),
             switchMap(() => {
                 return this.getCurrentSubmission();
+            }),
+            finalize(() => {
+                this.isUploading = false;
             })
         ).subscribe();
     }
