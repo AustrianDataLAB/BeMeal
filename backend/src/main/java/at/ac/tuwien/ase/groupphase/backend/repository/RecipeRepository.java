@@ -33,11 +33,20 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
             + "OPTIONAL MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)\n" + "RETURN r, collect(c), collect(i)")
     Optional<List<Recipe>> findMutlipleRecipesWithId(List<String> rec_ids);
 
+    // @Query("MATCH (r:Recipe)\n" + "WITH count {\n" + " MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)\n"
+    // + " WHERE size([x IN $names WHERE i.name =~ x])>0\n"
+    // + "} AS wanted, count{MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)} AS total, r\n"
+    // + "WHERE wanted > 0.6 * total\n" + "OPTIONAL MATCH (r)-[a:CONTAINS_INGREDIENT]->(b:Ingredient)\n"
+    // + "RETURN r, collect(a), collect(b), (wanted*1.0/total), wanted, total\n"
+    // + "ORDER BY (wanted*1.0/total) DESC\n" + "LIMIT 100")
+    // Optional<List<Recipe>> getSimilarMeals(List<String> names);
+
     @Query("MATCH (r:Recipe)\n" + "WITH count {\n" + "    MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)\n"
             + "    WHERE size([x IN $names WHERE i.name =~ x])>0\n"
             + "} AS wanted, count{MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)} AS total, r\n"
-            + "WHERE wanted > 0.6 * total\n" + "OPTIONAL MATCH (r)-[a:CONTAINS_INGREDIENT]->(b:Ingredient)\n"
+            + "WHERE wanted > 0.6 * total AND NOT r.id IN  $notWanted\n"
+            + "OPTIONAL MATCH (r)-[a:CONTAINS_INGREDIENT]->(b:Ingredient)\n"
             + "RETURN r, collect(a), collect(b), (wanted*1.0/total), wanted, total\n"
             + "ORDER BY (wanted*1.0/total) DESC\n" + "LIMIT 100")
-    Optional<List<Recipe>> getSimilarMeals(List<String> names);
+    Optional<List<Recipe>> getSimilarMeals(List<String> names, List<String> notWanted);
 }
