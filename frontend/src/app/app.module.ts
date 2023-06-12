@@ -25,6 +25,7 @@ import {MealsComponent} from "./components/meals/meals.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {HeatMapComponent} from './components/analytics/heat-map/heat-map.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {SearchComponent} from "./components/search/search.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSliderModule} from "@angular/material/slider";
@@ -63,6 +64,7 @@ import {MatSliderModule} from "@angular/material/slider";
         NgxPaginationModule,
         MatSlideToggleModule,
         MatSliderModule,
+        MatProgressSpinnerModule
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]
