@@ -41,6 +41,7 @@ export class MealsComponent implements OnInit {
                 this.suggestions = response;
             }),
             catchError(() => {
+                // TODO: implement error handling here
                 return of(null);
             })
         ).subscribe();
@@ -57,7 +58,7 @@ export class MealsComponent implements OnInit {
             catchError(() => {
                 this.errorMessage = "Could not find our cookbooks...";
                 this.error = true;
-                // Handle the error here
+                // TODO: implement error handling here
                 return of(null);
             })
         ).subscribe();

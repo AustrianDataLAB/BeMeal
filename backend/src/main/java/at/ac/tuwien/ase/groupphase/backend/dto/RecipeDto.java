@@ -18,4 +18,5 @@ public class RecipeDto {
     private List<IngredientDto> ingredients;
     // base64
     private String picture;
+    private List<RecipeDietTypeDto> dietTypes;
 }

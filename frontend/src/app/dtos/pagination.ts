@@ -3,7 +3,7 @@ export class Pagination {
         public totalElements: number,
         public size: number,
         public number: number,
-        public totalPages: number
+        public pageNumber: number
     ) {
     }
 }

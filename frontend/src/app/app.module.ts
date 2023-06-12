@@ -26,6 +26,9 @@ import {NgxPaginationModule} from "ngx-pagination";
 import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {HeatMapComponent} from './components/analytics/heat-map/heat-map.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {SearchComponent} from "./components/search/search.component";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSliderModule} from "@angular/material/slider";
 
 @NgModule({
     declarations: [
@@ -44,7 +47,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
         DarkModeComponent,
         MealsComponent,
         AnalyticsComponent,
-        HeatMapComponent
+        HeatMapComponent,
+        SearchComponent
     ],
     imports: [
         BrowserModule,
@@ -58,6 +62,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
         DragDropModule,
         FormsModule,
         NgxPaginationModule,
+        MatSlideToggleModule,
+        MatSliderModule,
         MatProgressSpinnerModule
     ],
     providers: [httpInterceptorProviders],
