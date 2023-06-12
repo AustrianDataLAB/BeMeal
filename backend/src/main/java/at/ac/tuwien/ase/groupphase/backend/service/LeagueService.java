@@ -2,6 +2,7 @@ package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.*;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
+import at.ac.tuwien.ase.groupphase.backend.exception.AlreadyJoinedException;
 import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.exception.NoLatestChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
@@ -119,6 +120,9 @@ public class LeagueService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid league ID"));
         List<Participant> participantList = league.getParticipants();
         Participant user = (Participant) this.userRepository.findByUsername(username);
+        if (participantList.stream().anyMatch(p -> p.getId().equals(user.getId()))) {
+            throw new AlreadyJoinedException();
+        }
         participantList.add(user);
         league.setParticipants(participantList);
         this.leagueRepository.save(league);

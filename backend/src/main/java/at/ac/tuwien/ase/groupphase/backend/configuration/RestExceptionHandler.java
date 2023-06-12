@@ -95,4 +95,9 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(usernameNotFoundException.getMessage()));
     }
 
+    @ExceptionHandler(AlreadyJoinedException.class)
+    @ApiResponse(responseCode = "409", description = "The user already joined this league")
+    public ResponseEntity<ErrorData> handleAlreadyJoinedException(final AlreadyJoinedException alreadyJoinedException) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(alreadyJoinedException.getMessage()));
+    }
 }

@@ -43,4 +43,35 @@ export class RecipeService {
         }
         return of(null);
     }
+
+    findRecipesBySearchString(searchString: string): Observable<any> {
+        const uri = this.baseUri + "/search" + "?name=" + searchString;
+        return this.httpClient.get<Recipe[]>(uri);
+    }
+    findRecipesBySearchStringWithFilter(searchString: string, skillLevels: string[], maxTime: number, dietTypes: string[], page: number | null): Observable<any> {
+        let uri = this.baseUri + "/search" + "?name=" + searchString;
+        if (dietTypes.length > 0) {
+            uri += "&dietType="
+            for (let i = 0; i < dietTypes.length; i++) {
+                uri += dietTypes[i];
+                if (i != (dietTypes.length - 1))
+                    uri += "&dietType=";
+            }
+        }
+        if (skillLevels.length > 0 && skillLevels.length < 3) {
+            uri += "&skillLevel="
+            for (let i = 0; i < skillLevels.length; i++) {
+                uri += skillLevels[i];
+                if (i != (skillLevels.length - 1))
+                    uri += "&skillLevel=";
+            }
+        }
+        if (maxTime != 0) {
+            uri += "&maxTime=" + maxTime;
+        }
+        if (page != null) {
+            uri += "&page=" + page;
+        }
+        return this.httpClient.get<Recipe[]>(uri);
+    }
 }
