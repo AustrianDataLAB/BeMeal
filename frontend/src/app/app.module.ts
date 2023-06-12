@@ -26,6 +26,7 @@ import {NgxPaginationModule} from "ngx-pagination";
 import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {HeatMapComponent} from './components/analytics/heat-map/heat-map.component';
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
     declarations: [
@@ -58,7 +59,8 @@ import { SuggestionsComponent } from './components/suggestions/suggestions.compo
         MatCardModule,
         DragDropModule,
         FormsModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        MatExpansionModule
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]
