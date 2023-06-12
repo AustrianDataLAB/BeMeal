@@ -79,6 +79,7 @@ export class SuggestionsComponent {
     reset() {
         this.sugg = true;
         this.likedRecipes = [];
+        this.suggestions = new Suggestion([],[]);
         this.getRandomRecipes();
     }
 
