@@ -9,6 +9,7 @@ import {of} from "rxjs";
 import {animate, AnimationEvent, keyframes, transition, trigger} from "@angular/animations";
 import * as kf from "../challenge/keyframes";
 import {RecipeWithId} from "../../dtos/recipeWithId";
+import {Suggestion} from "../../dtos/suggestion";
 
 @Component({
   selector: 'app-suggestions',
@@ -26,7 +27,7 @@ export class SuggestionsComponent {
     randomRecipes: RecipeWithId[] = [];
     likedRecipes: string[] = [];
 
-    suggestions: Recipe[] = [];
+    suggestions: Suggestion;
     sugg = true;
 
     public index = 0;
@@ -77,7 +78,7 @@ export class SuggestionsComponent {
 
     reset() {
         this.sugg = true;
-        this.suggestions = [];
+        this.likedRecipes = [];
         this.getRandomRecipes();
     }
 
@@ -99,6 +100,9 @@ export class SuggestionsComponent {
         const rec = this.randomRecipes[this.index];
         if(isUpvote) {
             this.likedRecipes.push(rec.recipeId)
+        }
+        if (this.likedRecipes.length > 19) {
+            this.getSuggestions();
         }
         console.log(this.likedRecipes)
     }

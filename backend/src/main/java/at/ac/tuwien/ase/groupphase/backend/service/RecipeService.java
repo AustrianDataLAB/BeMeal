@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.SuggestionDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Ingredient;
 import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RecipeMapper;
@@ -61,7 +62,7 @@ public class RecipeService {
         return recipes;
     }
 
-    public List<RecipeDto> getSuggestions(List<String> ids) {
+    public SuggestionDto getSuggestions(List<String> ids) {
         logger.trace("Getting suggestions from the given input");
         Optional<List<Recipe>> temp = this.recipeRepository.findMutlipleRecipesWithId(ids);
         List<Recipe> input = temp.orElse(null);
@@ -79,7 +80,7 @@ public class RecipeService {
         // TODO
 
         // fetch similar meals
-        Optional<List<Recipe>> temp_suggestions = this.recipeRepository.getSimilarMeals(names);
+        Optional<List<Recipe>> temp_suggestions = this.recipeRepository.getSimilarMeals(names, ids);
         List<Recipe> similarMeals = temp_suggestions.orElse(null);
         // TODO
 
@@ -107,7 +108,7 @@ public class RecipeService {
         // ingredients vereinheitlichen damit man besser weighten kann?
         // e.g garlic clove vs garlic bulb, red wine vinegar
         // sugar, bacon, vinegar, cheese, potatoe, tomato, salt,
-        return this.recipeMapper.recipeListToRecipeDtoList(ret.keySet().stream().toList());
+        return new SuggestionDto(this.recipeMapper.recipeListToRecipeDtoList(input), this.recipeMapper.recipeListToRecipeDtoList(ret.keySet().stream().toList()));
     }
 
     private void populateWeightMap(Map<String, Double> weightMap, List<Ingredient> allIngredients) {

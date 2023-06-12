@@ -40,14 +40,15 @@
                 <mat-icon>favorite</mat-icon>
             </button>
             <button mat-raised-button color="primary" class="btn-block pmd-btn-fab" (click)="getSuggestions()">Suggestions</button>
+            <div>{{this.likedRecipes.length}}/20</div>
         </div>
 <!--        <button (click)="switchUpvotingContainer()" style="margin-left: 12px;" mat-button  color="secondary" class="btn-block">Cancel</button>-->
     </div>
 </div>
-<div id="show-container" *ngIf="suggestions.length > 0 && !sugg" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+<div id="show-container" *ngIf="!sugg" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
     <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
         <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
-            <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions">
+            <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions.suggestions">
                 <mat-card class="card-item">
                     <mat-card-header>
                         <!-- todo display name of challenge if submissions from another challenge are displayed (decision to be made), call backend with challenge id from submissiondtp -->

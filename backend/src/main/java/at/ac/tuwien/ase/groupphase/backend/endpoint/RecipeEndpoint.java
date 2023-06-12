@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.SuggestionDto;
 import at.ac.tuwien.ase.groupphase.backend.service.RecipeService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -72,7 +73,7 @@ public class RecipeEndpoint {
 
     @GetMapping("/suggestion")
     @ResponseStatus(HttpStatus.OK)
-    public List<RecipeDto> getSuggestions(@RequestParam(value = "id") final List<String> ids) {
+    public SuggestionDto getSuggestions(@RequestParam(value = "id") final List<String> ids) {
         logger.info("GET /api/v1/recipe/suggestions?ids.size={}", ids.size());
         return this.recipeService.getSuggestions(ids);
     }
