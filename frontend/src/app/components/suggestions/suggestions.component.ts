@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {LeagueService} from "../../services/league.service";
 import {RecipeService} from "../../services/recipe.service";
 import {Recipe} from "../../dtos/recipe";
-import {catchError, tap} from "rxjs/operators";
+import {catchError, finalize, tap} from "rxjs/operators";
 import {of} from "rxjs";
 import {animate, AnimationEvent, keyframes, transition, trigger} from "@angular/animations";
 import * as kf from "../challenge/keyframes";
@@ -36,6 +36,7 @@ export class SuggestionsComponent {
     error: boolean;
     errorMessage: string;
     currentPicture: string;
+    isFetching = false;
 
     constructor(private router: Router, private recipeService: RecipeService, private route: ActivatedRoute) {
         this.getRandomRecipes();
@@ -63,6 +64,7 @@ export class SuggestionsComponent {
     }
 
     getSuggestions() {
+        this.isFetching = true;
         this.sugg = false;
         this.recipeService.getSuggestionFromRecipes(this.likedRecipes).pipe(
             tap(response => {
@@ -72,7 +74,11 @@ export class SuggestionsComponent {
             }),
             catchError(() => {
                 return of(null);
-            })
+            }),
+            finalize(() => {
+                this.isFetching = false;
+                }
+            )
         ).subscribe();
     }
 
@@ -102,7 +108,7 @@ export class SuggestionsComponent {
         if(isUpvote) {
             this.likedRecipes.push(rec.recipeId)
         }
-        if (this.likedRecipes.length > 19) {
+        if (this.likedRecipes.length > 4) {
             this.getSuggestions();
         }
         console.log(this.likedRecipes)

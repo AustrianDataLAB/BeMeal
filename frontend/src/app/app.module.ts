@@ -27,6 +27,7 @@ import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {HeatMapComponent} from './components/analytics/heat-map/heat-map.component';
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 import {MatExpansionModule} from "@angular/material/expansion";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
     declarations: [
@@ -60,7 +61,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
         DragDropModule,
         FormsModule,
         NgxPaginationModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatProgressSpinnerModule
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]
