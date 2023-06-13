@@ -13,6 +13,7 @@ import {ChallengeComponent} from "./components/challenge/challenge.component";
 import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {MealsComponent} from "./components/meals/meals.component";
 import {SearchComponent} from "./components/search/search.component";
+import {RecipeComponent} from "./components/recipe/recipe.component";
 
 
 const routes: Routes = [
@@ -27,7 +28,8 @@ const routes: Routes = [
     {path: 'create-league',  canActivate: [AuthGuard], component: CreateLeagueComponent},
     {path: 'analytics', canActivate: [AuthGuard], component: AnalyticsComponent},
     {path: 'meals',  canActivate: [AuthGuard], component: MealsComponent},
-    {path: 'search', canActivate: [AuthGuard], component: SearchComponent}
+    {path: 'search', canActivate: [AuthGuard], component: SearchComponent},
+    {path: 'recipe/:id', canActivate: [AuthGuard], component: RecipeComponent}
 ];
 
 
