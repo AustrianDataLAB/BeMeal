@@ -19,6 +19,7 @@ import {Ingridient} from "../../dtos/ingridient";
 export class ShowLeagueComponent implements OnInit{
 
     leagueId: number | null;
+    username: string | null;
     league: League;
     error: boolean;
     errorMessage: string;
@@ -30,6 +31,7 @@ export class ShowLeagueComponent implements OnInit{
     }
 
     ngOnInit() {
+        this.fetchUserName();
         this.extractLeagueId();
         if (this.leagueId !== null) {
             this.fetchLeague(this.leagueId);
@@ -39,6 +41,18 @@ export class ShowLeagueComponent implements OnInit{
 
     showChallenge() {
         this.router.navigate([`league/${this.leagueId}/challenge`]);
+    }
+
+    fetchUserName() {
+        this.selfService.getProfile().pipe(
+            tap(response => {
+                this.username = response.username;
+            }),
+            catchError(error => {
+                console.log('Could not fetch username');
+                return of(null);
+            })
+        ).subscribe();
     }
 
     extractLeagueId(): void {

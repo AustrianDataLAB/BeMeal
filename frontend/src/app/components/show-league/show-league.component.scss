@@ -12,12 +12,15 @@
     margin-top: 8px;
 }
 
-.card-content-league-image-container {
-    width: 450px;
-    text-align: center;
+.leaderboard-highlight-user{
+    background: #f0bb28;
 }
 
-.card-content-league-image {
-    max-width: 100%;
-    height: auto;
+
+.leaderboard-highlight-user{
+    background: #f0bb28;
+}
+
+.leaderboard-highlight-user-below-top10{
+    border-top: 3px dotted black;
 }

@@ -30,6 +30,7 @@ import {SearchComponent} from "./components/search/search.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSliderModule} from "@angular/material/slider";
 import {NgImageSliderModule} from 'ng-image-slider';
+import {PasswordResetComponent} from './components/login/password-reset/password-reset.component';
 
 @NgModule({
     declarations: [
@@ -49,7 +50,8 @@ import {NgImageSliderModule} from 'ng-image-slider';
         MealsComponent,
         AnalyticsComponent,
         HeatMapComponent,
-        SearchComponent
+        SearchComponent,
+        PasswordResetComponent
     ],
     imports: [
         BrowserModule,
