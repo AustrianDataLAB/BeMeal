@@ -111,3 +111,26 @@ body.dark-mode .leaderboard-highlight-user{
     color: black !important;
 }
 
+body.dark-mode .ngx-pagination a {
+    color: #dfe6e9 !important;
+}
+body.dark-mode .ngx-pagination a:hover {
+    color: black !important;
+}
+
+body.dark-mode .sticky-item{
+    background-color: #2d3436 !important;
+    color: #dfe6e9 !important;
+}
+
+body .sticky-item{
+    background: white;
+}
+
+// pagination
+
+.ngx-pagination .current {
+    background-color: #f0bb28 !important;
+    border-color: #f0bb28 !important;
+}
+
