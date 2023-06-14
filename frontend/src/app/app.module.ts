@@ -25,6 +25,12 @@ import {MealsComponent} from "./components/meals/meals.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {HeatMapComponent} from './components/analytics/heat-map/heat-map.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {SearchComponent} from "./components/search/search.component";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSliderModule} from "@angular/material/slider";
+import {NgImageSliderModule} from 'ng-image-slider';
+import {PasswordResetComponent} from './components/login/password-reset/password-reset.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +49,9 @@ import {HeatMapComponent} from './components/analytics/heat-map/heat-map.compone
         DarkModeComponent,
         MealsComponent,
         AnalyticsComponent,
-        HeatMapComponent
+        HeatMapComponent,
+        SearchComponent,
+        PasswordResetComponent
     ],
     imports: [
         BrowserModule,
@@ -56,7 +64,11 @@ import {HeatMapComponent} from './components/analytics/heat-map/heat-map.compone
         MatCardModule,
         DragDropModule,
         FormsModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        MatSlideToggleModule,
+        MatSliderModule,
+        MatProgressSpinnerModule,
+        NgImageSliderModule
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]

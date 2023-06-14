@@ -3,6 +3,7 @@ package at.ac.tuwien.ase.groupphase.backend.endpoint;
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeaderboardDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.WinningSubmissionDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
 import at.ac.tuwien.ase.groupphase.backend.service.ChallengeGenerationService;
@@ -93,6 +94,13 @@ public class LeagueEndpoint {
     public List<LeaderboardDto> getLeaderboardByLeagueId(@NotNull @PathVariable final Long leagueId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return leagueService.getLeaderboardOfLeague(leagueId, username);
+    }
+
+    @GetMapping("/{leagueId}/winningSubmissions")
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "bearerToken")
+    public List<WinningSubmissionDto> getLastWinningSubmissions(@NotNull @PathVariable final Long leagueId) {
+        return leagueService.getLastWinningSubmissions(leagueId);
     }
 
     /**

@@ -1,7 +1,8 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {StatisticsService} from '../../../services/statistics.service';
 import {HeatMap, HeatMapType, heatMapTypeToString} from '../../../dtos/statistics';
 import embed, {VisualizationSpec} from 'vega-embed';
+import {map} from "rxjs";
 
 @Component({
     selector: 'app-heat-map', templateUrl: './heat-map.component.html', styleUrls: ['./heat-map.component.scss']
@@ -12,6 +13,8 @@ export class HeatMapComponent {
     @ViewChild('topFiveContainer') topFiveContainer: ElementRef;
 
     private heatMap: HeatMap;
+    showMap = false;
+    showList = false;
 
     granularities: Granularity[] = [{
         name: 'District',
@@ -31,7 +34,7 @@ export class HeatMapComponent {
     granularity: Granularity = this.granularities[0];
     relative = false;
 
-    constructor(private statisticsService: StatisticsService) {
+    constructor(private elementRef: ElementRef, private renderer: Renderer2, private statisticsService: StatisticsService) {
         this.refreshHeatmap();
     }
     protected readonly heatMapTypeToString = heatMapTypeToString;
@@ -58,6 +61,22 @@ export class HeatMapComponent {
                 }
             }, background: 'rgba(255, 255, 255, 0)'
         };
+    }
+
+    showMapView() {
+        const element = this.elementRef.nativeElement.querySelector('#heatmap-cont');
+        const element2 = this.elementRef.nativeElement.querySelector('#topfive-cont');
+            //this.renderer.setStyle(document.body, 'filter', 'unset');
+        this.renderer.setStyle(element, 'display', 'flex');
+        this.renderer.setStyle(element2, 'display', 'none');
+    }
+
+    showListView() {
+        const element = this.elementRef.nativeElement.querySelector('#heatmap-cont');
+        const element2 = this.elementRef.nativeElement.querySelector('#topfive-cont');
+        //this.renderer.setStyle(document.body, 'filter', 'unset');
+        this.renderer.setStyle(element, 'display', 'none');
+        this.renderer.setStyle(element2, 'display', 'flex');
     }
 
     refreshHeatmap() {
@@ -110,27 +129,32 @@ export class HeatMapComponent {
                 type: 'bar', yOffset: 5, cornerRadiusEnd: 2, height: 20
             },
             encoding: {
+                color: { 'value': '#212121'},
                 y: {
-                    field: 'properties.g_name', scale: {padding: 0}, axis: {
+                    field: 'properties.g_name', scale: {padding: 2}, axis: {
                         bandPosition: 0,
                         grid: true,
                         domain: false,
                         ticks: false,
                         labelAlign: 'left',
                         labelBaseline: 'middle',
-                        labelPadding: -5,
+                        labelPadding: 0,
                         labelOffset: -15,
                         titleX: 5,
                         titleY: -5,
                         titleAngle: 0,
-                        titleAlign: 'left'
+                        titleAlign: 'left',
+                        labelFontSize: 14, // Increase the font size for y-axis labels
+                        titleFontSize: 16 // Increase the font size for y-axis title
                     }, sort: '-x', title: this.granularity.name
                 }, x: {
-                    field: 'rate', aggregate: 'sum', axis: {grid: false}, title: 'Number'
+                    field: 'rate', aggregate: 'sum', axis: {grid: false}, title: 'Amount'
                 }
-            }, background: 'rgba(255, 255, 255, 0)', width: 1000, title: 'The Top and the Bottom 5'
+            }, background: 'rgba(255, 255, 255, 0)', width: 1000, title: ''
         };
     }
+
+    protected readonly map = map;
 }
 
 interface Granularity {

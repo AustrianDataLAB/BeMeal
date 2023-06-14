@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,4 +38,14 @@ public class RecipeCollectionService {
         return collections.stream().map(collectionMapper::collectionToCollectionDto).collect(Collectors.toList());
     }
 
+    public Page<RecipeCollectionDto> findRecipeCollectionsBySearchString(String searchString, int page, int size) {
+        logger.trace("Searching for collections which contain the string: " + searchString);
+        var collections = collectionRepository
+                .findRecipeCollectionsBySearchString(searchString, PageRequest.of(page, size))
+                .map(collectionMapper::collectionToCollectionDto);
+        if (collections.isEmpty()) {
+            throw new NoSuchElementException("No recipe collections found");
+        }
+        return collections;
+    }
 }

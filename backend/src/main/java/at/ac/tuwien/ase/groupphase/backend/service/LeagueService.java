@@ -2,8 +2,11 @@ package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.*;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
+import at.ac.tuwien.ase.groupphase.backend.exception.AlreadyJoinedException;
 import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
+import at.ac.tuwien.ase.groupphase.backend.exception.NoLatestChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
+import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
@@ -14,7 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +32,8 @@ public class LeagueService {
 
     private final RecipeService recipeService;
     private final LeagueMapper leagueMapper;
+    private final SubmissionService submissionService;
+    private final SubmissionMapper submissionMapper;
     private final Logger logger = LoggerFactory.getLogger(LeagueService.class);
 
     /*
@@ -113,6 +120,9 @@ public class LeagueService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid league ID"));
         List<Participant> participantList = league.getParticipants();
         Participant user = (Participant) this.userRepository.findByUsername(username);
+        if (participantList.stream().anyMatch(p -> p.getId().equals(user.getId()))) {
+            throw new AlreadyJoinedException();
+        }
         participantList.add(user);
         league.setParticipants(participantList);
         this.leagueRepository.save(league);
@@ -244,5 +254,23 @@ public class LeagueService {
             }
         }
         return sb.toString();
+    }
+
+    public List<WinningSubmissionDto> getLastWinningSubmissions(Long leagueId) {
+        try {
+            final Challenge lastChallenge = this.leagueRepository.findLastEndedChallenge(leagueId, LocalDate.now())
+                    .orElseThrow();
+
+            final int winningVotes = lastChallenge.getSubmissions().stream()
+                    .map(s -> (int) s.getUpVotes().stream().filter(ParticipantSubmissionVote::isUpvote).count())
+                    .max(Comparator.naturalOrder()).orElseThrow();
+
+            return lastChallenge.getSubmissions().stream()
+                    .filter(s -> winningVotes == (int) s.getUpVotes().stream()
+                            .filter(ParticipantSubmissionVote::isUpvote).count())
+                    .map(this.submissionService::buildWinningSubmissionDto).collect(Collectors.toList());
+        } catch (NoSuchElementException e) {
+            throw new NoLatestChallengeException();
+        }
     }
 }

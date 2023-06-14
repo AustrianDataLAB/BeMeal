@@ -1,8 +1,8 @@
-<div class="container page-container mx-auto" fxLayout="column"  fxLayoutGap="16px">
-    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+<div class="container page-container mx-auto" fxLayout="column" fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
         <h1 fxLayout="row" class="mat-headline-2">{{ league?.name}}</h1>
     </div>
-    <div fxFlexFill fxFlex="100" fxLayout="row" fxLayoutGap="16px"  >
+    <div fxFlexFill fxFlex="100" fxLayout="row" fxLayoutGap="16px">
         <mat-card class="card-item">
             <mat-card-header>
                 <mat-card-title>League details</mat-card-title>
@@ -10,12 +10,15 @@
             <mat-card-content class="card-content-league">
                 <div class="span-content-league">Gamemode: {{ prettyString(league.gameMode) }}</div>
                 <div class="span-content-league">Challenge duration: {{ league?.challengeDuration }} days</div>
-<!--                <div class="span-content-league">Region: {{ prettyString(league.region) }}</div>-->
+                <!--                <div class="span-content-league">Region: {{ prettyString(league.region) }}</div>-->
             </mat-card-content>
         </mat-card>
-        <mat-card  class="card-item" style="flex: 1 1 100%">
-            <mat-card-header >
-                <mat-card-title><mat-icon style="transform: scale(1.2); margin-right: 16px;">warning</mat-icon>Challenge</mat-card-title>
+        <mat-card class="card-item" style="flex: 1 1 100%">
+            <mat-card-header>
+                <mat-card-title>
+                    <mat-icon style="transform: scale(1.2); margin-right: 16px;">warning</mat-icon>
+                    Challenge
+                </mat-card-title>
             </mat-card-header>
             <mat-card-content class="card-content-league">
                 <span>
@@ -23,11 +26,12 @@
                 </span>
             </mat-card-content>
             <mat-card-actions>
-                <button fxLayout="row"  mat-raised-button  color="primary" (click)="showChallenge()">View Challenge</button>
+                <button fxLayout="row" mat-raised-button color="primary" (click)="showChallenge()">View Challenge
+                </button>
             </mat-card-actions>
         </mat-card>
     </div>
-    <div fxFlexFill fxFlex="100" fxLayout="row" fxLayoutGap="16px"  >
+    <div fxFlexFill fxFlex="100" fxLayout="row" fxLayoutGap="16px">
 
         <!-- leaderboard -->
         <mat-card  class="card-item" style="flex: 1 1 100%">
@@ -83,14 +87,40 @@
             <mat-card-header>
                 <mat-card-title>Previous Challenge</mat-card-title>
             </mat-card-header>
-            <mat-card-content class="card-content-league" *ngIf="league.lastWinners.length > 0">
-                <span class="span-content-league" style="margin-bottom: 16px;">The results are from the last challenge are in.</span>
-                <img style="max-width: 300px;" src="https://www.vogtgmbh.com/wp-content/uploads/2019/11/mulchkopf-fuer-bagger-radlader-tifermec-1.jpg" />
-                <p class="span-content-league" >The winner was: <b><ng-container *ngIf="league.lastWinners.length > 0">{{ league.lastWinners.join(', ')}}</ng-container> </b></p>
-                <!-- todo move ngIf to card-content and display "no challenges yet" or sth -->
+            <mat-card-content style="width: 400px" class="card-content-league"
+                              *ngIf="lastWinningSubmissions.length > 0">
+
+                <!-- one winner: -->
+                <ng-container *ngIf="lastWinningSubmissions.length === 1">
+                    <span class="span-content-league" style="margin-bottom: 16px;">Votes from the last challenge are in! The current winner is:</span>
+                    <mat-card class="card-item">
+                        <mat-card-header>
+                            <mat-card-title>{{lastWinningSubmissions[0].title}}</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="card-content-league">
+                            <img class="card-content-league-image" src="{{lastWinningSubmissions[0].image}}" alt="winning submission">
+                        </mat-card-content>
+                    </mat-card>
+                </ng-container>
+
+                <!-- multiple winners: -->
+                <ng-container *ngIf="lastWinningSubmissions.length > 1">
+                    <span class="span-content-league"
+                          style="margin-bottom: 16px;">Votes from the last challenge are in! The current winners are:</span>
+                    <ng-image-slider
+                        [images]="lastWinningSubmissions" #nav
+                        [infinite]="true"
+                        [manageImageRatio]="true"
+                        [lazyLoading]="true"
+                        [autoSlide]="true"
+                    />
+                </ng-container>
+
             </mat-card-content>
+
+            <!-- no winner yet: -->
             <mat-card-content class="card-content-league" *ngIf="league.lastWinners.length <  1">
-                <span class="span-content-league" style="margin-bottom: 16px;">The first challenge is currently running! Find the winners here after the end of the challenge.</span>
+                <span class="span-content-league" style="margin-bottom: 16px;">There are no votes yet for the last challenge! Find the winners here after some submissions are voted for.</span>
             </mat-card-content>
         </mat-card>
     </div>

@@ -29,11 +29,6 @@ public class RecipeService {
         recipeMapper = new RecipeMapper();
     }
 
-    public List<RecipeDto> searchRecipeByName(String name) {
-        logger.trace("Searching for recipe with name " + name);
-        return recipeRepository.findByNameIsLike(name).stream().map(recipeMapper::recipeToRecipeDto).toList();
-    }
-
     public RecipeDto getRecipeById(String id) {
         logger.trace("Getting recipe with id " + id);
         Optional<Recipe> recipe = recipeRepository.findById(id);
@@ -51,6 +46,18 @@ public class RecipeService {
             throw new NoSuchElementException("No recipes from the union collections with the size " + names.size());
         }
         return recipes;
+    }
+
+    public Page<RecipeDto> findRecipesBySearchString(String searchString, List<String> skillLevel, Integer maxTime,
+            List<String> dietTypes, int page, int size) {
+        logger.trace("Searching for recipes which contain the string: " + searchString);
+        var collections = recipeRepository
+                .findRecipesBySearchString(searchString, skillLevel, maxTime, dietTypes, PageRequest.of(page, size))
+                .map(recipeMapper::recipeToRecipeDto);
+        if (collections.isEmpty()) {
+            throw new NoSuchElementException("No recipes found");
+        }
+        return collections;
     }
 
     public List<RecipeDto> getSuggestions(List<String> ids) {

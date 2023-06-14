@@ -25,12 +25,13 @@
     "angular-dark-mode": "^3.1.0",
     "base64-arraybuffer": "^1.0.2",
     "jwt-decode": "^3.1.2",
+    "ng-image-slider": "^7.0.0",
+    "ngx-pagination": "^6.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.12.0",
-    "ngx-pagination": "^6.0.3",
     "vega-embed": "^6.22.1",
-    "vega-lite": "^5.9.1"
+    "vega-lite": "^5.9.1",
+    "zone.js": "~0.12.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.4",

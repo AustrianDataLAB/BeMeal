@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.mapper;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.IngredientDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDietTypeDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
 import at.ac.tuwien.ase.groupphase.backend.entity.RecipeSkillLevel;
@@ -17,9 +18,11 @@ public class RecipeMapper {
     private static final String IMAGE_FORMAT = "jpg";
     private static final String IMAGE_PATH = "src/main/resources/recipes/";
     private final IngredientMapper ingredientMapper;
+    private final RecipeDietTypeMapper dietTypeMapper;
 
     public RecipeMapper() {
         this.ingredientMapper = new IngredientMapper();
+        this.dietTypeMapper = new RecipeDietTypeMapper();
     }
 
     public RecipeDto recipeToRecipeDto(Recipe recipe) {
@@ -27,10 +30,12 @@ public class RecipeMapper {
                 .map(ingredientMapper::ingredientToIngredientDto).toList();
         // convert uuid to base64
         var base64 = uuidToBase64Converter(recipe.getPictureUUID());
+        List<RecipeDietTypeDto> dietTypes = recipe.getDietTypes().stream().map(dietTypeMapper::dietTypeToDietTypeDto)
+                .toList();
 
         return new RecipeDto(recipe.getRecipeId(), recipe.getName(), recipe.getDescription(),
                 recipe.getPreparationTime(), recipe.getCookingTime(), stringToRecipeSkillLevel(recipe.getSkillLevel()),
-                ingredients, base64);
+                ingredients, base64, dietTypes);
     }
 
     private RecipeSkillLevel stringToRecipeSkillLevel(String s) {
