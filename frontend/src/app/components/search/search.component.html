@@ -1,61 +1,78 @@
 <div class="container page-container mx-auto"
      fxLayout="column" fxLayoutGap="16px">
-    <mat-form-field>
-        <mat-label>Search for recipes</mat-label>
-        <input matInput type="search" (keyup)="checkForNewSearch()" (keyup.enter)="findRecipesBySearchString()"
-               [(ngModel)]="searchString">
-        <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-    <mat-grid-list [cols]="4" *ngIf="recipes.length > 0 && stateSearched">
-        <mat-grid-tile [rowspan]="2">
-            <mat-list>
-                <mat-list-item>Diet Types</mat-list-item>
-                <mat-divider></mat-divider>
-                <ng-container>
-                    <mat-chip-listbox aria-label="Diet Types" [multiple]="true"
-                                      (change)="onChipSelectionChange($event)">
-                        <mat-chip-option *ngFor="let dt of dietTypes; let i = index">{{dt}}</mat-chip-option>
-                    </mat-chip-listbox>
-                </ng-container>
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
+        <h1 class="mat-headline-2" style="margin-bottom: 20px">Search Recipes</h1>
+        <h2 class="mat-display-1" style="font-weight: 400;">
+            Got something specific in mind? Find your ideal recipes.
+        </h2>
 
-                <mat-list-item>Skill-Level</mat-list-item>
-                <mat-divider></mat-divider>
-                <ng-container>
-                    <mat-chip-listbox aria-label="Skill Level" [multiple]="true" (change)="onSkillLevelChange($event)">
-                        <mat-chip-option *ngFor="let sl of skillLevels; let i = index">{{sl}}</mat-chip-option>
-                    </mat-chip-listbox>
-                </ng-container>
-                <br/>
-
-                <mat-list-item>Maximum Time Required</mat-list-item>
-                <mat-divider></mat-divider>
-                <mat-slider min="0" max="6" showTickMarks discrete step="1" [displayWith]="formatLabel">
-                    <input matSliderThumb [(ngModel)]="sliderValue">
-                </mat-slider>
-                <br/>
-                <button mat-raised-button color="primary" (click)="findRecipesBySearchStringWithFilter()">Filter
-                </button>
-            </mat-list>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="3" [rowspan]="2">
-            <mat-list>
+        <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
+            <div class="sticky-item">
+                <div *ngIf="!error" fxLayout="column" fxLayoutGap="16px" class="card-container" id="row-top">
+                    <mat-form-field>
+                        <mat-label>Search for recipes</mat-label>
+                        <input matInput  type="search" (keyup)="checkForNewSearch()" (keyup.enter)="findRecipesBySearchString()"
+                               [(ngModel)]="searchString">
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                </div>
+                <span *ngIf="error">{{errorMessage}}</span>
                 <pagination-controls
+                    [autoHide]="true"
+                    class="pagination-center"
                     (pageChange)="onTableDataChange($event)"
-                    nextLabel="Next"
+                    nextLabel="Next "
                     previousLabel="Prev">
                 </pagination-controls>
-                <mat-list-item
-                    *ngFor="let recipe of recipes | paginate: {itemsPerPage: 8, currentPage: pageIndex, totalItems: totalElements}">
+            </div>
+           <div fxFlex fxLayout="row" fxLayoutGap="32px" style="margin-top: 48px">
+            <div *ngIf="this.stateSearched" fxLayout="row wrap" fxLayoutGap="16px" style="width: 29%; padding-right: 24px;">
+                <mat-list >
+                    <h2 class="mat-display-1" style="font-weight: 400;">Filter Recipes</h2>
+                    <mat-list-item>Diet Types</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <ng-container >
+                        <mat-chip-listbox class="filter-blocks"  aria-label="Diet Types" [multiple]="true"
+                                          (change)="onChipSelectionChange($event)">
+                            <mat-chip-option *ngFor="let dt of dietTypes; let i = index">{{dt}}</mat-chip-option>
+                        </mat-chip-listbox>
+                    </ng-container>
 
-                    <!-- TODO: fix this mess -->
+                    <mat-list-item>Skill levels</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <ng-container >
+                        <mat-chip-listbox class="filter-blocks"  aria-label="Skill Level" [multiple]="true" (change)="onSkillLevelChange($event)">
+                            <mat-chip-option *ngFor="let sl of skillLevels; let i = index">{{sl}}</mat-chip-option>
+                        </mat-chip-listbox>
+                    </ng-container>
+                    <br/>
 
-                    <div matListItemAvatar>
-                        <img src="data:image/jpeg;base64, {{recipe.picture}}" alt="R">
-                    </div>
-                    <div matListItemTitle>{{recipe.name}}</div>
-                    <div matListItemLine>{{recipe.description}}</div>
-                </mat-list-item>
-            </mat-list>
-        </mat-grid-tile>
-    </mat-grid-list>
+                    <mat-list-item>Time requirement</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-slider style="width: 70%" class="filter-blocks" min="0" max="6" showTickMarks discrete step="1" [displayWith]="formatLabel">
+                        <input matSliderThumb [(ngModel)]="sliderValue">
+                    </mat-slider>
+                    <br/>
+                    <button mat-raised-button color="primary" (click)="findRecipesBySearchStringWithFilter()">Filter
+                    </button>
+                </mat-list>
+            </div>
+            <div fxLayout="row wrap" fxLayoutGap="16px" style="width: 90%; ">
+                <ng-container style="max-width: 25%;" *ngFor="let recipe of recipes | paginate: {itemsPerPage: 24, currentPage: pageIndex, totalItems: totalElements}">
+                    <mat-card class="card-item">
+                        <img matCardImage *ngIf="recipe.picture !== '' && recipe.picture !== null && recipe.picture  !== undefined" src="data:image/jpeg;base64, {{recipe.picture}}" alt="recipe">
+                        <img  matCardImage *ngIf="recipe.picture === '' || recipe.picture === null || recipe.picture  === undefined" src="../../../assets/Image_not_available.png" alt="recipe">
+                        <mat-card-header>
+                            <mat-card-title>{{recipe.name}}</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            {{recipe.description}}
+                        </mat-card-content>
+                    </mat-card>
+                </ng-container>
+            </div>
+           </div>
+        </div>
+
+</div>
 </div>
