@@ -7,13 +7,21 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     height: 100vh;
     margin: 0;
-    background: #F7F3EF;
+
     display: flex;
     justify-content: center;
     overflow-x: hidden;
     width: 100%;
     height: 100%;
 }
+//
+//.mat-expansion-panel-header {
+//    background: #23292a;
+//    color: #ffffff;
+//}
+//.mat-expansion-panel-body {
+//    background: #23292a;
+//}
 
 .fab-button {
     position: fixed;
@@ -24,6 +32,12 @@ body {
 #myActionButton {
     position: fixed;
     bottom: 100px;
+    right: 100px;
+}
+
+#myActionButton2 {
+    position: fixed;
+    bottom: 150px;
     right: 100px;
 }
 
@@ -44,6 +58,7 @@ body {
     z-index: 2;
     box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
 }
+
 
 /* dark mode styles */
 
@@ -75,6 +90,10 @@ body.dark-mode input:-webkit-autofill{
 }
 
 /* darker */
+body.dark-mode .mat-expansion-panel,
+body.dark-mode .mat-expansion-panel-header,
+body.dark-mode .mat-panel-title,
+body.dark-mode .mat-panel-description,
 body.dark-mode .card-item,
 body.dark-mode .mat-mdc-card,
 body.dark-mode .mat-mdc-card-title,
