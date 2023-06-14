@@ -29,11 +29,11 @@
             <mat-list>
                 <mat-list-item
                     *ngFor="let recipe of recipes | paginate: {itemsPerPage: 25, currentPage: pageIndex, totalItems: totalElements}">
-
                     <!-- TODO: fix this picture mess -->
 
                     <div matListItemAvatar>
-                        <img src="data:image/jpeg;base64, {{recipe.picture}}" alt="R">
+                        <img *ngIf="recipe.picture !== '' && recipe.picture !== null && recipe.picture  !== undefined" src="data:image/jpeg;base64, {{recipe.picture}}" alt="recipe">
+                        <img *ngIf="recipe.picture === '' || recipe.picture === null || recipe.picture  === undefined" src="../../../assets/Image_not_available.png" alt="recipe">
                     </div>
                     <div matListItemTitle>{{recipe.name}}</div>
                     <div matListItemLine>{{recipe.description}}</div>
@@ -42,3 +42,4 @@
         </div>
     </div>
 </div>
+
