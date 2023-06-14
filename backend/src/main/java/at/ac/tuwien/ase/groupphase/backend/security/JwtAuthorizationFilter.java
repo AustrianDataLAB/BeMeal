@@ -7,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,14 +31,18 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     public void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
             final FilterChain chain) throws ServletException, IOException {
-        final var header = request.getHeader(AUTH_HEADER_KEY);
-        if (header == null || !header.startsWith(BEARER_PREFIX)) {
+        try {
+            final var header = request.getHeader(AUTH_HEADER_KEY);
+            if (header == null || !header.startsWith(BEARER_PREFIX)) {
+                chain.doFilter(request, response);
+                return;
+            }
+            final var authentication = getAuthentication(request);
+            SecurityContextHolder.getContext().setAuthentication(toAuthenticationToken(authentication));
             chain.doFilter(request, response);
-            return;
+        } catch (AccessDeniedException e) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
         }
-        final var authentication = getAuthentication(request);
-        SecurityContextHolder.getContext().setAuthentication(toAuthenticationToken(authentication));
-        chain.doFilter(request, response);
     }
 
     private UserDetails getAuthentication(final HttpServletRequest request) {
