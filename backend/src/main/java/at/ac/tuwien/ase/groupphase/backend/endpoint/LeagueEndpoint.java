@@ -92,7 +92,8 @@ public class LeagueEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirement(name = "bearerToken")
     public List<LeaderboardDto> getLeaderboardByLeagueId(@NotNull @PathVariable final Long leagueId) {
-        return leagueService.getLeaderboardOfLeague(leagueId);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return leagueService.getLeaderboardOfLeague(leagueId, username);
     }
 
     @GetMapping("/{leagueId}/winningSubmissions")

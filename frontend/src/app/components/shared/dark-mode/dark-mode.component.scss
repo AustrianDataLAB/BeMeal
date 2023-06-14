@@ -1,0 +1,16 @@
+.container-darkmode-box {
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+
+.container-darkmode-box:hover {
+    cursor: pointer;
+}
+
+.icon-dark-mode-box{
+    margin-left: 8px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
