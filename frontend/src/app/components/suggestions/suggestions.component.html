@@ -1,0 +1,135 @@
+<div id="upvoting-container" *ngIf="randomRecipes.length > 0 && sugg" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+        <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
+            <div fxLayout="row" fxLayoutGap="16px" class="card-container"
+                 [@cardAnimator]="cardState"
+                 (@cardAnimator.done)="resetAnimationState($event)"
+                 (swipeleft)='onSwipeLeft()'
+                 (swiperight)='onSwipeRight()'>
+                <mat-card class="card-item">
+                    <mat-card-header>
+                        <!-- todo display name of challenge if submissions from another challenge are displayed (decision to be made), call backend with challenge id from submissiondtp -->
+                    </mat-card-header>
+                    <mat-card-content class="card-content-league">
+                        <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
+                        <img style="max-height: 400px" src="{{currentPicture}}" />
+                    </mat-card-content>
+                    <mat-card-actions>
+                    </mat-card-actions>
+                </mat-card>
+                <mat-card *ngIf="toggle" class="card-item-top">  <!-- todo do not display when game mode picture -->
+                    <mat-card-header>
+                        <mat-card-title>The ingredients</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="card-content-league">
+                        <div class="span-content-league; card-content-ingredients">
+                            <ul class="card-content-ingredients-list">
+                                <li class="card-content-ingredients-list-item" *ngFor="let ingredient of randomRecipes[index].ingredients">{{prettyString(ingredient.name)}}</li>
+                            </ul>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div fxFlexFill fxFlex="100"  fxLayoutGap="16px" fxLayout="row" fxLayoutAlign="center center" >
+            <button (click)="onSwipeLeft()" color="primary" mat-fab  aria-label="like">
+                <mat-icon>close</mat-icon>
+            </button>
+            <button (click)="onSwipeRight()" color="primary" mat-fab  aria-label="like">
+                <mat-icon>favorite</mat-icon>
+            </button>
+            <button mat-raised-button color="primary" class="btn-block pmd-btn-fab" (click)="getSuggestions()">Suggestions</button>
+            <div>{{this.likedRecipes.length}}/5</div>
+        </div>
+<!--        <button (click)="switchUpvotingContainer()" style="margin-left: 12px;" mat-button  color="secondary" class="btn-block">Cancel</button>-->
+    </div>
+</div>
+<mat-expansion-panel class="mat-expansion-panel" *ngIf="!sugg"  expanded="false">
+    <mat-expansion-panel-header class="mat-expansion-panel-header">
+        <mat-panel-title class="mat-panel-title">
+            Input
+        </mat-panel-title>
+        <mat-panel-description class="mat-panel-description">
+            Recipes that you liked <3
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div id="show-container1"  fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+            <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
+                <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions.given">
+                    <mat-card class="card-item">
+                        <mat-card-header>
+                            <!-- todo display name of challenge if submissions from another challenge are displayed (decision to be made), call backend with challenge id from submissiondtp -->
+                        </mat-card-header>
+                        <mat-card-content class="card-content-league">
+                            <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
+                            <img style="max-height: 400px" src="data:image/jpeg;base64, {{item.picture}}" />
+                        </mat-card-content>
+                        <mat-card-actions>
+                        </mat-card-actions>
+                    </mat-card>
+                    <mat-card *ngIf="toggle" class="card-item-top">  <!-- todo do not display when game mode picture -->
+                        <mat-card-header>
+                            <mat-card-title>The ingredients</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="card-content-league">
+                            <div class="span-content-league; card-content-ingredients">
+                                <ul class="card-content-ingredients-list">
+                                    <li class="card-content-ingredients-list-item" *ngFor="let ingredient of item.ingredients">{{prettyString(ingredient.name)}}</li>
+                                </ul>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-expansion-panel>
+<mat-expansion-panel class="mat-expansion-panel" *ngIf="!sugg" expanded="true">
+    <mat-expansion-panel-header class="mat-expansion-panel-header">
+        <mat-panel-title class="mat-panel-title">
+            Suggestions
+        </mat-panel-title>
+        <mat-panel-description class="mat-panel-description">
+            These here are your suggestions
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div id="show-container" *ngIf="!sugg" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+            <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
+                <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions.suggestions">
+                    <mat-card class="card-item">
+                        <mat-card-header>
+                            <!-- todo display name of challenge if submissions from another challenge are displayed (decision to be made), call backend with challenge id from submissiondtp -->
+                        </mat-card-header>
+                        <mat-card-content class="card-content-league">
+                            <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
+                            <img style="max-height: 400px" src="data:image/jpeg;base64, {{item.picture}}" />
+                        </mat-card-content>
+                        <mat-card-actions>
+                        </mat-card-actions>
+                    </mat-card>
+                    <mat-card *ngIf="toggle" class="card-item-top">  <!-- todo do not display when game mode picture -->
+                        <mat-card-header>
+                            <mat-card-title>The ingredients</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="card-content-league">
+                            <div class="span-content-league; card-content-ingredients">
+                                <ul class="card-content-ingredients-list">
+                                    <li class="card-content-ingredients-list-item" *ngFor="let ingredient of item.ingredients">{{prettyString(ingredient.name)}}</li>
+                                </ul>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-expansion-panel>
+<span style="margin-left: 10px;" *ngIf="isFetching">
+    <mat-spinner style="margin:0 auto;" [diameter]="50"/>
+</span>
+
+
+<button mat-raised-button color="primary" id="myActionButton" class="btn-block pmd-btn-fab" (click)="switchPref()">Show Ingredients</button>
+<button mat-raised-button color="primary" id="myActionButton2" class="btn-block pmd-btn-fab" (click)="reset()">Go again</button>

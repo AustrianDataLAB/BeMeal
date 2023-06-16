@@ -15,3 +15,6 @@ export class Login {
 
 }
 
+export interface PasswordReset {
+    password: string
+}

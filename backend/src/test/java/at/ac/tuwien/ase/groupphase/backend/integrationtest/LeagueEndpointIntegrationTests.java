@@ -116,6 +116,28 @@ public class LeagueEndpointIntegrationTests {
         assertEquals(2, leaderboard.get(2).getPosition());
     }
 
+    @Test
+    @Sql({ "classpath:sql/SelfServiceData.sql" })
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    void givenPlatformUsersInLeague_getLeaderboardisCappedAt10PlusCurrentUser() throws Exception {
+        MvcResult response = mockMvc
+                .perform(MockMvcRequestBuilders.get(Constants.LEAGUE_ENDPOINT_BASEURI + "/2/leaderboard")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
+
+        List<LeaderboardDto> leaderboard = objectMapper.readValue(response.getResponse().getContentAsString(),
+                new TypeReference<>() {
+                });
+        assertNotNull(leaderboard);
+        assertNotEmpty(leaderboard, "Leaderboard list should not be empty");
+        assertEquals(10 + 1, leaderboard.size());
+
+        for (int i = 0; i < leaderboard.size() - 1; i++) {
+            assertEquals(1, leaderboard.get(i).getPosition());
+        }
+        assertEquals(2, leaderboard.get(leaderboard.size() - 1).getPosition());
+    }
+
     /*
      * @Test
      *

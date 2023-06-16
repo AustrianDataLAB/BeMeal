@@ -29,9 +29,23 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  mail: # just a throw-away account, checking in is ok
+    host: smtp.office365.com
+    port: 587
+    username: iam3.14meal@outlook.com
+    password: menschenglasierenistboese1234
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   neo4j:
     uri: bolt://localhost:7687
     authentication:
       username: neo4j
       password: password
+bemeal:
+  frontend:
+    passwordResetConfirmUrl: http://localhost:4200/password-reset/{resetToken}
 

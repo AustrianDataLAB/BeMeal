@@ -5,8 +5,8 @@ import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 
 import jwt_decode from 'jwt-decode';
 import {Globals} from '../shared/globals';
-import {Login} from "../dtos/login";
 import {Profile} from "../dtos/profile";
+import {Login, PasswordReset} from '../dtos/login';
 
 @Injectable({
     providedIn: 'root'
@@ -67,6 +67,27 @@ export class SelfService {
 
     getProfile(): Observable<Profile> {
         return this.httpClient.get<Profile>(this.authBaseUri + '/profile');
+    }
+
+    /**
+     * Request a password reset via email.
+     * This requires the email of the user.
+     * This request succeeds in any circumstance iff it reaches the server.
+     * It does not provide any feedback per design, even if such email does not exist.
+     * @param email the email address of the user to send the email
+     */
+    requestPasswordResetMail(email: string): Observable<any> {
+        return this.httpClient.put(this.authBaseUri + `/password-token/${email}`, undefined);
+    }
+
+    /**
+     * Reset the password with a token which was received per email before.
+     *
+     * @param passwordResetToken the token from the email
+     * @param passwordReset the structure which contains the new password to set
+     */
+    resetPassword(passwordResetToken: string, passwordReset: PasswordReset): Observable<any> {
+        return this.httpClient.put(this.authBaseUri + `/password/${passwordResetToken}`, passwordReset);
     }
 
     /**

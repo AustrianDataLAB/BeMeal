@@ -20,7 +20,7 @@ public class Participant extends PlatformUser {
     public Participant(Long id, String email, byte[] password, String username, Boolean isAdmin, List<League> ownerOf,
             String postalCode, Integer wins, Region region, LocalDateTime registered, List<Submission> submissions,
             List<ParticipantSubmissionVote> votes, List<League> leagues) {
-        super(id, email, password, username, isAdmin, ownerOf);
+        super(id, email, password, username, isAdmin, null, ownerOf);
         this.postalCode = postalCode;
         this.wins = wins;
         this.region = region;

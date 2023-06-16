@@ -24,6 +24,8 @@ export class SearchComponent {
     selectedSkillLevels: string[];
     stateSearched = false;
 
+    error = false;
+    errorMessage = "";  // todo impl error handling
     pagination: Pagination;
     pageIndex = 1;
     totalElements = 0;
@@ -130,11 +132,11 @@ export class SearchComponent {
                 break;
         }
         if (seconds == 1800) {
-            return '30 min'
+            return '30min'
         } else if (seconds == 36000) {
-            return '>10 h'
+            return '>10h'
         }
-        return seconds / 3600 + ' h';
+        return seconds / 3600 + 'h';
     }
 
     private sliderValueToSeconds(value: number): number {

@@ -31,6 +31,9 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSliderModule} from "@angular/material/slider";
 import {NgImageSliderModule} from 'ng-image-slider';
 import { RecipeComponent } from './components/recipe/recipe.component';
+import {PasswordResetComponent} from './components/login/password-reset/password-reset.component';
+import { SuggestionsComponent } from './components/suggestions/suggestions.component';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
     declarations: [
@@ -50,6 +53,8 @@ import { RecipeComponent } from './components/recipe/recipe.component';
         MealsComponent,
         AnalyticsComponent,
         HeatMapComponent,
+        PasswordResetComponent,
+        SuggestionsComponent,
         SearchComponent,
         RecipeComponent
     ],
@@ -68,6 +73,7 @@ import { RecipeComponent } from './components/recipe/recipe.component';
         MatSlideToggleModule,
         MatSliderModule,
         MatProgressSpinnerModule,
+        MatExpansionModule,
         NgImageSliderModule
     ],
     providers: [httpInterceptorProviders],
