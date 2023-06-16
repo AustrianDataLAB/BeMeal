@@ -97,11 +97,12 @@ export class MealsComponent implements OnInit {
         ).subscribe();
     }
 
-    openDialog(recipe: Recipe): void {
-        console.log(recipe);
+    openDialog(recipeId: string): void {
+        console.log(recipeId);
         const dialogRef = this.dialog.open(RecipeComponent, {
+            maxHeight: "1000px",
             width: "1000px",
-            data: recipe
+            data: recipeId
         });
 
         console.log(dialogRef);

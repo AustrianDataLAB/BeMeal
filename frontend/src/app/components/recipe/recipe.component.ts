@@ -13,50 +13,36 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./recipe.component.scss']
 })
 
-export class RecipeComponent{
+export class RecipeComponent implements OnInit{
 
-    // @Input() recipe: Recipe;
-    recipeId: string;
-    // recipe: Recipe;
+    recipe: Recipe;
     error: boolean;
     errorMessage: string;
 
-    // constructor(private selfService: SelfService, private router: Router, private route: ActivatedRoute, private recipeService: RecipeService) {
-    // }
-    constructor(@Inject(MAT_DIALOG_DATA) public recipe: Recipe) {
+    constructor(private recipeService: RecipeService, @Inject(MAT_DIALOG_DATA) public recipeId: string) {
     }
-
 
     ngOnInit() {
         console.log(this.recipe);
-        console.log(this.recipe);
-        // this.extractId()
-        // this.fetchRecipe(this.recipeId);
+        this.fetchRecipe(this.recipeId);
     }
 
-    // extractId(): void {
-    //     const id = this.route.snapshot.paramMap.get('id');
-    //     if (id !== null) {
-    //         this.recipeId = id;
-    //     }
-    // }
-    //
-    // fetchRecipe(id: string) {
-    //     this.recipeService.findRecipeById(id).pipe(
-    //         tap(response => {
-    //             this.recipe = response;
-    //             console.log(this.recipe);
-    //             console.log('Successfully fetched recipe');
-    //         }),
-    //         catchError(error => {
-    //             console.error('Error while fetching a recipe:', error);
-    //             this.errorMessage = "Could not fetch the recipe";
-    //             this.error = true;
-    //             // Handle the error here
-    //             return of(null);
-    //         })
-    //     ).subscribe();
-    // }
+    fetchRecipe(id: string) {
+        this.recipeService.findRecipeById(id).pipe(
+            tap(response => {
+                this.recipe = response;
+                console.log(this.recipe);
+                console.log('Successfully fetched recipe');
+            }),
+            catchError(error => {
+                console.error('Error while fetching a recipe:', error);
+                this.errorMessage = "Could not fetch the recipe";
+                this.error = true;
+                // Handle the error here
+                return of(null);
+            })
+        ).subscribe();
+    }
 
     /**
      * Takes in a string and makes it presentable to the frontend. Removes camelcase and uppercases

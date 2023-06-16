@@ -30,7 +30,7 @@
             </div>
             <div fxLayout="row wrap" fxLayoutGap="16px" style="width: 100%; margin-top: 48px">
                 <ng-container style="max-width: 25%;" *ngFor="let recipe of recipes | paginate: {itemsPerPage: 24, currentPage: pageIndex, totalItems: totalElements}">
-                    <mat-card class="card-item" (click)="openDialog(recipe)">
+                    <mat-card class="card-item" (click)="openDialog(recipe.recipeId)">
                             <img matCardImage *ngIf="recipe.picture !== '' && recipe.picture !== null && recipe.picture  !== undefined" src="data:image/jpeg;base64, {{recipe.picture}}" alt="recipe">
                             <img  matCardImage *ngIf="recipe.picture === '' || recipe.picture === null || recipe.picture  === undefined" src="../../../assets/Image_not_available.png" alt="recipe">
                             <mat-card-header>
