@@ -10,6 +10,7 @@ import {Recipe} from "../../dtos/recipe";
 import {Pagination} from "../../dtos/pagination";
 import {MatDialog} from '@angular/material/dialog';
 import {RecipeComponent} from "../recipe/recipe.component";
+import {NoopScrollStrategy} from "@angular/cdk/overlay";
 
 @Component({
     selector: 'app-meals',
@@ -102,6 +103,7 @@ export class MealsComponent implements OnInit {
         const dialogRef = this.dialog.open(RecipeComponent, {
             maxHeight: "1000px",
             width: "1000px",
+            scrollStrategy: new NoopScrollStrategy(),
             data: recipeId
         });
 
