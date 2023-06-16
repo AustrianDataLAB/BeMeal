@@ -34,6 +34,7 @@ import { RecipeComponent } from './components/recipe/recipe.component';
 import {PasswordResetComponent} from './components/login/password-reset/password-reset.component';
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 import {MatExpansionModule} from "@angular/material/expansion";
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     declarations: [
@@ -74,6 +75,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
         MatSliderModule,
         MatProgressSpinnerModule,
         MatExpansionModule,
+        MatDialogModule,
         NgImageSliderModule
     ],
     providers: [httpInterceptorProviders],
