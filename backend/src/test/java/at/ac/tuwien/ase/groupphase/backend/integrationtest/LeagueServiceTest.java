@@ -47,7 +47,7 @@ public class LeagueServiceTest {
             "7ee65cc3-b719-4bf6-872e-b253dace5ff1");
     private final static Participant VALID_PARTICIPANT_1 = new Participant(VALID_USER_ID, VALID_USER_EMAIL,
             VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
-            VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
+            null, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
             new ArrayList<>());
     private static final Challenge CHALLENGE1 = new Challenge(1L, "challenge description",
             LocalDateTime.now().toLocalDate(), LocalDateTime.now().plusDays(7).toLocalDate(), "Recipe",

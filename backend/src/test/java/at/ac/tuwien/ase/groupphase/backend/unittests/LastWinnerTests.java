@@ -280,7 +280,7 @@ class LastWinnerTests {
     }
 
     private Participant generateParticipant(final String name) {
-        return new Participant(null, name + "@example.org", new byte[] {}, name, false, List.of(), "2286", 0,
+        return new Participant(null, name + "@example.org", new byte[] {}, name, false, List.of(), "2286", null,
                 Region.BURGENLAND, LocalDateTime.now(), List.of(), List.of(), List.of());
     }
 

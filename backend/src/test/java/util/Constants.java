@@ -30,21 +30,21 @@ public final class Constants {
 
     public static final Participant VALID_PARTICIPANT_1 = new Participant(VALID_USER_ID, VALID_USER_EMAIL,
             VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
-            VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
+            null, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
             new ArrayList<>());
 
     public static final Participant VALID_PARTICIPANT_2 = new Participant(VALID_USER_ID2, VALID_USER_EMAIL2,
             VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME2, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
-            VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
+            null, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
             new ArrayList<>());
 
     public static final Participant VALID_PARTICIPANT_3 = new Participant(VALID_USER_ID3, VALID_USER_EMAIL3,
             VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME3, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
-            VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
+            null, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
             new ArrayList<>());
 
     public static final ParticipantDto VALID_PARTICIPANT_DTO_1 = new ParticipantDto(VALID_USER_USERNAME,
-            VALID_USER_EMAIL, VALID_USER_POSTAL_CODE, VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME);
+            VALID_USER_EMAIL, VALID_USER_POSTAL_CODE, null, VALID_USER_REGION, VALID_LOCALDATETIME);
 
     public static final League LEAGUE1 = new League(null, UUID.randomUUID(), GameMode.PICTURE_INGREDIENTS,
             Region.VORARLBERG, 7, "League 1", new ArrayList<>(), new ArrayList<>());
@@ -57,7 +57,7 @@ public final class Constants {
 
     public static final Participant PARTICIPANT_NOID = new Participant(null, VALID_USER_EMAIL,
             VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
-            VALID_WINS, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
+            null, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
             new ArrayList<>());
 
     public static final Submission VALID_SUBMISSION_P1 = new Submission(null, UUID.randomUUID(), LocalDateTime.now(),

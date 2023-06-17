@@ -14,17 +14,16 @@ INSERT INTO Platform_User ( email, username, password, is_admin) VALUES ('test3@
 INSERT INTO Platform_User ( email, username, password, is_admin) VALUES ( 'test4@gmail.com', 'test4', '$2a$10$3QSmui3.ul8jAWpXRzKw4eqSrO7822dM5qIecTFOYG4GHwXfHSNuO', false);
 
 /*      Create show user Participants     */
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (7, 1100, 1, '2021-01-22 16:38:54', 66);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (8, 6890, 6, '2021-08-21 18:42:41', 28);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (9, 2100, 4, '2021-07-02 21:32:05', 75);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (10, 5020, 6, '2020-05-20 23:14:37', 89);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (1, 2301, 1, '2020-05-20 23:14:37', 5);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (2, 2401, 1, '2020-05-20 23:14:37', 6);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (3, 3804, 1, '2020-05-20 23:14:37', 7);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (4, 6890, 8, '2020-05-20 23:14:37', 8);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (5, 6850, 8, '2020-05-20 23:14:37', 9);
-INSERT INTO Participant (participant_id, postal_code, region, registered, wins) VALUES (6, 1010, 1, '2020-05-20 23:14:37', 10);
-
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (7, 1100, 1, '2021-01-22 16:38:54');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (8, 6890, 6, '2021-08-21 18:42:41');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (9, 2100, 4, '2021-07-02 21:32:05');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (10, 5020, 6, '2020-05-20 23:14:37');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (1, 2301, 1, '2020-05-20 23:14:37');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (2, 2401, 1, '2020-05-20 23:14:37');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (3, 3804, 1, '2020-05-20 23:14:37');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (4, 6890, 8, '2020-05-20 23:14:37');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (5, 6850, 8, '2020-05-20 23:14:37');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (6, 1010, 1, '2020-05-20 23:14:37');
 
 /*      Create default Leagues      */
 /*
