@@ -21,6 +21,7 @@ public class ParticipantService {
         this.participantMapper = participantMapper;
     }
 
+    @Transactional
     public ParticipantDto getParticipantDto() {
         final String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);

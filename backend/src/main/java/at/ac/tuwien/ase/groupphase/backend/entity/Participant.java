@@ -34,8 +34,7 @@ public class Participant extends PlatformUser {
 
     @Column(nullable = false)
     private String postalCode;
-    @Column(nullable = false)
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     private Map<Long,Integer> wins = new HashMap<>();
     @Column(nullable = false)
     private Region region;

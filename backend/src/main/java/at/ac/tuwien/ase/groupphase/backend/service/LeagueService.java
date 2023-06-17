@@ -93,6 +93,7 @@ public class LeagueService {
         return dto;
     }
 
+    @Transactional
     public void createLeague(String username, League league) {
         Participant user = (Participant) this.userRepository.findByUsername(username);
         List<Participant> participantList = new ArrayList<>();
@@ -116,6 +117,7 @@ public class LeagueService {
      * @param leagueId
      *            id of the league
      */
+    @Transactional
     public void joinLeague(String username, Long leagueId) {
         League league = this.leagueRepository.findById(leagueId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid league ID"));
@@ -132,6 +134,7 @@ public class LeagueService {
     }
 
     // important: regional leagues have to exist
+    @Transactional
     public void joinRegionalLeague(String username, Region region) {
         String leagueName = modifyString(region.toString()) + " League";
         System.out.println(leagueName);
@@ -149,6 +152,7 @@ public class LeagueService {
         this.leagueRepository.save(league);
     }
 
+    @Transactional
     public List<League> getLeagues(String username) {
         Participant user = (Participant) this.userRepository.findByUsername(username);
         List<Participant> participantList = new ArrayList<>();
@@ -170,6 +174,7 @@ public class LeagueService {
         return this.userRepository.isCreatorOfLeague(username, leagueId);
     }
 
+    @Transactional
     public List<LeaderboardDto> getLeaderboardOfLeague(Long leagueId, String currentUsername) {
         logger.trace("Constructing leaderboard with getLeaderboardOfLeague({}, {})", leagueId, currentUsername);
         List<LeaderboardDto> leaderboard = new ArrayList<>();
