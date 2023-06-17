@@ -80,4 +80,9 @@ export class RecipeService {
         }
         return this.httpClient.get<Recipe[]>(uri);
     }
+
+    findRecipeById(id: string): Observable<Recipe> {
+        const uri = this.baseUri + "/" + id;
+        return this.httpClient.get<Recipe>(uri);
+    }
 }

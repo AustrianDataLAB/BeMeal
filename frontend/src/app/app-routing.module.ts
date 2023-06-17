@@ -13,6 +13,7 @@ import {ChallengeComponent} from './components/challenge/challenge.component';
 import {AnalyticsComponent} from './components/analytics/analytics.component';
 import {MealsComponent} from "./components/meals/meals.component";
 import {SearchComponent} from "./components/search/search.component";
+import {RecipeComponent} from "./components/recipe/recipe.component";
 import {PasswordResetComponent} from './components/login/password-reset/password-reset.component';
 import {SuggestionsComponent} from './components/suggestions/suggestions.component';
 
@@ -32,7 +33,8 @@ const routes: Routes = [
     {path: 'search', canActivate: [AuthGuard], component: SearchComponent},
     {path: 'password-reset', component: PasswordResetComponent},
     {path: 'password-reset/:token', component: PasswordResetComponent},
-    {path: 'suggestions', canActivate: [AuthGuard], component: SuggestionsComponent}
+    {path: 'suggestions', canActivate: [AuthGuard], component: SuggestionsComponent},
+    {path: 'recipe/:id', canActivate: [AuthGuard], component: RecipeComponent}
 ];
 
 
