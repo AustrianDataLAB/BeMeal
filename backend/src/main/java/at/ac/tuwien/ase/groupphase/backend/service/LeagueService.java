@@ -102,6 +102,7 @@ public class LeagueService {
         List<League> owned = user.getOwnerOf();
         owned.add(l);
         user.setOwnerOf(owned);
+        user.getWins().put(l.getId(), 0);
         this.userRepository.save(user);
         // create challenge for new league:
         this.challengeGenerationService.generateForExpiredChallenges();
@@ -123,6 +124,8 @@ public class LeagueService {
         if (participantList.stream().anyMatch(p -> p.getId().equals(user.getId()))) {
             throw new AlreadyJoinedException();
         }
+        user.getWins().put(leagueId, 0);
+        this.participantRepository.save(user);
         participantList.add(user);
         league.setParticipants(participantList);
         this.leagueRepository.save(league);
@@ -139,6 +142,8 @@ public class LeagueService {
 
         List<Participant> participantList = league.getParticipants();
         Participant user = (Participant) this.userRepository.findByUsername(username);
+        user.getWins().put(league.getId(), 0);
+        this.participantRepository.save(user);
         participantList.add(user);
         league.setParticipants(participantList);
         this.leagueRepository.save(league);
@@ -171,7 +176,7 @@ public class LeagueService {
         for (Participant p : participantRepository.getParticipantRankingForLeague(leagueId)) {
             logger.debug("Got Participant for league with id {}: {Username: {}, Wins: {}}", leagueId, p.getUsername(),
                     p.getWins());
-            LeaderboardDto leaderboardDto = new LeaderboardDto(p.getUsername(), p.getWins());
+            LeaderboardDto leaderboardDto = new LeaderboardDto(p.getUsername(), p.getWins().get(leagueId));
             leaderboard.add(leaderboardDto);
         }
 

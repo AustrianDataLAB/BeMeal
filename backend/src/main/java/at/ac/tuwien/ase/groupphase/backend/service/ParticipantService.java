@@ -28,10 +28,12 @@ public class ParticipantService {
     }
 
     @Transactional
-    public void increaseWinsOfParticipant(Long id) {
+    public void increaseWinsOfParticipant(Long id, Long leagueId) {
         Participant participant = participantRepository.findById(id).orElseThrow();
 
-        participant.setWins(participant.getWins() + 1);
+        participant.getWins().putIfAbsent(leagueId, 0);
+        participant.getWins().put(leagueId, participant.getWins().get(leagueId) +1);
+//        participant.setWins(participant.getWins() + 1);
     }
 
 }
