@@ -7,7 +7,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "participant_id")
@@ -18,7 +20,7 @@ import java.util.List;
 public class Participant extends PlatformUser {
 
     public Participant(Long id, String email, byte[] password, String username, Boolean isAdmin, List<League> ownerOf,
-            String postalCode, Integer wins, Region region, LocalDateTime registered, List<Submission> submissions,
+            String postalCode, Map<Long, Integer> wins, Region region, LocalDateTime registered, List<Submission> submissions,
             List<ParticipantSubmissionVote> votes, List<League> leagues) {
         super(id, email, password, username, isAdmin, null, ownerOf);
         this.postalCode = postalCode;
@@ -33,7 +35,8 @@ public class Participant extends PlatformUser {
     @Column(nullable = false)
     private String postalCode;
     @Column(nullable = false)
-    private Integer wins = 0;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Map<Long,Integer> wins = new HashMap<>();
     @Column(nullable = false)
     private Region region;
     @Column(nullable = false)

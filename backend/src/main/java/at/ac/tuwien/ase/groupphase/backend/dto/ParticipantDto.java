@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -27,7 +28,7 @@ public class ParticipantDto {
 
     @NotNull
     @NotEmpty
-    private Integer wins;
+    private Map<Long, Integer> wins;
 
     @NotNull
     @NotEmpty
