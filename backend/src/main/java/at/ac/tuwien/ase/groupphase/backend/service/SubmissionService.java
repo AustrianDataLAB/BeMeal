@@ -81,11 +81,9 @@ public class SubmissionService {
         LocalDateTime now = LocalDateTime.now();
         UUID newUUID = UUID.randomUUID();
 
-        ////////////////////////////////////////////////////////////////
         // verify that the participant is eligible to submit to this challenge
         this.verifyEligibility(participant, challenge, now);
 
-        ////////////////////////////////////////////////////////////////
         // transform and save image
         try {
             InputStream inputStream = file.getInputStream();
@@ -103,7 +101,6 @@ public class SubmissionService {
             throw new RuntimeException(e);
         }
 
-        ////////////////////////////////////////////////////////////////
         // add/overwrite submission
         Submission newSubmission = this.getNewSubmission(newUUID, now, participant, challenge);
         this.submissionRepository.save(newSubmission);
@@ -165,7 +162,6 @@ public class SubmissionService {
      * @return res array: width=res[0] height=res[1]
      */
     private static int[] widthHeightCorrectAspectRatio(BufferedImage img) {
-        // LOGGER.info("original width and height: width: " + img.getWidth() + " height: " + img.getHeight());
         int[] res = { img.getWidth(), img.getHeight() };
         if (img.getWidth() > SubmissionService.MAX_WIDTH_HEIGHT
                 || img.getHeight() > SubmissionService.MAX_WIDTH_HEIGHT) {

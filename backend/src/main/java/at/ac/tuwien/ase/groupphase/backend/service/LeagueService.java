@@ -36,16 +36,6 @@ public class LeagueService {
     private final SubmissionMapper submissionMapper;
     private final Logger logger = LoggerFactory.getLogger(LeagueService.class);
 
-    /*
-     * @Autowired
-     *
-     * @NotNull public LeagueService(UserRepository userRepository, LeagueRepository leagueRepository,
-     * ChallengeRepository challengeRepository, ChallengeGenerationService challengeGenerationService, RecipeService
-     * recipeService, LeagueMapper leagueMapper) { this.userRepository = userRepository; this.leagueRepository =
-     * leagueRepository; this.challengeRepository = challengeRepository; this.challengeGenerationService =
-     * challengeGenerationService; this.recipeService = recipeService; this.leagueMapper = leagueMapper; }
-     */
-
     @Transactional
     public LeagueSecretsDto getLeagueSecretsWithLeagueId(Long id, boolean refresh) {
         var league = leagueRepository.findById(id);
@@ -66,9 +56,6 @@ public class LeagueService {
     @Transactional
     public ChallengeInfoDto getChallengeForLeague(Long id) {
         League league = this.leagueRepository.findById(id).orElseThrow();
-        // if (league.getChallenges().isEmpty()) {
-        // throw new NoChallengeException();
-        // }
         Challenge challenge = this.challengeRepository.getLatestChallenge(league.getId());
         if (challenge == null) {
             throw new NoChallengeException();

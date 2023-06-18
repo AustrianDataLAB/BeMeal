@@ -62,14 +62,6 @@ public class LeagueEndpoint {
     @ResponseStatus(HttpStatus.OK)
     public ChallengeInfoDto getChallengeForLeague(@NotNull @PathVariable final Long id) {
         return this.leagueService.getChallengeForLeague(id);
-        // try {
-        // return this.leagueService.getChallengeForLeague(id);
-        // } catch (NoChallengeException e) {
-        // throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        // } catch (NoSuchElementException e) {
-        // throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        // }
-
     }
 
     @GetMapping("/{id}")
@@ -84,7 +76,6 @@ public class LeagueEndpoint {
             return ResponseEntity.ok(this.leagueMapper.leagueToLeagueDto(league));
         } else {
             throw new NoSuchElementException("User not in league");
-            // throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not in league");
         }
     }
 

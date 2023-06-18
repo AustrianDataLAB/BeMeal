@@ -75,7 +75,6 @@ public class SecurityConfiguration {
     // Tells browsers the header is safe and to process it
     @Configuration
     public class CorsConfig {
-
         @Bean
         public WebMvcConfigurer corsConfigurer() {
             return new WebMvcConfigurer() {
