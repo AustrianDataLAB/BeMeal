@@ -232,10 +232,11 @@ public class LeagueService {
             }
         }
 
-        leaderboard.subList(clearStartIndex + 1, leaderboard.size()).clear();
-
         if (!currentUserRanked) {
+            leaderboard.subList(clearStartIndex, leaderboard.size()).clear();
             leaderboard.add(currentUser);
+        } else {
+            leaderboard.subList(clearStartIndex + 1, leaderboard.size()).clear();
         }
 
         return leaderboard;
