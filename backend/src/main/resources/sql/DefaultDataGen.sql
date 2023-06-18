@@ -99,8 +99,6 @@ INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES
 INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (15, 6);
 
 /*      Create show Challenges      */
--- ToDo: Beware of placeholder UUID
--- Characters with accent get displayed incorrectly in frontend
 INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Uni friends', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '102452', 10);
 INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Work friends', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '102452', 11);
 INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for The legends', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '102452', 12);
@@ -120,12 +118,8 @@ INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VAL
 INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Carinthia League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 7);
 INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Burgenland League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 8);
 INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vorarlberg League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 9);
---INSERT INTO League_Challenges (league_id, challenges_id) VALUES (1, 1);
-
-
 
 /*      Create Submission      */
--- ToDo: Beware of placeholder UUID
 INSERT INTO Submission (date, picture, challenge_id, participant_participant_id) VALUES (DATEADD(day, 2, CURRENT_TIMESTAMP), '518cf81f-0ff6-4999-b160-756e0dfeac0a', 1, 1);
 INSERT INTO Submission (date, picture, challenge_id, participant_participant_id) VALUES (DATEADD(day, 2, CURRENT_TIMESTAMP), '717c37e6-94e9-49a1-adf2-35617b91e0a6', 1, 2);
 INSERT INTO Submission (date, picture, challenge_id, participant_participant_id) VALUES (DATEADD(day, 2, CURRENT_TIMESTAMP), 'f7828b1f-9b3c-4ded-918a-c2cd8f20bfab', 1, 3);
