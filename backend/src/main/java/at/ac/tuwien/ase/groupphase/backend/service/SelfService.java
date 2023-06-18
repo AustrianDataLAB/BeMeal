@@ -39,7 +39,7 @@ public class SelfService {
     }
 
     public void register(Registration registration) throws ValidationException {
-        if (this.userRepository.exists(registration.email(), registration.password())) {
+        if (this.userRepository.exists(registration.email(), registration.username())) {
             throw new UserAlreadyExistsException(registration.email(), registration.username());
         }
         // check postal code
