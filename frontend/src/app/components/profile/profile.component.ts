@@ -14,6 +14,7 @@ export class ProfileComponent {
     public profile: Profile;
     error = false;
     errorMessage = "";
+    currentWins = 0;
 
     constructor(private selfService: SelfService) {
     }
@@ -30,7 +31,14 @@ export class ProfileComponent {
         this.selfService.getProfile()
             .pipe(tap(response => {
                     console.log(response)
-                    this.profile = response
+                    this.profile = response;
+                    for(const[a,b] of Object.entries(this.profile.wins)) {
+                        this.currentWins+=b;
+                    }
+                    // let k: keyof typeof this.profile.wins;
+                    // for (k in this.profile.wins) {
+                    //     this.currentWins+=this.profile.wins[k]
+                    // }
                 }),
                 catchError(error => {
                     console.error('Error retrieving profile:', error);

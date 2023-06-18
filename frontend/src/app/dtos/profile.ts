@@ -7,7 +7,7 @@ export class Profile {
         public username: string,
         public email: string,
         public postalCode: number,
-        public wins: Win[],
+        public wins: Object,
         public region: Region,
         public registered: string,
     ) {}
