@@ -108,8 +108,8 @@ public class SubmissionService {
         Submission newSubmission = this.getNewSubmission(newUUID, now, participant, challenge);
         this.submissionRepository.save(newSubmission);
 
-//        List<Submission> submissions = participant.getSubmissions();
-        List<Submission> submissions =new ArrayList<>(new HashSet<>(participant.getSubmissions()));
+        List<Submission> submissions = participant.getSubmissions();
+        // List<Submission> submissions =new ArrayList<>(new HashSet<>(participant.getSubmissions()));
         Submission previousSubmission = submissions.stream()
                 .filter(x -> Long.valueOf(challengeId).equals(x.getChallenge().getId())).findAny().orElse(null);
         if (previousSubmission != null) {

@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.mapper.IngredientMapper;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
@@ -11,6 +12,7 @@ import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ChallengeGenerationService;
 import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import at.ac.tuwien.ase.groupphase.backend.service.RecipeService;
+import at.ac.tuwien.ase.groupphase.backend.service.SelfService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,8 +49,7 @@ public class LeagueServiceTest {
             "7ee65cc3-b719-4bf6-872e-b253dace5ff1");
     private final static Participant VALID_PARTICIPANT_1 = new Participant(VALID_USER_ID, VALID_USER_EMAIL,
             VALID_USER_PASSWORD_BYTES, VALID_USER_USERNAME, Boolean.FALSE, new ArrayList<>(), VALID_USER_POSTAL_CODE,
-            null, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(),
-            new ArrayList<>());
+            null, VALID_USER_REGION, VALID_LOCALDATETIME, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     private static final Challenge CHALLENGE1 = new Challenge(1L, "challenge description",
             LocalDateTime.now().toLocalDate(), LocalDateTime.now().plusDays(7).toLocalDate(), "Recipe",
             new ArrayList<>(), LEAGUE1);
@@ -65,23 +66,33 @@ public class LeagueServiceTest {
     private final ParticipantRepository participantRepository;
     private final LeagueRepository leagueRepository;
     private final ChallengeRepository challengeRepository;
+    private SelfService selfService;
 
     @Autowired
     public LeagueServiceTest(LeagueService leagueService, ChallengeGenerationService challengeGenerationService,
             LeagueMapper leagueMapper, ParticipantRepository participantRepository, LeagueRepository leagueRepository,
-            ChallengeRepository challengeRepository) {
+            ChallengeRepository challengeRepository, SelfService selfService) {
         this.leagueService = leagueService;
         this.challengeGenerationService = challengeGenerationService;
         this.leagueMapper = leagueMapper;
         this.participantRepository = participantRepository;
         this.leagueRepository = leagueRepository;
         this.challengeRepository = challengeRepository;
+        this.selfService = selfService;
     }
 
     @BeforeEach
     void beforeEach() {
         assertEquals(0, StreamSupport.stream(this.participantRepository.findAll().spliterator(), false).count());
-        this.participantRepository.save(VALID_PARTICIPANT_1);
+        // this.participantRepository.save(VALID_PARTICIPANT_1);
+        this.leagueRepository.save(
+                new League(null, UUID.fromString("d9e7c7c7-0eab-42f6-a09b-475a2bf08f66"), GameMode.PICTURE_INGREDIENTS,
+                        Region.LOWER_AUSTRIA, 7, "Lower Austria League", null, new ArrayList<>()));
+        this.selfService.register(new Registration(VALID_PARTICIPANT_1.getEmail(), VALID_PARTICIPANT_1.getUsername(),
+                VALID_USER_PASSWORD, VALID_PARTICIPANT_1.getRegion(), VALID_PARTICIPANT_1.getPostalCode()));
+        Participant user = (Participant) this.participantRepository.findByUsername(VALID_PARTICIPANT_1.getUsername());
+        user.setOwnerOf(new ArrayList<>());
+        this.participantRepository.save(user);
 
         Ingredient i1 = new Ingredient(UUID.randomUUID(), "i1");
         Ingredient i2 = new Ingredient(UUID.randomUUID(), "i2");
