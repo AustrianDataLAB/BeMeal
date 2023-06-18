@@ -20,8 +20,8 @@ import java.util.Map;
 public class Participant extends PlatformUser {
 
     public Participant(Long id, String email, byte[] password, String username, Boolean isAdmin, List<League> ownerOf,
-            String postalCode, Map<Long, Integer> wins, Region region, LocalDateTime registered, List<Submission> submissions,
-            List<ParticipantSubmissionVote> votes, List<League> leagues) {
+            String postalCode, Map<Long, Integer> wins, Region region, LocalDateTime registered,
+            List<Submission> submissions, List<ParticipantSubmissionVote> votes, List<League> leagues) {
         super(id, email, password, username, isAdmin, null, ownerOf);
         this.postalCode = postalCode;
         this.wins = wins;
@@ -35,7 +35,7 @@ public class Participant extends PlatformUser {
     @Column(nullable = false)
     private String postalCode;
     @ElementCollection
-    private Map<Long,Integer> wins = new HashMap<>();
+    private Map<Long, Integer> wins = new HashMap<>();
     @Column(nullable = false)
     private Region region;
     @Column(nullable = false)

@@ -33,8 +33,8 @@ public class ParticipantService {
         Participant participant = participantRepository.findById(id).orElseThrow();
 
         participant.getWins().putIfAbsent(leagueId, 0);
-        participant.getWins().put(leagueId, participant.getWins().get(leagueId) +1);
-//        participant.setWins(participant.getWins() + 1);
+        participant.getWins().put(leagueId, participant.getWins().get(leagueId) + 1);
+        // participant.setWins(participant.getWins() + 1);
     }
 
 }
