@@ -6,6 +6,9 @@ import {of} from "rxjs";
 import {Pagination} from "../../dtos/pagination";
 import {MatChipListboxChange} from "@angular/material/chips";
 import {Recipe} from "../../dtos/recipe";
+import {RecipeComponent} from "../recipe/recipe.component";
+import {MatDialog} from "@angular/material/dialog";
+import {NoopScrollStrategy} from "@angular/cdk/overlay";
 
 @Component({
     selector: 'app-search',
@@ -24,11 +27,13 @@ export class SearchComponent {
     selectedSkillLevels: string[];
     stateSearched = false;
 
+    error = false;
+    errorMessage = "";  // todo impl error handling
     pagination: Pagination;
     pageIndex = 1;
     totalElements = 0;
 
-    constructor(private router: Router, private recipeService: RecipeService) {
+    constructor(private router: Router, private recipeService: RecipeService, private dialog: MatDialog) {
         this.resetSearchParams();
     }
 
@@ -130,11 +135,11 @@ export class SearchComponent {
                 break;
         }
         if (seconds == 1800) {
-            return '30 min'
+            return '30min'
         } else if (seconds == 36000) {
-            return '>10 h'
+            return '>10h'
         }
-        return seconds / 3600 + ' h';
+        return seconds / 3600 + 'h';
     }
 
     private sliderValueToSeconds(value: number): number {
@@ -154,5 +159,21 @@ export class SearchComponent {
         }
         // indicates that no upper time limit is set
         return 0;
+    }
+
+    openDialog(recipeId: string): void {
+        console.log(recipeId);
+        const dialogRef = this.dialog.open(RecipeComponent, {
+            maxHeight: "1000px",
+            width: "1000px",
+            scrollStrategy: new NoopScrollStrategy(),
+            data: recipeId
+        });
+
+        console.log(dialogRef);
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`Dialog result: ${result}`);
+        });
     }
 }

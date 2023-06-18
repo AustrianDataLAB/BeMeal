@@ -104,7 +104,7 @@ public class LeagueService {
         user.setOwnerOf(owned);
         this.userRepository.save(user);
         // create challenge for new league:
-        // this.challengeGenerationService.generateForExpiredChallenges();
+        this.challengeGenerationService.generateForExpiredChallenges();
     }
 
     /**

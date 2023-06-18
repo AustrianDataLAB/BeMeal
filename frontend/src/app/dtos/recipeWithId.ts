@@ -1,9 +1,9 @@
 import {Ingridient} from "./ingridient";
 
-export class Recipe {
+export class RecipeWithId {
     constructor(
-        public recipeId: string,
         public name: string,
+        public recipeId: string,
         public description: string,
         public preparationTime: number,
         public cookingTime: number,

@@ -8,6 +8,9 @@ import {MatChipListboxChange} from "@angular/material/chips";
 import {RecipeService} from "../../services/recipe.service";
 import {Recipe} from "../../dtos/recipe";
 import {Pagination} from "../../dtos/pagination";
+import {MatDialog} from '@angular/material/dialog';
+import {RecipeComponent} from "../recipe/recipe.component";
+import {NoopScrollStrategy} from "@angular/cdk/overlay";
 
 @Component({
     selector: 'app-meals',
@@ -28,7 +31,7 @@ export class MealsComponent implements OnInit {
     meals = ['1234', '2345', '11111']
     suggestions: Recipe[]
 
-    constructor(private router: Router, private recipeCollectionService: RecipeCollectionService, private recipeService: RecipeService) {
+    constructor(private router: Router, private recipeCollectionService: RecipeCollectionService, private recipeService: RecipeService, private dialog: MatDialog) {
     }
 
     ngOnInit(): void {
@@ -93,5 +96,21 @@ export class MealsComponent implements OnInit {
                 return of(null);
             })
         ).subscribe();
+    }
+
+    openDialog(recipeId: string): void {
+        console.log(recipeId);
+        const dialogRef = this.dialog.open(RecipeComponent, {
+            maxHeight: "1000px",
+            width: "1000px",
+            scrollStrategy: new NoopScrollStrategy(),
+            data: recipeId
+        });
+
+        console.log(dialogRef);
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`Dialog result: ${result}`);
+        });
     }
 }

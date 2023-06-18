@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Globals} from "../shared/globals";
 import {Observable, of} from "rxjs";
 import {Recipe} from "../dtos/recipe";
+import {Suggestion} from "../dtos/suggestion";
 
 @Injectable({
     providedIn: 'root'
@@ -39,9 +40,14 @@ export class RecipeService {
                 if (i != (recipes.length - 1))
                     uri += "&id=";
             }
-            return this.httpClient.get<Recipe[]>(uri);
+            return this.httpClient.get<Suggestion>(uri);
         }
         return of(null);
+    }
+
+    getMultipleRandomRecipes(): Observable<any> {
+        const amount = 10;
+        return this.httpClient.get<Recipe[]>(this.baseUri + "/randomRecipes/" + amount)
     }
 
     findRecipesBySearchString(searchString: string): Observable<any> {
@@ -73,5 +79,10 @@ export class RecipeService {
             uri += "&page=" + page;
         }
         return this.httpClient.get<Recipe[]>(uri);
+    }
+
+    findRecipeById(id: string): Observable<Recipe> {
+        const uri = this.baseUri + "/" + id;
+        return this.httpClient.get<Recipe>(uri);
     }
 }

@@ -83,7 +83,7 @@
         </mat-card>
 
         <!-- winner of latest challenge -->
-        <mat-card class="card-item">
+        <mat-card class="card-item" *ngIf="lastWinningSubmissions !== undefined && lastWinningSubmissions !== null">
             <mat-card-header>
                 <mat-card-title>Previous Challenge</mat-card-title>
             </mat-card-header>

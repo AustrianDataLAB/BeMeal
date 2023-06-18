@@ -30,7 +30,11 @@ import {SearchComponent} from "./components/search/search.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSliderModule} from "@angular/material/slider";
 import {NgImageSliderModule} from 'ng-image-slider';
+import { RecipeComponent } from './components/recipe/recipe.component';
 import {PasswordResetComponent} from './components/login/password-reset/password-reset.component';
+import { SuggestionsComponent } from './components/suggestions/suggestions.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     declarations: [
@@ -50,8 +54,10 @@ import {PasswordResetComponent} from './components/login/password-reset/password
         MealsComponent,
         AnalyticsComponent,
         HeatMapComponent,
+        PasswordResetComponent,
+        SuggestionsComponent,
         SearchComponent,
-        PasswordResetComponent
+        RecipeComponent
     ],
     imports: [
         BrowserModule,
@@ -68,6 +74,8 @@ import {PasswordResetComponent} from './components/login/password-reset/password
         MatSlideToggleModule,
         MatSliderModule,
         MatProgressSpinnerModule,
+        MatExpansionModule,
+        MatDialogModule,
         NgImageSliderModule
     ],
     providers: [httpInterceptorProviders],
