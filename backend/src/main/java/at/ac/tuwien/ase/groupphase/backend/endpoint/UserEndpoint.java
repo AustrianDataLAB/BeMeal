@@ -1,12 +1,11 @@
 package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
-import at.ac.tuwien.ase.groupphase.backend.dto.PasswordReset;
-import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
+import at.ac.tuwien.ase.groupphase.backend.dto.PasswordResetDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
 import at.ac.tuwien.ase.groupphase.backend.event.RequestPasswordResetEvent;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
-import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
 import at.ac.tuwien.ase.groupphase.backend.service.SelfService;
@@ -57,7 +56,7 @@ public class UserEndpoint {
      * not a gamemaster. Note that the unique attributes of a user such as the email or the username are mutually
      * exclusive to either a participant or a gamemaster.
      *
-     * @param registration
+     * @param registrationDto
      *            the data required for the participant registration
      *
      * @throws UserAlreadyExistsException
@@ -65,9 +64,9 @@ public class UserEndpoint {
      */
     @PostMapping("/registration/participant")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerParticipant(@NotNull @RequestBody final Registration registration) {
+    public void registerParticipant(@NotNull @RequestBody final RegistrationDto registrationDto) {
         logger.trace("registerParticipant(...)");
-        this.selfService.register(registration);
+        this.selfService.register(registrationDto);
     }
 
     /**
@@ -125,21 +124,21 @@ public class UserEndpoint {
      *
      * @param passwordResetToken
      *            the token to identify the underlying user
-     * @param passwordReset
+     * @param passwordResetDto
      *            the container for the new user password in clear-text
      */
     @PutMapping("/password/{passwordResetToken}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void resetPassword(@NotNull @PathVariable final UUID passwordResetToken,
-            @NotNull @RequestBody final PasswordReset passwordReset) {
-        logger.trace("resetPassword({})", passwordReset);
+            @NotNull @RequestBody final PasswordResetDto passwordResetDto) {
+        logger.trace("resetPassword({})", passwordResetDto);
         final var user = this.userRepository.findByPasswordResetToken(passwordResetToken);
         if (user == null) {
             logger.warn("No user which currently is registered to the reset token '{}'", passwordResetToken);
             return;
         }
         user.setPasswordResetToken(null);
-        user.setPassword(this.passwordEncoder.encode(passwordReset.password()).getBytes());
+        user.setPassword(this.passwordEncoder.encode(passwordResetDto.password()).getBytes());
         this.userRepository.save(user);
         logger.info("Updated password for user '{}'", user.getUsername());
     }

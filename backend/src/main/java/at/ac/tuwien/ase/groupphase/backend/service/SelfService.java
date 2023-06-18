@@ -1,7 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.endpoint.UserEndpoint;
-import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
+import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
@@ -38,15 +38,15 @@ public class SelfService {
         this.leagueService = leagueService;
     }
 
-    public void register(Registration registration) throws ValidationException {
-        if (this.userRepository.exists(registration.email(), registration.password())) {
-            throw new UserAlreadyExistsException(registration.email(), registration.username());
+    public void register(RegistrationDto registrationDto) throws ValidationException {
+        if (this.userRepository.exists(registrationDto.email(), registrationDto.password())) {
+            throw new UserAlreadyExistsException(registrationDto.email(), registrationDto.username());
         }
         // check postal code
-        if (!this.postalCodeValidator.isPostalCodeValid(registration.postalCode())) {
-            throw new ValidationException("Invalid postal code: " + registration.postalCode());
+        if (!this.postalCodeValidator.isPostalCodeValid(registrationDto.postalCode())) {
+            throw new ValidationException("Invalid postal code: " + registrationDto.postalCode());
         }
-        final var participant = this.registrationMapper.registrationToParticipant(registration);
+        final var participant = this.registrationMapper.registrationToParticipant(registrationDto);
         this.participantRepository.save(participant);
         logger.info("Registered participant with id: '{}' email: '{}' username: '{}'", participant.getId(),
                 participant.getEmail(), participant.getUsername());
