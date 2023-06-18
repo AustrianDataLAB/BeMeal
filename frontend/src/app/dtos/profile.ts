@@ -7,6 +7,7 @@ export class Profile {
         public username: string,
         public email: string,
         public postalCode: number,
+        // eslint-disable-next-line @typescript-eslint/ban-types
         public wins: Object,
         public region: Region,
         public registered: string,
