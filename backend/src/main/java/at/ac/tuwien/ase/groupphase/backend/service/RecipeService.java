@@ -7,6 +7,7 @@ import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RecipeMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.RecipeRepository;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.type.descriptor.java.DoubleJavaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,17 +20,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RecipeService {
     private final Logger logger = LoggerFactory.getLogger(RecipeService.class);
     private final RecipeRepository recipeRepository;
-    private final RecipeMapper recipeMapper;
+    private final RecipeMapper recipeMapper = new RecipeMapper();
 
-    @Autowired
+    /*@Autowired
     @NotNull
     public RecipeService(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
         recipeMapper = new RecipeMapper();
-    }
+    }*/
 
     public RecipeDto getRecipeById(String id) {
         logger.trace("Getting recipe with id " + id);

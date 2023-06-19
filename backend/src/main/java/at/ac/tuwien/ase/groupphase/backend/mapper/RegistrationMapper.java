@@ -3,6 +3,7 @@ package at.ac.tuwien.ase.groupphase.backend.mapper;
 import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,10 @@ import java.time.LocalDateTime;
  * Contains mapping methods for {@link RegistrationDto}.
  */
 @Service
+@RequiredArgsConstructor
 public class RegistrationMapper {
 
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    @NotNull
-    public RegistrationMapper(final PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     /**
      * Map a registration dto to a participant entity. This method will map all the given attributes.

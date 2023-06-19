@@ -12,6 +12,7 @@ import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-// @RequiredArgsConstructor
+@RequiredArgsConstructor
 public class SubmissionService {
 
     private final Logger logger = LoggerFactory.getLogger(SubmissionService.class);
@@ -52,18 +53,6 @@ public class SubmissionService {
     private final UserRepository userRepository;
 
     private final SubmissionMapper submissionMapper;
-
-    @Autowired
-    public SubmissionService(ParticipantRepository participantRepository, ChallengeRepository challengeRepository,
-            SubmissionRepository submissionRepository, VoteRepository voteRepository, UserRepository userRepository,
-            SubmissionMapper submissionMapper) {
-        this.participantRepository = participantRepository;
-        this.challengeRepository = challengeRepository;
-        this.submissionRepository = submissionRepository;
-        this.voteRepository = voteRepository;
-        this.userRepository = userRepository;
-        this.submissionMapper = submissionMapper;
-    }
 
     /*
      * TODO - handle file submission - verify user - verify challengeId - check that participant is eligible to submit
@@ -245,12 +234,13 @@ public class SubmissionService {
     }
 
     private void addPicture(SubmissionDto submissionDto, UUID uuid) {
+        logger.trace("addPicture({}, {})", submissionDto, uuid);
         try {
             byte[] bytes = Files.readAllBytes(getPath(uuid));
             String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
             submissionDto.setPicture(imageString);
         } catch (NoSuchFileException nsfe) {
-            logger.info("File {} of submission with id {} could not be found.", getPath(uuid), submissionDto.getId());
+            logger.warn("File {} of submission with id {} could not be found.", getPath(uuid), submissionDto.getId());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -8,35 +8,21 @@ import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.ase.groupphase.backend.validator.PostalCodeValidator;
 import jakarta.validation.ValidationException;
-import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class SelfService {
 
     private final Logger logger = LoggerFactory.getLogger(UserEndpoint.class);
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
     private final RegistrationMapper registrationMapper;
-    private final ParticipantService participantService;
     private final PostalCodeValidator postalCodeValidator;
     private final LeagueService leagueService;
-
-    @Autowired
-    @NotNull
-    public SelfService(final UserRepository userRepository, final ParticipantRepository participantRepository,
-            ParticipantService participantService, final RegistrationMapper registrationMapper,
-            PostalCodeValidator postalCodeValidator, LeagueService leagueService) {
-        this.userRepository = userRepository;
-        this.participantRepository = participantRepository;
-        this.registrationMapper = registrationMapper;
-        this.participantService = participantService;
-        this.postalCodeValidator = postalCodeValidator;
-        this.leagueService = leagueService;
-    }
 
     public void register(RegistrationDto registrationDto) throws ValidationException {
         if (this.userRepository.exists(registrationDto.email(), registrationDto.password())) {
@@ -53,4 +39,5 @@ public class SelfService {
         // add user to regional league:
         this.leagueService.joinRegionalLeague(participant.getUsername(), participant.getRegion());
     }
+
 }
