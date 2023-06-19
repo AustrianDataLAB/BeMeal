@@ -24,12 +24,12 @@ public class RecipeCollectionService {
     private final RecipeCollectionRepository collectionRepository;
     private final RecipeCollectionMapper collectionMapper = new RecipeCollectionMapper();
 
-    /*@Autowired
-    @NotNull
-    public RecipeCollectionService(RecipeCollectionRepository collectionRepository) {
-        this.collectionRepository = collectionRepository;
-        this.collectionMapper = new RecipeCollectionMapper();
-    }*/
+    /*
+     * @Autowired
+     *
+     * @NotNull public RecipeCollectionService(RecipeCollectionRepository collectionRepository) {
+     * this.collectionRepository = collectionRepository; this.collectionMapper = new RecipeCollectionMapper(); }
+     */
 
     public List<RecipeCollectionDto> getRandomizedRecipeCollectionSelection() {
         logger.trace("Getting all collections");

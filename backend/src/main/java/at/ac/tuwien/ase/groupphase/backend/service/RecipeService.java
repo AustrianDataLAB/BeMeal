@@ -26,12 +26,12 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeMapper recipeMapper = new RecipeMapper();
 
-    /*@Autowired
-    @NotNull
-    public RecipeService(RecipeRepository recipeRepository) {
-        this.recipeRepository = recipeRepository;
-        recipeMapper = new RecipeMapper();
-    }*/
+    /*
+     * @Autowired
+     *
+     * @NotNull public RecipeService(RecipeRepository recipeRepository) { this.recipeRepository = recipeRepository;
+     * recipeMapper = new RecipeMapper(); }
+     */
 
     public RecipeDto getRecipeById(String id) {
         logger.trace("Getting recipe with id " + id);
