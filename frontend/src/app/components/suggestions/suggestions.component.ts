@@ -30,6 +30,8 @@ export class SuggestionsComponent {
     suggestions: Suggestion;
     sugg = true;
 
+    limit = 5;
+
     public index = 0;
     toggle = true;
     cardState: string;
@@ -108,7 +110,7 @@ export class SuggestionsComponent {
         if(isUpvote) {
             this.likedRecipes.push(rec.recipeId)
         }
-        if (this.likedRecipes.length > 4) {
+        if (this.likedRecipes.length > (this.limit - 1)) {
             this.getSuggestions();
         }
         console.log(this.likedRecipes)
