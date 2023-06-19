@@ -18,7 +18,7 @@ public record HeatMapDto(List<HeatMapEntry> entries, Type type, boolean relative
     }
 
     public static HeatMapDto createRelative(final Map<Long, Double> data, final Map<Long, Double> userMap,
-											final Type type) {
+            final Type type) {
         final var relativeData = data.entrySet().stream().collect(
                 Collectors.toMap(Map.Entry::getKey, e -> e.getValue() / userMap.getOrDefault(e.getKey(), 1.0)));
         return create(relativeData, type, true);

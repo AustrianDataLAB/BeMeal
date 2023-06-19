@@ -31,7 +31,8 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorDataDto> handleUserAlreadyExistsException(
             final UserAlreadyExistsException userAlreadyExistsException) {
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDataDto(userAlreadyExistsException.getMessage()));
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorDataDto(userAlreadyExistsException.getMessage()));
     }
 
     @ExceptionHandler(ValidationException.class)
@@ -68,12 +69,14 @@ public class RestExceptionHandler {
     @ApiResponse(responseCode = "409", description = "No latest ending challenge found")
     public ResponseEntity<ErrorDataDto> handleNoLatestChallengeException(
             final NoLatestChallengeException noLatestChallengeException) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDataDto(noLatestChallengeException.getMessage()));
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorDataDto(noLatestChallengeException.getMessage()));
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     @ApiResponse(responseCode = "404", description = "No such element")
-    public ResponseEntity<ErrorDataDto> handleNoSuchElementException(final NoSuchElementException noSuchElementException) {
+    public ResponseEntity<ErrorDataDto> handleNoSuchElementException(
+            final NoSuchElementException noSuchElementException) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDataDto(noSuchElementException.getMessage()));
     }
@@ -83,7 +86,8 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorDataDto> handleForbiddenAccessException(
             final ForbiddenAccessException forbiddenAccessException) {
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDataDto(forbiddenAccessException.getMessage()));
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorDataDto(forbiddenAccessException.getMessage()));
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
@@ -91,12 +95,14 @@ public class RestExceptionHandler {
     public ResponseEntity<ErrorDataDto> handleNoSuchElementException(
             final UsernameNotFoundException usernameNotFoundException) {
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDataDto(usernameNotFoundException.getMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorDataDto(usernameNotFoundException.getMessage()));
     }
 
     @ExceptionHandler(AlreadyJoinedException.class)
     @ApiResponse(responseCode = "409", description = "The user already joined this league")
-    public ResponseEntity<ErrorDataDto> handleAlreadyJoinedException(final AlreadyJoinedException alreadyJoinedException) {
+    public ResponseEntity<ErrorDataDto> handleAlreadyJoinedException(
+            final AlreadyJoinedException alreadyJoinedException) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDataDto(alreadyJoinedException.getMessage()));
     }
 }
