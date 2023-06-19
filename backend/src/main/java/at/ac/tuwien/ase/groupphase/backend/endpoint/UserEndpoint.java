@@ -39,18 +39,6 @@ public class UserEndpoint {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    @Autowired
-    @NotNull
-    public UserEndpoint(ParticipantService participantService, SelfService selfService,
-            final ApplicationEventPublisher eventPublisher, final PasswordEncoder passwordEncoder,
-            final UserRepository userRepository) {
-        this.participantService = participantService;
-        this.selfService = selfService;
-        this.eventPublisher = eventPublisher;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-    }
-
     /**
      * Register a new participant to the backend system. This endpoint only allows the registration of a participant -
      * not a gamemaster. Note that the unique attributes of a user such as the email or the username are mutually
