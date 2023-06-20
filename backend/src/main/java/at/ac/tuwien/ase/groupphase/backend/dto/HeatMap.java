@@ -19,8 +19,12 @@ public record HeatMap(List<HeatMapEntry> entries, Type type, boolean relative) {
 
     public static HeatMap createRelative(final Map<Long, Double> data, final Map<Long, Double> userMap,
             final Type type) {
-        final var relativeData = data.entrySet().stream().collect(
-                Collectors.toMap(Map.Entry::getKey, e -> e.getValue() / userMap.getOrDefault(e.getKey(), 1.0)));
+        final var relativeData = data.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> {
+            final var v = userMap.getOrDefault(e.getKey(), 0.0);
+            if (v == 0.0)
+                return 0.0;
+            return e.getValue() / v;
+        }));
         return create(relativeData, type, true);
     }
 
