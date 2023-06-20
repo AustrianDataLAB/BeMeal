@@ -1,15 +1,15 @@
 package at.ac.tuwien.ase.groupphase.backend.validator;
 
+import at.ac.tuwien.ase.groupphase.backend.BackendApplication;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PostalCodeValidator {
@@ -22,29 +22,10 @@ public class PostalCodeValidator {
 
     private void loadData() {
         postalCodes = new ArrayList<>();
-        BufferedReader reader;
-        try {
-            // if a directory contains a space doesnt work -> replace
-            // todo look into this again
-            String path = PostalCodeValidator.class.getClassLoader().getResource("postal-codes-austria.txt").getFile()
-                    .replace("%20", " ");
-            ;
-            reader = new BufferedReader(new FileReader(path));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        String line;
-        while (true) {
-            try {
-                if ((line = reader.readLine()) == null)
-                    break;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            postalCodes.add(line);
-        }
-        try {
-            reader.close();
+        try (final var reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(Objects
+                .requireNonNull(BackendApplication.class.getClassLoader().getResource("postal-codes-austria.txt"))
+                .openStream())))) {
+            postalCodes = reader.lines().toList();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
