@@ -2,7 +2,8 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {StatisticsService} from '../../../services/statistics.service';
 import {HeatMap, HeatMapType, heatMapTypeToString} from '../../../dtos/statistics';
 import embed, {VisualizationSpec} from 'vega-embed';
-import {map} from "rxjs";
+import {map} from 'rxjs';
+import {DarkModeService} from 'angular-dark-mode';
 
 @Component({
     selector: 'app-heat-map', templateUrl: './heat-map.component.html', styleUrls: ['./heat-map.component.scss']
@@ -13,9 +14,6 @@ export class HeatMapComponent {
     @ViewChild('topFiveContainer') topFiveContainer: ElementRef;
 
     private heatMap: HeatMap;
-    showMap = false;
-    showList = false;
-
     granularities: Granularity[] = [{
         name: 'District',
         feature: 'STATISTIK_AUSTRIA_POLBEZ_20230101',
@@ -26,7 +24,10 @@ export class HeatMapComponent {
         feature: 'STATISTIK_AUSTRIA_GEM_20230101',
         granularity: 5,
         topojson: 'stat-austria-gem-20230101.topo.json'
-    }]
+    }];
+    showMap = false;
+    showList = false;
+    private darkMode = false;
 
     listedHeatMapTypes = [HeatMapType.RANDOM, HeatMapType.USER_BASE, HeatMapType.SUBMISSIONS, HeatMapType.VOTES, HeatMapType.WINS, HeatMapType.UP_VOTES, HeatMapType.DOWN_VOTES, HeatMapType.USERNAME];
 
@@ -34,9 +35,14 @@ export class HeatMapComponent {
     granularity: Granularity = this.granularities[0];
     relative = false;
 
-    constructor(private elementRef: ElementRef, private renderer: Renderer2, private statisticsService: StatisticsService) {
+    constructor(private elementRef: ElementRef, private renderer: Renderer2, private statisticsService: StatisticsService, private darkModeService: DarkModeService) {
+        this.darkModeService.darkMode$.subscribe(value => {
+            this.darkMode = value;
+            this.refreshHeatmap();
+        });
         this.refreshHeatmap();
     }
+
     protected readonly heatMapTypeToString = heatMapTypeToString;
 
     private heatMapSpec(heatMap: HeatMap): VisualizationSpec {
@@ -57,7 +63,9 @@ export class HeatMapComponent {
                 },
             }], encoding: {
                 color: {
-                    field: 'rate', type: 'quantitative', title: ''
+                    field: 'rate', type: 'quantitative', title: '', legend: {
+                        labelColor: this.darkMode ? 'white' : 'black'
+                    }
                 }
             }, background: 'rgba(255, 255, 255, 0)'
         };
@@ -126,11 +134,16 @@ export class HeatMapComponent {
                 step: 50
             },
             mark: {
-                type: 'bar', yOffset: 5, cornerRadiusEnd: 2, height: 20
+                type: 'bar', yOffset: 5, cornerRadiusEnd: 2, height: 20, color: this.darkMode ? 'white' : 'black',
             },
             encoding: {
-                color: { 'value': '#212121'},
-                y: {
+                color: {
+                    legend: {
+                        labelColor: this.darkMode ? 'white' : 'black',
+                        titleColor: this.darkMode ? 'white' : 'black',
+                        strokeColor: this.darkMode ? 'white' : 'black',
+                    }
+                }, y: {
                     field: 'properties.g_name', scale: {padding: 2}, axis: {
                         bandPosition: 0,
                         grid: true,
@@ -140,15 +153,26 @@ export class HeatMapComponent {
                         labelBaseline: 'middle',
                         labelPadding: 0,
                         labelOffset: -15,
+                        labelColor: this.darkMode ? 'white' : 'black',
                         titleX: 5,
                         titleY: -5,
                         titleAngle: 0,
                         titleAlign: 'left',
                         labelFontSize: 14, // Increase the font size for y-axis labels
-                        titleFontSize: 16 // Increase the font size for y-axis title
+                        titleFontSize: 16, // Increase the font size for y-axis title
+                        titleColor: this.darkMode ? 'white' : 'black',
+                        domainColor: this.darkMode ? 'white' : 'black',
+                        tickColor: this.darkMode ? 'white' : 'black',
                     }, sort: '-x', title: this.granularity.name
                 }, x: {
-                    field: 'rate', aggregate: 'sum', axis: {grid: false}, title: 'Amount'
+                    field: 'rate',
+                    aggregate: 'sum',
+                    axis: {
+                        grid: false,
+                        labelColor: this.darkMode ? 'white' : 'black',
+                        titleColor: this.darkMode ? 'white' : 'black',
+                    },
+                    title: 'Amount',
                 }
             }, background: 'rgba(255, 255, 255, 0)', width: 1000, title: ''
         };
