@@ -27,7 +27,7 @@ export class HeatMapComponent {
     }];
     showMap = false;
     showList = false;
-    private darkMode = false;
+    darkMode = false;
 
     listedHeatMapTypes = [HeatMapType.RANDOM, HeatMapType.USER_BASE, HeatMapType.SUBMISSIONS, HeatMapType.VOTES, HeatMapType.WINS, HeatMapType.UP_VOTES, HeatMapType.DOWN_VOTES, HeatMapType.USERNAME];
 
