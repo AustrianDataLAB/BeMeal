@@ -15,7 +15,7 @@ export class InvalidTokenInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(tap(
             {
                 error: err => {
-                    if (err.status === 401) {
+                    if (err.status === 401 && !request.url.endsWith('/api/v1/self-service/login')) {
                         console.debug('Session token is invalid, perform logout');
                         this.selfService.logoutUser();
                         this.router.navigate(['/']).then(console.debug);
