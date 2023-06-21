@@ -43,8 +43,8 @@ export class CreateLeagueComponent {
             );
             this.leagueService.createLeague(leagueObj).pipe(
                 tap(response => {
-                    console.log(response);
-                    console.log('Successfully create league');
+                    console.debug(response);
+                    console.debug('Successfully create league');
                     this.router.navigate(['/leagues']);
                 }),
                 catchError(error => {
@@ -58,7 +58,7 @@ export class CreateLeagueComponent {
         } else {
             this.error = true;
             this.errorMessage = 'Invalid input';
-            console.log('Invalid input');
+            console.debug('Invalid input');
         }
     }
     vanishError() {

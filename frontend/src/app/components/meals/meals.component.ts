@@ -99,7 +99,7 @@ export class MealsComponent implements OnInit {
     }
 
     openDialog(recipeId: string): void {
-        console.log(recipeId);
+        console.debug(recipeId);
         const dialogRef = this.dialog.open(RecipeComponent, {
             maxHeight: "1000px",
             width: "1000px",
@@ -107,10 +107,10 @@ export class MealsComponent implements OnInit {
             data: recipeId
         });
 
-        console.log(dialogRef);
+        console.debug(dialogRef);
 
         dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
+            console.debug(`Dialog result: ${result}`);
         });
     }
 }

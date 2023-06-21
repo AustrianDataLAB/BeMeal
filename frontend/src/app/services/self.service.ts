@@ -32,8 +32,6 @@ export class SelfService {
         };
         return this.httpClient.post<any>(this.authBaseUri + '/registration/participant', obj, httpOptions)
             .pipe(map(response => {
-                // todo: remove pipe if unnecessary
-                //console.log(response);
                 return response;
             }));
     }
@@ -54,11 +52,11 @@ export class SelfService {
                 if (response.ok) {
                     //TODO find out why Authorization header is not there
                     const authHeader = response.headers.get('Authorization');
-                    console.log(response.headers);
+                    console.debug(response.headers);
                     if (authHeader) {
                         this.setToken(authHeader);
                     }
-                    console.log('login successful');
+                    console.debug('login successful');
                 }
                 return response;
             }));
@@ -100,7 +98,7 @@ export class SelfService {
     }
 
     logoutUser() {
-        console.log('Logout');
+        console.debug('Logout');
         localStorage.removeItem('authToken');
     }
 
@@ -110,7 +108,7 @@ export class SelfService {
 
 
     private setToken(tokenHeader: string) {
-        console.log(tokenHeader);
+        console.debug(tokenHeader);
         const tokenWithoutBearer = tokenHeader.substring(7);
         localStorage.setItem('authToken', tokenWithoutBearer);
     }

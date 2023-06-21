@@ -48,8 +48,8 @@ export class SuggestionsComponent {
         this.recipeService.getMultipleRandomRecipes().pipe(
             tap(reponse => {
                 this.randomRecipes = reponse;
-                console.log(this.randomRecipes)
-                console.log("Successfully fetched recipes")
+                console.debug(this.randomRecipes);
+                console.debug("Successfully fetched recipes");
                 this.showImage();
             }),
             catchError( error => {
@@ -71,8 +71,8 @@ export class SuggestionsComponent {
         this.recipeService.getSuggestionFromRecipes(this.likedRecipes).pipe(
             tap(response => {
                 this.suggestions = response;
-                console.log("Response");
-                console.log(this.suggestions);
+                console.debug("Response");
+                console.debug(this.suggestions);
             }),
             catchError(() => {
                 return of(null);
@@ -94,9 +94,9 @@ export class SuggestionsComponent {
 
 
     resetAnimationState(state: AnimationEvent) {
-        console.log(state);
+        console.debug(state);
         this.cardState = '';
-        console.log("RESET");
+        console.debug("RESET");
         if (state.toState === 'swiperight' || state.toState === 'swipeleft') {
             this.showNextSubmission();
         }
@@ -113,7 +113,7 @@ export class SuggestionsComponent {
         if (this.likedRecipes.length > (this.limit - 1)) {
             this.getSuggestions();
         }
-        console.log(this.likedRecipes)
+        console.debug(this.likedRecipes);
     }
 
     onSwipeLeft() {
@@ -130,9 +130,9 @@ export class SuggestionsComponent {
     showNextSubmission() {
         if ((this.index+1) < this.randomRecipes.length) {
             this.index += 1;
-            console.log(this.index)
+            console.debug(this.index);
             this.showImage();
-            console.log("next submission exists")
+            console.debug("next submission exists");
         } else {
             this.getRandomRecipes();
             this.index = 0;
@@ -141,7 +141,6 @@ export class SuggestionsComponent {
     }
 
     showImage(): void {
-        //console.log("current index for images: " + this.index);
         //this.cardState = '';
         this.currentPicture = 'data:image/png;base64,' + this.randomRecipes[this.index].picture;
     }

@@ -45,16 +45,16 @@ export class ChallengeComponent {
         } else {
             // todo show error
         }
-        console.log(`league id is: ${id}`);
-        console.log(this.submission.image);
+        console.debug(`league id is: ${id}`);
+        console.debug(this.submission.image);
         this.fetchChallenge(this.leagueId);
         setInterval(() => { this.deadlineCountdown(); }, 1000);
     }
 
     resetAnimationState(state: AnimationEvent) {
-        console.log(state);
+        console.debug(state);
         this.cardState = '';
-        console.log("RESET");
+        console.debug("RESET");
         if (state.toState === 'swiperight' || state.toState === 'swipeleft') {
             this.showNextSubmission();
         }
@@ -67,8 +67,8 @@ export class ChallengeComponent {
         const id = this.upvoteSubmissions[this.index].id;
         this.submissionService.upvoteSubmission(id, isUpvote).pipe(
             tap(response => {
-                console.log(response)
-                console.log('Successfully voted submission');
+                console.debug(response);
+                console.debug('Successfully voted submission');
             }),
             catchError(error => {
                 console.error('Error while voting submission:', error);
@@ -96,11 +96,11 @@ export class ChallengeComponent {
         if ((this.index+1) < this.upvoteSubmissions.length) {
             this.index += 1;
             this.showImage();
-            console.log("next submission exists")
+            console.debug("next submission exists");
         } else {
             this.canUpvote = false;
             this.switchUpvotingContainer();
-            console.log("next submission does not exist")
+            console.debug("next submission does not exist");
             // todo show a message to user
             // no more img to show and submissions to upvote
         }
@@ -122,10 +122,10 @@ export class ChallengeComponent {
         this.leagueService.getChallengeForLeague(id).pipe(
             tap(response => {
                 this.challenge = response;
-                console.log(this.challenge);
+                console.debug(this.challenge);
                 this.submission.challengeId = this.challenge.challengeId;
-                console.log(this.submission)
-                console.log('Successfully fetched challenge');
+                console.debug(this.submission);
+                console.debug('Successfully fetched challenge');
                 this.getAllSubmissionsToUpvote();
             }),
             catchError(error => {
@@ -145,7 +145,7 @@ export class ChallengeComponent {
         const input = event.target as HTMLInputElement;
         if (input.files != null) {
             this.submission.image = input.files[0];
-            console.log(this.submission)
+            console.debug(this.submission);
         }
 
     }
@@ -154,8 +154,8 @@ export class ChallengeComponent {
         this.isUploading = true;
         this.submissionService.postSubmission(this.submission).pipe(
             tap(response => {
-                console.log(response)
-                console.log('Successfully submitted challenge');
+                console.debug(response);
+                console.debug('Successfully submitted challenge');
                 const newSubmission: Submission = {} as Submission;
                 newSubmission.challengeId = this.submission.challengeId;
                 this.submission = newSubmission;
@@ -179,13 +179,13 @@ export class ChallengeComponent {
     getCurrentSubmission() {
         return this.submissionService.getCurrentSubmission(this.challenge.challengeId).pipe(
             tap(response => {
-                console.log(response);
+                console.debug(response);
                 this.currentSubmission = response;
-                console.log('Successfully fetched current submission');
+                console.debug('Successfully fetched current submission');
             }),
             catchError(error => {
-                console.log("error fetching current submission");
-                console.log(error);
+                console.debug("error fetching current submission");
+                console.debug(error);
                 // todo
                 // Handle the error here
                 return of(null);
@@ -208,26 +208,23 @@ export class ChallengeComponent {
 
     // takes the arraybuffer from submission and returns the base64
     showImage(): void {
-        //console.log("current index for images: " + this.index);
         //this.cardState = '';
         this.currentPicture = 'data:image/png;base64,' + this.upvoteSubmissions[this.index].picture;
     }
 
     getAllSubmissionsToUpvote() {
-        console.debug('Fetching submissions with challengeId ' + this.challenge.challengeId)
+        console.debug('Fetching submissions with challengeId ' + this.challenge.challengeId);
         this.submissionService.getAllSubmissions(this.challenge.challengeId).pipe(
             tap(response => {
-                console.log(response);
+                console.debug(response);
                 this.canUpvote = true;
                 this.upvoteSubmissions = response;
                 this.showImage();
-                //console.log(this.currentPicture);
-                //console.log(this.upvoteSubmissions)
-                console.log('Successfully fetched submissions');
+                console.debug('Successfully fetched submissions');
             }),
             catchError(error => {
-                console.log("error fetching submissions");
-                console.log(error);
+                console.debug("error fetching submissions");
+                console.debug(error);
                 // todo
                 // Handle the error here
                 return of(null);

@@ -23,7 +23,7 @@ export class RecipeComponent implements OnInit{
     }
 
     ngOnInit() {
-        console.log(this.recipe);
+        console.debug(this.recipe);
         this.fetchRecipe(this.recipeId);
     }
 
@@ -31,8 +31,8 @@ export class RecipeComponent implements OnInit{
         this.recipeService.findRecipeById(id).pipe(
             tap(response => {
                 this.recipe = response;
-                console.log(this.recipe);
-                console.log('Successfully fetched recipe');
+                console.debug(this.recipe);
+                console.debug('Successfully fetched recipe');
             }),
             catchError(error => {
                 console.error('Error while fetching a recipe:', error);

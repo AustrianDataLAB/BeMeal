@@ -58,8 +58,8 @@ export class RegistrationComponent implements OnInit{
             );
             this.selfService.registerParticipant(registerObj).pipe(
                 tap(response => {
-                    console.log(response);
-                    console.log('Successful registration for user: ' + registerObj.username);
+                    console.debug(response);
+                    console.debug('Successful registration for user: ' + registerObj.username);
                     this.router.navigate(['/login']);
                 }),
                 catchError(error => {
@@ -73,7 +73,7 @@ export class RegistrationComponent implements OnInit{
         } else {
             this.error = true;
             this.errorMessage = 'Invalid input';
-            console.log('Invalid input');
+            console.debug('Invalid input');
         }
 
     }

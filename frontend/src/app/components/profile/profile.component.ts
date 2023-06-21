@@ -30,7 +30,7 @@ export class ProfileComponent {
     public getProfile() {
         this.selfService.getProfile()
             .pipe(tap(response => {
-                    console.log(response)
+                    console.debug(response);
                     this.profile = response;
                     for(const[a,b] of Object.entries(this.profile.wins)) {
                         this.currentWins+=b;

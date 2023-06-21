@@ -46,8 +46,8 @@ export class LeagueInvitationComponent implements OnInit{
     joinLeague() {
         this.invitationService.joinLeague(this.hiddenIdentifier!).pipe(
             tap(response => {
-                console.log(response);
-                console.log('Successful joined league');
+                console.debug(response);
+                console.debug('Successful joined league');
                 this.leagueJoinSuccess = true;
             }),
             catchError(error => {
@@ -71,13 +71,13 @@ export class LeagueInvitationComponent implements OnInit{
                 if (response == null) {
                     // error
                     this.leagueValid = false;
-                    console.log("could not get league for hidden identifier");
+                    console.debug("could not get league for hidden identifier");
                     return;
                 }
                 this.league = response;
                 this.leagueValid = true;
-                console.log(this.league);
-                console.log('Successfully fetched league');
+                console.debug(this.league);
+                console.debug('Successfully fetched league');
             }),
             catchError(error => {
                 console.error('Error ', error);
@@ -91,7 +91,7 @@ export class LeagueInvitationComponent implements OnInit{
 
     getHiddenIdentifierFromUrl(): string | null {
         const hi = this.route.snapshot.paramMap.get('hiddenIdentifier');
-        console.log(`hidden identifier from url is: ${hi}`);
+        console.debug(`hidden identifier from url is: ${hi}`);
         return hi;
     }
 
