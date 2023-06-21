@@ -11,15 +11,6 @@ import java.util.List;
 @Repository
 public interface SubmissionRepository extends CrudRepository<Submission, Long> {
 
-    // ToDo: Handle challenge date
-    // max(Enddate) < currentDate (use findLastEndedChallenge in LeagueRepository)
-    /*
-     * SELECT * FROM Submission s WHERE s.challenge_id = 2 AND s.participant_participant_id != 4 AND s.id NOT IN (SELECT
-     * v.submission_id FROM Participant_Submission_Vote v INNER JOIN Submission s ON v.submission_id = s.id WHERE
-     * s.participant_participant_id != 4);
-     *
-     * SELECT TOP(1) id FROM Challenge WHERE league_id = 2 ORDER BY END_DATE DESC;
-     */
     @Query("SELECT s FROM Submission s" + " WHERE s.challenge.id = :challengeId"
             + " AND s.participant.id != :participantId"
             + " AND s.id NOT IN (SELECT v.submission.id FROM ParticipantSubmissionVote v" + " INNER JOIN Submission s"

@@ -1,6 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
-import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
+import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +37,7 @@ public class UserEndpointIntegrationTests {
     @Test
     @Sql({ "classpath:sql/RegionalLeague.sql" })
     void registerPlatformUserShouldReturn201() throws Exception {
-        Registration reg = new Registration(Constants.VALID_USER_EMAIL, Constants.VALID_USER_USERNAME,
+        RegistrationDto reg = new RegistrationDto(Constants.VALID_USER_EMAIL, Constants.VALID_USER_USERNAME,
                 Constants.VALID_USER_PASSWORD, Constants.VALID_USER_REGION, Constants.VALID_USER_POSTAL_CODE);
         String json = this.objectMapper.writeValueAsString(reg);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/self-service/registration/participant").content(json)
@@ -50,7 +50,7 @@ public class UserEndpointIntegrationTests {
     @Test
     @Sql({ "classpath:sql/SelfServiceData.sql" })
     void registerPlatformUserTwiceShouldReturn409() throws Exception {
-        Registration reg = new Registration(Constants.EXISTING_USER_EMAIL, Constants.EXISTING_USER_USERNAME,
+        RegistrationDto reg = new RegistrationDto(Constants.EXISTING_USER_EMAIL, Constants.EXISTING_USER_USERNAME,
                 Constants.EXISTING_USER_PASSWORD, Constants.EXISTING_USER_REGION, Constants.EXISTING_USER_POSTAL_CODE);
 
         String json = this.objectMapper.writeValueAsString(reg);
@@ -61,7 +61,7 @@ public class UserEndpointIntegrationTests {
 
     @Test
     void registerPlatformUserWithInvalidPostalCodeShouldReturn422() throws Exception {
-        Registration reg = new Registration(Constants.EXISTING_USER_EMAIL, Constants.EXISTING_USER_USERNAME,
+        RegistrationDto reg = new RegistrationDto(Constants.EXISTING_USER_EMAIL, Constants.EXISTING_USER_USERNAME,
                 Constants.EXISTING_USER_PASSWORD, Constants.EXISTING_USER_REGION,
                 Constants.NON_EXISTING_USER_POSTAL_CODE);
 

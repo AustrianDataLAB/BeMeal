@@ -1,6 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
-import at.ac.tuwien.ase.groupphase.backend.dto.HeatMap;
+import at.ac.tuwien.ase.groupphase.backend.dto.HeatMapDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.entity.ParticipantSubmissionVote;
 import at.ac.tuwien.ase.groupphase.backend.repository.CommunityIdentificationRepository;
@@ -25,49 +25,49 @@ public class StatisticsService {
     private final CommunityIdentificationRepository communityIdentificationRepository;
 
     @Transactional
-    public HeatMap getStatistics(final HeatMap.Type type, final boolean relative, final int granularity) {
+    public HeatMapDto getStatistics(final HeatMapDto.Type type, final boolean relative, final int granularity) {
         Map<Long, Double> heatMapData;
-        if (type.equals(HeatMap.Type.RANDOM)) {
+        if (type.equals(HeatMapDto.Type.RANDOM)) {
             heatMapData = LongStream.range(10000, 100000).boxed()
                     .collect(Collectors.toMap(l -> l, l -> this.random.nextDouble(100000)));
 
         } else {
             heatMapData = new HashMap<>();
         }
-        if (type.equals(HeatMap.Type.USER_BASE)) {
+        if (type.equals(HeatMapDto.Type.USER_BASE)) {
             this.communityIdentificationRepository.findAll().forEach(
                     c -> heatMapData.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants().size()));
         }
-        if (type.equals(HeatMap.Type.SUBMISSIONS)) {
+        if (type.equals(HeatMapDto.Type.SUBMISSIONS)) {
             this.communityIdentificationRepository.findAll()
                     .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants()
                             .stream().map(p -> p.getSubmissions().size()).reduce(Integer::sum).orElse(0)));
         }
-        if (type.equals(HeatMap.Type.VOTES)) {
+        if (type.equals(HeatMapDto.Type.VOTES)) {
             this.communityIdentificationRepository.findAll()
                     .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants()
                             .stream().map(p -> p.getVotes().size()).reduce(Integer::sum).orElse(0)));
         }
-        // if (type.equals(HeatMap.Type.WINS)) {
-        // this.communityIdentificationRepository.findAll().forEach(c -> heatMapData.put(
-        // c.getCommunityIdentificationNumber(),
-        // (double) c.getParticipants().stream().map(Participant::getWins).reduce(Integer::sum).orElse(0)));
-        // }
-        if (type.equals(HeatMap.Type.UP_VOTES)) {
+        if (type.equals(HeatMapDto.Type.WINS)) {
+            this.communityIdentificationRepository.findAll().forEach(c -> heatMapData.put(
+                    c.getCommunityIdentificationNumber(),
+                    (double) c.getParticipants().stream().map(Participant::getWins).reduce(Integer::sum).orElse(0)));
+        }
+        if (type.equals(HeatMapDto.Type.UP_VOTES)) {
             this.communityIdentificationRepository.findAll()
                     .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(),
                             (double) c.getParticipants().stream()
                                     .map(p -> p.getVotes().stream().filter(ParticipantSubmissionVote::isUpvote).count())
                                     .reduce(Long::sum).orElse(0L)));
         }
-        if (type.equals(HeatMap.Type.DOWN_VOTES)) {
+        if (type.equals(HeatMapDto.Type.DOWN_VOTES)) {
             this.communityIdentificationRepository.findAll()
                     .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(),
                             (double) c.getParticipants().stream()
                                     .map(p -> p.getVotes().stream().filter(v -> !v.isUpvote()).count())
                                     .reduce(Long::sum).orElse(0L)));
         }
-        if (type.equals(HeatMap.Type.USERNAME)) {
+        if (type.equals(HeatMapDto.Type.USERNAME)) {
             this.communityIdentificationRepository.findAll()
                     .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants()
                             .stream().map(p -> p.getUsername().length()).reduce(Integer::sum).orElse(0)));
@@ -78,9 +78,9 @@ public class StatisticsService {
                 .forEach(c -> userMap.put(c.getCommunityIdentificationNumber(), (double) c.getParticipants().size()));
         final var groupedUserMap = groupByGranularity(userMap, granularity);
         if (relative) {
-            return HeatMap.createRelative(normalize(groupedData), normalize(groupedUserMap), type);
+            return HeatMapDto.createRelative(normalize(groupedData), normalize(groupedUserMap), type);
         }
-        return HeatMap.createAbsolute(normalize(groupedData), type);
+        return HeatMapDto.createAbsolute(normalize(groupedData), type);
     }
 
     private static Map<Long, Double> groupByGranularity(final Map<Long, Double> data, final int granularity) {

@@ -1,6 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
-import at.ac.tuwien.ase.groupphase.backend.dto.HeatMap;
+import at.ac.tuwien.ase.groupphase.backend.dto.HeatMapDto;
 import at.ac.tuwien.ase.groupphase.backend.service.StatisticsService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class StatisticsEndpoint {
 
     @GetMapping("/heat-map")
     @ResponseStatus(HttpStatus.OK)
-    public HeatMap getStatistics(@RequestParam @NotNull final HeatMap.Type type,
+    public HeatMapDto getStatistics(@RequestParam @NotNull final HeatMapDto.Type type,
             @RequestParam @NotNull final boolean relative, @RequestParam @NotNull final int granularity) {
         return this.statisticsService.getStatistics(type, relative, granularity);
     }

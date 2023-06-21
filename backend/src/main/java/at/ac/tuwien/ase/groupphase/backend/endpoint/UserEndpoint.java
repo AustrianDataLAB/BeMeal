@@ -1,13 +1,11 @@
 package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
-import at.ac.tuwien.ase.groupphase.backend.dto.PasswordReset;
-import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
+import at.ac.tuwien.ase.groupphase.backend.dto.PasswordResetDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
 import at.ac.tuwien.ase.groupphase.backend.event.RequestPasswordResetEvent;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
-import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
-import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.ParticipantService;
 import at.ac.tuwien.ase.groupphase.backend.service.SelfService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -15,7 +13,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,27 +34,13 @@ public class UserEndpoint {
     private final SelfService selfService;
     private final ParticipantService participantService;
     private final ApplicationEventPublisher eventPublisher;
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-
-    @Autowired
-    @NotNull
-    public UserEndpoint(ParticipantService participantService, SelfService selfService,
-            final ApplicationEventPublisher eventPublisher, final PasswordEncoder passwordEncoder,
-            final UserRepository userRepository) {
-        this.participantService = participantService;
-        this.selfService = selfService;
-        this.eventPublisher = eventPublisher;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-    }
 
     /**
      * Register a new participant to the backend system. This endpoint only allows the registration of a participant -
      * not a gamemaster. Note that the unique attributes of a user such as the email or the username are mutually
      * exclusive to either a participant or a gamemaster.
      *
-     * @param registration
+     * @param registrationDto
      *            the data required for the participant registration
      *
      * @throws UserAlreadyExistsException
@@ -65,9 +48,9 @@ public class UserEndpoint {
      */
     @PostMapping("/registration/participant")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerParticipant(@NotNull @RequestBody final Registration registration) {
+    public void registerParticipant(@NotNull @RequestBody final RegistrationDto registrationDto) {
         logger.trace("registerParticipant(...)");
-        this.selfService.register(registration);
+        this.selfService.register(registrationDto);
     }
 
     /**
@@ -106,41 +89,25 @@ public class UserEndpoint {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void requestPasswordReset(@NotNull @PathVariable final String email) {
         logger.trace("requestPasswordReset({})", email);
-        final var user = this.userRepository.findByEmail(email);
-        if (user == null) {
-            logger.warn("No user with email '{}' exists, do not send an email", email);
-            return;
-        }
-        final var passwordResetToken = UUID.randomUUID();
-        user.setPasswordResetToken(passwordResetToken);
-        this.userRepository.save(user);
+        var passwordResetToken = selfService.getPasswordResetTokenForUser(email);
         this.eventPublisher.publishEvent(new RequestPasswordResetEvent(email, passwordResetToken));
-        logger.info("Generated password reset token for user '{}'", user.getUsername());
     }
 
     /**
      * Reset the password of a user. For the rest process, a valid password reset token must be generated first. This
-     * can be done by using {@link SelfService#requestPasswordReset(String)}. On success, the password reset token will
-     * be invalidated.
+     * can be done by using {@link SelfService#resetPassword(UUID, PasswordResetDto)}. On success, the password reset
+     * token will be invalidated.
      *
      * @param passwordResetToken
      *            the token to identify the underlying user
-     * @param passwordReset
+     * @param passwordResetDto
      *            the container for the new user password in clear-text
      */
     @PutMapping("/password/{passwordResetToken}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void resetPassword(@NotNull @PathVariable final UUID passwordResetToken,
-            @NotNull @RequestBody final PasswordReset passwordReset) {
-        logger.trace("resetPassword({})", passwordReset);
-        final var user = this.userRepository.findByPasswordResetToken(passwordResetToken);
-        if (user == null) {
-            logger.warn("No user which currently is registered to the reset token '{}'", passwordResetToken);
-            return;
-        }
-        user.setPasswordResetToken(null);
-        user.setPassword(this.passwordEncoder.encode(passwordReset.password()).getBytes());
-        this.userRepository.save(user);
-        logger.info("Updated password for user '{}'", user.getUsername());
+            @NotNull @RequestBody final PasswordResetDto passwordResetDto) {
+        logger.trace("resetPassword({})", passwordResetDto);
+        selfService.resetPassword(passwordResetToken, passwordResetDto);
     }
 }

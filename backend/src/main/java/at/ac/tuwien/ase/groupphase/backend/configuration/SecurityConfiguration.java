@@ -4,6 +4,7 @@ import at.ac.tuwien.ase.groupphase.backend.security.UserDetailsManager;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthenticationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthorizationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.TokenManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,14 +26,10 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @Configuration
 @EnableMethodSecurity
 @EnableScheduling
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
-
-    @Autowired
-    public SecurityConfiguration(final UserDetailsManager userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
 
     private static final String[] AUTH_WHITELIST = { "/error", "/api/v1/self-service/registration/participant",
             "/api/v1/self-service/password-token/**", "/api/v1/self-service/password/**", "/v3/api-docs/**",
@@ -75,7 +72,6 @@ public class SecurityConfiguration {
     // Tells browsers the header is safe and to process it
     @Configuration
     public class CorsConfig {
-
         @Bean
         public WebMvcConfigurer corsConfigurer() {
             return new WebMvcConfigurer() {

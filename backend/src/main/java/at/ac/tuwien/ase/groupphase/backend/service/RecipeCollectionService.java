@@ -5,6 +5,7 @@ import at.ac.tuwien.ase.groupphase.backend.entity.RecipeCollection;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RecipeCollectionMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.RecipeCollectionRepository;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,18 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RecipeCollectionService {
     private final Logger logger = LoggerFactory.getLogger(RecipeCollectionService.class);
     private final RecipeCollectionRepository collectionRepository;
-    private final RecipeCollectionMapper collectionMapper;
+    private final RecipeCollectionMapper collectionMapper = new RecipeCollectionMapper();
 
-    @Autowired
-    @NotNull
-    public RecipeCollectionService(RecipeCollectionRepository collectionRepository) {
-        this.collectionRepository = collectionRepository;
-        this.collectionMapper = new RecipeCollectionMapper();
-    }
+    /*
+     * @Autowired
+     *
+     * @NotNull public RecipeCollectionService(RecipeCollectionRepository collectionRepository) {
+     * this.collectionRepository = collectionRepository; this.collectionMapper = new RecipeCollectionMapper(); }
+     */
 
     public List<RecipeCollectionDto> getRandomizedRecipeCollectionSelection() {
         logger.trace("Getting all collections");

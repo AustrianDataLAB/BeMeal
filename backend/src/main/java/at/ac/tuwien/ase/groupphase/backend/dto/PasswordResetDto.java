@@ -1,4 +1,4 @@
 package at.ac.tuwien.ase.groupphase.backend.dto;
 
-public record PasswordReset(String password) {
+public record PasswordResetDto(String password) {
 }

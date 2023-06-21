@@ -12,6 +12,7 @@ import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-// @RequiredArgsConstructor
+@RequiredArgsConstructor
 public class SubmissionService {
 
     private final Logger logger = LoggerFactory.getLogger(SubmissionService.class);
@@ -52,18 +53,6 @@ public class SubmissionService {
     private final UserRepository userRepository;
 
     private final SubmissionMapper submissionMapper;
-
-    @Autowired
-    public SubmissionService(ParticipantRepository participantRepository, ChallengeRepository challengeRepository,
-            SubmissionRepository submissionRepository, VoteRepository voteRepository, UserRepository userRepository,
-            SubmissionMapper submissionMapper) {
-        this.participantRepository = participantRepository;
-        this.challengeRepository = challengeRepository;
-        this.submissionRepository = submissionRepository;
-        this.voteRepository = voteRepository;
-        this.userRepository = userRepository;
-        this.submissionMapper = submissionMapper;
-    }
 
     /*
      * TODO - handle file submission - verify user - verify challengeId - check that participant is eligible to submit
@@ -81,11 +70,9 @@ public class SubmissionService {
         LocalDateTime now = LocalDateTime.now();
         UUID newUUID = UUID.randomUUID();
 
-        ////////////////////////////////////////////////////////////////
         // verify that the participant is eligible to submit to this challenge
         this.verifyEligibility(participant, challenge, now);
 
-        ////////////////////////////////////////////////////////////////
         // transform and save image
         try {
             InputStream inputStream = file.getInputStream();
@@ -103,7 +90,6 @@ public class SubmissionService {
             throw new RuntimeException(e);
         }
 
-        ////////////////////////////////////////////////////////////////
         // add/overwrite submission
         Submission newSubmission = this.getNewSubmission(newUUID, now, participant, challenge);
         this.submissionRepository.save(newSubmission);
@@ -166,7 +152,6 @@ public class SubmissionService {
      * @return res array: width=res[0] height=res[1]
      */
     private static int[] widthHeightCorrectAspectRatio(BufferedImage img) {
-        // LOGGER.info("original width and height: width: " + img.getWidth() + " height: " + img.getHeight());
         int[] res = { img.getWidth(), img.getHeight() };
         if (img.getWidth() > SubmissionService.MAX_WIDTH_HEIGHT
                 || img.getHeight() > SubmissionService.MAX_WIDTH_HEIGHT) {
@@ -250,12 +235,13 @@ public class SubmissionService {
     }
 
     private void addPicture(SubmissionDto submissionDto, UUID uuid) {
+        logger.trace("addPicture({}, {})", submissionDto, uuid);
         try {
             byte[] bytes = Files.readAllBytes(getPath(uuid));
             String imageString = Base64.getEncoder().withoutPadding().encodeToString(bytes);
             submissionDto.setPicture(imageString);
         } catch (NoSuchFileException nsfe) {
-            logger.info("File {} of submission with id {} could not be found.", getPath(uuid), submissionDto.getId());
+            logger.warn("File {} of submission with id {} could not be found.", getPath(uuid), submissionDto.getId());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

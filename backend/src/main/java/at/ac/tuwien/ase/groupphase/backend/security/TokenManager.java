@@ -3,6 +3,7 @@ package at.ac.tuwien.ase.groupphase.backend.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,15 +14,11 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Component
+@RequiredArgsConstructor
 public class TokenManager {
 
     private final UserDetailsService userDetailsService;
     private static final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-
-    @Autowired
-    public TokenManager(final UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
 
     public String generateToken(final UserDetails user) {
         return Jwts.builder().setIssuedAt(Date.from(ZonedDateTime.now().toInstant())).setIssuer("BeMeal")
