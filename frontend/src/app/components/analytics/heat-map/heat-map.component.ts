@@ -2,7 +2,7 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {StatisticsService} from '../../../services/statistics.service';
 import {HeatMap, HeatMapType, heatMapTypeToString} from '../../../dtos/statistics';
 import embed, {VisualizationSpec} from 'vega-embed';
-import {map} from "rxjs";
+import {map} from 'rxjs';
 
 @Component({
     selector: 'app-heat-map', templateUrl: './heat-map.component.html', styleUrls: ['./heat-map.component.scss']
@@ -28,13 +28,18 @@ export class HeatMapComponent {
         topojson: 'stat-austria-gem-20230101.topo.json'
     }]
 
-    listedHeatMapTypes = [HeatMapType.RANDOM, HeatMapType.USER_BASE, HeatMapType.SUBMISSIONS, HeatMapType.VOTES, HeatMapType.WINS, HeatMapType.UP_VOTES, HeatMapType.DOWN_VOTES, HeatMapType.USERNAME];
+    listedHeatMapTypes = [HeatMapType.USER_BASE, HeatMapType.SUBMISSIONS, HeatMapType.VOTES, HeatMapType.WINS, HeatMapType.UP_VOTES, HeatMapType.DOWN_VOTES, HeatMapType.USERNAME];
 
-    heatMapType: HeatMapType = HeatMapType.RANDOM;
+    heatMapType: HeatMapType = HeatMapType.USER_BASE;
     granularity: Granularity = this.granularities[0];
     relative = false;
 
     constructor(private elementRef: ElementRef, private renderer: Renderer2, private statisticsService: StatisticsService) {
+        if (localStorage.getItem('bemeal.analytics.showrandom')) {
+            const invisibleTypes = [HeatMapType.RANDOM];
+            invisibleTypes .push(...this.listedHeatMapTypes);
+            this.listedHeatMapTypes = invisibleTypes;
+        }
         this.refreshHeatmap();
     }
     protected readonly heatMapTypeToString = heatMapTypeToString;
