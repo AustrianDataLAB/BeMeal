@@ -88,19 +88,13 @@
                 <mat-card-title>Previous Challenge</mat-card-title>
             </mat-card-header>
             <mat-card-content style="width: 400px" class="card-content-league"
-                              *ngIf="lastWinningSubmissions.length > 0">
+                              *ngIf="league.lastWinners.length > 0">
 
                 <!-- one winner: -->
                 <ng-container *ngIf="lastWinningSubmissions.length === 1">
                     <span class="span-content-league" style="margin-bottom: 16px;">Votes from the last challenge are in! The current winner is:</span>
-                    <mat-card class="card-item">
-                        <mat-card-header>
-                            <mat-card-title>{{lastWinningSubmissions[0].title}}</mat-card-title>
-                        </mat-card-header>
-                        <mat-card-content class="card-content-league">
-                            <img class="card-content-league-image" src="{{lastWinningSubmissions[0].image}}" alt="winning submission">
-                        </mat-card-content>
-                    </mat-card>
+                    <h2>{{lastWinningSubmissions[0].title}}</h2>
+                    <img class="card-image" src="{{lastWinningSubmissions[0].image}}" alt="winning submission">
                 </ng-container>
 
                 <!-- multiple winners: -->
