@@ -37,12 +37,14 @@ export class PasswordResetComponent {
         console.debug('request token');
         const email: string = this.tokenRequestForm.controls['email'].value;
         this.selfService.requestPasswordResetMail(email).subscribe({next: () => this.emailSuccess = true, error: () => this.setErrorState()});
+        this.selfService.logoutUser();
     }
 
     resetPassword() {
         console.debug('reset password');
         const password: string = this.passwordResetForm.controls['password'].value;
         this.selfService.resetPassword(this.passwordResetToken!, {password: password}).subscribe({next: () => this.resetSuccess = true, error: () => this.setErrorState()});
+        this.selfService.logoutUser();
     }
 
     private setErrorState() {
