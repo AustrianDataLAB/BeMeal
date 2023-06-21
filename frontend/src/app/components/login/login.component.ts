@@ -49,7 +49,16 @@ export class LoginComponent implements OnInit{
                 catchError(error => {
                     console.error('Error logging in:', error);
                     this.error = true;
-                    this.errorMessage = "Error: " + error.error.message;
+                    if (error.status === 0) {
+                        this.errorMessage = 'Service is not reachable';
+                    } else {
+                        if (error.status < 500) {
+                            this.errorMessage = 'Invalid Username or Password';
+                        }
+                        if (error.status >= 500) {
+                            this.errorMessage = 'Something is wrong with the service';
+                        }
+                    }
                     // Handle the error here
                     return of(null);
                 })
