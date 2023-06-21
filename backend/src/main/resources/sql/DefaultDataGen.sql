@@ -14,16 +14,16 @@ INSERT INTO Platform_User (email, username, password, is_admin) VALUES ('test3@g
 INSERT INTO Platform_User (email, username, password, is_admin) VALUES ('test4@gmail.com', 'test4', '$2a$10$3QSmui3.ul8jAWpXRzKw4eqSrO7822dM5qIecTFOYG4GHwXfHSNuO', false);
 
 /*      Create show user Participants     */
-INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (7, 1100, 1, '2021-01-22 16:38:54');
-INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (8, 6890, 6, '2021-08-21 18:42:41');
-INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (9, 2100, 4, '2021-07-02 21:32:05');
-INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (10, 5020, 6, '2020-05-20 23:14:37');
 INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (1, 2301, 1, '2020-05-20 23:14:37');
 INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (2, 2401, 1, '2020-05-20 23:14:37');
 INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (3, 3804, 1, '2020-05-20 23:14:37');
 INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (4, 6890, 8, '2020-05-20 23:14:37');
 INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (5, 6850, 8, '2020-05-20 23:14:37');
 INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (6, 1010, 1, '2020-05-20 23:14:37');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (7, 1100, 1, '2021-01-22 16:38:54');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (8, 6890, 6, '2021-08-21 18:42:41');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (9, 2100, 4, '2021-07-02 21:32:05');
+INSERT INTO Participant (participant_id, postal_code, region, registered) VALUES (10, 5020, 6, '2020-05-20 23:14:37');
 
 /*      Create default Leagues      */
 /*
@@ -125,3 +125,41 @@ INSERT INTO Submission (date, picture, challenge_id, participant_participant_id)
 INSERT INTO Submission (date, picture, challenge_id, participant_participant_id) VALUES (DATEADD(day, 2, CURRENT_TIMESTAMP), '518cf81f-0ff6-4999-b160-756e0dfeac0a', 2, 4);
 INSERT INTO Submission (date, picture, challenge_id, participant_participant_id) VALUES (DATEADD(day, 2, CURRENT_TIMESTAMP), '717c37e6-94e9-49a1-adf2-35617b91e0a6', 2, 5);
 INSERT INTO Submission (date, picture, challenge_id, participant_participant_id) VALUES (DATEADD(day, 2, CURRENT_TIMESTAMP), 'f7828b1f-9b3c-4ded-918a-c2cd8f20bfab', 2, 6);
+
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 1);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 2);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 3);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (9, 4);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (9, 5);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 6);
+
+/*  Add Participant wins    */
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (2, 1, 60);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (2, 2, 56);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (2, 3, 2);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (9, 4, 52);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (9, 5, 32);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (2, 6, 78);
+
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (10, 1, 9);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (10, 2, 8);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (10, 3, 1);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (11, 4, 18);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (11, 5, 15);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (11, 6, 5);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (12, 1, 35);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (12, 2, 12);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (12, 3, 70);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (13, 4, 95);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (13, 5, 6);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (13, 6, 69);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (14, 1, 9);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (14, 2, 32);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (14, 3, 73);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (15, 4, 8);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (15, 5, 10);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (15, 6, 2);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (10, 7, 33);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (18, 8, 45);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (11, 9, 20);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (15, 10, 5);
