@@ -1,7 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
-import at.ac.tuwien.ase.groupphase.backend.dto.Registration;
+import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.mapper.IngredientMapper;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
@@ -88,7 +88,7 @@ public class LeagueServiceTest {
         this.leagueRepository.save(
                 new League(null, UUID.fromString("d9e7c7c7-0eab-42f6-a09b-475a2bf08f66"), GameMode.PICTURE_INGREDIENTS,
                         Region.LOWER_AUSTRIA, 7, "Lower Austria League", null, new ArrayList<>()));
-        this.selfService.register(new Registration(VALID_PARTICIPANT_1.getEmail(), VALID_PARTICIPANT_1.getUsername(),
+        this.selfService.register(new RegistrationDto(VALID_PARTICIPANT_1.getEmail(), VALID_PARTICIPANT_1.getUsername(),
                 VALID_USER_PASSWORD, VALID_PARTICIPANT_1.getRegion(), VALID_PARTICIPANT_1.getPostalCode()));
         Participant user = (Participant) this.participantRepository.findByUsername(VALID_PARTICIPANT_1.getUsername());
         user.setOwnerOf(new ArrayList<>());

@@ -49,9 +49,11 @@ public class StatisticsService {
                             .stream().map(p -> p.getVotes().size()).reduce(Integer::sum).orElse(0)));
         }
         if (type.equals(HeatMapDto.Type.WINS)) {
-            this.communityIdentificationRepository.findAll().forEach(c -> heatMapData.put(
-                    c.getCommunityIdentificationNumber(),
-                    (double) c.getParticipants().stream().map(Participant::getWins).reduce(Integer::sum).orElse(0)));
+            this.communityIdentificationRepository.findAll()
+                    .forEach(c -> heatMapData.put(c.getCommunityIdentificationNumber(),
+                            (double) c.getParticipants().stream()
+                                    .map(p -> p.getWins().values().stream().reduce(Integer::sum).orElse(0))
+                                    .reduce(Integer::sum).orElse(0)));
         }
         if (type.equals(HeatMapDto.Type.UP_VOTES)) {
             this.communityIdentificationRepository.findAll()
