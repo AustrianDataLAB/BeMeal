@@ -1,4 +1,5 @@
 import {Region} from "../shared/region";
+import {Win} from "./wins";
 
 export class Profile {
 
@@ -6,7 +7,7 @@ export class Profile {
         public username: string,
         public email: string,
         public postalCode: number,
-        public wins: number,
+        public wins: object,
         public region: Region,
         public registered: string,
     ) {}

@@ -54,9 +54,9 @@ public class ParticipantServiceTest {
         Participant participantBefore = participantRepository.findById(this.participant.getId()).orElseThrow();
         assertEquals(VALID_PARTICIPANT_1.getWins(), participantBefore.getWins());
 
-        participantService.increaseWinsOfParticipant(this.participant.getId());
+        participantService.increaseWinsOfParticipant(this.participant.getId(), 1L);
         Participant participantAfter = participantRepository.findById(this.participant.getId()).orElseThrow();
-        assertEquals(VALID_PARTICIPANT_1.getWins() + 1, participantAfter.getWins());
+        assertEquals(1, participantAfter.getWins().get(1L));
     }
 
 }

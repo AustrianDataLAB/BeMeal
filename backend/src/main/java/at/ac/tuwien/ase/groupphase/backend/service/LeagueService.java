@@ -93,6 +93,7 @@ public class LeagueService {
         return dto;
     }
 
+    @Transactional
     public void createLeague(String username, League league) {
         Participant user = (Participant) this.userRepository.findByUsername(username);
         List<Participant> participantList = new ArrayList<>();
@@ -102,6 +103,7 @@ public class LeagueService {
         List<League> owned = user.getOwnerOf();
         owned.add(l);
         user.setOwnerOf(owned);
+        user.getWins().put(l.getId(), 0);
         this.userRepository.save(user);
         // create challenge for new league:
         this.challengeGenerationService.generateForExpiredChallenges();
@@ -115,6 +117,7 @@ public class LeagueService {
      * @param leagueId
      *            id of the league
      */
+    @Transactional
     public void joinLeague(String username, Long leagueId) {
         League league = this.leagueRepository.findById(leagueId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid league ID"));
@@ -123,12 +126,15 @@ public class LeagueService {
         if (participantList.stream().anyMatch(p -> p.getId().equals(user.getId()))) {
             throw new AlreadyJoinedException();
         }
+        user.getWins().put(leagueId, 0);
+        this.participantRepository.save(user);
         participantList.add(user);
         league.setParticipants(participantList);
         this.leagueRepository.save(league);
     }
 
     // important: regional leagues have to exist
+    @Transactional
     public void joinRegionalLeague(String username, Region region) {
         String leagueName = modifyString(region.toString()) + " League";
         System.out.println(leagueName);
@@ -139,11 +145,14 @@ public class LeagueService {
 
         List<Participant> participantList = league.getParticipants();
         Participant user = (Participant) this.userRepository.findByUsername(username);
+        user.getWins().put(league.getId(), 0);
+        this.participantRepository.save(user);
         participantList.add(user);
         league.setParticipants(participantList);
         this.leagueRepository.save(league);
     }
 
+    @Transactional
     public List<League> getLeagues(String username) {
         Participant user = (Participant) this.userRepository.findByUsername(username);
         List<Participant> participantList = new ArrayList<>();
@@ -165,13 +174,14 @@ public class LeagueService {
         return this.userRepository.isCreatorOfLeague(username, leagueId);
     }
 
+    @Transactional
     public List<LeaderboardDto> getLeaderboardOfLeague(Long leagueId, String currentUsername) {
         logger.trace("Constructing leaderboard with getLeaderboardOfLeague({}, {})", leagueId, currentUsername);
         List<LeaderboardDto> leaderboard = new ArrayList<>();
         for (Participant p : participantRepository.getParticipantRankingForLeague(leagueId)) {
             logger.debug("Got Participant for league with id {}: {Username: {}, Wins: {}}", leagueId, p.getUsername(),
                     p.getWins());
-            LeaderboardDto leaderboardDto = new LeaderboardDto(p.getUsername(), p.getWins());
+            LeaderboardDto leaderboardDto = new LeaderboardDto(p.getUsername(), p.getWins().get(leagueId));
             leaderboard.add(leaderboardDto);
         }
 

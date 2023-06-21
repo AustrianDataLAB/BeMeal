@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 public class SelfService {
 
@@ -47,6 +49,7 @@ public class SelfService {
             throw new ValidationException("Invalid postal code: " + registration.postalCode());
         }
         final var participant = this.registrationMapper.registrationToParticipant(registration);
+        participant.setWins(new HashMap<>());
         this.participantRepository.save(participant);
         logger.info("Registered participant with id: '{}' email: '{}' username: '{}'", participant.getId(),
                 participant.getEmail(), participant.getUsername());

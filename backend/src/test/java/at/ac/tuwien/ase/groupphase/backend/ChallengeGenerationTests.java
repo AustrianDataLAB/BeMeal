@@ -203,14 +203,13 @@ class ChallengeGenerationTests {
         submissionService.saveVote(s2.getId(), p1.getUsername(), true);
 
         p2 = this.participantRepository.findById(p2.getId()).orElseThrow();
-        assertEquals(VALID_WINS, p2.getWins());
 
         this.challengeGenerationService.generateForExpiredChallenges();
 
         this.flush();
 
         p2 = this.participantRepository.findById(p2.getId()).orElseThrow();
-        assertEquals(VALID_WINS + 1, p2.getWins());
+        assertEquals(1, p2.getWins().get(league.getId()));
     }
 
     private void flush() {
