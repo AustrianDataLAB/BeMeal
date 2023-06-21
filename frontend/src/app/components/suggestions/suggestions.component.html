@@ -14,8 +14,6 @@
                         <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
                         <img style="max-height: 400px" src="{{currentPicture}}" />
                     </mat-card-content>
-                    <mat-card-actions>
-                    </mat-card-actions>
                 </mat-card>
                 <mat-card *ngIf="toggle" class="card-item-top">  <!-- todo do not display when game mode picture -->
                     <mat-card-header>
@@ -38,8 +36,8 @@
             <button (click)="onSwipeRight()" color="primary" mat-fab  aria-label="like">
                 <mat-icon>favorite</mat-icon>
             </button>
-            <button mat-raised-button color="primary" class="btn-block pmd-btn-fab" (click)="getSuggestions()">Suggestions</button>
-            <div>{{this.likedRecipes.length}}/{{this.limit}}</div>
+            <button mat-raised-button color="primary" class="btn-block pmd-btn-fab" (click)="getSuggestions()">Suggestions {{this.likedRecipes.length}}/{{this.limit}}</button>
+<!--            <div>{{this.likedRecipes.length}}/{{this.limit}}</div>-->
         </div>
 <!--        <button (click)="switchUpvotingContainer()" style="margin-left: 12px;" mat-button  color="secondary" class="btn-block">Cancel</button>-->
     </div>
@@ -55,7 +53,7 @@
     </mat-expansion-panel-header>
     <div id="show-container1"  fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-            <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
+            <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center left" >
                 <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions.given">
                     <mat-card class="card-item">
                         <mat-card-header>
@@ -96,7 +94,7 @@
     </mat-expansion-panel-header>
     <div id="show-container" *ngIf="!sugg" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-            <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
+            <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center left" >
                 <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions.suggestions">
                     <mat-card class="card-item">
                         <mat-card-header>
@@ -133,7 +131,7 @@
 
 <button mat-raised-button color="primary" id="myActionButton" class="btn-block pmd-btn-fab" (click)="switchPref()">Show Ingredients</button>
 <button mat-raised-button color="primary" id="myActionButton2" class="btn-block pmd-btn-fab" (click)="reset()">Go again</button>
-<mat-form-field id = "myActionDropDown" color="primary" class="btn-block pmd-btn-fab">
+<mat-form-field id = "myActionDropDown"  *ngIf="sugg">
     <mat-label>Select an option</mat-label>
     <mat-select [(value)]="limit">
         <mat-option value=5>5</mat-option>
