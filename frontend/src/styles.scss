@@ -140,3 +140,7 @@ body .sticky-item{
     border-color: #f0bb28 !important;
 }
 
+
+body.dark-mode .mat-expansion-panel-header-description, .mat-expansion-indicator::after {
+    color: white !important;
+}

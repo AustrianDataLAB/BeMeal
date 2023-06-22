@@ -1,3 +1,11 @@
+<div class="container page-container mx-auto"
+     fxLayout="column" fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
+        <h1 class="mat-headline-2" style="margin-bottom: 20px">Suggestions</h1>
+        <h2 class="mat-display-1" style="font-weight: 400; margin-bottom: 48px">
+            Wanna find the perfect recipe? Swipe our recipes and find your perfect suggestions based on your likes and dislikes.
+        </h2>
+
 <div id="upvoting-container" *ngIf="randomRecipes.length > 0 && sugg" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
     <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
         <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
@@ -29,20 +37,22 @@
                 </mat-card>
             </div>
         </div>
-        <div fxFlexFill fxFlex="100"  fxLayoutGap="16px" fxLayout="row" fxLayoutAlign="center center" >
-            <button (click)="onSwipeLeft()" color="primary" mat-fab  aria-label="like">
+        <div fxFlexFill fxFlex="100"  fxLayoutGap="16px" fxLayout="column" fxLayoutAlign="center center" >
+            <div>
+                <button (click)="onSwipeLeft()" color="primary" mat-fab  aria-label="like" style="margin-right: 4px;">
                 <mat-icon>close</mat-icon>
-            </button>
-            <button (click)="onSwipeRight()" color="primary" mat-fab  aria-label="like">
-                <mat-icon>favorite</mat-icon>
-            </button>
-            <button mat-raised-button color="primary" class="btn-block pmd-btn-fab" (click)="getSuggestions()">Suggestions {{this.likedRecipes.length}}/{{this.limit}}</button>
+                </button>
+                <button (click)="onSwipeRight()" color="primary" mat-fab  aria-label="like" style="margin-left: 4px;">
+                    <mat-icon>favorite</mat-icon>
+                </button>
+            </div>
+            <button mat-raised-button color="secondary" class="btn-block pmd-btn-fab" *ngIf="this.likedRecipes.length > 0" (click)="getSuggestions()">View Suggestions {{this.likedRecipes.length}}/{{this.limit}}</button>
 <!--            <div>{{this.likedRecipes.length}}/{{this.limit}}</div>-->
         </div>
 <!--        <button (click)="switchUpvotingContainer()" style="margin-left: 12px;" mat-button  color="secondary" class="btn-block">Cancel</button>-->
     </div>
 </div>
-<mat-expansion-panel class="mat-expansion-panel" *ngIf="!sugg"  expanded="false">
+<mat-expansion-panel class="mat-expansion-panel panelli" *ngIf="!sugg"  expanded="false">
     <mat-expansion-panel-header class="mat-expansion-panel-header">
         <mat-panel-title class="mat-panel-title">
             Input
@@ -83,7 +93,7 @@
         </div>
     </div>
 </mat-expansion-panel>
-<mat-expansion-panel class="mat-expansion-panel" *ngIf="!sugg" expanded="true">
+<mat-expansion-panel class="mat-expansion-panel panelli" *ngIf="!sugg" expanded="true">
     <mat-expansion-panel-header class="mat-expansion-panel-header">
         <mat-panel-title class="mat-panel-title">
             Suggestions
@@ -96,7 +106,7 @@
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
             <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center left" >
                 <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions.suggestions">
-                    <mat-card class="card-item">
+                    <mat-card class="card-item cardi">
                         <mat-card-header>
                             <!-- todo display name of challenge if submissions from another challenge are displayed (decision to be made), call backend with challenge id from submissiondtp -->
                         </mat-card-header>
@@ -107,7 +117,7 @@
                         <mat-card-actions>
                         </mat-card-actions>
                     </mat-card>
-                    <mat-card *ngIf="toggle" class="card-item-top">  <!-- todo do not display when game mode picture -->
+                    <mat-card *ngIf="toggle" class="card-item-top cardi">  <!-- todo do not display when game mode picture -->
                         <mat-card-header>
                             <mat-card-title>{{item.name}}</mat-card-title>
                         </mat-card-header>
@@ -128,14 +138,22 @@
     <mat-spinner style="margin:0 auto;" [diameter]="50"/>
 </span>
 
-
-<button mat-raised-button color="primary" id="myActionButton" class="btn-block pmd-btn-fab" (click)="switchPref()">Show Ingredients</button>
-<button mat-raised-button color="primary" id="myActionButton2" class="btn-block pmd-btn-fab" (click)="reset()">Go again</button>
-<mat-form-field id = "myActionDropDown"  *ngIf="sugg">
-    <mat-label>Select an option</mat-label>
-    <mat-select [(value)]="limit">
-        <mat-option value=5>5</mat-option>
-        <mat-option value=10>10</mat-option>
-        <mat-option value=15>15</mat-option>
-    </mat-select>
-</mat-form-field>
+<mat-card class="card-item cardi-fixed">
+    <mat-card-header>
+        <mat-card-title>Control Box</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-contenti">
+    <button mat-raised-button color="primary"  *ngIf="!this.toggle" (click)="switchPref()">Show Ingredients</button>
+    <button mat-raised-button color="primary"  *ngIf="this.toggle" (click)="switchPref()">Hide Ingredients</button>
+    <button mat-raised-button color="primary"  (click)="reset()">Go again</button>
+    <mat-form-field  *ngIf="sugg">
+        <mat-label>How many?</mat-label>
+        <mat-select [(value)]="limit">
+            <mat-option value=5>5</mat-option>
+            <mat-option value=10>10</mat-option>
+            <mat-option value=15>15</mat-option>
+        </mat-select>
+    </mat-form-field>
+    </mat-card-content>
+</mat-card>
+</div>
