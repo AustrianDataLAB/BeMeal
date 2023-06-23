@@ -10,10 +10,10 @@ export class HeaderComponent {
     private isParticipant = true;
 
     constructor(private selfService: SelfService, private router: Router) {
-        this.selfService.getProfile().subscribe({
-            next: () => console.debug('user is a participant'), error: () => {
-                console.debug('user is a gamemaster');
-                this.isParticipant = false;
+        this.selfService.isGameMaster.subscribe({
+            next: value => {
+                this.isParticipant = !value;
+                console.debug('updated is participant state', this.isParticipant);
             }
         });
     }

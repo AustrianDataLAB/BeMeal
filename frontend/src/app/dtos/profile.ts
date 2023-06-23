@@ -10,6 +10,7 @@ export class Profile {
         public wins: object,
         public region: Region,
         public registered: string,
+        public admin: boolean,
     ) {}
 
 }
