@@ -1,11 +1,15 @@
 package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.LeaderboardDto;
+import at.ac.tuwien.ase.groupphase.backend.dto.LeagueSecretsDto;
+import at.ac.tuwien.ase.groupphase.backend.endpoint.InvitationEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.endpoint.LeagueEndpoint;
+import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
+import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -27,6 +31,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import util.Constants;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,8 +39,7 @@ import java.util.Map;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotEmpty;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -51,6 +55,9 @@ public class LeagueEndpointIntegrationTests {
 
     @Autowired
     LeagueEndpoint leagueEndpoint;
+
+    @Autowired
+    InvitationEndpoint invitationEndpoint;
 
     @Autowired
     ParticipantRepository participantRepository;
@@ -210,6 +217,80 @@ public class LeagueEndpointIntegrationTests {
         }
         assertEquals(2, leaderboard.get(leaderboard.size() - 1).getPosition());
     }
+
+    @Test
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    @Sql({ "classpath:sql/SelfServiceData.sql" })
+    void getHiddenIdentifierWithInvalidLeagueIdShouldThrow403NotCreaterOfLeague() throws Exception {
+        MvcResult response = mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/invitation/hidden-identifier/-1/false")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print()).andExpect(status().isForbidden()).andReturn();
+    }
+
+    @Test
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    @Sql({ "classpath:sql/SelfServiceData.sql" })
+    void getHiddenIdentifierWithCorrectIdAndNoRefreshShouldReturnOldHiddenIdentifier() throws Exception {
+        Participant p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
+        League l = this.leagueRepository.findLeagueByName("League1");
+        List<League> ownerOf = new ArrayList<>();
+        ownerOf.add(l);
+        p.setOwnerOf(ownerOf);
+        this.participantRepository.save(p);
+
+        MvcResult response = mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/invitation/hidden-identifier/1/false")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
+
+        LeagueSecretsDto ret = objectMapper.readValue(response.getResponse().getContentAsString(),
+                new TypeReference<>() {
+                });
+        assertEquals("ef2133ad-f5e9-4aac-bc1f-46dcf62f495e", ret.hiddenIdentifier().toString());
+    }
+
+    @Test
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    @Sql({ "classpath:sql/SelfServiceData.sql" })
+    void getHiddenIdentifierWithCorrectIdAndRefreshShouldReturnOldHiddenIdentifier() throws Exception {
+        Participant p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
+        League l = this.leagueRepository.findLeagueByName("League1");
+        List<League> ownerOf = new ArrayList<>();
+        ownerOf.add(l);
+        p.setOwnerOf(ownerOf);
+        this.participantRepository.save(p);
+
+        MvcResult response = mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/invitation/hidden-identifier/1/true")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print()).andExpect(status().isOk()).andReturn();
+
+        LeagueSecretsDto ret = objectMapper.readValue(response.getResponse().getContentAsString(),
+                new TypeReference<>() {
+                });
+        assertNotEquals("ef2133ad-f5e9-4aac-bc1f-46dcf62f495e", ret.hiddenIdentifier().toString());
+    }
+
+    // @Test
+    // @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    // @Sql({ "classpath:sql/SelfServiceData.sql" })
+    // void getHiddenIdentifierWithInvalidLeagueIdShouldThrow404() throws Exception {
+    // LeagueService leagueService = Mockito.mock(LeagueService.class);
+    // Mockito.when(leagueService.isUserCreatorOfLeague("John", -1)).thenReturn(true);
+    //
+    //
+    // invitationEndpoint.getHiddenIdentifier(-1, true, new Principal() {
+    // @Override
+    // public String getName() {
+    // return "John";
+    // }
+    // });
+    // MvcResult response = mockMvc
+    // .perform(MockMvcRequestBuilders.get("/api/v1/invitation/hidden-identifier/-1/false")
+    // .contentType(MediaType.APPLICATION_JSON))
+    // .andDo(MockMvcResultHandlers.print()).andExpect(status().isNotFound()).andReturn();
+    // }
 
     /*
      * @Test

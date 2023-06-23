@@ -3,6 +3,7 @@ package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 import at.ac.tuwien.ase.groupphase.backend.dto.ChallengeInfoDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
+import at.ac.tuwien.ase.groupphase.backend.exception.NoChallengeException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.IngredientMapper;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RecipeMapper;
@@ -174,6 +175,18 @@ public class LeagueServiceTest {
         assertEquals(RECIPE1.getIngredients().stream().map(ingredientMapper::ingredientToIngredientDto)
                 .collect(Collectors.toList()), actual.getIngredients());
         assertEquals(this.recipeMapper.uuidToBase64Converter(RECIPE1.getPictureUUID()), actual.getPicture());
+    }
+
+    @Test
+    void getChallengeForLeagueWithNoLeaguePresentShouldThrowNoChallengeException() {
+        assertEquals(0, StreamSupport.stream(this.leagueRepository.findAll().spliterator(), false).count());
+
+        this.leagueService.createLeague(VALID_USER_USERNAME, LEAGUE1);
+
+        assertEquals(1, StreamSupport.stream(this.leagueRepository.findAll().spliterator(), false).count());
+        League league = this.leagueRepository.findAll().iterator().next();
+
+        assertThrows(NoChallengeException.class, () -> this.leagueService.getChallengeForLeague(league.getId()));
     }
 
 }
