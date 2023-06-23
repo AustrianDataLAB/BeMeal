@@ -134,6 +134,48 @@ public class UserEndpointIntegrationTests {
         assertEquals(oldPw, p.getPassword());
     }
 
+    @Test
+    @Sql({ "classpath:sql/SelfServiceData.sql" })
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    void requestPasswordResetWithValidEmailShouldSetToken() throws Exception {
+        Authentication authentication = Mockito.mock(Authentication.class);
+        Mockito.when(authentication.getPrincipal()).thenReturn(Constants.EXISTING_USER_USERNAME);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        Participant p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
+
+        assertNull(p.getPasswordResetToken());
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/self-service/password-token/John@gmail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isNoContent()).andReturn();
+
+        p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
+
+        assertNotNull(p.getPasswordResetToken());
+    }
+
+    @Test
+    @Sql({ "classpath:sql/SelfServiceData.sql" })
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    void requestPasswordResetWithInvalidEmailShouldSetToken() throws Exception {
+        Authentication authentication = Mockito.mock(Authentication.class);
+        Mockito.when(authentication.getPrincipal()).thenReturn(Constants.EXISTING_USER_USERNAME);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        Participant p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
+
+        assertNull(p.getPasswordResetToken());
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/self-service/password-token/John@gmgail.com")
+                .contentType(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isNotFound()).andReturn();
+    }
+
     // email valideren noch im backend?
     // @Test
     // void registerPlatformUserWithInalidEmailShouldReturn201() throws Exception {
