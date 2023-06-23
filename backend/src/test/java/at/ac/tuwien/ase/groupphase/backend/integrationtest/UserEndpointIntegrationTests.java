@@ -134,10 +134,6 @@ public class UserEndpointIntegrationTests {
         assertEquals(oldPw, p.getPassword());
     }
 
-    void requestPasswordResetWithInvalidEmailShouldDoNothing() {
-
-    }
-
     // email valideren noch im backend?
     // @Test
     // void registerPlatformUserWithInalidEmailShouldReturn201() throws Exception {
