@@ -10,6 +10,9 @@ import {animate, AnimationEvent, keyframes, transition, trigger} from "@angular/
 import * as kf from "../challenge/keyframes";
 import {RecipeWithId} from "../../dtos/recipeWithId";
 import {Suggestion} from "../../dtos/suggestion";
+import {RecipeComponent} from "../recipe/recipe.component";
+import {NoopScrollStrategy} from "@angular/cdk/overlay";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-suggestions',
@@ -40,7 +43,7 @@ export class SuggestionsComponent {
     currentPicture: string;
     isFetching = false;
 
-    constructor(private router: Router, private recipeService: RecipeService, private route: ActivatedRoute) {
+    constructor(private router: Router, private recipeService: RecipeService, private route: ActivatedRoute, private dialog: MatDialog) {
         this.getRandomRecipes();
     }
 
@@ -149,6 +152,22 @@ export class SuggestionsComponent {
     prettyString(str: string): string {
         str = str.replace(/_/g, ' ').toLowerCase();
         return str.replace(/(^|\s)\S/g, (match) => match.toUpperCase());
+    }
+
+    openDialog(recipeId: string): void {
+        console.log(recipeId);
+        const dialogRef = this.dialog.open(RecipeComponent, {
+            maxHeight: "1000px",
+            width: "1000px",
+            scrollStrategy: new NoopScrollStrategy(),
+            data: recipeId
+        });
+
+        console.log(dialogRef);
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`Dialog result: ${result}`);
+        });
     }
 
 }
