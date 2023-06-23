@@ -1,24 +1,33 @@
 package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
+import at.ac.tuwien.ase.groupphase.backend.dto.PasswordResetDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -68,6 +77,64 @@ public class UserEndpointIntegrationTests {
         String json = this.objectMapper.writeValueAsString(reg);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/self-service/registration/participant").content(json)
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isUnprocessableEntity());
+
+    }
+
+    @Test
+    @Sql({ "classpath:sql/SelfServiceData.sql" })
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    void resetPasswordShouldWork() throws Exception {
+        Authentication authentication = Mockito.mock(Authentication.class);
+        Mockito.when(authentication.getPrincipal()).thenReturn(Constants.EXISTING_USER_USERNAME);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        UUID pwResetToken = UUID.randomUUID();
+        Participant p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
+        p.setPasswordResetToken(pwResetToken);
+
+        byte[] oldPw = p.getPassword();
+
+        PasswordResetDto dto = new PasswordResetDto("11111111111");
+
+        String json = this.objectMapper.writeValueAsString(dto);
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/self-service/password/" + pwResetToken.toString())
+                .content(json).contentType(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isNoContent()).andReturn();
+
+        p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
+        assertNull(p.getPasswordResetToken());
+        assertNotEquals(oldPw, p.getPassword());
+    }
+
+    @Test
+    @Sql({ "classpath:sql/SelfServiceData.sql" })
+    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
+    void resetPasswordWithInvalidToken() throws Exception {
+        Authentication authentication = Mockito.mock(Authentication.class);
+        Mockito.when(authentication.getPrincipal()).thenReturn(Constants.EXISTING_USER_USERNAME);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        Participant p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
+
+        byte[] oldPw = p.getPassword();
+
+        PasswordResetDto dto = new PasswordResetDto("11111111111");
+
+        String json = this.objectMapper.writeValueAsString(dto);
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/self-service/password/" + UUID.randomUUID()).content(json)
+                .contentType(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isNoContent()).andReturn();
+
+        p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
+        assertNull(p.getPasswordResetToken());
+        assertEquals(oldPw, p.getPassword());
+    }
+
+    void requestPasswordResetWithInvalidEmailShouldDoNothing() {
 
     }
 
