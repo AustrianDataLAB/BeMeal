@@ -9,8 +9,17 @@ picturesLocation = "../../src/main/resources/recipes"
 
 pictures = [x.split(".")[0] for x in os.listdir(picturesLocation) if os.path.isfile(os.path.join(picturesLocation, x))]
 
+names = set()
+
 def isCorrectEntry(x: str):
-    return ("null" not in x) and (json.loads(x)["page"]["recipe"]["picture_uuid"] in pictures)
+    name: str = json.loads(x)["page"]["title"]
+    if name in names: 
+        print(f"duplicate entry: {name}")
+        return False
+    names.add(name)
+    return ("null" not in x)\
+          and (json.loads(x)["page"]["recipe"]["picture_uuid"] in pictures)\
+          and len(json.loads(x)["page"]["recipe"]["ingredients"]) > 1
 
 ################## fix encoding artefacts ##################
 with open(neo4jData, 'r', encoding='utf-8') as file:
