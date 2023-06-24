@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -52,7 +53,7 @@ public class SelfService {
         final var user = this.userRepository.findByEmail(email);
         if (user == null) {
             logger.warn("No user with email '{}' exists, do not send an email", email);
-            return null;
+            throw new NoSuchElementException("No user with email: " + email + " found");
         }
         final var passwordResetToken = UUID.randomUUID();
         user.setPasswordResetToken(passwordResetToken);
