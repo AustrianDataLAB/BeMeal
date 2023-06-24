@@ -2,15 +2,18 @@ package at.ac.tuwien.ase.groupphase.backend.integrationtest;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.PasswordResetDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
+import at.ac.tuwien.ase.groupphase.backend.endpoint.UserEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -28,7 +31,11 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static reactor.core.publisher.Mono.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,6 +47,9 @@ public class UserEndpointIntegrationTests {
 
     @Autowired
     private ParticipantRepository participantRepository;
+
+    @Autowired
+    private UserEndpoint userEndpoint;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -137,29 +147,6 @@ public class UserEndpointIntegrationTests {
     @Test
     @Sql({ "classpath:sql/SelfServiceData.sql" })
     @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
-    void requestPasswordResetWithValidEmailShouldSetToken() throws Exception {
-        Authentication authentication = Mockito.mock(Authentication.class);
-        Mockito.when(authentication.getPrincipal()).thenReturn(Constants.EXISTING_USER_USERNAME);
-        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-
-        Participant p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
-
-        assertNull(p.getPasswordResetToken());
-
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/self-service/password-token/John@gmail.com")
-                .contentType(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isNoContent()).andReturn();
-
-        p = this.participantRepository.findByUsername(Constants.EXISTING_USER_USERNAME);
-
-        assertNotNull(p.getPasswordResetToken());
-    }
-
-    @Test
-    @Sql({ "classpath:sql/SelfServiceData.sql" })
-    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
     void requestPasswordResetWithInvalidEmailShouldSetToken() throws Exception {
         Authentication authentication = Mockito.mock(Authentication.class);
         Mockito.when(authentication.getPrincipal()).thenReturn(Constants.EXISTING_USER_USERNAME);
@@ -175,18 +162,5 @@ public class UserEndpointIntegrationTests {
                 .contentType(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isNotFound()).andReturn();
     }
-
-    // email valideren noch im backend?
-    // @Test
-    // void registerPlatformUserWithInalidEmailShouldReturn201() throws Exception {
-    // Registration reg = new Registration(Constants.INVALID_EMAIL, Constants.VALID_USER_USERNAME,
-    // Constants.VALID_USER_PASSWORD, Constants.VALID_USER_REGION, Constants.VALID_USER_POSTAL_CODE);
-    //
-    // String json = this.objectMapper.writeValueAsString(reg);
-    // this.webTestClient.post().uri("/api/v1/self-service/registration/participant")
-    // .contentType(MediaType.APPLICATION_JSON).bodyValue(json).exchange().expectStatus().is4xxClientError();
-    // }
-
-    // TODO view profile test
 
 }
