@@ -53,6 +53,7 @@ public class SubmissionService {
     private final UserRepository userRepository;
 
     private final SubmissionMapper submissionMapper;
+    private final ImageRepository imageRepository;
 
     /*
      * TODO - handle file submission - verify user - verify challengeId - check that participant is eligible to submit
@@ -74,21 +75,7 @@ public class SubmissionService {
         this.verifyEligibility(participant, challenge, now);
 
         // transform and save image
-        try {
-            InputStream inputStream = file.getInputStream();
-            BufferedImage originalImage = ImageIO.read(inputStream); // javax.imageio has built-in support for GIF, PNG,
-                                                                     // JPEG, BMP, and WBMP
-            inputStream.close();
-
-            int[] correctWidthHeight = widthHeightCorrectAspectRatio(originalImage);
-            BufferedImage resizedImage = resizeImage(originalImage, correctWidthHeight[0], correctWidthHeight[1]);
-
-            File f = new File(getPath(newUUID).toUri());
-
-            ImageIO.write(resizedImage, IMAGE_FORMAT, f);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        imageRepository.save(file, newUUID);
 
         // add/overwrite submission
         Submission newSubmission = this.getNewSubmission(newUUID, now, participant, challenge);
@@ -101,11 +88,7 @@ public class SubmissionService {
         if (previousSubmission != null) {
             submissions.remove(previousSubmission);
             this.submissionRepository.delete(previousSubmission);
-            try {
-                Files.delete(getPath(previousSubmission.getPicture()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            this.imageRepository.delete(previousSubmission.getPicture());
         }
         submissions.add(newSubmission);
         participant.setSubmissions(submissions);
@@ -141,29 +124,6 @@ public class SubmissionService {
 
     private static Path getPath(UUID uuid) {
         return Paths.get(IMAGE_PATH, uuid + "." + IMAGE_FORMAT);
-    }
-
-    /**
-     * Calculates the width and height with the correct aspect ratio.
-     *
-     * @param img
-     *            the img
-     *
-     * @return res array: width=res[0] height=res[1]
-     */
-    private static int[] widthHeightCorrectAspectRatio(BufferedImage img) {
-        int[] res = { img.getWidth(), img.getHeight() };
-        if (img.getWidth() > SubmissionService.MAX_WIDTH_HEIGHT
-                || img.getHeight() > SubmissionService.MAX_WIDTH_HEIGHT) {
-            if (img.getWidth() >= img.getHeight()) {
-                res[0] = SubmissionService.MAX_WIDTH_HEIGHT;
-                res[1] = (int) (((0.0 + img.getHeight()) / img.getWidth()) * SubmissionService.MAX_WIDTH_HEIGHT);
-            } else {
-                res[0] = (int) (((0.0 + img.getWidth()) / img.getHeight()) * SubmissionService.MAX_WIDTH_HEIGHT);
-                res[1] = SubmissionService.MAX_WIDTH_HEIGHT;
-            }
-        }
-        return res;
     }
 
     /**
