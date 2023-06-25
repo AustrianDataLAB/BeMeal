@@ -27,8 +27,8 @@ export class LeagueService {
                 'Access-Control-Allow-Origin': '*'
             })
         };
-        console.log(obj);
-        return this.httpClient.post<any>(this.baseUri + '/create-league', obj, httpOptions)
+        console.debug(obj);
+        return this.httpClient.post<any>(this.baseUri, obj, httpOptions)
             .pipe(map(response => {
                 return response;
             }));

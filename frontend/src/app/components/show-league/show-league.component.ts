@@ -49,7 +49,7 @@ export class ShowLeagueComponent implements OnInit{
                 this.username = response.username;
             }),
             catchError(error => {
-                console.log('Could not fetch username');
+                console.debug('Could not fetch username');
                 return of(null);
             })
         ).subscribe();
@@ -62,15 +62,15 @@ export class ShowLeagueComponent implements OnInit{
         } else {
             // todo show error
         }
-        console.log(`league id is: ${id}`);
+        console.debug(`league id is: ${id}`);
     }
 
     fetchLeague(id: number) {
         this.leagueService.getLeagueById(id).pipe(
             tap(response => {
                 this.league = response;
-                console.log(this.league);
-                console.log('Successfully fetched league');
+                console.debug(this.league);
+                console.debug('Successfully fetched league');
             }),
             catchError(error => {
                 console.error('Error while fetching a leauge:', error);
@@ -98,8 +98,8 @@ export class ShowLeagueComponent implements OnInit{
         this.leagueService.getLeaderboardByLeagueId(id).pipe(
             tap(response => {
                 this.leaderboardUsers = response;   // already sorted by backend
-                console.log(this.leaderboardUsers);
-                console.log('Successfully fetched leaderboard');
+                console.debug(this.leaderboardUsers);
+                console.debug('Successfully fetched leaderboard');
             }),
             catchError(error => {
                 console.error('Error while fetching leaderboard', error);
@@ -124,8 +124,8 @@ export class ShowLeagueComponent implements OnInit{
                         title: x.participantName
                     }
                 });
-                console.log(response);
-                console.log('Successfully fetched winningSubmissions');
+                console.debug(response);
+                console.debug('Successfully fetched winningSubmissions');
             }),
             catchError(error => {
                 console.error('Error while fetching winningSubmissions');

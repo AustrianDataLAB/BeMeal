@@ -39,11 +39,11 @@ export class LoginComponent implements OnInit{
                 this.loginForm.controls['username'].value,
                 this.loginForm.controls['password'].value
             );
-            console.log('Try to authenticate user: ' + loginObj.toString());
+            console.debug('Try to authenticate user: ' + loginObj.toString());
             this.selfService.loginUser(loginObj).pipe(
                 tap(response => {
-                    console.log(response);
-                    console.log('Successful login for user: ' + loginObj.username);
+                    console.debug(response);
+                    console.debug('Successful login for user: ' + loginObj.username);
                     this.router.navigate(['/leagues']);
                 }),
                 catchError(error => {
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit{
         } else {
             this.error = true;
             this.errorMessage = 'Invalid input';
-            console.log('Invalid input');
+            console.debug('Invalid input');
         }
 
     }

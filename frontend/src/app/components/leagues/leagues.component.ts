@@ -38,13 +38,13 @@ export class LeaguesComponent {
         this.leagueService.fetchLeagues().pipe(
             tap(response => {
                 this.leagues = response;
-                console.log(this.leagues);
-                console.log('Successfully fetched leagues');
+                console.debug(this.leagues);
+                console.debug('Successfully fetched leagues');
                 this.showInvitationLinks = new Array<boolean>(this.leagues.length).fill(false); // initialize boolean array with all false values and same size as leagues
                 this.enableInviteFriends = new Array<boolean>(this.leagues.length).fill(true); // initialize boolean array with all false values and same size as leagues
                 this.InvitationLinksFeedback = new Array<string>(this.leagues.length).fill("");
 
-                console.log(this.leagues)
+                console.debug(this.leagues);
                 for (let i = 0; i < this.leagues.length; i++){
                     const l = this.leagues.at(i);
                     const l_id = l?.id;
@@ -53,8 +53,8 @@ export class LeaguesComponent {
                             map(value => `${location.origin}/league/join/${value.hiddenIdentifier}`),
                             catchError(error => {
                                 this.enableInviteFriends[i] = false;
-                                console.log("couldnt get hidden identifier");
-                                console.log(l?.id)
+                                console.debug("couldnt get hidden identifier");
+                                console.debug(l?.id);
                                 return of(null)
                             })
                         )
@@ -98,7 +98,7 @@ export class LeaguesComponent {
                 catchError(error => {
                     this.enableInviteFriends[index] = false;
                     index++;
-                    console.log("couldnt get hidden identifier");
+                    console.debug("couldnt get hidden identifier");
                     return of(null);
                 })
             )
@@ -118,10 +118,10 @@ export class LeaguesComponent {
                 }
                 // copy link to clipboard and show feedback
                 this.InvitationLinksFeedback[index] = "Invitation copied to Clipboard!"
-                console.log(success);
+                console.debug(success);
             },
             error => {
-                console.log(error);
+                console.debug(error);
                 this.InvitationLinksFeedback[index] = "Error: could not get invitation!"
                 return of(null);
             }
