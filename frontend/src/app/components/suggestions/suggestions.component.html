@@ -65,7 +65,7 @@
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
             <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center left" >
                 <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions.given">
-                    <mat-card class="card-item">
+                    <mat-card class="card-item" (click)="openDialog(item.recipeId)">
                         <mat-card-header>
                             <!-- todo display name of challenge if submissions from another challenge are displayed (decision to be made), call backend with challenge id from submissiondtp -->
                         </mat-card-header>
@@ -76,7 +76,7 @@
                         <mat-card-actions>
                         </mat-card-actions>
                     </mat-card>
-                    <mat-card *ngIf="toggle" class="card-item-top">  <!-- todo do not display when game mode picture -->
+                    <mat-card *ngIf="toggle" class="card-item-top" (click)="openDialog(item.recipeId)">  <!-- todo do not display when game mode picture -->
                         <mat-card-header>
                             <mat-card-title>{{item.name}}</mat-card-title>
                         </mat-card-header>
@@ -99,14 +99,14 @@
             Suggestions
         </mat-panel-title>
         <mat-panel-description class="mat-panel-description">
-            These here are your suggestions
+            These are your suggestions
         </mat-panel-description>
     </mat-expansion-panel-header>
     <div id="show-container" *ngIf="!sugg" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
             <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center left" >
                 <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions.suggestions">
-                    <mat-card class="card-item cardi">
+                    <mat-card class="card-item cardi" (click)="openDialog(item.recipeId)">
                         <mat-card-header>
                             <!-- todo display name of challenge if submissions from another challenge are displayed (decision to be made), call backend with challenge id from submissiondtp -->
                         </mat-card-header>
@@ -117,7 +117,7 @@
                         <mat-card-actions>
                         </mat-card-actions>
                     </mat-card>
-                    <mat-card *ngIf="toggle" class="card-item-top cardi">  <!-- todo do not display when game mode picture -->
+                    <mat-card *ngIf="toggle" class="card-item-top cardi" (click)="openDialog(item.recipeId)">  <!-- todo do not display when game mode picture -->
                         <mat-card-header>
                             <mat-card-title>{{item.name}}</mat-card-title>
                         </mat-card-header>
