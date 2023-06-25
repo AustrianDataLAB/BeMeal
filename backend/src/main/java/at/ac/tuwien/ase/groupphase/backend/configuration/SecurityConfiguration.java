@@ -1,11 +1,9 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
-import at.ac.tuwien.ase.groupphase.backend.security.UserDetailsManager;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthenticationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthorizationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.TokenManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;

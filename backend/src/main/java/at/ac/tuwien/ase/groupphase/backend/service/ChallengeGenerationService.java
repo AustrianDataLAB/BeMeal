@@ -1,6 +1,5 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
-import at.ac.tuwien.ase.groupphase.backend.dto.SubmissionDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
@@ -13,7 +12,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
@@ -123,7 +125,6 @@ public class ChallengeGenerationService {
      */
     public Optional<Recipe> randomRecipe(final GameMode gameMode) {
         if (!this.failMode) {
-            // TODO: do something with the pictureUUID here
             final var recipe = new Recipe(UUID.randomUUID().toString(), "Variation No. " + random.nextInt(73),
                     random.nextInt(30), random.nextInt(30), "This is some description", "baum", null);
             return Optional.of(recipe);

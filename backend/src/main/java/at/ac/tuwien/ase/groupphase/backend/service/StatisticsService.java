@@ -1,7 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.HeatMapDto;
-import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.entity.ParticipantSubmissionVote;
 import at.ac.tuwien.ase.groupphase.backend.repository.CommunityIdentificationRepository;
 import lombok.RequiredArgsConstructor;

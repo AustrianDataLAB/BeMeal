@@ -1,7 +1,7 @@
 package util;
 
-import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
+import at.ac.tuwien.ase.groupphase.backend.entity.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

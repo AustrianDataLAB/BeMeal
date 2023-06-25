@@ -4,6 +4,7 @@ import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
 import java.util.UUID;
 
 @Repository

@@ -1,6 +1,5 @@
 package at.ac.tuwien.ase.groupphase.backend.repository;
 
-import at.ac.tuwien.ase.groupphase.backend.service.SubmissionService;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 

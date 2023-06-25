@@ -6,12 +6,9 @@ import at.ac.tuwien.ase.groupphase.backend.entity.Ingredient;
 import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RecipeMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.RecipeRepository;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.type.descriptor.java.DoubleJavaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -86,25 +83,18 @@ public class RecipeService {
         List<Ingredient> ingredientsWithoutDuplicates = allIngredients.stream().distinct().toList();
         List<String> names = new ArrayList<>();
         ingredientsWithoutDuplicates.forEach(x -> names.add(x.getName()));
-        // TODO
 
         // fetch similar meals
         Optional<List<Recipe>> temp_suggestions = this.recipeRepository.getSimilarMeals(names, ids);
         List<Recipe> similarMeals = temp_suggestions.orElse(null);
-        // TODO
 
         // calculate weights of ingredients
         Map<String, Double> weightMap = new HashMap<>();
         populateWeightMap(weightMap, allIngredients);
-        // TODO
 
         // sort meals according to their total weight
-        // !! DONT FORGET to normalize ingredients of similarMeals (we searched for .*garlic.*, got garlic clove
-        // and need to apply .*garlic.* weight to this ingredients and not 'garlic clove' weight
         Map<Recipe, Double> resultMap = new HashMap<>();
         similarMeals.forEach(x -> resultMap.put(x, calculateWeightOfRecipe(weightMap, x)));
-        System.out.println("hello");
-        // TODO
 
         // return top 20 suggestions
         // remove recipes that were given as input#
@@ -112,7 +102,6 @@ public class RecipeService {
         Map<Recipe, Double> ret = resultMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(20)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-        // TODO
 
         // ingredients vereinheitlichen damit man besser weighten kann?
         // e.g garlic clove vs garlic bulb, red wine vinegar

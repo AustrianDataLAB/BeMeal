@@ -1,6 +1,9 @@
 package at.ac.tuwien.ase.groupphase.backend;
 
-import at.ac.tuwien.ase.groupphase.backend.entity.*;
+import at.ac.tuwien.ase.groupphase.backend.entity.Challenge;
+import at.ac.tuwien.ase.groupphase.backend.entity.GameMode;
+import at.ac.tuwien.ase.groupphase.backend.entity.League;
+import at.ac.tuwien.ase.groupphase.backend.entity.Region;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
@@ -15,13 +18,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Constants.*;
-import static util.Constants.VALID_PARTICIPANT_2;
 
 @SpringBootTest
 class ChallengeGenerationTests {

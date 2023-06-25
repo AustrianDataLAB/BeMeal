@@ -6,32 +6,29 @@ import at.ac.tuwien.ase.groupphase.backend.endpoint.InvitationEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.endpoint.LeagueEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
-import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
-import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.MockMvc;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import util.Constants;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +36,8 @@ import java.util.Map;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotEmpty;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -77,30 +75,6 @@ public class LeagueEndpointIntegrationTests {
     @Test
     @Sql({ "classpath:sql/SelfServiceData.sql" })
     @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
-    void CreateLeagueShouldReturn201() throws Exception {
-        // todo fix test, failed because for challenge creation docker is necessary
-        /*
-         * LeagueDto dto = new LeagueDto(null, Constants.VALID_LEAGUE_NAME, Constants.VALID_LEAGUE_GAMEMODE,
-         * Constants.VALID_LEAGUE_CHALLENGE_DURATION, Constants.VALID_LEAGUE_REGION, List.of());
-         *
-         * this.leagueEndpoint.createLeague(dto);
-         *
-         * List<League> list = new ArrayList<>(); this.leagueRepository.findAll().forEach(list::add); assertEquals(1,
-         * list.size()); League league = list.get(0); assertAll(() -> assertNotNull(league.getId()), () ->
-         * assertEquals(Constants.VALID_LEAGUE_NAME, league.getName()), () ->
-         * assertEquals(Constants.VALID_LEAGUE_GAMEMODE, league.getGameMode()), () ->
-         * assertEquals(Constants.VALID_LEAGUE_CHALLENGE_DURATION, league.getChallengeDuration()), () ->
-         * assertEquals(Constants.VALID_LEAGUE_REGION, league.getRegion()));
-         */
-        // String json = this.objectMapper.writeValueAsString(dto);
-        // mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/league/create-league").content(json)
-        // .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
-    }
-
-    // TODO fix test after wins was changed to map
-    @Test
-    @Sql({ "classpath:sql/SelfServiceData.sql" })
-    @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
     void givenPlatformUsersInLeague_getLeaderboardIsNotEmpty() throws Exception {
         Participant p1 = this.participantRepository.findByUsername("John");
         Participant p2 = this.participantRepository.findByUsername("John2");
@@ -128,7 +102,6 @@ public class LeagueEndpointIntegrationTests {
         assertEquals(3, leaderboard.size());
     }
 
-    // TODO fix test after wins was changed to map
     @Test
     @Sql({ "classpath:sql/SelfServiceData.sql" })
     @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)
@@ -166,7 +139,6 @@ public class LeagueEndpointIntegrationTests {
         assertEquals(2, leaderboard.get(2).getPosition());
     }
 
-    // TODO fix test after wins was changed to map
     @Test
     @Sql({ "classpath:sql/SelfServiceData.sql" })
     @WithMockUser(username = Constants.EXISTING_USER_USERNAME, password = Constants.EXISTING_USER_PASSWORD)

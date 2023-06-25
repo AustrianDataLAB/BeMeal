@@ -1,6 +1,9 @@
 package at.ac.tuwien.ase.groupphase.backend.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

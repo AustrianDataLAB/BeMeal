@@ -1,6 +1,5 @@
 package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
-import at.ac.tuwien.ase.groupphase.backend.dto.JoinLeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeagueDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.LeagueSecretsDto;
 import at.ac.tuwien.ase.groupphase.backend.exception.NotCreatorOfException;

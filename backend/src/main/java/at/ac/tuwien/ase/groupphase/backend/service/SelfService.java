@@ -1,8 +1,8 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.PasswordResetDto;
-import at.ac.tuwien.ase.groupphase.backend.endpoint.UserEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
+import at.ac.tuwien.ase.groupphase.backend.endpoint.UserEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.exception.UserAlreadyExistsException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RegistrationMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-
 import java.util.NoSuchElementException;
 import java.util.UUID;
 

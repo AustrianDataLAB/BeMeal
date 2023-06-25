@@ -1,8 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

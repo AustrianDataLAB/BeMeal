@@ -1,7 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.SubmissionDto;
-import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
 import at.ac.tuwien.ase.groupphase.backend.service.SubmissionService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
@@ -9,11 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 

@@ -4,7 +4,6 @@ import at.ac.tuwien.ase.groupphase.backend.dto.RegistrationDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

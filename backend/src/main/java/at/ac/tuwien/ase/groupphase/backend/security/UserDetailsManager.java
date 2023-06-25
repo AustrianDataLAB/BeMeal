@@ -3,7 +3,6 @@ package at.ac.tuwien.ase.groupphase.backend.security;
 import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -4,7 +4,6 @@ import at.ac.tuwien.ase.groupphase.backend.entity.Region;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.mapstruct.Mapping;
 
 import java.time.LocalDateTime;
 import java.util.Map;
