@@ -38,18 +38,6 @@ export class MealsComponent implements OnInit {
         this.getRandomizedRecipeCollectionSelection();
     }
 
-    getSuggestions() {
-        this.recipeService.getSuggestionFromRecipes(this.meals).pipe(
-            tap(response => {
-                this.suggestions = response;
-            }),
-            catchError(() => {
-                // TODO: implement error handling here
-                return of(null);
-            })
-        ).subscribe();
-    }
-
     getRandomizedRecipeCollectionSelection() {
         this.recipeCollectionService.getRandomizedRecipeCollectionSelection().pipe(
             tap(response => {
@@ -68,19 +56,22 @@ export class MealsComponent implements OnInit {
     }
 
     onChipSelectionChange(event: MatChipListboxChange) {
-        this.selectedCookbooks = event.value;
-        this.recipeService.getRecipesFromCollections(this.selectedCookbooks, null).pipe(
-            tap(response => {
-                this.pagination = response;
-                this.recipes = response.content;
-                this.totalElements = this.pagination.totalElements;
-            }),
-            catchError(() => {
-                this.recipes = [];
-                // TODO: implement error handling here
-                return of(null);
-            })
-        ).subscribe();
+        if (!this.selectedCookbooks || (this.selectedCookbooks.length !== event.value.length)) {
+            this.selectedCookbooks = event.value;
+            this.recipeService.getRecipesFromCollections(this.selectedCookbooks, null).pipe(
+                tap(response => {
+                    this.pagination = response;
+                    this.recipes = response.content;
+                    this.pageIndex = 1;
+                    this.totalElements = this.pagination.totalElements;
+                }),
+                catchError(() => {
+                    this.recipes = [];
+                    // TODO: implement error handling here
+                    return of(null);
+                })
+            ).subscribe();
+        }
     }
 
     onTableDataChange(event: number) {

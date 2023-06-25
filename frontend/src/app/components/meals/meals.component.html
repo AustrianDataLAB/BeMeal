@@ -21,6 +21,7 @@
                 </div>
                 <span *ngIf="error">{{errorMessage}}</span>
                 <pagination-controls
+                    *ngIf="selectedCookbooks && selectedCookbooks.length > 0"
                     [autoHide]="true"
                     class="pagination-center"
                     (pageChange)="onTableDataChange($event)"
