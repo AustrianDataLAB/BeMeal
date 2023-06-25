@@ -30,10 +30,10 @@ spring:
       enabled: true
       path: /h2-console
   mail: # just a throw-away account, checking in is ok
-    host: smtp.office365.com
+    host: smtp.gmail.com
     port: 587
-    username: iam3.14meal@outlook.com
-    password: menschenglasierenistboese1234
+    username: groupsepn@gmail.com
+    password: hgxorieeuzeuyixz
     properties:
       mail:
         smtp:
