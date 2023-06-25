@@ -30,7 +30,7 @@ public class LeagueEndpoint {
 
     private final ChallengeGenerationService challengeGenerationService;
 
-    @PostMapping("/create-league")
+    @PostMapping
     @SecurityRequirement(name = "bearerToken")
     @ResponseStatus(HttpStatus.CREATED)
     public void createLeague(@NotNull @RequestBody final LeagueDto leagueDto) {

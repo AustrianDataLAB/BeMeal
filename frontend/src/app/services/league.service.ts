@@ -28,7 +28,7 @@ export class LeagueService {
             })
         };
         console.debug(obj);
-        return this.httpClient.post<any>(this.baseUri + '/create-league', obj, httpOptions)
+        return this.httpClient.post<any>(this.baseUri, obj, httpOptions)
             .pipe(map(response => {
                 return response;
             }));
