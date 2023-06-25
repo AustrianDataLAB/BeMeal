@@ -67,7 +67,7 @@ public class RecipeEndpoint {
     public ResponseEntity<Page<RecipeDto>> getRecipesFromCollection(
             @RequestParam(value = "name") final List<String> names,
             @RequestParam(required = false, defaultValue = "0", value = "page") Integer page,
-            @RequestParam(required = false, defaultValue = "25", value = "size") Integer size) {
+            @RequestParam(required = false, defaultValue = "24", value = "size") Integer size) {
         logger.trace("GET /api/v1/recipe/collections?names.size={}", names.size());
         Page<RecipeDto> dto = recipeService.getRecipesFromCollections(names, page, size);
         if (dto == null) {
