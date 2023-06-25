@@ -59,8 +59,6 @@ export class ShowLeagueComponent implements OnInit{
         const id = this.route.snapshot.paramMap.get('id');
         if (id !== null) {
             this.leagueId = parseInt(id);
-        } else {
-            // todo show error
         }
         console.debug(`league id is: ${id}`);
     }

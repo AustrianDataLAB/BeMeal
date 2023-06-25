@@ -53,7 +53,6 @@ export class SelfService {
         return this.httpClient.get<any>(this.authBaseUri + '/login', { ...httpOptions, observe: 'response' })
             .pipe(map(response => {
                 if (response.ok) {
-                    //TODO find out why Authorization header is not there
                     const authHeader = response.headers.get('Authorization');
                     console.debug(response.headers);
                     if (authHeader) {

@@ -63,7 +63,6 @@ export class LeagueInvitationComponent implements OnInit{
     getLeagueName() {
         this.hiddenIdentifier = this.getHiddenIdentifierFromUrl();
         if (this.hiddenIdentifier == null) {
-            // todo display error
             return;
         }
         this.leagueService.getLeagueByHiddenIdentifier(this.hiddenIdentifier).pipe(

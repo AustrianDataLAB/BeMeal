@@ -72,10 +72,6 @@ export class LoginComponent implements OnInit{
 
     }
 
-    resetPassword() {
-        // todo
-    }
-
     ngOnInit() {
         if(this.selfService.isLoggedIn()) {
             this.router.navigate(['/leagues'])

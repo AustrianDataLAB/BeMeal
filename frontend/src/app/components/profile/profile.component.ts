@@ -23,10 +23,6 @@ export class ProfileComponent {
         this.getProfile();
     }
 
-    resetPassword() {
-        alert("todo");
-        // todo
-    }
     public getProfile() {
         this.selfService.getProfile()
             .pipe(tap(response => {

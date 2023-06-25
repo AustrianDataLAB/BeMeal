@@ -28,7 +28,7 @@ export class SearchComponent {
     stateSearched = false;
 
     error = false;
-    errorMessage = "";  // todo impl error handling
+    errorMessage = "";
     pagination: Pagination;
     pageIndex = 1;
     totalElements = 0;
@@ -49,7 +49,6 @@ export class SearchComponent {
             }),
             catchError(() => {
                 this.recipes = [];
-                // TODO: implement error handling here
                 return of(null);
             })
         ).subscribe();
@@ -65,7 +64,6 @@ export class SearchComponent {
             }),
             catchError(() => {
                 this.recipes = [];
-                // TODO: implement error handling here
                 return of(null);
             })
         ).subscribe();
@@ -96,7 +94,6 @@ export class SearchComponent {
             }),
             catchError(() => {
                 this.recipes = [];
-                // TODO: implement error handling here
                 return of(null);
             })
         ).subscribe();

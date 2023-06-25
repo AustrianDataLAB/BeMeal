@@ -38,7 +38,7 @@ export class CreateLeagueComponent {
             const leagueObj: League = new League(null,
                 this.registerForm.controls['name'].value,
                 gameModeValue,
-                parseInt(this.registerForm.controls['challengeDuration'].value), // TODO hier checken auch ob es wirklich eine zahl ist
+                parseInt(this.registerForm.controls['challengeDuration'].value),
                 []
             );
             this.leagueService.createLeague(leagueObj).pipe(

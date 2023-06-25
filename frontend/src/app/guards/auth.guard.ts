@@ -6,7 +6,7 @@ import {SelfService} from '../services/self.service';
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-    // todo fix authguard
+
     constructor(private selfService: SelfService,
                 private router: Router) {}
 

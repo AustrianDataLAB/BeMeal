@@ -42,8 +42,6 @@ export class ChallengeComponent {
         const id = this.route.snapshot.paramMap.get('id');
         if (id !== null) {
             this.leagueId = parseInt(id);
-        } else {
-            // todo show error
         }
         console.debug(`league id is: ${id}`);
         console.debug(this.submission.image);
@@ -74,8 +72,6 @@ export class ChallengeComponent {
                 console.error('Error while voting submission:', error);
                 this.errorMessage = "Could not vote submission";
                 this.error = true;
-                // todo handle errors if not successful
-                // Handle the error here
                 return of(null);
             })
         ).subscribe();
@@ -101,8 +97,6 @@ export class ChallengeComponent {
             this.canUpvote = false;
             this.switchUpvotingContainer();
             console.debug("next submission does not exist");
-            // todo show a message to user
-            // no more img to show and submissions to upvote
         }
     }
 
@@ -186,8 +180,6 @@ export class ChallengeComponent {
             catchError(error => {
                 console.debug("error fetching current submission");
                 console.debug(error);
-                // todo
-                // Handle the error here
                 return of(null);
             })
         );
@@ -225,8 +217,6 @@ export class ChallengeComponent {
             catchError(error => {
                 console.debug("error fetching submissions");
                 console.debug(error);
-                // todo
-                // Handle the error here
                 return of(null);
             })
         ).subscribe();
