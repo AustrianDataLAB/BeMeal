@@ -106,35 +106,33 @@ export class HeatMapComponent {
     }
 
     private barChartSpec(heatMap: HeatMap): VisualizationSpec {
+        const sortedEntries = heatMap.entries.sort((a, b) => a.rate-b.rate);
+        let tailedEntries: {id: number, rate: number}[] = [];
+        for (let i = 0; i < Math.min(sortedEntries.length, 10); i++) {
+            tailedEntries.push(sortedEntries[sortedEntries.length - i - 1]);
+        }
+        console.debug('tailed entries', tailedEntries);
+
+        if (tailedEntries.length > 0 && tailedEntries[0].rate === 0) {
+            tailedEntries = [];
+        }
+
         return {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
             description: 'Bar Chart with a spacing-saving y-axis',
             data: {
-                url: `/assets/vega-lite/${this.granularity.topojson}`, format: {
-                    type: 'topojson', feature: this.granularity.feature
-                }
+                values: tailedEntries
             },
             transform: [{
-                lookup: 'properties.g_id', from: {
+                lookup: 'id', from: {
                     data: {
-                        values: heatMap.entries,
-                    }, key: 'id', fields: ['rate']
+                        url: `/assets/vega-lite/${this.granularity.topojson}`, format: {
+                            type: 'topojson', feature: this.granularity.feature
+                        }
+                    }, key: 'properties.g_id', fields: ['properties.g_name']
                 },
-            }, {
-                window: [{
-                    op: 'rank', as: 'rank'
-                }], sort: [{
-                    field: 'rate', order: 'descending'
-                }]
-            }, {
-                window: [{
-                    op: 'rank', as: 'invrank'
-                }], sort: [{
-                    field: 'rate', order: 'ascending'
-                }]
-            }, {
-                filter: 'datum.rank <= 5 || datum.invrank <= 5'
-            }],
+            },
+                ],
             height: {
                 step: 50
             },
