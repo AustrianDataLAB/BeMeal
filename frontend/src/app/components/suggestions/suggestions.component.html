@@ -3,154 +3,169 @@
     <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
         <h1 class="mat-headline-2" style="margin-bottom: 20px">Suggestions</h1>
         <h2 class="mat-display-1" style="font-weight: 400; margin-bottom: 48px">
-            Wanna find the perfect recipe? Swipe our recipes and find your perfect suggestions based on your likes and dislikes.
+            Wanna find the perfect recipe? Swipe our recipes and find your perfect suggestions based on your likes and
+            dislikes.
         </h2>
 
-<div id="upvoting-container" *ngIf="randomRecipes.length > 0 && sugg" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-        <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
-            <div fxLayout="row" fxLayoutGap="16px" class="card-container"
-                 [@cardAnimator]="cardState"
-                 (@cardAnimator.done)="resetAnimationState($event)"
-                 (swipeleft)='onSwipeLeft()'
-                 (swiperight)='onSwipeRight()'>
-                <mat-card class="card-item">
-                    <mat-card-header>
-                    </mat-card-header>
-                    <mat-card-content class="card-content-league">
-                        <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
-                        <img style="max-height: 400px" src="{{currentPicture}}" />
-                    </mat-card-content>
-                </mat-card>
-                <mat-card *ngIf="toggle" class="card-item-top">
-                    <mat-card-header>
-                        <mat-card-title>{{randomRecipes[index].name}}</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content class="card-content-league">
-                        <div class="span-content-league; card-content-ingredients">
-                            <ul class="card-content-ingredients-list">
-                                <li class="card-content-ingredients-list-item" *ngFor="let ingredient of randomRecipes[index].ingredients">{{prettyString(ingredient.name)}}</li>
-                            </ul>
+        <div id="upvoting-container" *ngIf="randomRecipes.length > 0 && sugg" fxFlexFill fxLayout="column"
+             fxLayoutAlign="center center" fxLayoutGap="16px">
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+                <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center">
+                    <div fxLayout="row" fxLayoutGap="16px" class="card-container"
+                         [@cardAnimator]="cardState"
+                         (@cardAnimator.done)="resetAnimationState($event)"
+                         (swipeleft)='onSwipeLeft()'
+                         (swiperight)='onSwipeRight()'>
+                        <mat-card class="card-item">
+                            <mat-card-header>
+                            </mat-card-header>
+                            <mat-card-content class="card-content-league">
+                                <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
+                                <img style="max-height: 400px" src="{{currentPicture}}"/>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card *ngIf="toggle" class="card-item-top">
+                            <mat-card-header>
+                                <mat-card-title>{{randomRecipes[index].name}}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content class="card-content-league">
+                                <div class="span-content-league; card-content-ingredients">
+                                    <ul class="card-content-ingredients-list">
+                                        <li class="card-content-ingredients-list-item"
+                                            *ngFor="let ingredient of randomRecipes[index].ingredients">{{prettyString(ingredient.name)}}</li>
+                                    </ul>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+                <div fxFlexFill fxFlex="100" fxLayoutGap="16px" fxLayout="column" fxLayoutAlign="center center">
+                    <div>
+                        <button (click)="onSwipeLeft()" color="primary" mat-fab aria-label="like"
+                                style="margin-right: 4px;">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <button (click)="onSwipeRight()" color="primary" mat-fab aria-label="like"
+                                style="margin-left: 4px;">
+                            <mat-icon>favorite</mat-icon>
+                        </button>
+                    </div>
+                    <button mat-raised-button color="secondary" class="btn-block pmd-btn-fab"
+                            *ngIf="this.likedRecipes.length > 0" (click)="getSuggestions()">View
+                        Suggestions {{this.likedRecipes.length}}/{{this.limit}}</button>
+                    <!--            <div>{{this.likedRecipes.length}}/{{this.limit}}</div>-->
+                </div>
+                <!--        <button (click)="switchUpvotingContainer()" style="margin-left: 12px;" mat-button  color="secondary" class="btn-block">Cancel</button>-->
+            </div>
+        </div>
+        <mat-expansion-panel class="mat-expansion-panel panelli" *ngIf="!sugg" expanded="false">
+            <mat-expansion-panel-header class="mat-expansion-panel-header">
+                <mat-panel-title class="mat-panel-title">
+                    Input
+                </mat-panel-title>
+                <mat-panel-description class="mat-panel-description">
+                    Recipes that you liked <3
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div id="show-container1" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+                <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+                    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center left">
+                        <div fxLayout="row" fxLayoutGap="16px" class="card-container"
+                             *ngFor="let item of suggestions.given">
+                            <mat-card class="card-item" (click)="openDialog(item.recipeId)">
+                                <mat-card-header>
+                                </mat-card-header>
+                                <mat-card-content class="card-content-league">
+                                    <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
+                                    <img style="max-height: 400px" src="data:image/jpeg;base64, {{item.picture}}"/>
+                                </mat-card-content>
+                                <mat-card-actions>
+                                </mat-card-actions>
+                            </mat-card>
+                            <mat-card *ngIf="toggle" class="card-item-top" (click)="openDialog(item.recipeId)">
+                                <mat-card-header>
+                                    <mat-card-title>{{item.name}}</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content class="card-content-league">
+                                    <div class="span-content-league; card-content-ingredients">
+                                        <ul class="card-content-ingredients-list">
+                                            <li class="card-content-ingredients-list-item"
+                                                *ngFor="let ingredient of item.ingredients">{{prettyString(ingredient.name)}}</li>
+                                        </ul>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
                         </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div>
-        <div fxFlexFill fxFlex="100"  fxLayoutGap="16px" fxLayout="column" fxLayoutAlign="center center" >
-            <div>
-                <button (click)="onSwipeLeft()" color="primary" mat-fab  aria-label="like" style="margin-right: 4px;">
-                <mat-icon>close</mat-icon>
-                </button>
-                <button (click)="onSwipeRight()" color="primary" mat-fab  aria-label="like" style="margin-left: 4px;">
-                    <mat-icon>favorite</mat-icon>
-                </button>
-            </div>
-            <button mat-raised-button color="secondary" class="btn-block pmd-btn-fab" *ngIf="this.likedRecipes.length > 0" (click)="getSuggestions()">View Suggestions {{this.likedRecipes.length}}/{{this.limit}}</button>
-<!--            <div>{{this.likedRecipes.length}}/{{this.limit}}</div>-->
-        </div>
-<!--        <button (click)="switchUpvotingContainer()" style="margin-left: 12px;" mat-button  color="secondary" class="btn-block">Cancel</button>-->
-    </div>
-</div>
-<mat-expansion-panel class="mat-expansion-panel panelli" *ngIf="!sugg"  expanded="false">
-    <mat-expansion-panel-header class="mat-expansion-panel-header">
-        <mat-panel-title class="mat-panel-title">
-            Input
-        </mat-panel-title>
-        <mat-panel-description class="mat-panel-description">
-            Recipes that you liked <3
-        </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div id="show-container1"  fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-            <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center left" >
-                <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions.given">
-                    <mat-card class="card-item" (click)="openDialog(item.recipeId)">
-                        <mat-card-header>
-                        </mat-card-header>
-                        <mat-card-content class="card-content-league">
-                            <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
-                            <img style="max-height: 400px" src="data:image/jpeg;base64, {{item.picture}}" />
-                        </mat-card-content>
-                        <mat-card-actions>
-                        </mat-card-actions>
-                    </mat-card>
-                    <mat-card *ngIf="toggle" class="card-item-top" (click)="openDialog(item.recipeId)">
-                        <mat-card-header>
-                            <mat-card-title>{{item.name}}</mat-card-title>
-                        </mat-card-header>
-                        <mat-card-content class="card-content-league">
-                            <div class="span-content-league; card-content-ingredients">
-                                <ul class="card-content-ingredients-list">
-                                    <li class="card-content-ingredients-list-item" *ngFor="let ingredient of item.ingredients">{{prettyString(ingredient.name)}}</li>
-                                </ul>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</mat-expansion-panel>
-<mat-expansion-panel class="mat-expansion-panel panelli" *ngIf="!sugg" expanded="true">
-    <mat-expansion-panel-header class="mat-expansion-panel-header">
-        <mat-panel-title class="mat-panel-title">
-            Suggestions
-        </mat-panel-title>
-        <mat-panel-description class="mat-panel-description">
-            These are your suggestions
-        </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div id="show-container" *ngIf="!sugg" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-            <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center left" >
-                <div fxLayout="row" fxLayoutGap="16px" class="card-container" *ngFor="let item of suggestions.suggestions">
-                    <mat-card class="card-item cardi" (click)="openDialog(item.recipeId)">
-                        <mat-card-header>
-                        </mat-card-header>
-                        <mat-card-content class="card-content-league">
-                            <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
-                            <img style="max-height: 400px" src="data:image/jpeg;base64, {{item.picture}}" />
-                        </mat-card-content>
-                        <mat-card-actions>
-                        </mat-card-actions>
-                    </mat-card>
-                    <mat-card *ngIf="toggle" class="card-item-top cardi" (click)="openDialog(item.recipeId)">
-                        <mat-card-header>
-                            <mat-card-title>{{item.name}}</mat-card-title>
-                        </mat-card-header>
-                        <mat-card-content class="card-content-league">
-                            <div class="span-content-league; card-content-ingredients">
-                                <ul class="card-content-ingredients-list">
-                                    <li class="card-content-ingredients-list-item" *ngFor="let ingredient of item.ingredients">{{prettyString(ingredient.name)}}</li>
-                                </ul>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mat-expansion-panel panelli" *ngIf="!sugg" expanded="true">
+            <mat-expansion-panel-header class="mat-expansion-panel-header">
+                <mat-panel-title class="mat-panel-title">
+                    Suggestions
+                </mat-panel-title>
+                <mat-panel-description class="mat-panel-description">
+                    These are your suggestions
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div id="show-container" *ngIf="!sugg" fxFlexFill fxLayout="column" fxLayoutAlign="center center"
+                 fxLayoutGap="16px">
+                <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+                    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center left">
+                        <div fxLayout="row" fxLayoutGap="16px" class="card-container"
+                             *ngFor="let item of suggestions.suggestions">
+                            <mat-card class="card-item cardi" (click)="openDialog(item.recipeId)">
+                                <mat-card-header>
+                                </mat-card-header>
+                                <mat-card-content class="card-content-league">
+                                    <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
+                                    <img style="max-height: 400px" src="data:image/jpeg;base64, {{item.picture}}"/>
+                                </mat-card-content>
+                                <mat-card-actions>
+                                </mat-card-actions>
+                            </mat-card>
+                            <mat-card *ngIf="toggle" class="card-item-top cardi" (click)="openDialog(item.recipeId)">
+                                <mat-card-header>
+                                    <mat-card-title>{{item.name}}</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content class="card-content-league">
+                                    <div class="span-content-league; card-content-ingredients">
+                                        <ul class="card-content-ingredients-list">
+                                            <li class="card-content-ingredients-list-item"
+                                                *ngFor="let ingredient of item.ingredients">{{prettyString(ingredient.name)}}</li>
+                                        </ul>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</mat-expansion-panel>
-<span style="margin-left: 10px;" *ngIf="isFetching">
+        </mat-expansion-panel>
+        <span style="margin-left: 10px;" *ngIf="isFetching">
     <mat-spinner style="margin:0 auto;" [diameter]="50"/>
 </span>
 
-<mat-card class="card-item cardi-fixed">
-    <mat-card-header>
-        <mat-card-title>Control Box</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="card-contenti">
-    <button mat-raised-button color="primary"  *ngIf="!this.toggle" (click)="switchPref()">Show Ingredients</button>
-    <button mat-raised-button color="primary"  *ngIf="this.toggle" (click)="switchPref()">Hide Ingredients</button>
-    <button mat-raised-button color="primary"  (click)="reset()">Go again</button>
-    <mat-form-field  *ngIf="sugg">
-        <mat-label>How many?</mat-label>
-        <mat-select [(value)]="limit">
-            <mat-option value=5>5</mat-option>
-            <mat-option value=10>10</mat-option>
-            <mat-option value=15>15</mat-option>
-        </mat-select>
-    </mat-form-field>
-    </mat-card-content>
-</mat-card>
+        <mat-card class="card-item cardi-fixed">
+            <mat-card-header>
+                <mat-card-title>Control Box</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="card-contenti">
+                <button mat-raised-button color="primary" *ngIf="!this.toggle" (click)="switchPref()">Show Ingredients
+                </button>
+                <button mat-raised-button color="primary" *ngIf="this.toggle" (click)="switchPref()">Hide Ingredients
+                </button>
+                <button mat-raised-button color="primary" (click)="reset()">Go again</button>
+                <mat-form-field *ngIf="sugg">
+                    <mat-label>How many?</mat-label>
+                    <mat-select [(value)]="limit">
+                        <mat-option value=5>5</mat-option>
+                        <mat-option value=10>10</mat-option>
+                        <mat-option value=15>15</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>
