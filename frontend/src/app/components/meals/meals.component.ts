@@ -42,6 +42,7 @@ export class MealsComponent implements OnInit {
         this.recipeCollectionService.getRandomizedRecipeCollectionSelection().pipe(
             tap(response => {
                 this.cookbooks = response;
+                this.selectedCookbooks = [];
                 this.recipes = [];
                 this.pageIndex = 1;
                 this.totalElements = 0;
