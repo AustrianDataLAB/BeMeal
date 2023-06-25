@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Registration} from '../dtos/registration';
-import {map, Observable} from 'rxjs';
+import {BehaviorSubject, map, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 
 import jwt_decode from 'jwt-decode';
@@ -15,7 +15,10 @@ export class SelfService {
 
     private authBaseUri: string = this.globals.backendUri + '/self-service';
 
-    constructor(private httpClient: HttpClient, private globals: Globals) {}
+    isGameMaster = new BehaviorSubject(localStorage.getItem('bemeal.isgamemaster') === 'true');
+
+    constructor(private httpClient: HttpClient, private globals: Globals) {
+    }
 
 
     /**
@@ -58,6 +61,16 @@ export class SelfService {
                     }
                     console.debug('login successful');
                 }
+                this.getProfile().subscribe({
+                    next: value => {
+                        console.debug('setting new value', value.admin, value);
+                        localStorage.setItem('bemeal.isgamemaster', value.admin + '');
+                        this.isGameMaster.next(value.admin);
+                    }, error: err => {
+                        this.isGameMaster.next(false);
+                        console.debug('unable to retrieve profile', err);
+                    }
+                });
                 return response;
             }));
     }

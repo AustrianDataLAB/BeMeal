@@ -45,7 +45,7 @@ public final class Constants {
             new ArrayList<>());
 
     public static final ParticipantDto VALID_PARTICIPANT_DTO_1 = new ParticipantDto(VALID_USER_USERNAME,
-            VALID_USER_EMAIL, VALID_USER_POSTAL_CODE, new HashMap<>(), VALID_USER_REGION, VALID_LOCALDATETIME);
+            VALID_USER_EMAIL, VALID_USER_POSTAL_CODE, new HashMap<>(), VALID_USER_REGION, VALID_LOCALDATETIME, false);
 
     public static final League LEAGUE1 = new League(null, UUID.randomUUID(), GameMode.PICTURE_INGREDIENTS,
             Region.VORARLBERG, 7, "League 1", new ArrayList<>(), new ArrayList<>());
