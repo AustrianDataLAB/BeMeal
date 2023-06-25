@@ -44,7 +44,7 @@ public class RecipeEndpoint {
             @RequestParam(required = false, value = "maxTime") final Integer maxTime,
             @RequestParam(required = false, value = "dietType") final List<String> dietTypes,
             @RequestParam(required = false, defaultValue = "0", value = "page") Integer page,
-            @RequestParam(required = false, defaultValue = "8", value = "size") Integer size) {
+            @RequestParam(required = false, defaultValue = "9", value = "size") Integer size) {
         logger.trace("GET /api/v1/recipe/recipe/search?name={},skillLevels={},maxTime={},dietType={}", name,
                 skillLevels, maxTime, dietTypes);
         Page<RecipeDto> dto = recipeService.findRecipesBySearchString(name, skillLevels, maxTime, dietTypes, page,

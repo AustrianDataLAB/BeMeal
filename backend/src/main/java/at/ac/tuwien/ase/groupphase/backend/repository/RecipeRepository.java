@@ -31,11 +31,11 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
             + "AND CASE WHEN $maxTime IS NOT NULL THEN r.cookingTime + r.preparationTime <= $maxTime ELSE TRUE END "
             + "AND CASE WHEN $skillLevels IS NOT NULL THEN r.skillLevel IN $skillLevels ELSE TRUE END "
             + "AND CASE WHEN $dietTypes IS NOT NULL THEN d.name IN $dietTypes ELSE TRUE END "
-            + "RETURN r SKIP $skip LIMIT $limit", countQuery = "MATCH (r:Recipe)-[:DIET_TYPE]->(d:DietType) WHERE r.name =~ '(?i).*' + $searchString + '.*' "
+            + "RETURN DISTINCT r SKIP $skip LIMIT $limit", countQuery = "MATCH (r:Recipe)-[:DIET_TYPE]->(d:DietType) WHERE r.name =~ '(?i).*' + $searchString + '.*' "
                     + "AND CASE WHEN $maxTime IS NOT NULL THEN r.cookingTime + r.preparationTime <= $maxTime ELSE TRUE END "
                     + "AND CASE WHEN $skillLevels IS NOT NULL THEN r.skillLevel IN $skillLevels ELSE TRUE END "
                     + "AND CASE WHEN $dietTypes IS NOT NULL THEN d.name IN $dietTypes ELSE TRUE END "
-                    + "RETURN COUNT(r)")
+                    + "RETURN COUNT(DISTINCT r)")
     Page<Recipe> findRecipesBySearchString(String searchString, List<String> skillLevels, Integer maxTime,
             List<String> dietTypes, Pageable pageable);
 
