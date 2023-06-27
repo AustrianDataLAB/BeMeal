@@ -60,11 +60,7 @@ public class RecipeEndpointTest {
 
         MockHttpServletResponse response = mvcResult.getResponse();
 
-        assertEquals(HttpStatus.OK.value(), response.getStatus());
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
         assertEquals(MediaType.APPLICATION_JSON_VALUE, response.getContentType());
-
-        RecipeDto dto = objectMapper.readValue(response.getContentAsString(), RecipeDto.class);
-
-        assertNull(dto);
     }
 }
