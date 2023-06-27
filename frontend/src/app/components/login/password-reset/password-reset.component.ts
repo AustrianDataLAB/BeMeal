@@ -36,7 +36,8 @@ export class PasswordResetComponent {
     requestToken() {
         console.debug('request token');
         const email: string = this.tokenRequestForm.controls['email'].value;
-        this.selfService.requestPasswordResetMail(email).subscribe({next: () => this.emailSuccess = true, error: () => this.setErrorState()});
+        this.selfService.requestPasswordResetMail(email).subscribe({next: value => console.debug('request token was', value), error: err => console.debug('request was', err)});
+        this.emailSuccess = true;
         this.selfService.logoutUser();
     }
 
