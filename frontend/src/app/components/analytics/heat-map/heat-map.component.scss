@@ -1,0 +1,27 @@
+.flexy{
+    display: flex;
+}
+
+.flexy-out{
+    display: flex;
+    /*justify-content: space-between;
+    */ align-items: center;
+}
+
+.flexy-con-label{
+    flex-direction: column;
+    display: flex;
+}
+
+.flexy-out label {
+    font-weight: 500;
+    font-style: italic;
+}
+
+.ana-output-cont{
+    padding-top: 24px;
+}
+
+.wl {
+    color: lightgray;
+}

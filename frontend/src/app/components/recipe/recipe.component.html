@@ -1,0 +1,50 @@
+<mat-card *ngIf="recipe" class="mat-card">
+    <mat-card-header>
+        <mat-card-title>
+            <h1 class="mat-card-header">{{recipe.name}}</h1>
+        </mat-card-title>
+        <mat-card-subtitle *ngIf="recipe.skillLevel"><h2>Rating: {{prettyString(recipe.skillLevel)}}</h2></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="mat-card-content">
+
+        <h2 *ngIf="recipe.description">{{recipe.description}}</h2>
+
+        <mat-card class="mat-card-image">
+            <mat-card-content>
+                <img alt="image of recipe" src="data:image/png;base64, {{recipe.picture}}">
+            </mat-card-content>
+        </mat-card>
+
+        <p>
+            <mat-icon class="mat-icon" inline>access_time</mat-icon>
+            <b>Preparation time:</b> {{recipe.preparationTime / 60}} min
+        </p>
+        <p>
+            <mat-icon class="mat-icon" inline>access_time</mat-icon>
+            <b>Cooking time:</b> {{recipe.cookingTime / 60}} min
+        </p>
+    </mat-card-content>
+
+    <mat-card class="mat-card-ingredients">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-icon class="mat-icon" inline>format_align_left</mat-icon>
+                Ingredients
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-card-content>
+                <div class="card-content-ingredients">
+                    <ul class="card-content-ingredients-list">
+                        <li class="card-content-ingredients-list-item"
+                            *ngFor="let ingredient of recipe.ingredients">{{prettyString(ingredient.name)}}</li>
+                    </ul>
+                </div>
+            </mat-card-content>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card-footer class="mat-card-footer">
+        Recipe from BBC Good Food
+    </mat-card-footer>
+</mat-card>

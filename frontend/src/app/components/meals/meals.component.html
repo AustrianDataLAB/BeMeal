@@ -1,0 +1,50 @@
+<div class="container page-container mx-auto"
+     fxLayout="column" fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
+        <h1 class="mat-headline-2" style="margin-bottom: 20px">Meals and Recipes</h1>
+        <h2 class="mat-display-1" style="font-weight: 400;">
+            Need some inspiration? Browse our cookbooks!
+        </h2>
+
+        <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start">
+            <div class="sticky-item">
+                <div *ngIf="!error" fxLayout="row" fxLayoutGap="16px" class="card-container" id="row-top">
+                    <ng-container>
+                        <mat-chip-listbox aria-label="Cookbooks" [multiple]="true" hideSingleSelectionIndicator="true"
+                                          (change)="onChipSelectionChange($event)">
+                            <mat-chip-option class="reload-chip" [selectable]="false" [highlighted]="true"
+                                             (click)="getRandomizedRecipeCollectionSelection()">&#10227;
+                            </mat-chip-option>
+                            <mat-chip-option *ngFor="let cb of cookbooks; let i = index">{{cb['name']}}</mat-chip-option>
+                        </mat-chip-listbox>
+                    </ng-container>
+                </div>
+                <span *ngIf="error">{{errorMessage}}</span>
+                <pagination-controls
+                    *ngIf="selectedCookbooks && selectedCookbooks.length > 0"
+                    [autoHide]="true"
+                    class="pagination-center"
+                    (pageChange)="onTableDataChange($event)"
+                    nextLabel="Next "
+                    previousLabel="Prev">
+                </pagination-controls>
+            </div>
+            <div fxLayout="row wrap" fxLayoutGap="16px" style="width: 100%; margin-top: 48px">
+                <ng-container style="max-width: 25%;" *ngFor="let recipe of recipes | paginate: {itemsPerPage: 24, currentPage: pageIndex, totalItems: totalElements}">
+                    <mat-card class="card-item" (click)="openDialog(recipe.recipeId)">
+                            <img matCardImage *ngIf="recipe.picture !== '' && recipe.picture !== null && recipe.picture  !== undefined" src="data:image/jpeg;base64, {{recipe.picture}}" alt="recipe">
+                            <img  matCardImage *ngIf="recipe.picture === '' || recipe.picture === null || recipe.picture  === undefined" src="../../../assets/Image_not_available.png" alt="recipe">
+                            <mat-card-header>
+                              <mat-card-title>{{recipe.name}}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                {{recipe.description}}
+                            </mat-card-content>
+                    </mat-card>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+
+</div>
+

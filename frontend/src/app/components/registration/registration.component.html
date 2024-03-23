@@ -1,0 +1,52 @@
+
+<div class="container mx-auto" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap>
+
+    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start"  >
+        <img src="assets/cooking/PNG/DrawKit-cooking-kitchen-food-vector-illustrations-05.png" alt="A person enjoying cooking" />
+    </div>
+   <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+        <mat-card >
+            <mat-card-header>
+                <mat-card-title class="mat-h1">Create Account</mat-card-title>
+                <mat-card-subtitle>Enter your details below.
+                </mat-card-subtitle>
+
+            </mat-card-header>
+            <form [formGroup]="registerForm" >
+                <mat-card-content>
+                    <mat-form-field>
+                        <mat-label>Username</mat-label>
+                        <input formControlName="username" name="username" matInput>
+                    </mat-form-field>
+                    <mat-form-field >
+                        <mat-label>Email</mat-label>
+                        <input formControlName="email" name="email" matInput>
+                    </mat-form-field>
+                    <mat-form-field >
+                        <mat-label>Password</mat-label>
+                        <input type="password" name="password" formControlName="password" matInput>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Postal Code</mat-label>
+                        <input maxlength="4" minlength="4" name="postalCode" formControlName="postalCode" matInput >
+                    </mat-form-field>
+                    <mat-form-field >
+                        <mat-label>Select your region</mat-label>
+                        <mat-select name="region" formControlName="region">
+                            <mat-option [value]="region" *ngFor="let region of regionKeys(regions)">{{prettyString(region)}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <button mat-raised-button color="primary" (click)="registerParticipant()" class="btn-block">Register</button>
+                    <button (click)="toLogin()" mat-button color="primary">Already registered?</button>
+                    <br>
+                    <span *ngIf="error">{{errorMessage}}</span>
+
+                </mat-card-content>
+
+            </form>
+        </mat-card>
+    </div>
+</div>
+

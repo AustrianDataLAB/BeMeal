@@ -1,0 +1,144 @@
+
+
+
+<div class="container page-container mx-auto"
+     fxLayout="column"  fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+
+    <h1 class="mat-headline-2">Challenge</h1>
+        <h2 class="mat-display-1" style="font-weight: 400;">
+            Ready to unleash your inner chef? Take the challenge and start cooking!
+        </h2>
+
+        <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="start start" >
+            <div fxLayout="row" fxLayoutGap="16px" class="card-container" id="row-top">
+
+                <mat-card class="card-item">
+                    <mat-card-header>
+                        <mat-card-title>{{ challenge?.name }}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="card-content-league">
+                        <span class="span-content-league">{{ challenge?.description }}</span> <br/>
+                        <span><b>{{this.countdownString}}</b> left to upload!</span>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="card-item" style="flex: none">
+                    <ng-container *ngIf="!currentSubmission">
+                        <mat-card-header>
+                            <mat-card-title>Submit your result</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="card-content-league">
+                            <div class="span-content-league">Upload your creation</div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button type="button" mat-raised-button color="primary" class="btn-block" (click)="fileInput.click()">Choose File</button>
+                            <input hidden (change)="onImageChangeNOCOMPRESSION($event)" #fileInput type="file" id="file1" accept="image/bmp, image/jpeg, image/png, image/gif">
+                        </mat-card-actions>
+
+                        <mat-card-actions *ngIf="this.submission.image">
+                            <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit {{this.submission.image.name}}</button>
+                            <span style="margin-left: 10px;" *ngIf="isUploading">
+                                <mat-spinner style="margin:0 auto;" [diameter]="30"/>
+                            </span>
+                        </mat-card-actions>
+                    </ng-container>
+                    <ng-container *ngIf="currentSubmission">
+                        <mat-card-header>
+                            <mat-card-title>Your submission</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="card-content-league">
+                            <div class="card-content-league-image-container">
+                                <img class="card-content-league-image" src="data:image/jpeg;base64, {{currentSubmission?.picture}}" alt="your current submission"/>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button type="button" mat-raised-button color="primary" class="btn-block" (click)="fileInput.click()">Change submission</button>
+                            <input hidden (change)="onImageChangeNOCOMPRESSION($event)" #fileInput type="file" id="file2" accept="image/bmp, image/jpeg, image/png, image/gif">
+                        </mat-card-actions>
+                        <mat-card-actions *ngIf="this.submission.image">
+                                <button type="button" mat-raised-button color="primary" class="btn-block" (click)="this.submit()">Submit {{this.submission.image.name}}</button>
+                                <span style="margin-left: 10px;" *ngIf="isUploading">
+                                    <mat-spinner style="margin:0 auto;" [diameter]="30"/>
+                                </span>
+                        </mat-card-actions>
+                    </ng-container>
+                </mat-card>
+
+                <!-- vote submissions -->
+
+                <mat-card class="card-item" *ngIf="canUpvote && upvoteSubmissions.length > 0">
+                    <mat-card-header>
+                        <mat-card-title>Rate Your Friends</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="card-content-league">
+                        <div class="span-content-league">Guess what? The submissions from the challenge are in and you can now judge and upvote your friends' submission.
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button (click)="switchUpvotingContainer()" mat-raised-button color="primary" class="btn-block">Rate Submissions</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="16px" class="card-container">
+                <mat-card *ngIf="challenge?.picture" class="card-item-top">
+                    <mat-card-header>
+                        <mat-card-title>The final product</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content   class="card-content-league">
+                        <div class="card-content-league-image-container">
+                            <img class="card-content-league-image" src="data:image/jpeg;base64, {{challenge?.picture}}" alt="The final product"/>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="challenge?.ingredients" class="card-item-top">
+                    <mat-card-header>
+                        <mat-card-title>The ingredients</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="card-content-league">
+                        <div class="span-content-league; card-content-ingredients">
+                            <ul class="card-content-ingredients-list">
+                                <li class="card-content-ingredients-list-item" *ngFor="let ingredient of challenge.ingredients">{{prettyString(ingredient.name)}}</li>
+                            </ul>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- swipe card for upvoting -->
+<div id="upvoting-container" *ngIf="upvotingEnabled" fxFlexFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+    <div fxFlexFill fxFlex="100" fxLayout="column" fxLayoutAlign="center center" >
+        <div fxLayout="row" fxLayoutGap="16px" class="card-container"
+             [@cardAnimator]="cardState"
+             (@cardAnimator.done)="resetAnimationState($event)"
+             (swipeleft)='onSwipeLeft()'
+             (swiperight)='onSwipeRight()'>
+            <mat-card class="card-item">
+                <mat-card-header>
+                </mat-card-header>
+                <mat-card-content class="card-content-league">
+                    <!--<img style="max-height: 400px" src="https://ais.kochbar.de/kbrezept/461657_654395/1200x1200/gekochtes-rindfleisch-mit-roestkartoffeln-und-semmelkren-rezept.jpg"> -->
+                    <img style="max-height: 400px" src="{{currentPicture}}" />
+                </mat-card-content>
+                <mat-card-actions>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+    <div fxFlexFill fxFlex="100"  fxLayoutGap="16px" fxLayout="row" fxLayoutAlign="center center" >
+        <button (click)="onSwipeLeft()" color="primary" mat-fab  aria-label="like">
+            <mat-icon>close</mat-icon>
+        </button>
+        <button (click)="onSwipeRight()" color="primary" mat-fab  aria-label="like">
+            <mat-icon>favorite</mat-icon>
+        </button>
+    </div>
+    <button (click)="switchUpvotingContainer()" style="margin-left: 12px;" mat-button  color="secondary" class="btn-block">Cancel</button>
+</div>
+</div>

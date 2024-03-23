@@ -1,0 +1,30 @@
+.panelli {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+}
+
+.cardi {
+    margin-bottom: 16px;
+}
+
+#show-container, #show-container1 {
+    padding-top: 24px;
+}
+
+.card-contenti{
+    display: flex;
+    flex-direction: column;
+}
+
+.card-contenti * {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.cardi-fixed {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+}
