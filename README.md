@@ -42,6 +42,7 @@ Some of these tasks could be done in parallel or modified so that they are doabl
 
 - Possibly adding new features?
   - Extracting and expanding statistics page?
+  - Using user statistics for auto-scaling
 
 ## Costs
-The planned maximal budget for the realization o`f this project is 100€.
+The planned maximal budget for the realization of this project is 100€.
