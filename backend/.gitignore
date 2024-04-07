@@ -35,7 +35,7 @@ build/
 database/**/*
 !database/neo4j/import/data.json
 !database/neo4j/docker-compose.yml
-!database/neo4j/load-data
+!database/neo4j/load-data.cypher
 !database/neo4j/fixNeo4jData.py
 
 log/
