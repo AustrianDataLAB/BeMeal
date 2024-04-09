@@ -5,8 +5,8 @@ services:
     image: neo4j:5.6.0
     hostname: bemeal-neo4j
     ports:
-      - 7474:7474
-      - 7687:7687
+      - "7474:7474"
+      - "7687:7687"
     volumes:
       - ./conf:/conf
       - ./data:/data
@@ -15,5 +15,6 @@ services:
       - ./plugins:/plugins
     environment:
       - NEO4J_AUTH=neo4j/password
+      - NEO4J_PLUGINS=["apoc"]
       - NEO4J_apoc_import_file_enabled=true
       - NEO4J_apoc_import_file_use_neo4j_config=true
