@@ -6,10 +6,9 @@ import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
 import at.ac.tuwien.ase.groupphase.backend.entity.RecipeSkillLevel;
 import at.ac.tuwien.ase.groupphase.backend.exception.MissingPictureException;
+import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -54,14 +53,11 @@ public class RecipeMapper {
         if (uuid == null) {
             return null;
         }
-        var path = Paths.get(IMAGE_PATH, uuid + "." + IMAGE_FORMAT);
-        if (!Files.exists(path))
-            throw new MissingPictureException();
-        try {
-            byte[] bytes = Files.readAllBytes(path);
+        try (final var istream = this.getClass().getResourceAsStream("/recipes/" + uuid + "." + IMAGE_FORMAT)) {
+            byte[] bytes = StreamUtils.copyToByteArray(istream);
             return Base64.getEncoder().withoutPadding().encodeToString(bytes);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MissingPictureException();
         }
     }
 
