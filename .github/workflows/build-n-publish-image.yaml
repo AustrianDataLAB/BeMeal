@@ -1,5 +1,5 @@
 name: Build backend image and push to image repo
-# fixme all images
+# fixme build all images, maybe look into https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
 on:
   push:
     branches:
@@ -9,7 +9,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  # todo naming with version, currently the package is bemeal
+  IMAGE_NAME: ${{ github.repository }} # /backend:1.0.0 ?
 
 jobs:
   build-and-push-image:
