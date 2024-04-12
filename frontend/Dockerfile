@@ -14,6 +14,8 @@ RUN --mount=type=cache,target=/app/node_modules \
 
 FROM --platform=$TARGETPLATFORM nginx:1.25-alpine
 
+COPY docker/read-environment.sh /docker-entrypoint.d/40-read-environment.sh
+RUN chmod +x /docker-entrypoint.d/40-read-environment.sh
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /bemeal-frontend
 
