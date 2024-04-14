@@ -50,7 +50,6 @@ jobs:
             type=ref,event=pr
             type=match,pattern=\d.\d.\d.*
             type=sha
-            type=major
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.3.0
