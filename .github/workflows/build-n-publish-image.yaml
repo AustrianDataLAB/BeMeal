@@ -1,5 +1,5 @@
 name: Build backend image and push to image repo
-# fixme all images
+# fixme build all images, maybe look into https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
 on:
   push:
     branches:
@@ -28,6 +28,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: paulhatch/semantic-version@v5.3.0
+        with:
+          tag_prefix: "v"
+          major_pattern: "(MAJOR-BACKEND)"
+          major_regexp_flags: ""
+          minor_pattern: "(MINOR-BACKEND)"
+          minor_regexp_flags: ""
+          version_format: "${major}.${minor}.${patch}-prerelease${increment}"
+          change_path: "./backend"
+          namespace: backend
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5.5.1
@@ -39,6 +50,7 @@ jobs:
             type=ref,event=pr
             type=match,pattern=\d.\d.\d.*
             type=sha
+            type=major
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.3.0
