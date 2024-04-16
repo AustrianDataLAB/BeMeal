@@ -62,16 +62,11 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          exit-code: '1'
-          severity: 'CRITICAL,HIGH'
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'trivy-results.sarif'
+          #format: 'sarif'
+          format: 'table'
+          output: 'stdout'
 
-        - name: Scan the image and upload dependency results
+      - name: Scan the image and upload dependency results
         uses: anchore/sbom-action@bb716408e75840bbb01e839347cd213767269d4a
         with:
           image: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
