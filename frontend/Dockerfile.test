@@ -1,0 +1,13 @@
+FROM node:21-alpine AS build
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+RUN npm install -g @angular/cli
+
+COPY package.json /app/package.json
+COPY dummy-test.js /dummy-test.js
+COPY . .
+
+RUN npm install --save-dev jest-junit && npm install \
+&& npx jest dummy-test.js

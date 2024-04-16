@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+
+  sut:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./test-results:/opt/blog-search/test-results
+    command: [ "npm", "test" ]
+
