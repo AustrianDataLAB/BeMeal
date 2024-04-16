@@ -12,13 +12,14 @@ RUN --mount=type=cache,target=/app/node_modules \
     npm install && \
     ng build --output-path=dist
 
-FROM --platform=$TARGETPLATFORM nginx:1.25-alpine
+FROM --platform=$TARGETPLATFORM nginxinc/nginx-unprivileged:1.25-alpine
 
-COPY docker/read-environment.sh /docker-entrypoint.d/40-read-environment.sh
-RUN chmod +x /docker-entrypoint.d/40-read-environment.sh
+USER nginx
+
+COPY --chmod=0755 docker/read-environment.sh /docker-entrypoint.d/40-read-environment.sh
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /bemeal-frontend
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
