@@ -12,6 +12,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/frontend
+  REPO_NAME_LOWER: $(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
 
 jobs:
   build-and-push-image:
@@ -56,14 +57,13 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          REPOSITORY_LOWER=$(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
           IMAGE_TAG=${{ github.sha }}
-          docker build -t $REPOSITORY_LOWER:$IMAGE_TAG -f frontend/Dockerfile frontend
+          docker build -t ${{ env.REPO_NAME_LOWER }}:${{ github.sha }} -f frontend/Dockerfile frontend
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
+          image-ref: '${{ env.REPO_NAME_LOWER }}:${{ github.sha }}'
           #format: 'sarif'
           format: 'table'
           output: 'stdout'
