@@ -15,6 +15,9 @@ env:
 
 jobs:
   build-and-push-image:
+    strategy:
+      matrix:
+        component: [backend, frontend]
     runs-on: ubuntu-20.04
     permissions:
       contents: read
@@ -34,13 +37,13 @@ jobs:
         id: semantic-version
         with:
           tag_prefix: "v"
-          major_pattern: "(MAJOR-BACKEND)"
+          major_pattern: "(MAJOR-${{ matrix.component }})"
           major_regexp_flags: ""
-          minor_pattern: "(MINOR-BACKEND)"
+          minor_pattern: "(MINOR-${{ matrix.component }})"
           minor_regexp_flags: ""
           version_format: "${major}.${minor}.${patch}-prerelease${increment}"
-          change_path: "./backend"
-          namespace: backend
+          change_path: "./${{ matrix.component }}"
+          namespace: ${{ matrix.component }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -57,7 +60,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.3.0
         with:
-          context: ./test
+          context: ./${{ matrix.component }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
