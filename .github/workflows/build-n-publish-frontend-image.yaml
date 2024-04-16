@@ -12,7 +12,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/frontend
-  REPO_NAME_LOWER: $(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
 
 jobs:
   build-and-push-image:
@@ -20,6 +19,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      REPOSITORY_LOWER:  $(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
     steps:
       - name: Checkout
         uses: actions/checkout@v3
