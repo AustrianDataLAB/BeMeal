@@ -56,7 +56,9 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          docker build -t '${{ steps.meta.outputs.tags }}' -f frontend/Dockerfile .
+          REPOSITORY_LOWER=$(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_TAG=${{ github.sha }}
+          docker build -t $REPOSITORY_LOWER:$IMAGE_TAG -f frontend/Dockerfile .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
