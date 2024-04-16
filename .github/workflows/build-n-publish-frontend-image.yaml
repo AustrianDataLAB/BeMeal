@@ -54,19 +54,34 @@ jobs:
             type=sha
             type=raw, value=${{ steps.semantic-version.outputs.version }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5.3.0
-        with:
-          context: ./frontend
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      - name: Build an image from Dockerfile
+        run: |
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} -f frontend/Dockerfile .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
          image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
-         #format: 'sarif'
-         format: 'table'
-         output: 'stdout'
-         #output: 'trivy-results.sarif'
+          format: 'sarif'
+          #format: 'table'
+          #output: 'stdout'
+          output: 'trivy-results.sarif'
+          exit-code: '1'
+          #ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+        - name: Scan the image and upload dependency results
+        uses: anchore/sbom-action@bb716408e75840bbb01e839347cd213767269d4a
+        with:
+          image: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
+          artifact-name: image.spdx.json
+          dependency-snapshot: true
+          
+      - name: Push the image if scan passes
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} 
