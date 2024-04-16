@@ -58,7 +58,7 @@ jobs:
         run: |
           REPOSITORY_LOWER=$(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
           IMAGE_TAG=${{ github.sha }}
-          docker build -t $REPOSITORY_LOWER:$IMAGE_TAG -f frontend/Dockerfile .
+          docker build -t $REPOSITORY_LOWER:$IMAGE_TAG -f frontend/Dockerfile frontend
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
