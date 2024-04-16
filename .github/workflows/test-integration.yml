@@ -1,8 +1,6 @@
 name: Run integration test using docker-compose
 # fixme build all images, maybe look into https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
 on:
-
-
   workflow_dispatch:
 
 jobs:
@@ -14,6 +12,7 @@ jobs:
       - name: Build the localdev environment
         working-directory: ./frontend
         run: docker-compose -f docker-compose.yml run sut
+
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
