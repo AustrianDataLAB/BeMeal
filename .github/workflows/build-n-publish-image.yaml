@@ -58,6 +58,7 @@ jobs:
             type=raw, value=${{ steps.semantic-version.outputs.version }}
 
       - name: Build and push Docker image
+        id: docker-build
         uses: docker/build-push-action@v5.3.0
         with:
           context: ./${{ matrix.component }}
@@ -65,17 +66,10 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Show Labels and Tags
-        id: tag-filter
-        run: |
-          echo "Tags: ${{ steps.meta.outputs.tags }}"
-          echo "Labels: ${{ steps.meta.outputs.tags }}"
-          echo "tag-sha=$(printf ${{ steps.meta.output.tags }} | tail -n 1)" >> $GITGUB_OUTPUT
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-         image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tag-filter.outputs.tag-sha }}'
+         image-ref: '${{ steps.docker-build.outputs.imageid }}'
          #format: 'sarif'
          format: 'table'
          output: 'stdout'
