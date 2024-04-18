@@ -70,7 +70,7 @@ jobs:
         run: |
           echo "Tags: ${{ steps.meta.outputs.tags }}"
           echo "Labels: ${{ steps.meta.outputs.tags }}"
-          echo "::set-output name=tag-sha::$(printf ${{ steps.meta-output.tags }} | tail -n 1)"
+          echo "tag-sha=$(printf ${{ steps.meta.output.tags }} | tail -n 1)" >> $GITGUB_OUTPUT
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
