@@ -47,6 +47,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5.5.1
+        if: github.ref == 'refs/heads/main'
         with:
           images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
           tags: |
@@ -58,6 +59,7 @@ jobs:
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.3.0
+        if: github.ref == 'refs/heads/main'
         with:
           context: ./${{ matrix.component }}
           push: true
