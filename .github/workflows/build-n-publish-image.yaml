@@ -45,6 +45,9 @@ jobs:
           namespace: ${{ matrix.component }}
           debug: true
 
+      - name: Debug Semver
+        run: echo ${{ steps.semantic-version.outputs.version }}
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5.5.1
