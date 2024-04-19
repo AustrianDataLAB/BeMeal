@@ -43,6 +43,7 @@ jobs:
           version_format: "${major}.${minor}.${patch}+${increment}-${{ matrix.component }}"
           change_path: "./${{ matrix.component }}"
           namespace: ${{ matrix.component }}
+          debug: true
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
