@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Login to the Container registry
         uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20
@@ -37,10 +39,8 @@ jobs:
         with:
           tag_prefix: "v"
           major_pattern: "(MAJOR-${{ matrix.component }})"
-          major_regexp_flags: ""
           minor_pattern: "(MINOR-${{ matrix.component }})"
-          minor_regexp_flags: ""
-          change_path: "./${{ matrix.component }}"
+          change_path: "${{ matrix.component }}"
           namespace: ${{ matrix.component }}
           debug: true
 
