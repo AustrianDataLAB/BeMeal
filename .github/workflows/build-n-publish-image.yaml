@@ -46,23 +46,3 @@ jobs:
 
       - name: Debug Semver
         run: echo ${{ steps.semantic-version.outputs.debug_output }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5.5.1
-        with:
-          images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
-          tags: |
-            type=ref,event=branch
-            type=ref,event=tag
-            type=ref,event=pr
-            type=sha
-            type=raw, value=${{ steps.semantic-version.outputs.version }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5.3.0
-        with:
-          context: ./${{ matrix.component }}
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
