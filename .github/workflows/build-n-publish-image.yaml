@@ -58,9 +58,19 @@ jobs:
             type=raw, value=${{ steps.semantic-version.outputs.version }}
 
       - name: Build and push Docker image
+        id: docker-build
         uses: docker/build-push-action@v5.3.0
         with:
           context: ./${{ matrix.component }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+         image-ref: '${{ steps.docker-build.outputs.imageid }}'
+         #format: 'sarif'
+         format: 'table'
+         output: 'stdout'
+         #output: 'trivy-results.sarif'
