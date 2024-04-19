@@ -46,7 +46,7 @@ jobs:
           debug: true
 
       - name: Debug Semver
-        run: echo ${{ steps.semantic-version.outputs.version }}
+        run: echo ${{ steps.semantic-version.outputs.debug_output }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
