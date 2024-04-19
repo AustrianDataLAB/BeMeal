@@ -41,6 +41,7 @@ jobs:
           major_pattern: "(MAJOR-${{ matrix.component }})"
           minor_pattern: "(MINOR-${{ matrix.component }})"
           change_path: "${{ matrix.component }}"
+          version_format: "v${major}.${minor}.${patch}+${increment}"
           namespace: ${{ matrix.component }}
           debug: true
 
