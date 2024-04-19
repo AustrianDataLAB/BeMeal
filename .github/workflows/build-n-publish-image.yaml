@@ -47,7 +47,6 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5.5.1
-        if: github.ref == 'refs/heads/main'
         with:
           images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
           tags: |
@@ -57,13 +56,12 @@ jobs:
             type=sha
             type=raw, value=${{ steps.semantic-version.outputs.version }}
 
-      - name: Build and push Docker image
+      - name: Build and Tag Docker image
         id: docker-build
         uses: docker/build-push-action@v5.3.0
-        if: github.ref == 'refs/heads/main'
         with:
           context: ./${{ matrix.component }}
-          push: true
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -75,3 +73,10 @@ jobs:
          format: 'table'
          output: 'stdout'
          #output: 'trivy-results.sarif'
+
+      - name: Push Docker image
+        id: docker-push
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker push --all-tags "${{ steps.docker-build.outputs.imageid }}"
+
