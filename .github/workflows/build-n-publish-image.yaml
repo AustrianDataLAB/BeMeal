@@ -2,7 +2,7 @@ name: Build backend image and push to image repo
 # fixme build all images, maybe look into https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
 on:
   push:
-    branches: [ main, feature/pipeline ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -43,7 +43,24 @@ jobs:
           change_path: "${{ matrix.component }}"
           version_format: "v${major}.${minor}.${patch}+${increment}"
           namespace: ${{ matrix.component }}
-          debug: true
 
-      - name: Debug Semver
-        run: echo ${{ steps.semantic-version.outputs.debug_output }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5.5.1
+        with:
+          images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=sha
+            type=raw, value=${{ steps.semantic-version.outputs.version }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5.3.0
+        with:
+          context: ./${{ matrix.component }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
