@@ -2,8 +2,7 @@ name: Build backend image and push to image repo
 # fixme build all images, maybe look into https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -17,7 +16,7 @@ jobs:
   build-and-push-image:
     strategy:
       matrix:
-        component: [backend, frontend]
+        component: [ backend, frontend ]
     runs-on: ubuntu-20.04
     permissions:
       contents: read
@@ -25,11 +24,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Login to the Container registry
         uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ${{ env.REGISTRY}}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -38,16 +39,15 @@ jobs:
         with:
           tag_prefix: "v"
           major_pattern: "(MAJOR-${{ matrix.component }})"
-          major_regexp_flags: ""
           minor_pattern: "(MINOR-${{ matrix.component }})"
-          minor_regexp_flags: ""
-          version_format: "${major}.${minor}.${patch}-prerelease${increment}"
-          change_path: "./${{ matrix.component }}"
+          change_path: "${{ matrix.component }}"
+          version_format: "v${major}.${minor}.${patch}+${increment}"
           namespace: ${{ matrix.component }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5.5.1
+        if: github.ref == 'refs/heads/main'
         with:
           images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
           tags: |
@@ -60,6 +60,7 @@ jobs:
       - name: Build and push Docker image
         id: docker-build
         uses: docker/build-push-action@v5.3.0
+        if: github.ref == 'refs/heads/main'
         with:
           context: ./${{ matrix.component }}
           push: true
