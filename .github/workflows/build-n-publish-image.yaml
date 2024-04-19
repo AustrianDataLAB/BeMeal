@@ -40,7 +40,7 @@ jobs:
           major_regexp_flags: ""
           minor_pattern: "(MINOR-${{ matrix.component }})"
           minor_regexp_flags: ""
-          version_format: "${major}.${minor}.${patch}-prerelease${increment}"
+          version_format: "${major}.${minor}.${patch}-{increment}-${{ matrix.component }}"
           change_path: "./${{ matrix.component }}"
           namespace: ${{ matrix.component }}
 
