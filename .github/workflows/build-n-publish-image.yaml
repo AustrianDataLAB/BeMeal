@@ -2,8 +2,7 @@ name: Build backend image and push to image repo
 # fixme build all images, maybe look into https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
 on:
   push:
-    branches:
-      - main
+    branches: [ main, feature/pipeline ]
   pull_request:
     branches: [ main ]
 
@@ -17,7 +16,7 @@ jobs:
   build-and-push-image:
     strategy:
       matrix:
-        component: [backend, frontend]
+        component: [ backend, frontend ]
     runs-on: ubuntu-20.04
     permissions:
       contents: read
