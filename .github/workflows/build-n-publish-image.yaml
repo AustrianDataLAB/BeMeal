@@ -27,7 +27,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Login to the Container registry
+      - name: Login to the Container Registry
         uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20
         with:
           registry: ${{ env.REGISTRY}}
@@ -44,8 +44,25 @@ jobs:
           version_format: "v${major}.${minor}.${patch}+${increment}"
           namespace: ${{ matrix.component }}
 
-      - name: Extract metadata (tags, labels) for Docker
+      - name: Build Docker Image
+        id: docker-build
+        uses: docker/build-push-action@v5.3.0
+        with:
+          context: ./${{ matrix.component }}
+          load: true
+
+      - name: Run Trivy Vulnerability Scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+         image-ref: '${{ steps.docker-build.outputs.imageid }}'
+         #format: 'sarif'
+         format: 'table'
+         output: 'stdout'
+         #output: 'trivy-results.sarif'
+
+      - name: Extract Metadata (tags, labels) for Docker
         id: meta
+        if: github.ref == 'refs/heads/main'
         uses: docker/metadata-action@v5.5.1
         with:
           images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
@@ -56,27 +73,13 @@ jobs:
             type=sha
             type=raw, value=${{ steps.semantic-version.outputs.version }}
 
-      - name: Build and Tag Docker image
-        id: docker-build
+      - name: Push Docker Image
+        id: docker-push
+        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5.3.0
         with:
           context: ./${{ matrix.component }}
-          push: false
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-         image-ref: '${{ steps.docker-build.outputs.imageid }}'
-         #format: 'sarif'
-         format: 'table'
-         output: 'stdout'
-         #output: 'trivy-results.sarif'
-
-      - name: Push Docker image
-        id: docker-push
-        if: github.ref == 'refs/heads/main'
-        run: |
-          docker push --all-tags "${{ steps.docker-build.outputs.imageid }}"
 
