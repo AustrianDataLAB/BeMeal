@@ -1,0 +1,25 @@
+name: Accessibility Test
+
+on:
+  workflow_run:
+    workflows: ["Build backend image and push to image repo"]
+    types:
+      - completed
+
+jobs:
+  accessibility-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: | # Example URLs
+            https://airhorner.com/
+          #budgetPath: ./budget.json # test performance budgets
+          #uploadArtifacts: true # save results as an action artifacts
+          #temporaryPublicStorage: true # upload lighthouse report to the temporary storage
+          #configPath: .github/lighthouse/lighthouserc.json
