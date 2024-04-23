@@ -1,4 +1,4 @@
-name: Build backend image and push to image repo
+name: Build and Push to GitHub Registry
 # fixme build all images, maybe look into https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
 on:
   push:
@@ -10,7 +10,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/backend
 
 jobs:
   build-and-push-image:
@@ -65,7 +64,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: docker/metadata-action@v5.5.1
         with:
-          images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+          images: "${{ env.REGISTRY }}/${{ matrix.component }}"
           tags: |
             type=ref,event=branch
             type=ref,event=tag
