@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  playwright:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: playwright
+    volumes:
+      - ./tests:/app
+    ports:
+      - "8880:8080"
+      - "8881:8081"
