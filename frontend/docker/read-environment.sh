@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Define the output JSON file
-output_file="/bemeal-frontend/env.json"
+output_file="/bemeal-frontend/assets/env.json"
 
 # Check if the environment variable ABC is set
 if [ -z "$BACKEND_URL" ]; then

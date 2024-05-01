@@ -1,19 +1,30 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
     providedIn: 'root'
 })
 export class Globals {
-    readonly backendUri: string = this.findBackendUrl();
+    private _backendUri: string;
+    private httpClient = inject(HttpClient);
 
-    private findBackendUrl(): string {
-        if (window.location.port === '4200') { // local `ng serve`, backend at localhost:8080
-            return 'http://localhost:8080/api/v1';
-        } else {
-            // assume deployed somewhere and backend is available at same host/port as frontend
-            return window.location.protocol + '//' + window.location.host + window.location.pathname + 'api/v1';
+    get backendUri(): string {
+        if (this._backendUri!!) {
+            return this._backendUri;
         }
+        this.httpClient.get<{ BACKEND_URL: string }>('/assets/env.json').subscribe({
+            next: urlVar => this._backendUri = urlVar.BACKEND_URL,
+            error: error => {
+                if (window.location.port === '4200') { // local `ng serve`, backend at localhost:8080
+                    this._backendUri = 'http://localhost:8080/api/v1';
+                } else {
+                    console.error(`Could not load environment variables ${error}`);
+                }
+            }
+        });
+        return this._backendUri;
     }
 }
+
 
 
