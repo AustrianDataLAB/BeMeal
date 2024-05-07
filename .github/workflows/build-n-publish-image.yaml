@@ -56,7 +56,7 @@ jobs:
          image-ref: '${{ steps.docker-build.outputs.imageid }}'
          #format: 'sarif'
          format: 'table'
-         output: 'stdout'
+         #output: 'stdout'
          #output: 'trivy-results.sarif'
 
       - name: Extract Metadata (tags, labels) for Docker
