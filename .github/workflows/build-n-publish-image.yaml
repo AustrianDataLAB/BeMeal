@@ -56,8 +56,10 @@ jobs:
          image-ref: '${{ steps.docker-build.outputs.imageid }}'
          #format: 'sarif'
          format: 'table'
-         output: 'stdout'
+         #output: 'stdout'
          #output: 'trivy-results.sarif'
+         severity: HIGH,CRITICAL
+         exit-code: 1
 
       - name: Extract Metadata (tags, labels) for Docker
         id: meta
