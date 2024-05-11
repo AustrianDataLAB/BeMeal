@@ -2,17 +2,16 @@ import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {SelfService} from '@services/self.service';
 import {Observable} from 'rxjs';
-import {Globals} from '../shared/globals';
+import {ConfigService} from "@services/config.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private selfService: SelfService, private globals: Globals) {
+    constructor(private selfService: SelfService, private configService: ConfigService) {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const backendUri = this.globals.backendUri + '/env';
-        const authUri = this.globals.backendUri + '/authentication';
+        const authUri = this.configService.backendUri + '/authentication';
 
         // Do not intercept authentication requests
         if (req.url === authUri) {

@@ -1,17 +1,17 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Globals} from "../shared/globals";
 import {Observable, of} from "rxjs";
 import {Recipe} from "../dtos/recipe";
 import {Suggestion} from "../dtos/suggestion";
+import {ConfigService} from "@services/config.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class RecipeService {
-    private baseUri: string = this.globals.backendUri + '/recipe';
+    private baseUri: string = this.configService.backendUri  + '/recipe';
 
-    constructor(private httpClient: HttpClient, private globals: Globals) {
+    constructor(private httpClient: HttpClient, private configService: ConfigService) {
     }
 
     getRecipesFromCollections(cookBooks: string[], page: number | null): Observable<any> {
