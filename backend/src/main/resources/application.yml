@@ -49,3 +49,16 @@ bemeal:
   frontend:
     passwordResetConfirmUrl: http://localhost:4200/password-reset/{resetToken}
 
+
+---
+spring:
+  config:
+    activate:
+      on-profile: container
+  neo4j:
+    uri: bolt://neo4j:7687
+    authentication:
+      username: neo4j
+      password: password
+
+
