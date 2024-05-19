@@ -1,7 +1,9 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -26,7 +28,9 @@ public class Persistence {
         return dataSource;
     }
 
-    PlatformTransactionManager transactionManager() {
-        return new DataSourceTransactionManager(dataSource());
-    }
+//    @Bean
+//    @Primary
+//    PlatformTransactionManager transactionManager() {
+//        return new DataSourceTransactionManager(dataSource());
+//    }
 }
