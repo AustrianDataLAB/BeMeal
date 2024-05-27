@@ -27,7 +27,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/env.js"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
@@ -36,7 +37,7 @@
               "src/assets/styles/_typography.scss"
             ],
             "scripts": [
-                "./node_modules/angular-dark-mode/angular-dark-mode.js"
+              "./node_modules/angular-dark-mode/angular-dark-mode.js"
             ]
           },
           "configurations": {
@@ -61,7 +62,11 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "index": {
+                "input": "src/index.dev.html",
+                "output": "index.html"
+              }
             }
           },
           "defaultConfiguration": "production"
@@ -95,7 +100,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/env.js"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
