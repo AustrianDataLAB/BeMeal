@@ -8,8 +8,9 @@ RUN mvn clean install -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
 
-RUN addgroup -S runner && adduser -S runner -G runner
-USER runner
+RUN addgroup -S -g 9001 non-priv-group
+RUN adduser -S -u 9001 -G non-priv-group non-priv-user
+USER 9001
 
 WORKDIR /opt/app
 COPY --from=build /opt/app/target/*.jar /opt/app/*.jar
