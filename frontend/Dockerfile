@@ -20,9 +20,9 @@ USER nginx
 COPY --chmod=0755 docker/read-environment.sh /docker-entrypoint.d/40-read-environment.sh
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /bemeal-frontend
-USER root
-
 COPY docker/env.template.js $FRONTEND_TEMPLATE_ENV
+
+USER root
 RUN chmod a+rw $FRONTEND_ENV
 USER nginx
 

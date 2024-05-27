@@ -3,8 +3,8 @@
 
 # Check if the environment variable ABC is set
 if [ -z "$BACKEND_URL" ]; then
-    echo "Environment variable BACKEND_URL is not set."
-    exit 1
+    echo "Environment variable BACKEND_URL is not set. Skipping replacement."
+    exit 0
 fi
 
 # Create a JSON object with the environment variable ABC
