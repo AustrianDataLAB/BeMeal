@@ -32,8 +32,13 @@ public class UserDetailsManager implements UserDetailsService {
     }
 
     private User toUser(final PlatformUser platformUser) {
-        return new User(platformUser.getUsername(), new String(platformUser.getPassword()),
+        String password = platformUser.getPassword() == null ? "" : new String(platformUser.getPassword());
+        User user = new User(platformUser.getUsername(), password,
                 List.of(new SimpleGrantedAuthority(
                         Boolean.TRUE.equals(platformUser.getIsAdmin()) ? "GAMEMASTER" : "PARTICIPANT")));
+        if (platformUser.getPassword() == null){
+            user.eraseCredentials();
+        }
+        return user;
     }
 }

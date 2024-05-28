@@ -1,5 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
+import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.ase.groupphase.backend.security.GitHubAuthenticationHandler;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthenticationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthorizationFilter;
@@ -18,6 +19,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -32,11 +35,15 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class SecurityConfiguration {
 
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
+    private final OAuth2AuthorizedClientService authAuthorizedClientService;
 
     private static final String[] AUTH_WHITELIST = { "/error", "/api/v1/self-service/registration/participant",
             "/api/v1/self-service/password-token/**", "/api/v1/self-service/password/**", "/v3/api-docs/**",
             "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html", "/api/v1/recipe/**",
             "/api/v1/community-identification/reload", "/actuator/**" };
+
+    private static final String[] OAUTH_WHITELIST = { "/api/v1/self-service/ssologin", "/oauth2/authorization/github", "/login/oauth2/code/github"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -48,9 +55,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain ssoLogin(final HttpSecurity http) throws Exception {
         return http
             .cors().and().csrf().disable()
-            .securityMatcher("/auth/sso")
-            .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
-            .oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler()))
+            .securityMatcher(OAUTH_WHITELIST)
+            .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+            .oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler()).authorizedClientService(authAuthorizedClientService))
             .build();
     }
 
@@ -84,7 +91,7 @@ public class SecurityConfiguration {
     }
 
     private GitHubAuthenticationHandler oAuth2LoginSuccessHandler() {
-        return new GitHubAuthenticationHandler(this.userDetailsService, tokenManager());
+        return new GitHubAuthenticationHandler(this.userDetailsService, tokenManager(), this.userRepository, this.authAuthorizedClientService);
     }
 
     // fix cors issues and allow "Authorization" header to be exposed.
