@@ -99,6 +99,10 @@
 
 
         <!-- security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -177,7 +181,7 @@
             <artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
             <version>5.13.0</version>
         </dependency>
-    </dependencies>
+	</dependencies>
 
     <build>
         <plugins>

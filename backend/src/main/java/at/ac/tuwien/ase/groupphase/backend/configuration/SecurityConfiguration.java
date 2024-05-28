@@ -1,11 +1,13 @@
 package at.ac.tuwien.ase.groupphase.backend.configuration;
 
+import at.ac.tuwien.ase.groupphase.backend.security.GitHubAuthenticationHandler;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthenticationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.JwtAuthorizationFilter;
 import at.ac.tuwien.ase.groupphase.backend.security.TokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
@@ -42,6 +44,18 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    @Order(1)
+    public SecurityFilterChain ssoLogin(final HttpSecurity http) throws Exception {
+        return http
+            .cors().and().csrf().disable()
+            .securityMatcher("/auth/sso")
+            .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+            .oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler()))
+            .build();
+    }
+
+    @Bean
+    @Order(2)
     public SecurityFilterChain securityFilterChain(final HttpSecurity http,
             final AuthenticationConfiguration authenticationConfiguration) throws Exception {
 
@@ -67,6 +81,10 @@ public class SecurityConfiguration {
 
     private TokenManager tokenManager() {
         return new TokenManager(this.userDetailsService);
+    }
+
+    private GitHubAuthenticationHandler oAuth2LoginSuccessHandler() {
+        return new GitHubAuthenticationHandler(this.userDetailsService, tokenManager());
     }
 
     // fix cors issues and allow "Authorization" header to be exposed.
