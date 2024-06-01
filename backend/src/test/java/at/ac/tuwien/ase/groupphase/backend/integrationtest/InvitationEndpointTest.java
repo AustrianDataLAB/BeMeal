@@ -9,7 +9,7 @@ import at.ac.tuwien.ase.groupphase.backend.exception.NotCreatorOfException;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

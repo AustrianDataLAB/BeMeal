@@ -16,9 +16,14 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
     @Query("MATCH (r:Recipe) WHERE r.picture IS NOT NULL RETURN r ORDER BY rand() LIMIT 1")
     Optional<Recipe> findAnyRecipeWithPicture();
 
-    @Query("MATCH (r:Recipe) \n" + "WHERE r.picture IS NOT NULL \n" + "WITH r \n" + "ORDER BY rand() \n"
-            + "LIMIT $amount\n" + "OPTIONAL MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)\n"
-            + "RETURN r, collect(c), collect(i)")
+    @Query("""
+            MATCH (r:Recipe)\s
+            WHERE r.picture IS NOT NULL\s
+            WITH r\s
+            ORDER BY rand()\s
+            LIMIT $amount
+            OPTIONAL MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)
+            RETURN r, collect(c), collect(i)""")
     Optional<List<Recipe>> findAnyRecipeWithPictureWithIngredients(int amount);
 
     @Query(value = "MATCH (r:Recipe)-[:COLLECTION]->(c:Collection) WHERE c.name IN $names RETURN r SKIP $skip LIMIT $limit", countQuery = "MATCH (r:Recipe)-[:COLLECTION]->(c:Collection) WHERE c.name IN $names RETURN COUNT(r)")
@@ -40,20 +45,16 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, String> {
             + "OPTIONAL MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)\n" + "RETURN r, collect(c), collect(i)")
     Optional<List<Recipe>> findMutlipleRecipesWithId(List<String> rec_ids);
 
-    // @Query("MATCH (r:Recipe)\n" + "WITH count {\n" + " MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)\n"
-    // + " WHERE size([x IN $names WHERE i.name =~ x])>0\n"
-    // + "} AS wanted, count{MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)} AS total, r\n"
-    // + "WHERE wanted > 0.6 * total\n" + "OPTIONAL MATCH (r)-[a:CONTAINS_INGREDIENT]->(b:Ingredient)\n"
-    // + "RETURN r, collect(a), collect(b), (wanted*1.0/total), wanted, total\n"
-    // + "ORDER BY (wanted*1.0/total) DESC\n" + "LIMIT 100")
-    // Optional<List<Recipe>> getSimilarMeals(List<String> names);
-
-    @Query("MATCH (r:Recipe)\n" + "WITH count {\n" + "    MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)\n"
-            + "    WHERE size([x IN $names WHERE i.name =~ x])>0\n"
-            + "} AS wanted, count{MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)} AS total, r\n"
-            + "WHERE wanted > 0.6 * total AND NOT r.id IN  $notWanted\n"
-            + "OPTIONAL MATCH (r)-[a:CONTAINS_INGREDIENT]->(b:Ingredient)\n"
-            + "RETURN r, collect(a), collect(b), (wanted*1.0/total), wanted, total\n"
-            + "ORDER BY (wanted*1.0/total) DESC\n" + "LIMIT 100")
+    @Query("""
+            MATCH (r:Recipe)
+            WITH count {
+                MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)
+                WHERE size([x IN $names WHERE i.name =~ x])>0
+            } AS wanted, count{MATCH (r)-[c:CONTAINS_INGREDIENT]->(i:Ingredient)} AS total, r
+            WHERE wanted > 0.6 * total AND NOT r.id IN  $notWanted
+            OPTIONAL MATCH (r)-[a:CONTAINS_INGREDIENT]->(b:Ingredient)
+            RETURN r, collect(a), collect(b), (wanted*1.0/total), wanted, total
+            ORDER BY (wanted*1.0/total) DESC
+            LIMIT 100""")
     Optional<List<Recipe>> getSimilarMeals(List<String> names, List<String> notWanted);
 }

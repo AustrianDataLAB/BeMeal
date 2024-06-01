@@ -6,13 +6,13 @@ import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.*;
-import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
@@ -48,7 +48,7 @@ public class SubmissionService {
     private final SubmissionMapper submissionMapper;
     private final ImageRepository imageRepository;
 
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void submit(MultipartFile file, @NotNull String challengeId) {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);
@@ -131,7 +131,7 @@ public class SubmissionService {
         return resizedImage;
     }
 
-    @Transactional
+    @Transactional("h2TxManager")
     public SubmissionDto getSubmission(@NotNull String submissionId) {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);
@@ -145,7 +145,7 @@ public class SubmissionService {
         return this.buildSubmissionDto(submission);
     }
 
-    @Transactional
+    @Transactional("h2TxManager")
     public SubmissionDto getCurrentSubmission(String challengeId) {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);
@@ -192,7 +192,7 @@ public class SubmissionService {
         }
     }
 
-    @Transactional
+    @Transactional("h2TxManager")
     public void saveVote(Long submissionId, String participantUsername, boolean isUpvote) {
         logger.trace("saveVote({}, {}, {})", submissionId, participantUsername, isUpvote);
         Participant user = (Participant) this.userRepository.findByUsername(participantUsername);
@@ -202,6 +202,7 @@ public class SubmissionService {
         voteRepository.save(vote);
     }
 
+    @Transactional("h2TxManager")
     public List<SubmissionDto> getNotVotedSubmissionsOfUser(Long challengeId, String participantUsername) {
         logger.trace("getNotVotedSubmissionsOfUser({}, {})", challengeId, participantUsername);
         Participant user = (Participant) this.userRepository.findByUsername(participantUsername);
@@ -211,6 +212,7 @@ public class SubmissionService {
         return submissions.stream().map(this::buildSubmissionDto).collect(Collectors.toList());
     }
 
+    @Transactional("h2TxManager")
     public List<SubmissionWithUpvotes> getWinningSubmissionForChallange(Long challengeId) {
         logger.trace("getWinningSubmissionForChallange({})", challengeId);
         List<SubmissionWithUpvotes> sub = submissionRepository.getWinnerSubmissionOfChallenge(challengeId);

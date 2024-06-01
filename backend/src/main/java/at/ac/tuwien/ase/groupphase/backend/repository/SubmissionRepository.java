@@ -2,14 +2,12 @@ package at.ac.tuwien.ase.groupphase.backend.repository;
 
 import at.ac.tuwien.ase.groupphase.backend.entity.Submission;
 import at.ac.tuwien.ase.groupphase.backend.entity.SubmissionWithUpvotes;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface SubmissionRepository extends CrudRepository<Submission, Long> {
+public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
     @Query("SELECT s FROM Submission s" + " WHERE s.challenge.id = :challengeId"
             + " AND s.participant.id != :participantId"

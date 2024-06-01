@@ -3,9 +3,8 @@ package at.ac.tuwien.ase.groupphase.backend.repository;
 import at.ac.tuwien.ase.groupphase.backend.entity.Challenge;
 import at.ac.tuwien.ase.groupphase.backend.entity.League;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,8 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-@Repository
-public interface LeagueRepository extends CrudRepository<League, Long> {
+public interface LeagueRepository extends JpaRepository<League, Long> {
     List<League> findLeaguesByParticipantsIn(Set<Participant> participants);
 
     // for regional leagues, name is: State league, e.g. Vorarlberg League, Vienna League, Upper Austria League

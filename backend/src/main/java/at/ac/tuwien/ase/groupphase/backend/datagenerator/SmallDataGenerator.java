@@ -32,7 +32,7 @@ public class SmallDataGenerator {
         communityIdentificationService.reloadCommunityIdentifications();
         try (Connection c = source.getConnection()) {
             ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/DefaultDataGen.sql"));
-            ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/SmallDataGen.sql"));
+            //ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/SmallDataGen.sql"));
         } catch (SQLException sqle) {
             logger.error("An error occurred whilst trying to insert testdata", sqle);
         }
