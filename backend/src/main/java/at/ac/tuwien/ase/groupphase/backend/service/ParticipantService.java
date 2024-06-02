@@ -4,10 +4,10 @@ import at.ac.tuwien.ase.groupphase.backend.dto.ParticipantDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.mapper.ParticipantMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,14 +16,14 @@ public class ParticipantService {
     private final ParticipantRepository participantRepository;
     private final ParticipantMapper participantMapper;
 
-    @Transactional
+    @Transactional("h2TxManager")
     public ParticipantDto getParticipantDto() {
         final String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);
         return this.participantMapper.participantToParticipantDto(participant);
     }
 
-    @Transactional
+    @Transactional("h2TxManager")
     public void increaseWinsOfParticipant(Long id, Long leagueId) {
         Participant participant = participantRepository.findById(id).orElseThrow();
 

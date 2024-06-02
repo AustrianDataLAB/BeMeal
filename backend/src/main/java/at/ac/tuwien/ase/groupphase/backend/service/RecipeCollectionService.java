@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,13 +23,7 @@ public class RecipeCollectionService {
     private final RecipeCollectionRepository collectionRepository;
     private final RecipeCollectionMapper collectionMapper = new RecipeCollectionMapper();
 
-    /*
-     * @Autowired
-     *
-     * @NotNull public RecipeCollectionService(RecipeCollectionRepository collectionRepository) {
-     * this.collectionRepository = collectionRepository; this.collectionMapper = new RecipeCollectionMapper(); }
-     */
-
+    @Transactional("neo4jTxManager")
     public List<RecipeCollectionDto> getRandomizedRecipeCollectionSelection() {
         logger.trace("Getting all collections");
         List<RecipeCollection> collections = collectionRepository.getRandomizedRecipeCollectionSelection();
@@ -38,6 +33,7 @@ public class RecipeCollectionService {
         return collections.stream().map(collectionMapper::collectionToCollectionDto).collect(Collectors.toList());
     }
 
+    @Transactional("neo4jTxManager")
     public Page<RecipeCollectionDto> findRecipeCollectionsBySearchString(String searchString, int page, int size) {
         logger.trace("Searching for collections which contain the string: " + searchString);
         var collections = collectionRepository

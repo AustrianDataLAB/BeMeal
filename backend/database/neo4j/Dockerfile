@@ -1,4 +1,4 @@
-FROM neo4j:5.19.0
+FROM neo4j:5.20.0
 
 WORKDIR ${NEO4J_HOME}
 

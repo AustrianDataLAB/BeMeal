@@ -6,7 +6,7 @@ import at.ac.tuwien.ase.groupphase.backend.endpoint.UserEndpoint;
 import at.ac.tuwien.ase.groupphase.backend.entity.Participant;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
