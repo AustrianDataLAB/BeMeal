@@ -1,18 +1,17 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Globals} from '../shared/globals';
-import {LeagueSecrets} from '../dtos/league';
-import {League} from "../dtos/league";
+import {League, LeagueSecrets} from '../dtos/league';
 import {Observable} from 'rxjs';
+import {ConfigService} from "@services/config.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class InvitationService {
 
-    private baseUri: string = this.globals.backendUri + '/invitation';
+    private baseUri: string = this.configService.backendUri + '/invitation';
 
-    constructor(private httpClient: HttpClient, private globals: Globals) {
+    constructor(private httpClient: HttpClient, private configService: ConfigService) {
     }
 
     /**

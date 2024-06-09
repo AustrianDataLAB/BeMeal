@@ -15,7 +15,7 @@ import at.ac.tuwien.ase.groupphase.backend.service.ChallengeGenerationService;
 import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import at.ac.tuwien.ase.groupphase.backend.service.RecipeService;
 import at.ac.tuwien.ase.groupphase.backend.service.SelfService;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

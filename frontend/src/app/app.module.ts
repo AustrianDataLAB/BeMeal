@@ -30,11 +30,12 @@ import {SearchComponent} from "./components/search/search.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSliderModule} from "@angular/material/slider";
 import {NgImageSliderModule} from 'ng-image-slider';
-import { RecipeComponent } from './components/recipe/recipe.component';
+import {RecipeComponent} from './components/recipe/recipe.component';
 import {PasswordResetComponent} from './components/login/password-reset/password-reset.component';
-import { SuggestionsComponent } from './components/suggestions/suggestions.component';
+import {SuggestionsComponent} from './components/suggestions/suggestions.component';
 import {MatExpansionModule} from "@angular/material/expansion";
-import { MatDialogModule } from '@angular/material/dialog';
+import {MatDialogModule} from '@angular/material/dialog';
+import {customProviders} from "@app/custom-providers";
 
 @NgModule({
     declarations: [
@@ -78,7 +79,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatDialogModule,
         NgImageSliderModule
     ],
-    providers: [httpInterceptorProviders],
+    providers: [httpInterceptorProviders, customProviders],
     bootstrap: [AppComponent]
 })
 export class AppModule {

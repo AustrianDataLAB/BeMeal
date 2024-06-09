@@ -4,20 +4,20 @@ import {BehaviorSubject, map, Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 
 import jwt_decode from 'jwt-decode';
-import {Globals} from '../shared/globals';
 import {Profile} from "../dtos/profile";
 import {Login, PasswordReset} from '../dtos/login';
+import {ConfigService} from "@services/config.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class SelfService {
 
-    private authBaseUri: string = this.globals.backendUri + '/self-service';
+    private authBaseUri: string = this.configService.backendUri  + '/self-service';
 
     isGameMaster = new BehaviorSubject(localStorage.getItem('bemeal.isgamemaster') === 'true');
 
-    constructor(private httpClient: HttpClient, private globals: Globals) {
+    constructor(private httpClient: HttpClient, private configService: ConfigService) {
     }
 
 

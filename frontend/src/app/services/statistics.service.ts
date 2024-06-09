@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Globals} from '../shared/globals';
 import {Observable} from 'rxjs';
 import {HeatMap, HeatMapType} from '../dtos/statistics';
+import {ConfigService} from "@services/config.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class StatisticsService {
 
-    private baseUri: string = this.globals.backendUri + '/statistics';
+    private baseUri: string = this.configService.backendUri  + '/statistics';
 
-    constructor(private httpClient: HttpClient, private globals: Globals) {
+    constructor(private httpClient: HttpClient, private configService: ConfigService) {
     }
 
     public getHeatMap(type: HeatMapType, relative: boolean, granularity: number): Observable<HeatMap> {

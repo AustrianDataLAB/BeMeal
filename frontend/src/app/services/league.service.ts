@@ -1,23 +1,20 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {Globals} from "../shared/globals";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {League} from "../dtos/league";
-import {map, Observable, throwError} from "rxjs";
-import {JoinLeague} from "../dtos/join-league";
-import {catchError} from "rxjs/operators";
+import {map, Observable} from "rxjs";
 import {ChallengeInfo} from "../dtos/challengeInfo";
-import {Submission} from "../dtos/submission";
 import {LeaderboardUser} from "../dtos/leaderboard-user";
 import {WinningSubmissionDisplay} from "../dtos/winning-submission-display";
+import {ConfigService} from "@services/config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeagueService {
 
-    private baseUri: string = this.globals.backendUri + '/league';
+    private baseUri: string = this.configService.backendUri  + '/league';
 
-    constructor(private httpClient: HttpClient, private globals: Globals) {
+    constructor(private httpClient: HttpClient, private configService: ConfigService) {
     }
 
     createLeague(obj: League): Observable<string> {

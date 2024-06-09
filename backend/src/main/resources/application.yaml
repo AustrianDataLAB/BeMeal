@@ -49,3 +49,16 @@ bemeal:
   frontend:
     passwordResetConfirmUrl: http://localhost:4200/password-reset/{resetToken}
 
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "health,info,beans"
+  health:
+    probes:
+      enabled: true
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true

@@ -11,11 +11,11 @@ import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.ParticipantRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -36,7 +36,7 @@ public class LeagueService {
     private final SubmissionMapper submissionMapper;
     private final Logger logger = LoggerFactory.getLogger(LeagueService.class);
 
-    @Transactional
+    @Transactional("h2TxManager")
     public LeagueSecretsDto getLeagueSecretsWithLeagueId(Long id, boolean refresh) {
         var league = leagueRepository.findById(id);
 
@@ -53,7 +53,7 @@ public class LeagueService {
         return new LeagueSecretsDto(league.map(League::getHiddenIdentifier).orElse(null));
     }
 
-    @Transactional
+    @Transactional("h2TxManager")
     public ChallengeInfoDto getChallengeForLeague(Long id) {
         League league = this.leagueRepository.findById(id).orElseThrow();
         Challenge challenge = this.challengeRepository.getLatestChallenge(league.getId());
@@ -80,7 +80,7 @@ public class LeagueService {
         return dto;
     }
 
-    @Transactional
+    @Transactional("h2TxManager")
     public void createLeague(String username, League league) {
         Participant user = (Participant) this.userRepository.findByUsername(username);
         List<Participant> participantList = new ArrayList<>();
@@ -104,7 +104,7 @@ public class LeagueService {
      * @param leagueId
      *            id of the league
      */
-    @Transactional
+    @Transactional("h2TxManager")
     public void joinLeague(String username, Long leagueId) {
         League league = this.leagueRepository.findById(leagueId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid league ID"));
@@ -121,7 +121,7 @@ public class LeagueService {
     }
 
     // important: regional leagues have to exist
-    @Transactional
+    @Transactional("h2TxManager")
     public void joinRegionalLeague(String username, Region region) {
         String leagueName = modifyString(region.toString()) + " League";
         System.out.println(leagueName);
@@ -139,7 +139,7 @@ public class LeagueService {
         this.leagueRepository.save(league);
     }
 
-    @Transactional
+    @Transactional("h2TxManager")
     public List<League> getLeagues(String username) {
         Participant user = (Participant) this.userRepository.findByUsername(username);
         List<Participant> participantList = new ArrayList<>();
@@ -161,7 +161,7 @@ public class LeagueService {
         return this.userRepository.isCreatorOfLeague(username, leagueId);
     }
 
-    @Transactional
+    @Transactional("h2TxManager")
     public List<LeaderboardDto> getLeaderboardOfLeague(Long leagueId, String currentUsername) {
         logger.trace("Constructing leaderboard with getLeaderboardOfLeague({}, {})", leagueId, currentUsername);
         List<LeaderboardDto> leaderboard = new ArrayList<>();
@@ -254,6 +254,7 @@ public class LeagueService {
         return sb.toString();
     }
 
+    @Transactional("h2TxManager")
     public List<WinningSubmissionDto> getLastWinningSubmissions(Long leagueId) {
         try {
             final Challenge lastChallenge = this.leagueRepository.findLastEndedChallenge(leagueId, LocalDate.now())
