@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(basePackages = "at.ac.tuwien.ase.groupphase.backend.repository", transactionManagerRef = "rdbmsTxManager")
 public class RDBMSConfig {
 
-    @Value("${spring.datasource.uri}")
+    @Value("${spring.datasource.url}")
     private String uri;
 
     @Value("${spring.datasource.driver-class-name}")
