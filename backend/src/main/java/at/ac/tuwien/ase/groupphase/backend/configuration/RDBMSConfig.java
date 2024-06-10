@@ -12,11 +12,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "at.ac.tuwien.ase.groupphase.backend.repository", transactionManagerRef = "h2TxManager")
-public class H2Config {
+@EnableJpaRepositories(basePackages = "at.ac.tuwien.ase.groupphase.backend.repository", transactionManagerRef = "rdbmsTxManager")
+public class RDBMSConfig {
 
     @Value("${spring.datasource.uri}")
     private String uri;
+
+    @Value("${spring.datasource.driver-class-name}")
+    private String driver;
 
     @Value("${spring.datasource.username}")
     private String username;
@@ -24,18 +27,18 @@ public class H2Config {
     @Value("${spring.datasource.password}")
     private String password;
 
-    @Bean("h2DataSource")
+    @Bean("rdbmsDataSource")
     public DataSource dataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.h2.Driver");
         dataSource.setUrl(uri);
+        dataSource.setDriverClassName(driver);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
 
         return dataSource;
     }
 
-    @Bean(name = "h2TxManager")
+    @Bean(name = "rdbmsTxManager")
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
