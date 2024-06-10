@@ -30,7 +30,7 @@ public class CommunityIdentificationService {
      * Reload all community identifications from the disk. The content will be taken from
      * `src/main/resources/ci-postal-mapping.csv`. The old community identifications will be removed.
      */
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     @PostConstruct
     public void reloadCommunityIdentifications() {
         if (this.communityIdentificationRepository.count() > 0) {

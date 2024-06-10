@@ -131,7 +131,7 @@ public class SubmissionService {
         return resizedImage;
     }
 
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     public SubmissionDto getSubmission(@NotNull String submissionId) {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);
@@ -145,7 +145,7 @@ public class SubmissionService {
         return this.buildSubmissionDto(submission);
     }
 
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     public SubmissionDto getCurrentSubmission(String challengeId) {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);
@@ -192,7 +192,7 @@ public class SubmissionService {
         }
     }
 
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     public void saveVote(Long submissionId, String participantUsername, boolean isUpvote) {
         logger.trace("saveVote({}, {}, {})", submissionId, participantUsername, isUpvote);
         Participant user = (Participant) this.userRepository.findByUsername(participantUsername);
@@ -202,7 +202,7 @@ public class SubmissionService {
         voteRepository.save(vote);
     }
 
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     public List<SubmissionDto> getNotVotedSubmissionsOfUser(Long challengeId, String participantUsername) {
         logger.trace("getNotVotedSubmissionsOfUser({}, {})", challengeId, participantUsername);
         Participant user = (Participant) this.userRepository.findByUsername(participantUsername);
@@ -212,7 +212,7 @@ public class SubmissionService {
         return submissions.stream().map(this::buildSubmissionDto).collect(Collectors.toList());
     }
 
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     public List<SubmissionWithUpvotes> getWinningSubmissionForChallange(Long challengeId) {
         logger.trace("getWinningSubmissionForChallange({})", challengeId);
         List<SubmissionWithUpvotes> sub = submissionRepository.getWinnerSubmissionOfChallenge(challengeId);

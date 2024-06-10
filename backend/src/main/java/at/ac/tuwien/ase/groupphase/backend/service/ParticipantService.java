@@ -16,14 +16,14 @@ public class ParticipantService {
     private final ParticipantRepository participantRepository;
     private final ParticipantMapper participantMapper;
 
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     public ParticipantDto getParticipantDto() {
         final String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);
         return this.participantMapper.participantToParticipantDto(participant);
     }
 
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     public void increaseWinsOfParticipant(Long id, Long leagueId) {
         Participant participant = participantRepository.findById(id).orElseThrow();
 

@@ -48,7 +48,7 @@ public class ChallengeGenerationService {
      * @param league
      *            the league to generate a new challenge for
      */
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     public void generateNewChallenge(final League league) {
         log.info("Generate a new challenge for league {}", league.getName());
         final var gameMode = league.getGameMode();
@@ -96,7 +96,7 @@ public class ChallengeGenerationService {
      * Generate new challenges for all leagues which either have no or only expired challenges. Also updates wins of
      * Participants, if they have won the previous expired challenge
      */
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     public void generateForExpiredChallenges() {
         var dateNow = LocalDate.now();
         log.info("Generate new challenges for leagues with no valid challenge");
@@ -108,7 +108,7 @@ public class ChallengeGenerationService {
     /**
      * Generate new challenges for all leagues ignoring the current state of their challenges.
      */
-    @Transactional("h2TxManager")
+    @Transactional("rdbmsTxManager")
     public void generateAllNewChallenges() {
         log.info("Generate new challenges for all leagues");
         this.leagueRepository.findAll().forEach(this::generateNewChallenge);
