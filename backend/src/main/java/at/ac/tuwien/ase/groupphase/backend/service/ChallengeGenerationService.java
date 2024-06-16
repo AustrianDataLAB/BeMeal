@@ -4,12 +4,12 @@ import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.repository.ChallengeRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.LeagueRepository;
 import at.ac.tuwien.ase.groupphase.backend.repository.RecipeRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -48,6 +48,7 @@ public class ChallengeGenerationService {
      * @param league
      *            the league to generate a new challenge for
      */
+    @Transactional("rdbmsTxManager")
     public void generateNewChallenge(final League league) {
         log.info("Generate a new challenge for league {}", league.getName());
         final var gameMode = league.getGameMode();
@@ -95,7 +96,7 @@ public class ChallengeGenerationService {
      * Generate new challenges for all leagues which either have no or only expired challenges. Also updates wins of
      * Participants, if they have won the previous expired challenge
      */
-    @Transactional
+    @Transactional("rdbmsTxManager")
     public void generateForExpiredChallenges() {
         var dateNow = LocalDate.now();
         log.info("Generate new challenges for leagues with no valid challenge");
@@ -107,7 +108,7 @@ public class ChallengeGenerationService {
     /**
      * Generate new challenges for all leagues ignoring the current state of their challenges.
      */
-    @Transactional
+    @Transactional("rdbmsTxManager")
     public void generateAllNewChallenges() {
         log.info("Generate new challenges for all leagues");
         this.leagueRepository.findAll().forEach(this::generateNewChallenge);
@@ -123,6 +124,7 @@ public class ChallengeGenerationService {
      *
      * @return the fetched recipe or empty if none can be found
      */
+    @Transactional("neo4jTxManager")
     public Optional<Recipe> randomRecipe(final GameMode gameMode) {
         if (!this.failMode) {
             final var recipe = new Recipe(UUID.randomUUID().toString(), "Variation No. " + random.nextInt(73),

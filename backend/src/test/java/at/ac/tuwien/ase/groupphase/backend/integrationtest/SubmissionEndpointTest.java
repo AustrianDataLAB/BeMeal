@@ -10,7 +10,7 @@ import at.ac.tuwien.ase.groupphase.backend.exception.ForbiddenAccessException;
 import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.*;
 import at.ac.tuwien.ase.groupphase.backend.service.SubmissionService;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

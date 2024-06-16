@@ -4,7 +4,7 @@ import at.ac.tuwien.ase.groupphase.backend.entity.*;
 import at.ac.tuwien.ase.groupphase.backend.mapper.LeagueMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.*;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

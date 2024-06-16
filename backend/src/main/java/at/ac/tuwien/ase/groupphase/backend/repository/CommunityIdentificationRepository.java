@@ -1,9 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.repository;
 
 import at.ac.tuwien.ase.groupphase.backend.entity.CommunityIdentification;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface CommunityIdentificationRepository extends CrudRepository<CommunityIdentification, Long> {
+public interface CommunityIdentificationRepository extends JpaRepository<CommunityIdentification, Long> {
 }

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -31,6 +32,7 @@ public class SelfService {
     private final LeagueService leagueService;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional("rdbmsTxManager")
     public void register(RegistrationDto registrationDto) throws ValidationException {
         if (this.userRepository.exists(registrationDto.email(), registrationDto.password())) {
             throw new UserAlreadyExistsException(registrationDto.email(), registrationDto.username());
@@ -48,6 +50,7 @@ public class SelfService {
         this.leagueService.joinRegionalLeague(participant.getUsername(), participant.getRegion());
     }
 
+    @Transactional("rdbmsTxManager")
     public UUID getPasswordResetTokenForUser(String email) {
         final var user = this.userRepository.findByEmail(email);
         if (user == null) {
@@ -63,6 +66,7 @@ public class SelfService {
         return passwordResetToken;
     }
 
+    @Transactional("rdbmsTxManager")
     public void resetPassword(UUID passwordResetToken, PasswordResetDto passwordResetDto) {
         final var user = this.userRepository.findByPasswordResetToken(passwordResetToken);
         if (user == null) {
