@@ -60,8 +60,6 @@ jobs:
          #output: 'trivy-results.sarif'
          severity: HIGH,CRITICAL
          exit-code: 1
-      - name: Check compose
-        run:   docker compose version
       - name: Run Integration Tests
         run:   docker compose -f test/compose.yaml up --abort-on-container-exit --exit-code-from playwright
       - name: Extract Metadata (tags, labels) for Docker
