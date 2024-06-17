@@ -7,7 +7,7 @@ import {Env} from "@app/dtos/env";
 })
 export class ConfigService {
     private env: Env  = {
-        backendUri: 'http://localhost:8080/api/v1'
+        BACKEND_URL: 'http://localhost:8080/api/v1'
     }
 
     loadEnv() {
@@ -19,7 +19,6 @@ export class ConfigService {
     }
 
     get backendUri() : string {
-
         return this.env['BACKEND_URL'];
     }
 
