@@ -61,7 +61,7 @@ jobs:
          severity: HIGH,CRITICAL
          exit-code: 1
       - name: Run Integration Tests
-        run:   docker-compose -f ./test/compose.yml up \
+        run:   docker-compose -f test/compose.yml up \
           --abort-on-container-exit \
           --exit-code-from playwright
       - name: Extract Metadata (tags, labels) for Docker
