@@ -17,10 +17,14 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Run Integration Tests
         run: docker compose -f test/compose.yaml up --abort-on-container-exit --exit-code-from playwright
   build-and-push-image:
-    needs: [integration-test]
+    needs: [ integration-test ]
     strategy:
       matrix:
         component: [ backend, frontend ]
