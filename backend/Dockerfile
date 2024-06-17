@@ -9,5 +9,5 @@ RUN mvn clean install -DskipTests
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /opt/app
 COPY --from=build /opt/app/target/*.jar /opt/app/*.jar
-EXPOSE 8080
+EXPOSE 8081
 ENTRYPOINT ["java",  "-jar", "-Dspring.profiles.active=container", "/opt/app/*.jar"]
