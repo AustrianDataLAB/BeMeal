@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {SelfService} from "../../services/self.service";
+import {SelfService} from "@services/self.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Region} from "../../shared/region";
-import {Registration} from "../../dtos/registration";
-import {Login} from "../../dtos/login";
+import {Login} from "@app/dtos/login";
 import {catchError, tap} from "rxjs/operators";
 import {of} from "rxjs";
 
