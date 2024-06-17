@@ -12,9 +12,6 @@ services:
       retries: 3
       start_period: 15s
       start_interval: 5s
-    depends_on:
-      neo4j:
-        condition: service_healthy
   frontend:
     container_name: frontend
     build:
@@ -38,11 +35,6 @@ services:
     environment:
       - NEO4J_AUTH=neo4j/password
       - NEO4J_PLUGINS=["apoc", "apoc-extended"]
-    healthcheck:
-      test: "if [ $(ps -o etime= -p 1 | awk -F: '{if (NF==2) {print $1} else {print ($1*60)+$2}}') -lt 120 ]; then exit 1; else exit 0; fi"
-      retries: 20
-      start_period: 120s
-      start_interval: 5s
   playwright:
     container_name: playwright
     build:
