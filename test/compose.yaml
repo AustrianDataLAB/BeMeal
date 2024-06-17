@@ -39,7 +39,7 @@ services:
       - NEO4J_AUTH=neo4j/password
       - NEO4J_PLUGINS=["apoc", "apoc-extended"]
     healthcheck:
-      test: [ "CMD-SHELL", " awk '$1 > 120 { print \"true\" }' /proc/uptime | grep true || exit 1" ]
+      test: "if [ $(ps -o etime= -p 1 | awk -F: '{if (NF==2) {print $1} else {print ($1*60)+$2}}') -lt 120 ]; then exit 1; else exit 0; fi"
       retries: 20
       start_period: 120s
       start_interval: 5s
