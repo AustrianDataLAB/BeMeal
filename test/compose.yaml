@@ -13,6 +13,7 @@ services:
       start_period: 15s
       start_interval: 5s
   frontend:
+    container_name: frontend
     build:
       context: ../frontend
       dockerfile: Dockerfile
@@ -21,6 +22,7 @@ services:
     ports:
       - "8080:8080"
   neo4j:
+    container_name: neo4j
     build:
       context: ../backend/database/neo4j
       dockerfile: Dockerfile
@@ -34,10 +36,10 @@ services:
       - NEO4J_AUTH=neo4j/password
       - NEO4J_PLUGINS=["apoc", "apoc-extended"]
   playwright:
+    container_name: playwright
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: playwright
     volumes:
       - ./tests:/app
     depends_on:
