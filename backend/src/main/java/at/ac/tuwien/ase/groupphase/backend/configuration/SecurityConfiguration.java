@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
+// todo update me
 @Configuration
 @EnableMethodSecurity
 @EnableScheduling
@@ -39,6 +41,22 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+    /*
+     * @Bean public SecurityFilterChain securityFilterChain(final HttpSecurity http, final AuthenticationConfiguration
+     * authenticationConfiguration) throws Exception {
+     *
+     * final var authenticationManager = authenticationConfiguration.getAuthenticationManager(); final var
+     * authorizationFilter = authorizationFilter(authenticationManager); final var authenticationFilter =
+     * authenticationFilter(authenticationManager);
+     *
+     * http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable) .authorizeHttpRequests(requests ->
+     * requests.requestMatchers(AUTH_WHITELIST).authenticated().anyRequest().permitAll())
+     * .addFilter(authenticationFilter).addFilter(authorizationFilter).sessionManagement()
+     * .sessionCreationPolicy(SessionCreationPolicy.STATELESS).authorizeHttpRequests()
+     * .requestMatchers(AUTH_WHITELIST).permitAll().requestMatchers(toH2Console()).permitAll().anyRequest()
+     * .authenticated(); return http.build(); }
+     */
+
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http,
             final AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -46,8 +64,9 @@ public class SecurityConfiguration {
         final var authenticationManager = authenticationConfiguration.getAuthenticationManager();
         final var authorizationFilter = authorizationFilter(authenticationManager);
         final var authenticationFilter = authenticationFilter(authenticationManager);
-
-        return http.cors().and().csrf().disable().headers().frameOptions().disable().and()
+        // todo Customizer.withDefaults() excludes preflight requests from auth) - new syntax, otherwise you have to
+        // allow options it cors-config
+        return http.cors(Customizer.withDefaults()).csrf().disable().headers().frameOptions().disable().and()
                 .addFilter(authenticationFilter).addFilter(authorizationFilter).sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll().requestMatchers(toH2Console()).permitAll().anyRequest()
