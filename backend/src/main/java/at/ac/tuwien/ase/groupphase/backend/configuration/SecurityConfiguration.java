@@ -41,22 +41,6 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    /*
-     * @Bean public SecurityFilterChain securityFilterChain(final HttpSecurity http, final AuthenticationConfiguration
-     * authenticationConfiguration) throws Exception {
-     *
-     * final var authenticationManager = authenticationConfiguration.getAuthenticationManager(); final var
-     * authorizationFilter = authorizationFilter(authenticationManager); final var authenticationFilter =
-     * authenticationFilter(authenticationManager);
-     *
-     * http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable) .authorizeHttpRequests(requests ->
-     * requests.requestMatchers(AUTH_WHITELIST).authenticated().anyRequest().permitAll())
-     * .addFilter(authenticationFilter).addFilter(authorizationFilter).sessionManagement()
-     * .sessionCreationPolicy(SessionCreationPolicy.STATELESS).authorizeHttpRequests()
-     * .requestMatchers(AUTH_WHITELIST).permitAll().requestMatchers(toH2Console()).permitAll().anyRequest()
-     * .authenticated(); return http.build(); }
-     */
-
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http,
             final AuthenticationConfiguration authenticationConfiguration) throws Exception {
