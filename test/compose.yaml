@@ -38,7 +38,7 @@ services:
     healthcheck:
       test: [ "CMD-SHELL", "wget -qO- http://neo4j:7474 || exit 1" ]
       retries: 3
-      start_period: 60s
+      start_period: 120s
       start_interval: 5s
   playwright:
     container_name: playwright
