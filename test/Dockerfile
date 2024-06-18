@@ -1,16 +1,14 @@
 FROM mcr.microsoft.com/playwright:v1.43.1-jammy
 
-WORKDIR /test
-# todo do not use root
-#USER pwuser
+WORKDIR /playwright
 
-ENV PATH /test/node_modules/.bin:$PATH
+ENV PATH /playwright/node_modules/.bin:$PATH
 
-COPY package.json .
-COPY package-lock.json .
-COPY tests ./tests/
+COPY package.json package-lock.json playwright.config.ts ./
+VOLUME /playwright/playwright-report
+VOLUME /playwright/tests
 
-RUN npm install
+RUN npm ci
 
 
 CMD ["npm", "test"]

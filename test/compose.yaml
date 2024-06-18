@@ -34,7 +34,8 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./tests:/app
+      - ./tests:/playwright/tests
+      - ./playwright-report:/playwright/playwright-report
     depends_on:
       backend:
         condition: service_healthy
