@@ -17,12 +17,10 @@ test.describe.serial('Leagues page test', () => {
         await expect(page).toHaveURL(`${url}/leagues`);
 
         await expect(page.getByTestId("league-name-0")).toBeVisible();
-        // the code  here got bitten and might be written cleaner
-        const gameMode = await page.textContent('[data-testid="league-gamemode-0"]');
-        const challengeDuration = await page.textContent('[data-testid="league-challenge-duration-0"]');
 
-        if (gameMode !== 'Gamemode: Picture Ingredients' || challengeDuration !== 'Challenge duration: 7 days') {
-            throw new Error('League details are incorrect. Please check the values.');
-        }
+        const gameMode = page.getByTestId('league-gamemode-0');
+        const challengeDuration = page.getByTestId('league-challenge-duration-0');
+        await expect(gameMode).toHaveText("Gamemode: Picture Ingredients");
+        await expect(challengeDuration).toHaveText("Challenge duration: 7 days");
     });
 })

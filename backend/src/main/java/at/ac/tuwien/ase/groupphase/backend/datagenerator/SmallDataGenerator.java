@@ -22,9 +22,6 @@ public class SmallDataGenerator {
     private final DataSource source;
 
     @Autowired
-    private DataGeneratorHealthIndicator healthIndicator;
-
-    @Autowired
     private CommunityIdentificationService communityIdentificationService;
 
     public SmallDataGenerator(@Qualifier("rdbmsDataSource") DataSource source) {
@@ -38,8 +35,6 @@ public class SmallDataGenerator {
             ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/DefaultDataGen.sql"));
             logger.info("SmallDataGenerator finished");
             // ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/SmallDataGen.sql"));
-
-            healthIndicator.setReady();
         } catch (SQLException sqle) {
             logger.error("An error occurred whilst trying to insert testdata", sqle);
         }
