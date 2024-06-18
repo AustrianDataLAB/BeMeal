@@ -21,6 +21,9 @@ public class SmallDataGenerator {
     private final DataSource source;
 
     @Autowired
+    private DataGeneratorHealthIndicator healthIndicator;
+
+    @Autowired
     private CommunityIdentificationService communityIdentificationService;
 
     public SmallDataGenerator(DataSource source) {
@@ -33,6 +36,7 @@ public class SmallDataGenerator {
         try (Connection c = source.getConnection()) {
             ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/DefaultDataGen.sql"));
             // ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/SmallDataGen.sql"));
+            healthIndicator.setReady();
         } catch (SQLException sqle) {
             logger.error("An error occurred whilst trying to insert testdata", sqle);
         }
