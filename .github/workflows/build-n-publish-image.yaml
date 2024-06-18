@@ -13,7 +13,6 @@ env:
 
 jobs:
   build-and-push-image:
-    needs: [ integration-test ]
     strategy:
       matrix:
         component: [ backend, frontend ]
