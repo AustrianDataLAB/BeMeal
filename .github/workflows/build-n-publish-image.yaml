@@ -32,6 +32,8 @@ jobs:
           name: integration-test-report
           path: /test/playwright-report/index.html
           retention-days: 10
+      - name: test
+        run: ls test/
   build-and-push-image:
     needs: [integration-test]
     strategy:
