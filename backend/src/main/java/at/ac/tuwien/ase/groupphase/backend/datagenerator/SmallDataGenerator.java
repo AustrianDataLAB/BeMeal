@@ -21,6 +21,7 @@ import java.sql.SQLException;
 public class SmallDataGenerator {
     private final Logger logger = LoggerFactory.getLogger(SmallDataGenerator.class);
     private final DataSource source;
+    @Autowired
     private LeagueService leagueService;
 
     @Autowired
