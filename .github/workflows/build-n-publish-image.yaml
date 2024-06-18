@@ -12,17 +12,6 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  integration-test:
-    runs-on: ubuntu-20.04
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Run Integration Tests
-        run: docker compose -f test/compose.yaml up --abort-on-container-exit --exit-code-from playwright
   build-and-push-image:
     needs: [ integration-test ]
     strategy:
@@ -65,12 +54,14 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: '${{ steps.docker-build.outputs.imageid }}'
-          #format: 'sarif'
           format: 'table'
-          #output: 'stdout'
-          #output: 'trivy-results.sarif'
           severity: HIGH,CRITICAL
           exit-code: 1
+
+      - name: Run Integration Tests
+        if: matrix.component == 'backend'
+        run: docker compose -f test/compose.yaml up --abort-on-container-exit --exit-code-from playwright
+
       - name: Extract Metadata (tags, labels) for Docker
         id: meta
         if: github.ref == 'refs/heads/main'
