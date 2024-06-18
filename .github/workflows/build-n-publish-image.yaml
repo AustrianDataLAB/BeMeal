@@ -21,7 +21,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
+      - name: Create Report Folder
+        run: mkdir -p test/playwright-report
       - name: Run Integration Tests
         run: docker compose -f test/compose.yaml up --abort-on-container-exit --exit-code-from playwright
       - name: Wait till Integration Test report exists
@@ -38,7 +39,8 @@ jobs:
           name: integration-test-report
           path: /test/playwright-report/index.html
           retention-days: 10
-  build-and-push-image:
+      - name: Cleanup
+        run: rm -f test/playwright-report
     needs: [integration-test]
     strategy:
       matrix:
