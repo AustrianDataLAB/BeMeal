@@ -170,3 +170,5 @@ INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES
 INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (18, 8, 45);
 INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (11, 9, 20);
 INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (15, 10, 5);
+
+COMMIT;

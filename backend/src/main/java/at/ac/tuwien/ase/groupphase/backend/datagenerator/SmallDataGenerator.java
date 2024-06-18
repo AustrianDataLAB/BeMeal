@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -33,7 +32,6 @@ public class SmallDataGenerator {
     }
 
     @PostConstruct
-    @Transactional("rdbmsTxManager")
     void insertDummyData() {
         communityIdentificationService.reloadCommunityIdentifications();
         try (Connection c = source.getConnection()) {
