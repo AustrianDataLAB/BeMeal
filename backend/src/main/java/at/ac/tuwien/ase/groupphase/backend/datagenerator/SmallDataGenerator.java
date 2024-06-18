@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.datagenerator;
 
 import at.ac.tuwien.ase.groupphase.backend.service.CommunityIdentificationService;
+import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import java.sql.SQLException;
 public class SmallDataGenerator {
     private final Logger logger = LoggerFactory.getLogger(SmallDataGenerator.class);
     private final DataSource source;
+    private LeagueService leagueService;
 
     @Autowired
     private DataGeneratorHealthIndicator healthIndicator;
@@ -38,6 +40,8 @@ public class SmallDataGenerator {
             ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/DefaultDataGen.sql"));
             logger.info("SmallDataGenerator finished");
             // ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/SmallDataGen.sql"));
+            logger.info(leagueService.getLeagues("test").toString());
+
             healthIndicator.setReady();
         } catch (SQLException sqle) {
             logger.error("An error occurred whilst trying to insert testdata", sqle);
