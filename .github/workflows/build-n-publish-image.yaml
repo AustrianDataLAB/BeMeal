@@ -27,6 +27,7 @@ jobs:
         with:
           name: integration-test-report
           path: ./test/test-results/index.html
+          retention-days: 10
   build-and-push-image:
     needs: [integration-test]
     strategy:
