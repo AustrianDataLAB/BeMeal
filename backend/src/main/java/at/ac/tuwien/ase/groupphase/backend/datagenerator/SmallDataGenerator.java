@@ -35,6 +35,7 @@ public class SmallDataGenerator {
         communityIdentificationService.reloadCommunityIdentifications();
         try (Connection c = source.getConnection()) {
             ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/DefaultDataGen.sql"));
+            logger.info("SmallDataGenerator finished");
             // ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/SmallDataGen.sql"));
             healthIndicator.setReady();
         } catch (SQLException sqle) {
