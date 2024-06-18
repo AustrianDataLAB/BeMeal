@@ -15,7 +15,7 @@ test.describe.serial('Leagues page test', () => {
         await page.getByTestId("login-button").click()
 
         await expect(page).toHaveURL(`${url}/leagues`);
-
+        await page.content().then(value => console.log(value));
         const leagueExists = await page.$('[data-testid="league-name-0"]') !== null;
         // the code  here got bitten and might be written cleaner
         if (leagueExists) {
