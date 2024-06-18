@@ -21,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
+// todo update me
 @Configuration
 @EnableMethodSecurity
 @EnableScheduling
@@ -46,8 +47,9 @@ public class SecurityConfiguration {
         final var authenticationManager = authenticationConfiguration.getAuthenticationManager();
         final var authorizationFilter = authorizationFilter(authenticationManager);
         final var authenticationFilter = authenticationFilter(authenticationManager);
-
-        return http.cors().and().csrf().disable().headers().frameOptions().disable().and()
+        // todo Customizer.withDefaults() excludes preflight requests from auth) - new syntax, otherwise you have to
+        // allow options it cors-config
+        return http.cors(Customizer.withDefaults()).csrf().disable().headers().frameOptions().disable().and()
                 .addFilter(authenticationFilter).addFilter(authorizationFilter).sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).permitAll().requestMatchers(toH2Console()).permitAll().anyRequest()

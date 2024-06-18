@@ -7,19 +7,19 @@ import {Env} from "@app/dtos/env";
 })
 export class ConfigService {
     private env: Env  = {
-        backendUri: 'http://localhost:8080/api/v1'
+        BACKEND_URL: 'http://localhost:8080/api/v1'
     }
 
     loadEnv() {
         if (window['__env']) {
-            Object.assign(this, window['__env'])
+            Object.assign(this.env, window['__env'])
         } else {
             console.debug('No window.__env found, using default env')
         }
     }
 
     get backendUri() : string {
-        return this.env['backendUri'];
+        return this.env['BACKEND_URL'];
     }
 
 
