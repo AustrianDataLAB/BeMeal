@@ -1,10 +1,3 @@
-DELETE FROM SUBMISSION;
-DELETE FROM CHALLENGE;
-DELETE FROM LEAGUE;
-DELETE FROM LEAGUE_PARTICIPANTS;
-DELETE FROM PARTICIPANT_WINS;
-DELETE FROM PLATFORM_USER;
-
 /*      Create users        */
 -- Admin accounts
 -- Passwords are encrypted matriculation IDs
@@ -171,4 +164,3 @@ INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES
 INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (11, 9, 20);
 INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (15, 10, 5);
 
-COMMIT;
