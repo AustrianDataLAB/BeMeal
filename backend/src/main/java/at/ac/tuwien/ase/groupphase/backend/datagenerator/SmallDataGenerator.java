@@ -1,7 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.datagenerator;
 
 import at.ac.tuwien.ase.groupphase.backend.service.CommunityIdentificationService;
-import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -21,8 +21,6 @@ import java.sql.SQLException;
 public class SmallDataGenerator {
     private final Logger logger = LoggerFactory.getLogger(SmallDataGenerator.class);
     private final DataSource source;
-    @Autowired
-    private LeagueService leagueService;
 
     @Autowired
     private DataGeneratorHealthIndicator healthIndicator;
@@ -35,13 +33,13 @@ public class SmallDataGenerator {
     }
 
     @PostConstruct
+    @Transactional("rdbmsTxManager")
     void insertDummyData() {
         communityIdentificationService.reloadCommunityIdentifications();
         try (Connection c = source.getConnection()) {
             ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/DefaultDataGen.sql"));
             logger.info("SmallDataGenerator finished");
             // ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/SmallDataGen.sql"));
-            logger.info(leagueService.getLeagues("test").toString());
 
             healthIndicator.setReady();
         } catch (SQLException sqle) {
