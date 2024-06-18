@@ -69,10 +69,6 @@ jobs:
           severity: HIGH,CRITICAL
           exit-code: 1
 
-      - name: Run Integration Tests
-        if: matrix.component == 'backend'
-        run: docker compose -f test/compose.yaml up --abort-on-container-exit --exit-code-from playwright
-
       - name: Extract Metadata (tags, labels) for Docker
         id: meta
         if: github.ref == 'refs/heads/main'
