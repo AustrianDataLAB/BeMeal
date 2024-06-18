@@ -21,24 +21,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: test
-        run: ls -la /test
       - name: Run Integration Tests
         run: docker compose -f test/compose.yaml up --abort-on-container-exit --exit-code-from playwright
-      - name: Wait till Integration Test report exists
-        run: |
-          ls test
-          ls test/playwright-report
-          while [ ! -f /test/playwright-report/index.html ]; do
-            sleep 5
-          done
-      - name: Store Integration Test Report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: integration-test-report
-          path: /test/playwright-report/index.html
-          retention-days: 10
   build-and-push-image:
     needs: [integration-test]
     strategy:
