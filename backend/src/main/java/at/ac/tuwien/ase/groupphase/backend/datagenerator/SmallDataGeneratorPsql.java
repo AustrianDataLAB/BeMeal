@@ -1,6 +1,5 @@
 package at.ac.tuwien.ase.groupphase.backend.datagenerator;
 
-import at.ac.tuwien.ase.groupphase.backend.entity.SchemaInformation;
 import at.ac.tuwien.ase.groupphase.backend.repository.SchemaInformationRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.CommunityIdentificationService;
 import jakarta.annotation.PostConstruct;
@@ -47,7 +46,8 @@ public class SmallDataGeneratorPsql {
         }
 
         communityIdentificationService.reloadCommunityIdentifications();
-        try (Connection c = source.getConnection(); final var ps = c.prepareStatement("INSERT INTO SCHEMA_INFO (ID, INITIALIZED, GENERATOR) VALUES (?,?,?)")) {
+        try (Connection c = source.getConnection(); final var ps = c.prepareStatement("INSERT INTO SCHEMA_INFO (ID, " +
+                "INITIALIZED, GENERATOR) VALUES (?,?,?)")) {
             c.setAutoCommit(false);
 
             ps.setLong(1, 1);
