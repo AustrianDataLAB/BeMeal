@@ -50,6 +50,7 @@ public class BigDataGenerator {
 
         communityIdentificationService.reloadCommunityIdentifications();
         try (Connection c = source.getConnection()) {
+            c.setAutoCommit(false);
             ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/DefaultDataGen.sql"));
             ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/BigDataGen.sql"));
             this.schemaInformationRepository.save(schemaInformation);
