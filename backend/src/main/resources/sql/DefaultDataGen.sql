@@ -45,33 +45,33 @@ VORARLBERG      8
 
 */
 -- game mode for regional leagues always picture_ingredients:
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 0, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Vienna League');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 1, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Lower Austria League');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 2, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Upper Austria League');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 3, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Styria League');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 4, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Tyrol League');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 5, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Salzburg League');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 6, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Carinthia League');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 7, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Burgenland League');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Vorarlberg League');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (0, 2, 0, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Vienna League');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (1, 2, 1, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Lower Austria League');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 2, 2, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Upper Austria League');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (3, 2, 3, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Styria League');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (4, 2, 4, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Tyrol League');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (5, 2, 5, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Salzburg League');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (6, 2, 6, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Carinthia League');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (7, 2, 7, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Burgenland League');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (8, 2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Vorarlberg League');
 
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 0, 7, 'ef2133ad-f5e9-4aac-bc1f-46dcf62f495e', 'Uni friends');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 1, 7, 'df3fe84b-6143-4d41-a0b9-a452c8c91b18', 'Work friends');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 2, 7, 'd964c968-8078-40c7-b528-bb305ec7290a', 'The legends');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 3, 7, '8b7edb62-a5db-4c65-9adb-c3a7d2fc9952', 'Cooking Experts');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 4, 7, '300fdfc3-ebd1-4a5a-bb56-fbad47ae91ce', 'Broccoli lovers');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 5, 7, '8fe94524-e052-49f8-a55d-3f4af99317bb', 'Heast, oida' );
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 6, 7, '645379dd-3b61-4635-817d-1ee9808e20b0', 'Foodies');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 7, 7, '64188f31-9fc5-478f-9342-4ccd61cc0920', 'True legends');
-INSERT INTO League (game_mode, region, challenge_duration, hidden_identifier, name) VALUES (2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Turtles');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (10, 2, 0, 7, 'ef2133ad-f5e9-4aac-bc1f-46dcf62f495e', 'Uni friends');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (11, 2, 1, 7, 'df3fe84b-6143-4d41-a0b9-a452c8c91b18', 'Work friends');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (12, 2, 2, 7, 'd964c968-8078-40c7-b528-bb305ec7290a', 'The legends');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (13, 2, 3, 7, '8b7edb62-a5db-4c65-9adb-c3a7d2fc9952', 'Cooking Experts');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (14, 2, 4, 7, '300fdfc3-ebd1-4a5a-bb56-fbad47ae91ce', 'Broccoli lovers');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (15, 2, 5, 7, '8fe94524-e052-49f8-a55d-3f4af99317bb', 'Heast, oida' );
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (16, 2, 6, 7, '645379dd-3b61-4635-817d-1ee9808e20b0', 'Foodies');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (17, 2, 7, 7, '64188f31-9fc5-478f-9342-4ccd61cc0920', 'True legends');
+INSERT INTO League (id, game_mode, region, challenge_duration, hidden_identifier, name) VALUES (18, 2, 8, 7, 'd9e7c7c7-0eab-42f6-a09b-475a2bf08f66', 'Turtles');
 
 -- team member users participate in their regional leagues
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 1);
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 2);
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 3);
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (9, 4);
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (9, 5);
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 6);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (1, 1);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (1, 2);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (1, 3);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (8, 4);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (8, 5);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (1, 6);
 
 /*      Create show user league entries     */
 INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (10, 7);
@@ -108,15 +108,15 @@ INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VAL
 INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for True legends', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '102452', 17);
 INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Turtles', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '102452', 18);
 
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 1);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Lower Austria League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 2);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Upper Austria League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 3);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Styria League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 4);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Tyrol League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 5);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Salzburg League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 6);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Carinthia League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 7);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Burgenland League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 8);
-INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vorarlberg League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 9);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vienna League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 0);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Lower Austria League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 1);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Upper Austria League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 2);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Styria League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 3);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Tyrol League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 4);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Salzburg League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 5);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Carinthia League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 6);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Burgenland League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 7);
+INSERT INTO Challenge (description, start_date, end_date, recipe, league_id) VALUES ('Weekly Challenge for Vorarlberg League', CURRENT_TIMESTAMP, DATEADD(day, 7, CURRENT_TIMESTAMP), '96750', 8);
 
 /*      Create Submission      */
 INSERT INTO Submission (date, picture, challenge_id, participant_participant_id) VALUES (DATEADD(day, 2, CURRENT_TIMESTAMP), '518cf81f-0ff6-4999-b160-756e0dfeac0a', 1, 1);
@@ -126,20 +126,20 @@ INSERT INTO Submission (date, picture, challenge_id, participant_participant_id)
 INSERT INTO Submission (date, picture, challenge_id, participant_participant_id) VALUES (DATEADD(day, 2, CURRENT_TIMESTAMP), '717c37e6-94e9-49a1-adf2-35617b91e0a6', 2, 5);
 INSERT INTO Submission (date, picture, challenge_id, participant_participant_id) VALUES (DATEADD(day, 2, CURRENT_TIMESTAMP), 'f7828b1f-9b3c-4ded-918a-c2cd8f20bfab', 2, 6);
 
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 1);
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 2);
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 3);
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (9, 4);
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (9, 5);
-INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (2, 6);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (1, 1);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (1, 2);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (1, 3);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (8, 4);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (8, 5);
+INSERT INTO League_Participants (leagues_id, participants_participant_id) VALUES (1, 6);
 
 /*  Add Participant wins    */
-INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (2, 1, 60);
-INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (2, 2, 56);
-INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (2, 3, 2);
-INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (9, 4, 52);
-INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (9, 5, 32);
-INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (2, 6, 78);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (1, 1, 60);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (1, 2, 56);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (1, 3, 2);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (8, 4, 52);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (8, 5, 32);
+INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (1, 6, 78);
 
 INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (10, 1, 9);
 INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (10, 2, 8);
