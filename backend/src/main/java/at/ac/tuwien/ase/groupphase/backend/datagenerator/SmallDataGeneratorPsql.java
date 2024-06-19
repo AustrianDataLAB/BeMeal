@@ -46,8 +46,8 @@ public class SmallDataGeneratorPsql {
         }
 
         communityIdentificationService.reloadCommunityIdentifications();
-        try (Connection c = source.getConnection(); final var ps = c.prepareStatement("INSERT INTO SCHEMA_INFO (ID, " +
-                "INITIALIZED, GENERATOR) VALUES (?,?,?)")) {
+        try (Connection c = source.getConnection(); final var ps = c
+                .prepareStatement("INSERT INTO SCHEMA_INFO (ID, " + "INITIALIZED, GENERATOR) VALUES (?,?,?)")) {
             c.setAutoCommit(false);
 
             ps.setLong(1, 1);
