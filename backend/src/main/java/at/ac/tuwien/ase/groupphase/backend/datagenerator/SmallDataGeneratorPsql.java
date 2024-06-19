@@ -46,13 +46,17 @@ public class SmallDataGeneratorPsql {
             }
         }
 
-        final var schemaInformation = new SchemaInformation(this.getClass().getName());
-
         communityIdentificationService.reloadCommunityIdentifications();
-        try (Connection c = source.getConnection()) {
+        try (Connection c = source.getConnection(); final var ps = c.prepareStatement("INSERT INTO SCHEMA_INFO (ID, INITIALIZED, GENERATOR) VALUES (?,?,?)")) {
             c.setAutoCommit(false);
+
+            ps.setLong(1, 1);
+            ps.setBoolean(2, true);
+            ps.setString(3, this.getClass().getSimpleName());
             ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/DefaultDataGenPsql.sql"));
-            this.schemaInformationRepository.save(schemaInformation);
+            ps.execute();
+
+            c.commit();
         } catch (SQLException sqle) {
             logger.error("An error occurred whilst trying to insert testdata", sqle);
         }
