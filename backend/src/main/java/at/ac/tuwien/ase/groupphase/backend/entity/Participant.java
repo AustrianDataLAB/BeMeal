@@ -32,6 +32,14 @@ public class Participant extends PlatformUser {
         this.leagues = leagues;
     }
 
+    public Participant(Long id, String email, String password, String username, Boolean isAdmin, String postalCode,
+            Region region, LocalDateTime registered) {
+        super(id, email, password.getBytes(), username, isAdmin, null, List.of());
+        this.postalCode = postalCode;
+        this.region = region;
+        this.registered = registered;
+    }
+
     @Column(nullable = false)
     private String postalCode;
     @ElementCollection
