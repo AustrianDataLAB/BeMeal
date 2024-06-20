@@ -1,5 +1,6 @@
 package at.ac.tuwien.ase.groupphase.backend.entity;
 
+import at.ac.tuwien.ase.groupphase.backend.entity.generator.ExplicitIdSequence;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 public class League {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ExplicitIdSequence(name = "league_seq")
     private Long id;
 
     /**
@@ -42,4 +43,9 @@ public class League {
     private List<Challenge> challenges;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Participant> participants;
+
+    public League(final Long id, final GameMode gameMode, final Region region, final Integer challengeDuration,
+            final UUID hiddenIdentifier, final String name) {
+        this(id, hiddenIdentifier, gameMode, region, challengeDuration, name, List.of(), List.of());
+    }
 }
