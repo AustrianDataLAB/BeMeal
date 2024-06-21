@@ -2,12 +2,15 @@ package at.ac.tuwien.ase.groupphase.backend.endpoint;
 
 import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import at.ac.tuwien.ase.groupphase.backend.dto.SuggestionDto;
+import at.ac.tuwien.ase.groupphase.backend.service.AzureStorageService;
 import at.ac.tuwien.ase.groupphase.backend.service.RecipeService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,7 @@ public class RecipeEndpoint {
 
     private final Logger logger = LoggerFactory.getLogger(RecipeEndpoint.class);
     private final RecipeService recipeService;
+    private final AzureStorageService azureStorageService;
 
     @GetMapping("/{recipeId}")
     @ResponseStatus(HttpStatus.OK)
@@ -81,5 +85,14 @@ public class RecipeEndpoint {
     public SuggestionDto getSuggestions(@RequestParam(value = "id") final List<String> ids) {
         logger.info("GET /api/v1/recipe/suggestions?ids.size={}", ids.size());
         return this.recipeService.getSuggestions(ids);
+    }
+
+    @GetMapping("/{imageId}")
+    public ResponseEntity<Resource> getImage(@PathVariable String imageId) {
+        // TODO: Error handling
+        Resource file = azureStorageService.getFile(imageId);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
     }
 }

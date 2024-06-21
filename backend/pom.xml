@@ -163,6 +163,15 @@
 			<version>5.12.0</version>
 			<scope>test</scope>
 		</dependency>
+
+        <!-- Azure Storage -->
+        <dependency>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>spring-cloud-azure-dependencies</artifactId>
+            <version>5.13.0</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
     </dependencies>
 
 	<build>
