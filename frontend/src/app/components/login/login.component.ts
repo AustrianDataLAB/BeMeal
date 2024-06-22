@@ -40,8 +40,6 @@ export class LoginComponent implements OnInit{
             console.debug('Try to authenticate user: ' + loginObj.toString());
             this.selfService.loginUser(loginObj).pipe(
                 tap(response => {
-                    console.debug(response);
-                    console.debug('Successful login for user: ' + loginObj.username);
                     this.router.navigate(['/leagues']);
                 }),
                 catchError(error => {
