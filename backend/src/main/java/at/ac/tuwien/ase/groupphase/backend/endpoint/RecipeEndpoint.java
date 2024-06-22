@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -87,12 +86,11 @@ public class RecipeEndpoint {
         return this.recipeService.getSuggestions(ids);
     }
 
-    @GetMapping("/{imageId}")
-    public ResponseEntity<Resource> getImage(@PathVariable String imageId) {
-        // TODO: Error handling
-        Resource file = azureStorageService.getFile(imageId);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-                .body(file);
+    @GetMapping("/images/{imageId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Resource getImage(@PathVariable String imageId) {
+        logger.trace("GET /api/v1/recipe/image/{}", imageId);
+        return azureStorageService.getFile(imageId);
     }
 }

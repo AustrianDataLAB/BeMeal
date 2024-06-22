@@ -6,6 +6,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 @Slf4j
 public class AzureStorageService {
@@ -13,13 +15,16 @@ public class AzureStorageService {
     private final String containerName;
 
     public AzureStorageService(ResourceLoader resourceLoader,
-            @Value("${spring.cloud.azure.storage.container-name}") String containerName) {
+                               @Value("${spring.cloud.azure.storage.container-name}") String containerName) {
         this.resourceLoader = resourceLoader;
         this.containerName = containerName;
     }
 
     public Resource getFile(String filename) {
-        // TODO: Error handling
-        return resourceLoader.getResource(String.format("azure-blob://%s/%s.jpg", containerName, filename));
+        Resource image = resourceLoader.getResource(String.format("azure-blob://%s/%s.jpg", containerName, filename));
+        if (!image.exists()) {
+            throw new NoSuchElementException("Image with ID " + filename + " not found");
+        }
+        return image;
     }
 }
