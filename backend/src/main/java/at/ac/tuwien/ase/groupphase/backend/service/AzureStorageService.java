@@ -1,6 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -14,7 +15,7 @@ public class AzureStorageService {
     private final ResourceLoader resourceLoader;
     private final String containerName;
 
-    public AzureStorageService(ResourceLoader resourceLoader,
+    public AzureStorageService(@Qualifier("azureStorageBlobProtocolResolver")ResourceLoader resourceLoader,
                                @Value("${spring.cloud.azure.storage.container-name}") String containerName) {
         this.resourceLoader = resourceLoader;
         this.containerName = containerName;
