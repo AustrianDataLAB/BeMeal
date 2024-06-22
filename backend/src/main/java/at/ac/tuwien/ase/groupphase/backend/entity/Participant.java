@@ -32,7 +32,7 @@ public class Participant extends PlatformUser {
         this.leagues = leagues;
     }
 
-    public Participant(Long id, String email, String password, String username, Boolean isAdmin, String postalCode,
+    public Participant(Long id, String email, String username, String password, Boolean isAdmin, String postalCode,
             Region region, LocalDateTime registered) {
         super(id, email, password.getBytes(), username, isAdmin, null, List.of());
         this.postalCode = postalCode;
