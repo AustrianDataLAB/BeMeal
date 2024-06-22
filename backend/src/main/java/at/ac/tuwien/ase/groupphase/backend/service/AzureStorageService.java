@@ -19,7 +19,7 @@ public class AzureStorageService {
     }
 
     public Resource getFile(String filename) {
-        // TODO: Error handling
-        return resourceLoader.getResource(String.format("azure-blob://%s/%s.jpg", containerName, filename));
+        Resource file = resourceLoader.getResource(String.format("azure-blob://%s/%s.jpg", containerName, filename));
+        return file.exists() ? file : null;
     }
 }

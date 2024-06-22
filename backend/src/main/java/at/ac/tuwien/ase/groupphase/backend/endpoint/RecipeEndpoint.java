@@ -89,8 +89,10 @@ public class RecipeEndpoint {
 
     @GetMapping("/{imageId}")
     public ResponseEntity<Resource> getImage(@PathVariable String imageId) {
-        // TODO: Error handling
         Resource file = azureStorageService.getFile(imageId);
+        if (file == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
