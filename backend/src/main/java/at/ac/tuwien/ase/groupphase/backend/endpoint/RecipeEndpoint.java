@@ -90,7 +90,7 @@ public class RecipeEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Resource getImage(@PathVariable String imageId) {
-        logger.trace("GET /api/v1/recipe/image/{}", imageId);
+        logger.trace("GET /api/v1/recipe/images/{}", imageId);
         return azureStorageService.getFile(imageId);
     }
 }
