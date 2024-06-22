@@ -1,5 +1,7 @@
 package at.ac.tuwien.ase.groupphase.backend.entity;
 
+import at.ac.tuwien.ase.groupphase.backend.entity.generator.ExplicitIdGenerator;
+import at.ac.tuwien.ase.groupphase.backend.entity.generator.ExplicitIdSequence;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PlatformUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ExplicitIdSequence(name = "plt_user_seq")
     private Long id;
     @Column(nullable = false, unique = true)
     private String email;

@@ -1,6 +1,5 @@
 package at.ac.tuwien.ase.groupphase.backend.datagenerator;
 
-import at.ac.tuwien.ase.groupphase.backend.entity.SchemaInformation;
 import at.ac.tuwien.ase.groupphase.backend.repository.SchemaInformationRepository;
 import at.ac.tuwien.ase.groupphase.backend.service.CommunityIdentificationService;
 import jakarta.annotation.PostConstruct;
@@ -18,9 +17,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @Configuration
-@Profile("SmallDataGenerator")
-public class SmallDataGenerator {
-    private final Logger logger = LoggerFactory.getLogger(SmallDataGenerator.class);
+@Profile("SmallDataGeneratorPsql")
+public class SmallDataGeneratorPsql {
+    private final Logger logger = LoggerFactory.getLogger(SmallDataGeneratorPsql.class);
     private final DataSource source;
 
     @Autowired
@@ -29,7 +28,7 @@ public class SmallDataGenerator {
     @Autowired
     private SchemaInformationRepository schemaInformationRepository;
 
-    public SmallDataGenerator(DataSource source) {
+    public SmallDataGeneratorPsql(DataSource source) {
         this.source = source;
     }
 
@@ -46,14 +45,18 @@ public class SmallDataGenerator {
             }
         }
 
-        final var schemaInformation = new SchemaInformation(this.getClass().getName());
-
         communityIdentificationService.reloadCommunityIdentifications();
-        try (Connection c = source.getConnection()) {
+        try (Connection c = source.getConnection(); final var ps = c
+                .prepareStatement("INSERT INTO SCHEMA_INFO (ID, " + "INITIALIZED, GENERATOR) VALUES (?,?,?)")) {
             c.setAutoCommit(false);
-            ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/DefaultDataGen.sql"));
-            // ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/SmallDataGen.sql"));
-            this.schemaInformationRepository.save(schemaInformation);
+
+            ps.setLong(1, 1);
+            ps.setBoolean(2, true);
+            ps.setString(3, this.getClass().getSimpleName());
+            ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/DefaultDataGenPsql.sql"));
+            ps.execute();
+
+            c.commit();
         } catch (SQLException sqle) {
             logger.error("An error occurred whilst trying to insert testdata", sqle);
         }
