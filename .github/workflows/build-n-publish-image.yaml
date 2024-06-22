@@ -1,5 +1,4 @@
 name: Build and Push to GitHub Registry
-# fixme build all images, maybe look into https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
 on:
   push:
     branches: [ main ]
