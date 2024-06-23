@@ -1,5 +1,3 @@
-import {Region} from "../shared/region";
-
 export class Login {
 
     constructor(

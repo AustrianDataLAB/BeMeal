@@ -1,0 +1,44 @@
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    entrypoint: [ "java",  "-jar", "-Dspring.profiles.active=container,SmallDataGeneratorJpa", "/opt/app/*.jar" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://backend:8080/actuator/health/readiness | grep UP || exit 1" ]
+      retries: 3
+      start_period: 15s
+      start_interval: 5s
+  frontend:
+    container_name: frontend
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    environment:
+      BACKEND_URL: http://backend:8080/api/v1
+  neo4j:
+    container_name: neo4j
+    build:
+      context: ../backend/database/neo4j
+      dockerfile: Dockerfile
+    hostname: neo4j
+    volumes:
+      - neo4j-data:/data
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_PLUGINS=["apoc", "apoc-extended"]
+  playwright:
+    container_name: playwright
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./tests:/playwright/tests
+      - ./playwright-report:/playwright/playwright-report
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  neo4j-data:
