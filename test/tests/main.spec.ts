@@ -9,9 +9,8 @@ test.describe.serial('Leagues page test', () => {
     });
     test('league details test', async ({page}) => {
         await page.goto(`${url}/login`);
-
-        await page.getByTestId('username').fill('test');
-        await page.getByTestId('password').fill('testtest1!');
+        await page.getByTestId('username').fill('test4');
+        await page.getByTestId('password').fill('testtest4!');
         await page.getByTestId("login-button").click()
 
         await expect(page).toHaveURL(`${url}/leagues`);
