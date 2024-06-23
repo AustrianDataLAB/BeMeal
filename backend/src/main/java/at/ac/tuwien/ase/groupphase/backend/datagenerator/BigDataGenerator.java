@@ -20,7 +20,7 @@ import java.sql.SQLException;
 @Configuration
 @Profile("BigDataGenerator")
 public class BigDataGenerator {
-    private final Logger logger = LoggerFactory.getLogger(SmallDataGenerator.class);
+    private final Logger logger = LoggerFactory.getLogger(BigDataGenerator.class);
     private final DataSource source;
 
     @Autowired
