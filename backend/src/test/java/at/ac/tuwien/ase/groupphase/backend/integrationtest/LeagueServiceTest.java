@@ -14,7 +14,6 @@ import at.ac.tuwien.ase.groupphase.backend.service.ChallengeGenerationService;
 import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import at.ac.tuwien.ase.groupphase.backend.service.RecipeService;
 import at.ac.tuwien.ase.groupphase.backend.service.SelfService;
-import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +26,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class LeagueServiceTest {
     private final ChallengeGenerationService challengeGenerationService;
     private final LeagueMapper leagueMapper;
     private final IngredientMapper ingredientMapper = new IngredientMapper();
-    private final RecipeMapper recipeMapper = new RecipeMapper();
+    private final RecipeMapper recipeMapper;
 
     // private final static Recipe RECIPE1 = new Recipe("99", "recipe1", 10, 11, "description", "skill level",
     // "7ee65cc3-b719-4bf6-872e-b253dace5ff1", List.of(new Ingredient(UUID.randomUUID(), "ayyLmao")),
@@ -67,12 +67,12 @@ public class LeagueServiceTest {
     private final ParticipantRepository participantRepository;
     private final LeagueRepository leagueRepository;
     private final ChallengeRepository challengeRepository;
-    private SelfService selfService;
+    private final SelfService selfService;
 
     @Autowired
     public LeagueServiceTest(LeagueService leagueService, ChallengeGenerationService challengeGenerationService,
             LeagueMapper leagueMapper, ParticipantRepository participantRepository, LeagueRepository leagueRepository,
-            ChallengeRepository challengeRepository, SelfService selfService) {
+            ChallengeRepository challengeRepository, SelfService selfService, RecipeMapper recipeMapper) {
         this.leagueService = leagueService;
         this.challengeGenerationService = challengeGenerationService;
         this.leagueMapper = leagueMapper;
@@ -80,6 +80,7 @@ public class LeagueServiceTest {
         this.leagueRepository = leagueRepository;
         this.challengeRepository = challengeRepository;
         this.selfService = selfService;
+        this.recipeMapper = recipeMapper;
     }
 
     @BeforeEach
@@ -91,7 +92,7 @@ public class LeagueServiceTest {
                         Region.LOWER_AUSTRIA, 7, "Lower Austria League", null, new ArrayList<>()));
         this.selfService.register(new RegistrationDto(VALID_PARTICIPANT_1.getEmail(), VALID_PARTICIPANT_1.getUsername(),
                 VALID_USER_PASSWORD, VALID_PARTICIPANT_1.getRegion(), VALID_PARTICIPANT_1.getPostalCode()));
-        Participant user = (Participant) this.participantRepository.findByUsername(VALID_PARTICIPANT_1.getUsername());
+        Participant user = this.participantRepository.findByUsername(VALID_PARTICIPANT_1.getUsername());
         user.setOwnerOf(new ArrayList<>());
         this.participantRepository.save(user);
 

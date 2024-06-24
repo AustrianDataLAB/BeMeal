@@ -6,6 +6,8 @@ import at.ac.tuwien.ase.groupphase.backend.dto.RecipeDto;
 import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
 import at.ac.tuwien.ase.groupphase.backend.entity.RecipeSkillLevel;
 import at.ac.tuwien.ase.groupphase.backend.exception.MissingPictureException;
+import at.ac.tuwien.ase.groupphase.backend.service.AzureStorageService;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
@@ -13,15 +15,16 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+@Component
 public class RecipeMapper {
-    private static final String IMAGE_FORMAT = "jpg";
-    private static final String IMAGE_PATH = "src/main/resources/recipes/";
     private final IngredientMapper ingredientMapper;
     private final RecipeDietTypeMapper dietTypeMapper;
+    private final AzureStorageService azureStorageService;
 
-    public RecipeMapper() {
+    public RecipeMapper(AzureStorageService azureStorageService) {
         this.ingredientMapper = new IngredientMapper();
         this.dietTypeMapper = new RecipeDietTypeMapper();
+        this.azureStorageService = azureStorageService;
     }
 
     public RecipeDto recipeToRecipeDto(Recipe recipe) {
@@ -53,8 +56,8 @@ public class RecipeMapper {
         if (uuid == null) {
             return null;
         }
-        try (final var istream = this.getClass().getResourceAsStream("/recipes/" + uuid + "." + IMAGE_FORMAT)) {
-            byte[] bytes = StreamUtils.copyToByteArray(istream);
+        try (final var stream = azureStorageService.getFile(uuid).getInputStream()) {
+            byte[] bytes = StreamUtils.copyToByteArray(stream);
             return Base64.getEncoder().withoutPadding().encodeToString(bytes);
         } catch (IOException e) {
             throw new MissingPictureException();
