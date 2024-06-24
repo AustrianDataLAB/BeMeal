@@ -18,7 +18,7 @@ public class AzureStorageService {
 
     @Autowired
     public AzureStorageService(@Qualifier("azureStorageBlobProtocolResolver") ResourceLoader resourceLoader,
-                               @Value("${spring.cloud.azure.storage.container-name}") String containerName) {
+            @Value("${spring.cloud.azure.storage.container-name}") String containerName) {
         this.resourceLoader = resourceLoader;
         this.containerName = containerName;
     }

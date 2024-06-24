@@ -80,10 +80,9 @@ public class LeagueIntegrationTest {
 
     @Autowired
     public LeagueIntegrationTest(LeagueService leagueService, LeagueEndpoint leagueEndpoint,
-                                 ChallengeGenerationService challengeGenerationService, LeagueMapper leagueMapper,
-                                 ParticipantRepository participantRepository, LeagueRepository leagueRepository,
-                                 ChallengeRepository challengeRepository, SelfService selfService,
-                                 RecipeMapper recipeMapper) {
+            ChallengeGenerationService challengeGenerationService, LeagueMapper leagueMapper,
+            ParticipantRepository participantRepository, LeagueRepository leagueRepository,
+            ChallengeRepository challengeRepository, SelfService selfService, RecipeMapper recipeMapper) {
         this.leagueService = leagueService;
         this.leagueEndpoint = leagueEndpoint;
         this.challengeGenerationService = challengeGenerationService;

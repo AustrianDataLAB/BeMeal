@@ -71,10 +71,8 @@ public class LeagueServiceTest {
 
     @Autowired
     public LeagueServiceTest(LeagueService leagueService, ChallengeGenerationService challengeGenerationService,
-                             LeagueMapper leagueMapper, ParticipantRepository participantRepository,
-                             LeagueRepository leagueRepository,
-                             ChallengeRepository challengeRepository, SelfService selfService,
-                             RecipeMapper recipeMapper) {
+            LeagueMapper leagueMapper, ParticipantRepository participantRepository, LeagueRepository leagueRepository,
+            ChallengeRepository challengeRepository, SelfService selfService, RecipeMapper recipeMapper) {
         this.leagueService = leagueService;
         this.challengeGenerationService = challengeGenerationService;
         this.leagueMapper = leagueMapper;
