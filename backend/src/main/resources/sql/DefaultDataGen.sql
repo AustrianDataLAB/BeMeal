@@ -8,7 +8,7 @@ INSERT INTO Platform_User (id, email, username, password, is_admin) VALUES (4, '
 INSERT INTO Platform_User (id, email, username, password, is_admin) VALUES (5, 'matteo.kofler@bemeal.at', 'Matteo', '$2a$10$p61cLtBQ3h3vwXy2GB9c.OJPX9ae3qp8SLNNmCxt0mZXPd.rWOicG', true);
 INSERT INTO Platform_User (id, email, username, password, is_admin) VALUES (6, 'richard.stoeckl@bemeal.at', 'Richi', '$2a$10$diB3.0ugwJk.7wdeAY0PBOU90Ukw4MQtOAvbMxnO.tsE7mtRsLv5C', true);
 -- Show user accounts
-INSERT INTO Platform_User (id, email, username, password, is_admin) VALUES (7, 'test1@gmail.com', 'test1', '$2a$10$qlE9fTpRBEsw1nBpFXvcPOPafSnlKKIfSNHMceKizTGdckSU1qbJi', false);
+INSERT INTO Platform_User (id, email, username, password, is_admin) VALUES (7, 'test@test.com', 'test', '$2y$10$H5NoXd0UoOFZPEVeqFC8Ku3qfXFSD2l6zx8JPJ5AGKCkEHwIgBOru', false); /*testtest1!*/
 INSERT INTO Platform_User (id, email, username, password, is_admin) VALUES (8, 'test2@gmail.com', 'test2', '$2a$10$2CUt/N6l99GmxWmfBBXnDOTMueJDFOhKUdQDUyk7NQpxX4gmDVPpO', false);
 INSERT INTO Platform_User (id, email, username, password, is_admin) VALUES (9, 'test3@gmail.com', 'test3', '$2a$10$sx/9lMzt/9s9QG.NvtvHf.JbTdAqmRahMEjuNcAqOp47nO6uH.v0G', false);
 INSERT INTO Platform_User (id, email, username, password, is_admin) VALUES (10, 'test4@gmail.com', 'test4', '$2a$10$3QSmui3.ul8jAWpXRzKw4eqSrO7822dM5qIecTFOYG4GHwXfHSNuO', false);
@@ -163,3 +163,4 @@ INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES
 INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (18, 8, 45);
 INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (11, 9, 20);
 INSERT INTO Participant_Wins (wins_key, participant_participant_id, wins) VALUES (15, 10, 5);
+

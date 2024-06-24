@@ -1,35 +1,34 @@
-
 <div class="container mx-auto" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap>
-
-    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start"  >
-        <img src="assets/cooking/PNG/DrawKit-cooking-kitchen-food-vector-illustrations-07.png" alt="A person enjoying cooking" />
+    <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start">
+        <img src="assets/cooking/PNG/DrawKit-cooking-kitchen-food-vector-illustrations-07.png"
+             alt="A person enjoying cooking"/>
     </div>
-
     <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
-    <mat-card >
-        <mat-card-header>
-            <mat-card-title class="mat-h1">Welcome back!</mat-card-title>
-            <mat-card-subtitle>Login back to your Account</mat-card-subtitle>
-
-        </mat-card-header>
-        <form [formGroup]="loginForm">
-            <mat-card-content>
-                <mat-form-field>
-                    <mat-label>Username</mat-label>
-                    <input name="username" formControlName="username" matInput>
-                </mat-form-field>
-                <mat-form-field >
-                    <mat-label>Password</mat-label>
-                    <input type="password" name="password" formControlName="password" matInput>
-                </mat-form-field>
-            <button (click)="loginUser()" mat-raised-button color="primary" class="btn-block">Log in</button>
-            <button routerLink="/register" mat-button color="primary">Not yet registered?</button>
-            <button routerLink="/password-reset" mat-button color="primary">Forgot password?</button>
-            <br>
-            <span *ngIf="error">{{errorMessage}}</span>
-            </mat-card-content>
-
-        </form>
-    </mat-card>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title class="mat-h1">Welcome back!</mat-card-title>
+                <mat-card-subtitle>Login back to your Account</mat-card-subtitle>
+            </mat-card-header>
+            <form [formGroup]="loginForm">
+                <mat-card-content>
+                    <mat-form-field>
+                        <mat-label>Username</mat-label>
+                        <input data-testid="username" name="username" formControlName="username" matInput>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Password</mat-label>
+                        <input data-testid="password" type="password" name="password" formControlName="password"
+                               matInput>
+                    </mat-form-field>
+                    <button data-testid="login-button" (click)="loginUser()" mat-raised-button color="primary"
+                            class="btn-block">Log in
+                    </button>
+                    <button routerLink="/register" mat-button color="primary">Not yet registered?</button>
+                    <button routerLink="/password-reset" mat-button color="primary">Forgot password?</button>
+                    <br>
+                    <span *ngIf="error">{{ errorMessage }}</span>
+                </mat-card-content>
+            </form>
+        </mat-card>
     </div>
 </div>

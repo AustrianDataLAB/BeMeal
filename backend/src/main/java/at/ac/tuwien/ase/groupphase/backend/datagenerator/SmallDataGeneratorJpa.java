@@ -78,7 +78,7 @@ public class SmallDataGeneratorJpa {
         this.challengeRepository.saveAll(regionalChallenges);
         this.challengeRepository.saveAll(nonRegionalChallenges);
 
-        this.schemaInformationRepository.save(new SchemaInformation(this.getClass().getSimpleName()));
+        // this.schemaInformationRepository.save(new SchemaInformation(this.getClass().getSimpleName()));
 
         this.logger.info("Schema initialization finished");
     }
@@ -146,16 +146,16 @@ public class SmallDataGeneratorJpa {
                         Region.LOWER_AUSTRIA, LocalDateTime.parse("2020-05-20T23:14:37")),
 
                 new Participant(7L, "test1@gmail.com", "test1",
-                        "$2a$10$qlE9fTpRBEsw1nBpFXvcPOPafSnlKKIfSNHMceKizTGdckSU1qbJi", false, "1100",
-                        Region.LOWER_AUSTRIA, LocalDateTime.parse("2021-01-22T16:38:54")),
+                        "$2y$10$H5NoXd0UoOFZPEVeqFC8Ku3qfXFSD2l6zx8JPJ5AGKCkEHwIgBOru", false, "1100", Region.VIENNA,
+                        LocalDateTime.parse("2021-01-22T16:38:54")), /* testtest1! */
                 new Participant(8L, "test2@gmail.com", "test2",
                         "$2a$10$2CUt" + "/N6l99GmxWmfBBXnDOTMueJDFOhKUdQDUyk7NQpxX4gmDVPpO", false, "6890",
                         Region.BURGENLAND, LocalDateTime.parse("2021-08-21T18:42:41")),
                 new Participant(9L, "test3@gmail.com", "test3",
                         "$2a$10$sx/9lMzt/9s9QG.NvtvHf" + ".JbTdAqmRahMEjuNcAqOp47nO6uH.v0G", false, "2100",
                         Region.STYRIA, LocalDateTime.parse("2021" + "-07-02T21:32:05")),
-                new Participant(10L, "test4@gmail.com", "test4",
-                        "$2a$10$3QSmui3" + ".ul8jAWpXRzKw4eqSrO7822dM5qIecTFOYG4GHwXfHSNuO", false, "5020",
+                new Participant(10L, "test4@gmail.com", "test4", /* testtest4! */
+                        "$2y$10$AXRyvyL3zqBk.wi9RCWag.ct9hXPqhy9WDUUBQzqkp2QojS8xZE.a", false, "5020",
                         Region.BURGENLAND, LocalDateTime.parse("2020-05-20T23:14:37")));
 
     }
