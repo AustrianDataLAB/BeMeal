@@ -7,11 +7,11 @@ logging:
 
 spring:
   cloud:
-     azure:
-       storage:
-         account-name: bemealaccountname
-         account-key: bemealaccountkey
-         container-name: "bemeal-container-name"
+    azure:
+      storage:
+        account-name: bemealaccountname
+        account-key: bemealaccountkey
+        container-name: "bemeal-container-name"
   servlet:
     multipart:
       max-file-size: -1
@@ -68,3 +68,13 @@ management:
       enabled: true
     readinessState:
       enabled: true
+---
+spring:
+  config:
+    activate:
+      on-profile: container
+  neo4j:
+    uri: bolt://neo4j:7687
+    authentication:
+      username: neo4j
+      password: password
