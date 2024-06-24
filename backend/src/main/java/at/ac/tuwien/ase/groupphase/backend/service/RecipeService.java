@@ -6,9 +6,9 @@ import at.ac.tuwien.ase.groupphase.backend.entity.Ingredient;
 import at.ac.tuwien.ase.groupphase.backend.entity.Recipe;
 import at.ac.tuwien.ase.groupphase.backend.mapper.RecipeMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.RecipeRepository;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,18 +17,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class RecipeService {
     private final Logger logger = LoggerFactory.getLogger(RecipeService.class);
     private final RecipeRepository recipeRepository;
-    private final RecipeMapper recipeMapper = new RecipeMapper();
+    private final RecipeMapper recipeMapper;
 
-    /*
-     * @Autowired
-     *
-     * @NotNull public RecipeService(RecipeRepository recipeRepository) { this.recipeRepository = recipeRepository;
-     * recipeMapper = new RecipeMapper(); }
-     */
+    @Autowired
+    public RecipeService(RecipeRepository recipeRepository, RecipeMapper recipeMapper) {
+        this.recipeRepository = recipeRepository;
+        this.recipeMapper = recipeMapper;
+    }
 
     public RecipeDto getRecipeById(String id) {
         logger.trace("Getting recipe with id " + id);
@@ -42,8 +40,7 @@ public class RecipeService {
     public List<RecipeDto> getMultipleRandomRecipes(int amount) {
         logger.trace("Getting " + amount + " random recipes");
         Optional<List<Recipe>> temp = this.recipeRepository.findAnyRecipeWithPictureWithIngredients(amount);
-        List<RecipeDto> ret = temp.map(this.recipeMapper::recipeListToRecipeDtoList).orElse(null);
-        return ret;
+        return temp.map(this.recipeMapper::recipeListToRecipeDtoList).orElse(null);
     }
 
     public Page<RecipeDto> getRecipesFromCollections(List<String> names, int page, int size) {
@@ -57,7 +54,7 @@ public class RecipeService {
     }
 
     public Page<RecipeDto> findRecipesBySearchString(String searchString, List<String> skillLevel, Integer maxTime,
-            List<String> dietTypes, int page, int size) {
+                                                     List<String> dietTypes, int page, int size) {
         logger.trace("Searching for recipes which contain the string: " + searchString);
         var collections = recipeRepository
                 .findRecipesBySearchString(searchString, skillLevel, maxTime, dietTypes, PageRequest.of(page, size))
@@ -103,9 +100,6 @@ public class RecipeService {
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(20)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
-        // ingredients vereinheitlichen damit man besser weighten kann?
-        // e.g garlic clove vs garlic bulb, red wine vinegar
-        // sugar, bacon, vinegar, cheese, potatoe, tomato, salt,
         return new SuggestionDto(this.recipeMapper.recipeListToRecipeDtoList(input),
                 this.recipeMapper.recipeListToRecipeDtoList(ret.keySet().stream().toList()));
     }

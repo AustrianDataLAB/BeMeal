@@ -15,7 +15,6 @@ import at.ac.tuwien.ase.groupphase.backend.service.ChallengeGenerationService;
 import at.ac.tuwien.ase.groupphase.backend.service.LeagueService;
 import at.ac.tuwien.ase.groupphase.backend.service.RecipeService;
 import at.ac.tuwien.ase.groupphase.backend.service.SelfService;
-import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +27,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class LeagueIntegrationTest {
     private final ChallengeGenerationService challengeGenerationService;
     private final LeagueMapper leagueMapper;
     private final IngredientMapper ingredientMapper = new IngredientMapper();
-    private final RecipeMapper recipeMapper = new RecipeMapper();
+    private final RecipeMapper recipeMapper;
 
     // private final static Recipe RECIPE1 = new Recipe("99", "recipe1", 10, 11, "description", "skill level",
     // "7ee65cc3-b719-4bf6-872e-b253dace5ff1", List.of(new Ingredient(UUID.randomUUID(), "ayyLmao")),
@@ -80,9 +80,10 @@ public class LeagueIntegrationTest {
 
     @Autowired
     public LeagueIntegrationTest(LeagueService leagueService, LeagueEndpoint leagueEndpoint,
-            ChallengeGenerationService challengeGenerationService, LeagueMapper leagueMapper,
-            ParticipantRepository participantRepository, LeagueRepository leagueRepository,
-            ChallengeRepository challengeRepository, SelfService selfService) {
+                                 ChallengeGenerationService challengeGenerationService, LeagueMapper leagueMapper,
+                                 ParticipantRepository participantRepository, LeagueRepository leagueRepository,
+                                 ChallengeRepository challengeRepository, SelfService selfService,
+                                 RecipeMapper recipeMapper) {
         this.leagueService = leagueService;
         this.leagueEndpoint = leagueEndpoint;
         this.challengeGenerationService = challengeGenerationService;
@@ -91,6 +92,7 @@ public class LeagueIntegrationTest {
         this.leagueRepository = leagueRepository;
         this.challengeRepository = challengeRepository;
         this.selfService = selfService;
+        this.recipeMapper = recipeMapper;
     }
 
     @BeforeEach
