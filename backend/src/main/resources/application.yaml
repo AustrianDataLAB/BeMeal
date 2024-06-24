@@ -6,11 +6,17 @@ logging:
     org.springframework.security: TRACE
 
 spring:
+  cloud:
+     azure:
+       storage:
+         account-name: bemealaccountname
+         account-key: bemealaccountkey
+         container-name: "bemeal-container-name"
   servlet:
     multipart:
       max-file-size: -1
       max-request-size: -1
-#  profiles.active: SmallDataGenerator
+  #  profiles.active: SmallDataGenerator
   datasource:
     url: jdbc:h2:file:./database/db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
