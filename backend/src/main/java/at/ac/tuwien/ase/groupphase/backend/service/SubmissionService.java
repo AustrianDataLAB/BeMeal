@@ -48,7 +48,7 @@ public class SubmissionService {
     private final SubmissionMapper submissionMapper;
     private final ImageRepository imageRepository;
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class, transactionManager = "rdbmsTxManager")
     public void submit(MultipartFile file, @NotNull String challengeId) {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Participant participant = this.participantRepository.findByUsername(username);

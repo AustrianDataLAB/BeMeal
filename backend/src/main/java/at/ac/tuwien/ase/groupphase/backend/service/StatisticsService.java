@@ -23,7 +23,7 @@ public class StatisticsService {
 
     private final CommunityIdentificationRepository communityIdentificationRepository;
 
-    @Transactional
+    @Transactional("rdbmsTxManager")
     public HeatMapDto getStatistics(final HeatMapDto.Type type, final boolean relative, final int granularity) {
         Map<Long, Double> heatMapData;
         if (type.equals(HeatMapDto.Type.RANDOM)) {

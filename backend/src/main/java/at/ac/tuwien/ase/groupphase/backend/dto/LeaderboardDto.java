@@ -35,6 +35,6 @@ public class LeaderboardDto implements Comparable<LeaderboardDto> {
     @Override
     public int compareTo(LeaderboardDto other) {
         // Compare based on points in descending order
-        return other.getWins().compareTo(this.getWins());
+        return Integer.compare(other.getWins(), this.getWins());
     }
 }
