@@ -2,12 +2,6 @@ package at.ac.tuwien.ase.groupphase.backend.security;
 
 import java.io.IOException;
 
-import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
-import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -19,15 +13,25 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
+import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
-import org.springframework.web.reactive.function.client.WebClient;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class GitHubAuthenticationHandler implements AuthenticationSuccessHandler {
@@ -42,6 +46,12 @@ public class GitHubAuthenticationHandler implements AuthenticationSuccessHandler
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
         try {
+            String redirect_url = request.getHeader("X-Redirect-Url");
+            if (redirect_url == null) {
+                hlogger.error("No redirect URL provided");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             OAuth2AuthenticationToken oAuth2Token = (OAuth2AuthenticationToken) authentication;
             String username = oAuth2Token.getPrincipal().getAttribute("login");
             String email = getUserEmail(oAuth2Token);
@@ -60,10 +70,11 @@ public class GitHubAuthenticationHandler implements AuthenticationSuccessHandler
             }
             String jwtToken = tokenManager.generateToken(userDetails);
             response.addHeader(JwtAuthenticationFilter.AUTH_HEADER_KEY,
-                    JwtAuthenticationFilter.BEARER_PREFIX + this.tokenManager.generateToken(userDetails));
+                    JwtAuthenticationFilter.BEARER_PREFIX + jwtToken);
             hlogger.info("OAuth Login was successful");
+            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(redirect_url).queryParam("auth", jwtToken);
             response.addHeader("Authorization", "Bearer " + jwtToken);
-            response.setStatus(HttpServletResponse.SC_OK);
+            response.sendRedirect(builder.toUriString());
         } catch (Exception e) {
             hlogger.error("OAuth Login failed");
             e.printStackTrace();
@@ -81,7 +92,7 @@ public class GitHubAuthenticationHandler implements AuthenticationSuccessHandler
                 .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
         final ExchangeStrategies exchangeStrategies = ExchangeStrategies.builder()
                 .codecs(configurer -> configurer.defaultCodecs()
-                        .jackson2JsonDecoder(new Jackson2JsonDecoder(mapper)))
+                .jackson2JsonDecoder(new Jackson2JsonDecoder(mapper)))
                 .build();
 
         EmailObj[] response = WebClient.builder().exchangeStrategies(exchangeStrategies).build()
@@ -110,6 +121,7 @@ public class GitHubAuthenticationHandler implements AuthenticationSuccessHandler
     @NoArgsConstructor
     @AllArgsConstructor
     private static class EmailObj {
+
         private String email;
         private boolean primary;
     }
