@@ -73,7 +73,7 @@ public class GitHubAuthenticationHandler implements AuthenticationSuccessHandler
             hlogger.info("OAuth Login was successful");
             response.addHeader("Authorization", "Bearer " + jwtToken);
             // Set cookie for frontend
-            Cookie cookie = new Cookie("BeMeal-authToken", jwtToken);
+            Cookie cookie = new Cookie("authToken", jwtToken);
             cookie.setPath("/");
             cookie.setHttpOnly(true);
             cookie.setSecure(true);
