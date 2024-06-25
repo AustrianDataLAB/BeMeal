@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -25,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import at.ac.tuwien.ase.groupphase.backend.entity.PlatformUser;
 import at.ac.tuwien.ase.groupphase.backend.repository.UserRepository;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -46,12 +46,11 @@ public class GitHubAuthenticationHandler implements AuthenticationSuccessHandler
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
         try {
-            String redirect_url = request.getHeader("X-Redirect-Url");
-            if (redirect_url == null) {
-                hlogger.error("No redirect URL provided");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                return;
-            }
+            /*
+             * String redirect_url = request.getHeader("X-Redirect-Url"); if (redirect_url == null) {
+             * hlogger.error("No redirect URL provided"); response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+             * return; }
+             */
             OAuth2AuthenticationToken oAuth2Token = (OAuth2AuthenticationToken) authentication;
             String username = oAuth2Token.getPrincipal().getAttribute("login");
             String email = getUserEmail(oAuth2Token);
@@ -72,10 +71,14 @@ public class GitHubAuthenticationHandler implements AuthenticationSuccessHandler
             response.addHeader(JwtAuthenticationFilter.AUTH_HEADER_KEY,
                     JwtAuthenticationFilter.BEARER_PREFIX + jwtToken);
             hlogger.info("OAuth Login was successful");
-            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(redirect_url).queryParam("auth",
-                    jwtToken);
             response.addHeader("Authorization", "Bearer " + jwtToken);
-            response.sendRedirect(builder.toUriString());
+            // Set cookie for frontend
+            Cookie cookie = new Cookie("BeMeal-authToken", jwtToken);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+            response.addCookie(cookie);
+            response.sendRedirect("/");
         } catch (Exception e) {
             hlogger.error("OAuth Login failed");
             e.printStackTrace();
