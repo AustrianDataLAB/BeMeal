@@ -20,8 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
 // todo update me
 @Configuration
 @EnableMethodSecurity
@@ -53,7 +51,7 @@ public class SecurityConfiguration {
         return http.cors(Customizer.withDefaults()).csrf().disable().headers().frameOptions().disable().and()
                 .addFilter(authenticationFilter).addFilter(authorizationFilter).sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
-                .requestMatchers(AUTH_WHITELIST).permitAll().requestMatchers(toH2Console()).permitAll().anyRequest()
+                .requestMatchers(AUTH_WHITELIST).permitAll().anyRequest()
                 .authenticated().and().build();
     }
 
