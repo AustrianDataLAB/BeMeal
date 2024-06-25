@@ -180,7 +180,7 @@ public class LeagueService {
         Collections.sort(leaderboard);
 
         // If the first placed participant has 0 wins no ranking possible -> return empty list
-        if (leaderboard.get(0).getWins().equals(0)) {
+        if (leaderboard.get(0).getWins() == null || leaderboard.get(0).getWins().equals(0)) {
             return List.of();
         }
 
