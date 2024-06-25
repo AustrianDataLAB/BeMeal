@@ -23,7 +23,7 @@ public class PlatformUser {
     private Long id;
     @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private byte[] password;
     @Column(nullable = false, unique = true)
     private String username;

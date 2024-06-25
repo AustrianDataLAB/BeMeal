@@ -63,6 +63,12 @@ public class UserEndpoint {
         throw new RuntimeException();
     }
 
+    @GetMapping("/ssologin")
+    @ResponseStatus(HttpStatus.OK)
+    public void ssoLogin() {
+        return;
+    }
+
     /**
      * Retrieves the profile of the authenticated participant.
      *

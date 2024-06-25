@@ -7,6 +7,7 @@ import jwt_decode from 'jwt-decode';
 import {Profile} from "../dtos/profile";
 import {Login, PasswordReset} from '../dtos/login';
 import {ConfigService} from "@services/config.service";
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +18,7 @@ export class SelfService {
 
     isGameMaster = new BehaviorSubject(localStorage.getItem('bemeal.isgamemaster') === 'true');
 
-    constructor(private httpClient: HttpClient, private configService: ConfigService) {
+    constructor(private httpClient: HttpClient, private configService: ConfigService, private cookieService: CookieService) {
     }
 
 
@@ -74,6 +75,10 @@ export class SelfService {
             }));
     }
 
+    getSsoLoginUrl(): string {
+        return this.authBaseUri + '/ssologin';
+    }
+
 
     getProfile(): Observable<Profile> {
         return this.httpClient.get<Profile>(this.authBaseUri + '/profile');
@@ -112,9 +117,13 @@ export class SelfService {
     logoutUser() {
         console.debug('Logout');
         localStorage.removeItem('authToken');
+        this.cookieService.delete('authToken', '/');
     }
 
     getToken() {
+        if (this.cookieService.check('authToken')) {
+            return this.cookieService.get('authToken');
+        }
         return localStorage.getItem('authToken');
     }
 
@@ -123,6 +132,7 @@ export class SelfService {
         console.debug(tokenHeader);
         const tokenWithoutBearer = tokenHeader.substring(7);
         localStorage.setItem('authToken', tokenWithoutBearer);
+        this.cookieService.set('authToken', tokenWithoutBearer, undefined, '/', undefined, true, 'Lax');
     }
 
     private getTokenExpirationDate(token: string): Date | null {
