@@ -78,7 +78,7 @@ public class SmallDataGeneratorJpa {
         this.challengeRepository.saveAll(regionalChallenges);
         this.challengeRepository.saveAll(nonRegionalChallenges);
 
-        // this.schemaInformationRepository.save(new SchemaInformation(this.getClass().getSimpleName()));
+        this.schemaInformationRepository.save(new SchemaInformation(this.getClass().getSimpleName()));
 
         this.logger.info("Schema initialization finished");
     }
