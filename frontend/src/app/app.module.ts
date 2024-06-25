@@ -36,6 +36,7 @@ import {SuggestionsComponent} from './components/suggestions/suggestions.compone
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatDialogModule} from '@angular/material/dialog';
 import {customProviders} from "@app/custom-providers";
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
     declarations: [
@@ -79,7 +80,7 @@ import {customProviders} from "@app/custom-providers";
         MatDialogModule,
         NgImageSliderModule
     ],
-    providers: [httpInterceptorProviders, customProviders],
+    providers: [httpInterceptorProviders, customProviders, CookieService],
     bootstrap: [AppComponent]
 })
 export class AppModule {
