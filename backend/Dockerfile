@@ -15,4 +15,4 @@ USER 9001
 WORKDIR /opt/app
 COPY --from=build /opt/app/target/*.jar /opt/app/*.jar
 EXPOSE 8080
-ENTRYPOINT ["java",  "-jar", "-Dspring.profiles.active=container", "/opt/app/*.jar"]
+ENTRYPOINT ["java",  "-jar", "/opt/app/*.jar"]
