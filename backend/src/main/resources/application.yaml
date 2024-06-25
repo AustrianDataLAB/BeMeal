@@ -78,3 +78,16 @@ spring:
     authentication:
       username: neo4j
       password: password
+---
+spring:
+  config:
+    activate:
+      on-profile: LocalSso
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: dummy
+            clientSecret: dummy
+            scope: user:email, read:user
