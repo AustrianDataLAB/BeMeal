@@ -68,6 +68,10 @@ export class LoginComponent implements OnInit{
 
     }
 
+    getSsoLoginUrl() {
+        return this.selfService.getSsoLoginUrl();
+    }
+
     ngOnInit() {
         if(this.selfService.isLoggedIn()) {
             this.router.navigate(['/leagues'])

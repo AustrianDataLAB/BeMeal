@@ -75,6 +75,10 @@ export class SelfService {
             }));
     }
 
+    getSsoLoginUrl(): string {
+        return this.authBaseUri + '/ssologin';
+    }
+
 
     getProfile(): Observable<Profile> {
         return this.httpClient.get<Profile>(this.authBaseUri + '/profile');
