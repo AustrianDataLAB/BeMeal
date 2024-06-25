@@ -43,7 +43,8 @@ public class SecurityConfiguration {
             "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html", "/api/v1/recipe/**",
             "/api/v1/community-identification/reload", "/actuator/**" };
 
-    private static final String[] OAUTH_WHITELIST = { "/api/v1/self-service/ssologin", "/oauth2/authorization/github", "/login/oauth2/code/github"};
+    private static final String[] OAUTH_WHITELIST = { "/api/v1/self-service/ssologin", "/oauth2/authorization/github",
+            "/login/oauth2/code/github" };
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,12 +54,11 @@ public class SecurityConfiguration {
     @Bean
     @Order(1)
     public SecurityFilterChain ssoLogin(final HttpSecurity http) throws Exception {
-        return http
-            .cors().and().csrf().disable()
-            .securityMatcher(OAUTH_WHITELIST)
-            .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-            .oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler()).authorizedClientService(authAuthorizedClientService))
-            .build();
+        return http.cors().and().csrf().disable().securityMatcher(OAUTH_WHITELIST)
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler())
+                        .authorizedClientService(authAuthorizedClientService))
+                .build();
     }
 
     @Bean
@@ -91,7 +91,8 @@ public class SecurityConfiguration {
     }
 
     private GitHubAuthenticationHandler oAuth2LoginSuccessHandler() {
-        return new GitHubAuthenticationHandler(this.userDetailsService, tokenManager(), this.userRepository, this.authAuthorizedClientService);
+        return new GitHubAuthenticationHandler(this.userDetailsService, tokenManager(), this.userRepository,
+                this.authAuthorizedClientService);
     }
 
     // fix cors issues and allow "Authorization" header to be exposed.

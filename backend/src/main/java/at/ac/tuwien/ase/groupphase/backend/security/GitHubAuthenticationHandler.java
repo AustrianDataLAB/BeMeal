@@ -72,7 +72,8 @@ public class GitHubAuthenticationHandler implements AuthenticationSuccessHandler
             response.addHeader(JwtAuthenticationFilter.AUTH_HEADER_KEY,
                     JwtAuthenticationFilter.BEARER_PREFIX + jwtToken);
             hlogger.info("OAuth Login was successful");
-            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(redirect_url).queryParam("auth", jwtToken);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(redirect_url).queryParam("auth",
+                    jwtToken);
             response.addHeader("Authorization", "Bearer " + jwtToken);
             response.sendRedirect(builder.toUriString());
         } catch (Exception e) {
@@ -84,31 +85,27 @@ public class GitHubAuthenticationHandler implements AuthenticationSuccessHandler
 
     private String getUserEmail(OAuth2AuthenticationToken oAuth2Token) {
         final String URL = "https://api.github.com/user/emails";
-        OAuth2AuthorizedClient oAuth2AuthorizedClient = authAuthorizedClientService.loadAuthorizedClient(
-                oAuth2Token.getAuthorizedClientRegistrationId(), oAuth2Token.getName());
+        OAuth2AuthorizedClient oAuth2AuthorizedClient = authAuthorizedClientService
+                .loadAuthorizedClient(oAuth2Token.getAuthorizedClientRegistrationId(), oAuth2Token.getName());
 
-        final ObjectMapper mapper = new ObjectMapper()
-                .findAndRegisterModules()
+        final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules()
                 .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
         final ExchangeStrategies exchangeStrategies = ExchangeStrategies.builder()
-                .codecs(configurer -> configurer.defaultCodecs()
-                .jackson2JsonDecoder(new Jackson2JsonDecoder(mapper)))
+                .codecs(configurer -> configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(mapper)))
                 .build();
 
-        EmailObj[] response = WebClient.builder().exchangeStrategies(exchangeStrategies).build()
-                .get()
-                .uri(URL)
+        EmailObj[] response = WebClient.builder().exchangeStrategies(exchangeStrategies).build().get().uri(URL)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + oAuth2AuthorizedClient.getAccessToken().getTokenValue())
-                .retrieve().bodyToMono(EmailObj[].class).block();
+                .header("Authorization", "Bearer " + oAuth2AuthorizedClient.getAccessToken().getTokenValue()).retrieve()
+                .bodyToMono(EmailObj[].class).block();
         if (response == null) {
             throw new RuntimeException("Response from GitHub is null");
         }
 
         for (EmailObj emailObj : response) {
             if (emailObj.isPrimary()) {
-                authAuthorizedClientService.removeAuthorizedClient(
-                        oAuth2Token.getAuthorizedClientRegistrationId(), oAuth2Token.getName());
+                authAuthorizedClientService.removeAuthorizedClient(oAuth2Token.getAuthorizedClientRegistrationId(),
+                        oAuth2Token.getName());
                 return emailObj.getEmail();
             }
         }
