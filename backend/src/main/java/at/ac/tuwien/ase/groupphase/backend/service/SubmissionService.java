@@ -8,8 +8,10 @@ import at.ac.tuwien.ase.groupphase.backend.mapper.SubmissionMapper;
 import at.ac.tuwien.ase.groupphase.backend.repository.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +34,15 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SubmissionService {
 
     private final Logger logger = LoggerFactory.getLogger(SubmissionService.class);
     private static final int MAX_WIDTH_HEIGHT = 1000;
     private static final String IMAGE_FORMAT = "png";
-    private static final String IMAGE_PATH = "src/main/resources/static/img/";
+
+    @Value("${bemeal.images.path}")
+    private String imagePath;
 
     private final ParticipantRepository participantRepository;
     private final ChallengeRepository challengeRepository;
@@ -60,6 +65,16 @@ public class SubmissionService {
         this.verifyEligibility(participant, challenge, now);
 
         // transform and save image
+
+        final var imageDirectory = Path.of(this.imagePath).toFile();
+        if (!imageDirectory.exists()) {
+            if (imageDirectory.mkdirs()) {
+                this.logger.info("Created image directory {}", this.imagePath);
+            } else {
+                this.logger.warn("Unable to create image directory {}, submissions will not work", this.imagePath);
+            }
+        }
+
         imageRepository.save(file, newUUID);
 
         // add/overwrite submission
@@ -107,8 +122,8 @@ public class SubmissionService {
         }
     }
 
-    private static Path getPath(UUID uuid) {
-        return Paths.get(IMAGE_PATH, uuid + "." + IMAGE_FORMAT);
+    private Path getPath(UUID uuid) {
+        return Paths.get(imagePath, uuid + "." + IMAGE_FORMAT);
     }
 
     /**
